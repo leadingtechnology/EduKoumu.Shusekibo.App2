@@ -74,6 +74,7 @@ flutter build apk --flavor development -t lib/main_development.dart
 
 generator models:
 dart run build_runner watch --use-polling-watcher --delete-conflicting-outputs
+dart run build_runner watch --use-polling-watcher --delete-conflicting-outputs
 
 ## Running Tests 🧪
 
@@ -140,7 +141,7 @@ Widget build(BuildContext context) {
 
 ### Found this project useful :heart:
 
-* Support by clicking the :star: button on the upper right of this page. :v:
+- Support by clicking the :star: button on the upper right of this page. :v:
 
 ---
 

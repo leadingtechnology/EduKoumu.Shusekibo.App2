@@ -25,6 +25,51 @@ class $AssetsEnvGen {
   List<String> get values => [envDevelopment, envProduction, envStaging];
 }
 
+class $AssetsIconsGen {
+  const $AssetsIconsGen();
+
+  /// File path: assets/icons/default_pkg_icon.png
+  AssetGenImage get defaultPkgIcon =>
+      const AssetGenImage('assets/icons/default_pkg_icon.png');
+
+  /// File path: assets/icons/koumu.png
+  AssetGenImage get koumu => const AssetGenImage('assets/icons/koumu.png');
+
+  /// File path: assets/icons/koumu5.png
+  AssetGenImage get koumu5 => const AssetGenImage('assets/icons/koumu5.png');
+
+  /// File path: assets/icons/seito.png
+  AssetGenImage get seito => const AssetGenImage('assets/icons/seito.png');
+
+  /// File path: assets/icons/seito1.png
+  AssetGenImage get seito1 => const AssetGenImage('assets/icons/seito1.png');
+
+  /// File path: assets/icons/seito2.png
+  AssetGenImage get seito2 => const AssetGenImage('assets/icons/seito2.png');
+
+  /// File path: assets/icons/seito3.png
+  AssetGenImage get seito3 => const AssetGenImage('assets/icons/seito3.png');
+
+  /// List of all assets
+  List<AssetGenImage> get values =>
+      [defaultPkgIcon, koumu, koumu5, seito, seito1, seito2, seito3];
+}
+
+class $AssetsImagesGen {
+  const $AssetsImagesGen();
+
+  /// File path: assets/images/login_page_logo.png
+  AssetGenImage get loginPageLogo =>
+      const AssetGenImage('assets/images/login_page_logo.png');
+
+  /// File path: assets/images/login_page_picture.png
+  AssetGenImage get loginPagePicture =>
+      const AssetGenImage('assets/images/login_page_picture.png');
+
+  /// List of all assets
+  List<AssetGenImage> get values => [loginPageLogo, loginPagePicture];
+}
+
 class $AssetsLangGen {
   const $AssetsLangGen();
 
@@ -40,6 +85,8 @@ class Assets {
 
   static const AssetGenImage appLogo = AssetGenImage('assets/app_logo.png');
   static const $AssetsEnvGen env = $AssetsEnvGen();
+  static const $AssetsIconsGen icons = $AssetsIconsGen();
+  static const $AssetsImagesGen images = $AssetsImagesGen();
   static const $AssetsLangGen lang = $AssetsLangGen();
 
   /// List of all assets
