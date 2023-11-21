@@ -3,9 +3,9 @@
 // @CustomAutoRouter
 
 import 'package:flutter/material.dart';
-import 'package:flutter_boilerplate/app/widget/app_start_page.dart';
-import 'package:flutter_boilerplate/feature/auth/widget/sign_in_page.dart';
-import 'package:flutter_boilerplate/feature/auth/widget/sign_up_page.dart';
+import 'package:kyoumutechou/app/widget/app_start_page.dart';
+import 'package:kyoumutechou/feature/auth/widget/sign_in_page.dart';
+import 'package:kyoumutechou/feature/auth/widget/sign_up_page.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -66,11 +66,11 @@ class SignUpRoute extends GoRouteData {
 class GoNavigatorObserver extends NavigatorObserver {
   @override
   void didPush(Route<dynamic> route, Route<dynamic>? previousRoute) {
-    debugPrint('did push route ${route} : ${previousRoute}');
+    debugPrint('did push route $route : $previousRoute');
   }
 
   @override
   void didPop(Route<dynamic> route, Route<dynamic>? previousRoute) {
-    debugPrint('did pop route ${route} : ${previousRoute}');
+    debugPrint('did pop route $route : $previousRoute');
   }
 }

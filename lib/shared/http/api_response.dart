@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:flutter_boilerplate/shared/http/app_exception.dart';
+import 'package:kyoumutechou/shared/http/app_exception.dart';
 
 part 'api_response.freezed.dart';
 

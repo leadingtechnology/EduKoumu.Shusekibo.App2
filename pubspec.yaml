@@ -1,4 +1,4 @@
-name: flutter_boilerplate
+name: kyoumutechou
 description: A simple boilerplate project
 version: 1.0.0+1
 publish_to: none
@@ -29,6 +29,10 @@ dependencies:
 
   ## UI 
   flutter_native_splash: ^2.3.5
+  lucide_icons: ^0.257.0
+
+  ## Storage
+  hive_flutter: ^1.1.0
 
 
 dev_dependencies:
@@ -72,6 +76,7 @@ flutter:
   generate: true
   assets:
     - assets/lang/en.json
+    - assets/lang/ja.json
     - assets/env/.env.production
     - assets/env/.env.staging
     - assets/env/.env.development
@@ -79,8 +84,21 @@ flutter:
     - assets/
     - assets/icons/
     - assets/images/
-
-
+  fonts:
+    - family: NotoSansJP
+      fonts:
+        - asset: assets/fonts/NotoSansJP-Black.otf
+          weight: 900
+        - asset: assets/fonts/NotoSansJP-Bold.otf
+          weight: 700
+        - asset: assets/fonts/NotoSansJP-Light.otf
+          weight: 300
+        - asset: assets/fonts/NotoSansJP-Medium.otf
+          weight: 500
+        - asset: assets/fonts/NotoSansJP-Regular.otf
+          weight: 400
+        - asset: assets/fonts/NotoSansJP-Thin.otf
+          weight: 100    
 
 # dart run flutter_native_splash:create
 flutter_native_splash:

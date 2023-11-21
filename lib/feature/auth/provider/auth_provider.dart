@@ -1,6 +1,6 @@
-import 'package:flutter_boilerplate/feature/auth/repository/auth_repository.dart';
-import 'package:flutter_boilerplate/feature/auth/repository/token_repository.dart';
-import 'package:flutter_boilerplate/feature/auth/state/auth_state.dart';
+import 'package:kyoumutechou/feature/auth/repository/auth_repository.dart';
+import 'package:kyoumutechou/feature/auth/repository/token_repository.dart';
+import 'package:kyoumutechou/feature/auth/state/auth_state.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'auth_provider.g.dart';

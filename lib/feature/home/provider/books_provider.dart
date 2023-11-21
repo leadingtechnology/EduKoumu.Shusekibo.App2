@@ -1,6 +1,6 @@
-import 'package:flutter_boilerplate/app/provider/app_start_provider.dart';
-import 'package:flutter_boilerplate/feature/home/repository/books_repository.dart';
-import 'package:flutter_boilerplate/feature/home/state/books_state.dart';
+import 'package:kyoumutechou/app/provider/app_start_provider.dart';
+import 'package:kyoumutechou/feature/home/repository/books_repository.dart';
+import 'package:kyoumutechou/feature/home/state/books_state.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'books_provider.g.dart';

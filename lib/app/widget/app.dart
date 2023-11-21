@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_boilerplate/shared/route/app_router.dart';
+import 'package:kyoumutechou/helpers/theme/app_theme.dart';
+import 'package:kyoumutechou/shared/route/app_router.dart';
 
 class App extends ConsumerWidget {
   const App({super.key});
@@ -10,13 +11,10 @@ class App extends ConsumerWidget {
     final router = ref.watch(routerProvider);
 
     return MaterialApp.router(
-      theme: ThemeData(
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-        appBarTheme: const AppBarTheme(color: Color(0xFF13B9FF)),
-        colorScheme: ColorScheme.fromSwatch(
-          accentColor: const Color(0xFF13B9FF),
-        ),
-      ),
+      debugShowCheckedModeBanner: false,
+      theme: AppTheme.theme.copyWith(
+              colorScheme: theme.colorScheme.copyWith(
+                  secondary: AppTheme.customTheme.groceryPrimary.withAlpha(80))),
       routerConfig: router,
     );
   }

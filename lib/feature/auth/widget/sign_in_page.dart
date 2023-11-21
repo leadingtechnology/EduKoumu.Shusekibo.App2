@@ -1,81 +1,128 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_boilerplate/feature/auth/provider/auth_provider.dart';
-import 'package:flutter_boilerplate/shared/route/app_router.dart';
+import 'package:kyoumutechou/feature/auth/provider/auth_provider.dart';
+import 'package:kyoumutechou/helpers/theme/app_theme.dart';
+import 'package:kyoumutechou/helpers/widgets/my_spacing.dart';
+import 'package:kyoumutechou/helpers/widgets/my_text.dart';
 
 class SignInPage extends ConsumerWidget {
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
-
   SignInPage({super.key});
+  
+  final _emailController = TextEditingController(text: 'login0001');
+  final _passwordController = TextEditingController(text: 'P@ssw0rd');
+
+  final customTheme = AppTheme.customTheme;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
-        body: Container(
-            margin: const EdgeInsets.only(left: 20, right: 20),
-            child: Column(children: <Widget>[
-              const SizedBox(height: 150),
-              Text(
-                "sign_in".tr(),
-                style: TextStyle(
-                  color: Colors.grey[800],
-                  fontWeight: FontWeight.bold,
-                  fontSize: 40,
+      body: Container(
+        padding: const EdgeInsets.fromLTRB(0, 50, 0, 0),
+        alignment: Alignment.topCenter,
+        child: Wrap(
+          alignment: WrapAlignment.center, // 中央揃え
+          spacing: 8, // 水平方向のスペース
+          runSpacing: 4, // 垂直方向のスペース
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5),
+                    spreadRadius: 5,
+                    blurRadius: 7,
+                    offset: const Offset(0, 1), // 影の位置を調整
+                  ),
+                ],
+              ),
+              child: Image.asset('assets/images/login_page_picture.png'),
+            ),
+            
+            Form(
+              child: IntrinsicWidth(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    MySpacing.height(8),
+                    Image.asset('assets/images/login_page_logo.png'),
+                    MySpacing.height(8),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(12, 8, 8, 4),
+                      child: MyText.bodyLarge('ログインID', fontWeight: 800),
+                    ),
+                    Container(
+                      height: 50,
+                      alignment: Alignment.center,
+                      padding: const EdgeInsets.fromLTRB(12, 0, 8, 4),
+                      child: TextFormField(
+                        controller: _emailController,
+                        decoration: const InputDecoration(
+                          hintText: '',
+                          border: OutlineInputBorder(),
+                          contentPadding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+                        ),
+                        //cursorColor: customTheme.groceryPrimary,
+                        autofocus: true,
+                      ),
+                    ),
+                    MySpacing.height(8),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(12, 8, 8, 4),
+                      child: MyText.bodyLarge('パスワード', fontWeight: 800),
+                    ),
+                    Container(
+                      height: 50,
+                      alignment: Alignment.center,
+                      padding: const EdgeInsets.fromLTRB(12, 0, 8, 8),
+                      child: TextFormField(
+                        controller: _passwordController,
+                        obscureText: true,
+                        decoration: const InputDecoration(
+                          hintText: '',
+                          border: OutlineInputBorder(),
+                          contentPadding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+                        ),
+                        //cursorColor: customTheme.groceryPrimary,
+                        autofocus: true,
+                      ),
+                    ),
+                    const SizedBox(height: 25),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(12, 0, 8, 8),
+                      child: _widgetSignInButton(context, ref),
+                    ),
+                    
+                  ],
+                  
                 ),
               ),
-              Form(
-                child: Column(
-                  children: [
-                    TextFormField(
-                      decoration: InputDecoration(
-                        labelText: "email".tr(),
-                      ),
-                      controller: _emailController,
-                    ),
-                    TextFormField(
-                      decoration: InputDecoration(
-                        labelText: "password".tr(),
-                      ),
-                      controller: _passwordController,
-                      obscureText: true,
-                    ),
-                    Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: <Widget>[
-                          const SizedBox(height: 30),
-                          _widgetSignInButton(context, ref),
-                          const SizedBox(height: 30),
-                          _widgetSignUpButton(context, ref),
-                        ]),
-                  ],
-                ),
-              )
-            ])));
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   Widget _widgetSignInButton(BuildContext context, WidgetRef ref) {
     return SizedBox(
-        width: double.infinity,
-        child: ElevatedButton(
-          onPressed: () {
-            ref
-                .read(authNotifierProvider.notifier)
-                .login(_emailController.text, _passwordController.text);
-          },
-          child: Text("sign_in".tr()),
-        ));
-  }
-
-  Widget _widgetSignUpButton(BuildContext context, WidgetRef ref) {
-    return SizedBox(
-        width: double.infinity,
-        child: ElevatedButton(
-          onPressed: () {
-            ref.read(routerProvider).go(SignUpRoute.path);
-          },
-          child: Text("sign_up".tr()),
-        ));
+      height: 50,
+      width: double.infinity,
+      child: OutlinedButton(
+        onPressed: () {
+          ref
+              .read(authNotifierProvider.notifier)
+              .login(_emailController.text, _passwordController.text);
+        },  
+        style: OutlinedButton.styleFrom(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(5),
+          ),
+          side: const BorderSide(color: Colors.black45),
+          backgroundColor: Colors.grey[200],
+        ),
+        child: MyText.bodyLarge('ログイン'),
+      ),
+    );
   }
 }

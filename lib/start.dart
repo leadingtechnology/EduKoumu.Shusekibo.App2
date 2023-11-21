@@ -4,10 +4,11 @@ import 'dart:developer';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_boilerplate/shared/util/logger.dart';
-import 'package:flutter_boilerplate/shared/util/platform_type.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
-import 'app/app.dart';
+import 'package:kyoumutechou/app/app.dart';
+import 'package:kyoumutechou/shared/util/logger.dart';
+import 'package:kyoumutechou/shared/util/platform_type.dart';
 
 Future<void> start() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,14 +20,17 @@ Future<void> start() async {
 
   final platformType = detectPlatformType();
 
+  // Hive init
+  await Hive.initFlutter();
+  
   runApp(EasyLocalization(
-    supportedLocales: const [Locale('en')],
+    supportedLocales: const [Locale('ja')],
     path: 'assets/lang',
-    fallbackLocale: const Locale('en'),
+    fallbackLocale: const Locale('ja'),
     child: ProviderScope(overrides: [
       platformTypeProvider.overrideWithValue(platformType),
     ], observers: [
-      Logger()
-    ], child: const App()),
-  ));
+      Logger(),
+    ], child: const App(),),
+  ),);
 }

@@ -76,8 +76,11 @@ class $AssetsLangGen {
   /// File path: assets/lang/en.json
   String get en => 'assets/lang/en.json';
 
+  /// File path: assets/lang/ja.json
+  String get ja => 'assets/lang/ja.json';
+
   /// List of all assets
-  List<String> get values => [en];
+  List<String> get values => [en, ja];
 }
 
 class Assets {
