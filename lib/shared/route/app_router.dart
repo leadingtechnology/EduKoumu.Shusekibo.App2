@@ -3,10 +3,9 @@
 // @CustomAutoRouter
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:kyoumutechou/app/widget/app_start_page.dart';
 import 'package:kyoumutechou/feature/auth/widget/sign_in_page.dart';
-import 'package:kyoumutechou/feature/auth/widget/sign_up_page.dart';
-import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'app_router.g.dart';
@@ -51,17 +50,17 @@ class SignInRoute extends GoRouteData {
   }
 }
 
-@TypedGoRoute<SignUpRoute>(path: SignUpRoute.path)
-class SignUpRoute extends GoRouteData {
-  const SignUpRoute();
+// @TypedGoRoute<SignUpRoute>(path: SignUpRoute.path)
+// class SignUpRoute extends GoRouteData {
+//   const SignUpRoute();
 
-  static const path = '/signUp';
+//   static const path = '/signUp';
 
-  @override
-  Widget build(BuildContext context, GoRouterState state) {
-    return SignUpPage();
-  }
-}
+//   @override
+//   Widget build(BuildContext context, GoRouterState state) {
+//     return SignUpPage();
+//   }
+// }
 
 class GoNavigatorObserver extends NavigatorObserver {
   @override

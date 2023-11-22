@@ -22,6 +22,13 @@ Future<void> start() async {
 
   // Hive init
   await Hive.initFlutter();
+
+  // Hive adapter
+  //Hive.registerAdapter(DateTimeAdapter());
+
+  // Hive open box
+  await Hive.openBox<String>('shusekibo');
+  await Hive.box<String>('shusekibo').put('token', '');
   
   runApp(EasyLocalization(
     supportedLocales: const [Locale('ja')],

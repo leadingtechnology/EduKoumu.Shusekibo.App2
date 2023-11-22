@@ -17,8 +17,7 @@ dependencies:
   riverpod_annotation: ^2.3.1
   dio: ^5.3.3
   pretty_dio_logger: ^1.3.1
-  flutter_secure_storage: ^9.0.0
-  shared_preferences: ^2.2.2
+
 
   google_fonts: ^6.1.0
   lottie: ^2.7.0
@@ -32,6 +31,7 @@ dependencies:
   lucide_icons: ^0.257.0
 
   ## Storage
+  hive: ^2.2.3
   hive_flutter: ^1.1.0
 
 
@@ -87,18 +87,15 @@ flutter:
   fonts:
     - family: NotoSansJP
       fonts:
-        - asset: assets/fonts/NotoSansJP-Black.otf
-          weight: 900
-        - asset: assets/fonts/NotoSansJP-Bold.otf
-          weight: 700
-        - asset: assets/fonts/NotoSansJP-Light.otf
-          weight: 300
-        - asset: assets/fonts/NotoSansJP-Medium.otf
-          weight: 500
-        - asset: assets/fonts/NotoSansJP-Regular.otf
-          weight: 400
-        - asset: assets/fonts/NotoSansJP-Thin.otf
-          weight: 100    
+        - asset: assets/fonts/NotoSansJP-Black.ttf
+        - asset: assets/fonts/NotoSansJP-Bold.ttf
+        - asset: assets/fonts/NotoSansJP-ExtraBold.ttf
+        - asset: assets/fonts/NotoSansJP-ExtraLight.ttf
+        - asset: assets/fonts/NotoSansJP-Light.ttf
+        - asset: assets/fonts/NotoSansJP-Medium.ttf
+        - asset: assets/fonts/NotoSansJP-Regular.ttf
+        - asset: assets/fonts/NotoSansJP-SemiBold.ttf
+        - asset: assets/fonts/NotoSansJP-Thin.ttf
 
 # dart run flutter_native_splash:create
 flutter_native_splash:

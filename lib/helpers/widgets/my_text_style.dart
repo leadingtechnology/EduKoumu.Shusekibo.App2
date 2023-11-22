@@ -48,7 +48,9 @@ typedef TextStyle GoogleFontFunction({
 });
 
 class MyTextStyle {
-  static GoogleFontFunction _fontFamily = GoogleFonts.ibmPlexSans;
+  // GoogleFontsの代わりにassetsに追加したNoto Sans JPを使うように変更
+  static GoogleFontFunction _fontFamily = GoogleFonts.notoSansJp;
+  
 
   static changeFontFamily(GoogleFontFunction value) {
     _fontFamily = value;

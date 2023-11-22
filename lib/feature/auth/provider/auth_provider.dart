@@ -1,5 +1,5 @@
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:kyoumutechou/feature/auth/repository/auth_repository.dart';
-import 'package:kyoumutechou/feature/auth/repository/token_repository.dart';
 import 'package:kyoumutechou/feature/auth/state/auth_state.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -21,15 +21,8 @@ class AuthNotifier extends _$AuthNotifier {
     state = await _loginRepository.login(email, password);
   }
 
-  Future<void> signUp(String name, String email, String password) async {
-    state = await _loginRepository.signUp(name, email, password);
-  }
-
-  late final TokenRepository _tokenRepository =
-      ref.read(tokenRepositoryProvider);
-
   Future<void> logout() async {
-    await _tokenRepository.remove();
+    await Hive.box<String>('shusekibo').put('token', '');
     state = const AuthState.loggedOut();
   }
 }

@@ -6,7 +6,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:kyoumutechou/feature/auth/repository/token_repository.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:kyoumutechou/shared/http/api_response.dart';
 import 'package:kyoumutechou/shared/http/app_exception.dart';
 import 'package:kyoumutechou/shared/http/interceptor/dio_connectivity_request_retrier.dart';
@@ -52,9 +52,6 @@ class ApiProvider {
 
   late Dio _dio;
 
-  late final TokenRepository _tokenRepository =
-      _ref.read(tokenRepositoryProvider);
-
   late String _baseUrl;
 
   Future<APIResponse> post(
@@ -65,7 +62,7 @@ class ApiProvider {
     Map<String, String?>? query,
     ContentType contentType = ContentType.json,
   }) async {
-    final connectivityResult = await (Connectivity().checkConnectivity());
+    final connectivityResult = await Connectivity().checkConnectivity();
     if (connectivityResult == ConnectivityResult.none) {
       return const APIResponse.error(AppException.connectivity());
     }
@@ -73,7 +70,7 @@ class ApiProvider {
     if (newBaseUrl != null) {
       url = newBaseUrl + path;
     } else {
-      url = this._baseUrl + path;
+      url = _baseUrl + path;
     }
     var content = 'application/x-www-form-urlencoded';
 
@@ -86,19 +83,19 @@ class ApiProvider {
         'accept': '*/*',
         'Content-Type': content,
       };
-      final _appToken = await _tokenRepository.fetchToken();
-      if (_appToken != null) {
-        headers['Authorization'] = 'Bearer ${_appToken}';
+      final appToken = Hive.box<String>('shusekibo').get('token');
+      if (appToken != null) {
+        headers['Authorization'] = 'Bearer $appToken';
       }
-      //Sometime for some specific endpoint it may require to use different Token
+      //Sometime for some specific endpoint require to use different Token
       if (token != null) {
-        headers['Authorization'] = 'Bearer ${token}';
+        headers['Authorization'] = 'Bearer $token';
       }
 
       final response = await _dio.post(
         url,
         data: body,
-        queryParameters: query,
+        //queryParameters: query,
         options: Options(validateStatus: (status) => true, headers: headers),
       );
 
@@ -129,13 +126,13 @@ class ApiProvider {
           }
         }
       }
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       if (e.error is SocketException) {
         return const APIResponse.error(AppException.connectivity());
       }
-      if (e.type == DioErrorType.connectionTimeout ||
-          e.type == DioErrorType.receiveTimeout ||
-          e.type == DioErrorType.sendTimeout) {
+      if (e.type == DioExceptionType.connectionTimeout ||
+          e.type == DioExceptionType.receiveTimeout ||
+          e.type == DioExceptionType.sendTimeout) {
         return const APIResponse.error(AppException.connectivity());
       }
 
@@ -148,7 +145,7 @@ class ApiProvider {
       return APIResponse.error(AppException.errorWithMessage(e.message ?? ''));
     } on Error catch (e) {
       return APIResponse.error(
-          AppException.errorWithMessage(e.stackTrace.toString()));
+          AppException.errorWithMessage(e.stackTrace.toString()),);
     }
   }
 
@@ -167,7 +164,7 @@ class ApiProvider {
     if (newBaseUrl != null) {
       url = newBaseUrl + path;
     } else {
-      url = this._baseUrl + path;
+      url = _baseUrl + path;
     }
 
     var content = 'application/x-www-form-urlencoded';
@@ -181,9 +178,9 @@ class ApiProvider {
       'Content-Type': content,
     };
 
-    final _appToken = await _tokenRepository.fetchToken();
-    if (_appToken != null) {
-      headers['Authorization'] = 'Bearer ${_appToken}';
+    final appToken = Hive.box<String>('shusekibo').get('token');
+    if (appToken != null) {
+      headers['Authorization'] = 'Bearer $appToken';
     }
 
     try {
@@ -205,25 +202,25 @@ class ApiProvider {
         if (response.statusCode! == 404) {
           return const APIResponse.error(AppException.connectivity());
         } else if (response.statusCode! == 401) {
-          return APIResponse.error(AppException.unauthorized());
+          return const APIResponse.error(AppException.unauthorized());
         } else if (response.statusCode! == 502) {
           return const APIResponse.error(AppException.error());
         } else {
           if (response.data['error'] != null) {
             return APIResponse.error(AppException.errorWithMessage(
-                response.data['error'] as String ?? ''));
+                response.data['error'] as String,),);
           } else {
             return const APIResponse.error(AppException.error());
           }
         }
       }
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       if (e.error is SocketException) {
         return const APIResponse.error(AppException.connectivity());
       }
-      if (e.type == DioErrorType.connectionTimeout ||
-          e.type == DioErrorType.receiveTimeout ||
-          e.type == DioErrorType.sendTimeout) {
+      if (e.type == DioExceptionType.connectionTimeout ||
+          e.type == DioExceptionType.receiveTimeout ||
+          e.type == DioExceptionType.sendTimeout) {
         return const APIResponse.error(AppException.connectivity());
       }
       return const APIResponse.error(AppException.error());

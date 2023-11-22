@@ -1,33 +1,30 @@
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:kyoumutechou/app/state/app_start_state.dart';
 import 'package:kyoumutechou/feature/auth/provider/auth_provider.dart';
-import 'package:kyoumutechou/feature/auth/repository/token_repository.dart';
 import 'package:kyoumutechou/feature/auth/state/auth_state.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-
-import '../state/app_start_state.dart';
 
 part 'app_start_provider.g.dart';
 
 @riverpod
 class AppStartNotifier extends _$AppStartNotifier {
-  late final TokenRepository _tokenRepository =
-      ref.read(tokenRepositoryProvider);
 
   @override
   FutureOr<AppStartState> build() async {
     ref.onDispose(() {});
 
-    final _authState = ref.watch(authNotifierProvider);
+    final authState = ref.watch(authNotifierProvider);
 
-    if (_authState is AuthStateLoggedIn) {
-      return AppStartState.authenticated();
+    if (authState is AuthStateLoggedIn) {
+      return const AppStartState.authenticated();
     }
 
-    if (_authState is AuthStateLoggedOut) {
-      return AppStartState.unauthenticated();
+    if (authState is AuthStateLoggedOut) {
+      return const AppStartState.unauthenticated();
     }
 
-    final token = await _tokenRepository.fetchToken();
-    if (token != null) {
+    final token = Hive.box<String>('shusekibo').get('token');
+    if (token != null || token != '') {
       return const AppStartState.authenticated();
     } else {
       return const AppStartState.unauthenticated();

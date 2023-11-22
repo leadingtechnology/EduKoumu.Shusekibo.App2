@@ -4,6 +4,7 @@ import 'package:kyoumutechou/feature/auth/provider/auth_provider.dart';
 import 'package:kyoumutechou/helpers/theme/app_theme.dart';
 import 'package:kyoumutechou/helpers/widgets/my_spacing.dart';
 import 'package:kyoumutechou/helpers/widgets/my_text.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 
 class SignInPage extends ConsumerWidget {
   SignInPage({super.key});
@@ -61,6 +62,10 @@ class SignInPage extends ConsumerWidget {
                           hintText: '',
                           border: OutlineInputBorder(),
                           contentPadding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+                          prefixIcon: Icon(
+                            LucideIcons.user,
+                            size: 20,
+                          ),
                         ),
                         //cursorColor: customTheme.groceryPrimary,
                         autofocus: true,
@@ -82,6 +87,10 @@ class SignInPage extends ConsumerWidget {
                           hintText: '',
                           border: OutlineInputBorder(),
                           contentPadding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+                          prefixIcon: Icon(
+                            LucideIcons.lock,
+                            size: 20,
+                          ),
                         ),
                         //cursorColor: customTheme.groceryPrimary,
                         autofocus: true,
@@ -92,9 +101,7 @@ class SignInPage extends ConsumerWidget {
                       padding: const EdgeInsets.fromLTRB(12, 0, 8, 8),
                       child: _widgetSignInButton(context, ref),
                     ),
-                    
                   ],
-                  
                 ),
               ),
             ),

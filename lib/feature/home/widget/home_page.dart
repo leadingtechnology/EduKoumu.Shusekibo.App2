@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:kyoumutechou/feature/auth/provider/auth_provider.dart';
 import 'package:kyoumutechou/feature/home/provider/books_provider.dart';
 import 'package:kyoumutechou/feature/home/widget/row_book_widget.dart';
 import 'package:kyoumutechou/shared/http/app_exception.dart';
@@ -17,10 +18,10 @@ class HomePage extends ConsumerWidget {
         title:   Text("home".tr()),
         actions: <Widget>[
           IconButton(
-            icon: const Icon(Icons.adjust),
+            icon: const Icon(Icons.logout),
             onPressed: () {
-              ref.read(routerProvider).go(SignInRoute.path);
-              //ref.read(authNotifierProvider.notifier).logout();
+              //ref.read(routerProvider).go(SignInRoute.path);
+              ref.read(authNotifierProvider.notifier).logout();
             },
           ),
         ],
