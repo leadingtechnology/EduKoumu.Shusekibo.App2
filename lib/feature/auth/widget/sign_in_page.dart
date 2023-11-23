@@ -21,7 +21,6 @@ class SignInPageState extends ConsumerState<SignInPage> {
   void initState() {
     super.initState();
     
-    customTheme = AppTheme.customTheme;
     theme = AppTheme.theme;
   }
 

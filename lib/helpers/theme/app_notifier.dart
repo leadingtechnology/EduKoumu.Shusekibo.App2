@@ -61,8 +61,5 @@ class AppNotifier extends ChangeNotifier {
 
   void _changeTheme(ThemeType themeType) {
     AppTheme.themeType = themeType;
-    AppTheme.customTheme = AppTheme.getCustomTheme(themeType);
-    AppTheme.theme = AppTheme.getTheme(themeType);
-    AppTheme.resetThemeData();
   }
 }

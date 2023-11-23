@@ -18,572 +18,119 @@ class AppTheme {
   static ThemeType themeType = ThemeType.light;
   static TextDirection textDirection = TextDirection.rtl;
 
-  static CustomTheme customTheme = getCustomTheme();
-  static ThemeData theme = getTheme();
-
-  static ThemeData nftTheme = getNFTTheme();
-  static ThemeData rentalServiceTheme = getRentalServiceTheme();
-
-  static ThemeData cookifyTheme = AppTheme.themeType == ThemeType.light
-      ? cookifyLightTheme
-      : cookifyDarkTheme;
-//---------------------------NEW-----------------------------------------
-
-  static ThemeData plantTheme =
-      AppTheme.themeType == ThemeType.light ? plantLightTheme : plantDarkTheme;
-
-  static ThemeData plantLightTheme = createTheme(
-    ColorScheme.fromSeed(
-      seedColor: Color(0xff009900),
-      primary: Colors.green.shade600,
-      onPrimary: Color(0xffffffff),
-      primaryContainer: Color(0xff08c002),
-      error: Color(0xffFF0000),
-      background: Color(0xffffffff),
-      onBackground: Color(0xffffffff),
-    ),
-  );
-  static ThemeData plantDarkTheme = createTheme(
-    ColorScheme.fromSeed(
-      seedColor: Color(0xff00ff00),
-      primary: Colors.green.shade600,
-      // primary: Color(0xff40826D),
-      onPrimary: Color(0xffffffff),
-      error: Color(0xffFF0000),
-      primaryContainer: Color(0xff27AE60),
-      onBackground: Color(0xffffffff),
-      background: Color(0xffffffff),
-    ),
-  );
-
-  static ThemeData cookifyLightTheme = createTheme(
-    ColorScheme.fromSeed(
-      seedColor: Color(0xfff57a66),
-      primary: Color(0xffdf7463),
-      onPrimary: Color(0xffffffff),
-      primaryContainer: Color(0xfffdeeea),
-      onPrimaryContainer: Color(0xffe73a1f),
-      secondary: Color(0xff5e3f22),
-      onSecondary: Color(0xffffffff),
-      secondaryContainer: Color(0xffe7bc91),
-      onSecondaryContainer: Color(0xff462601),
-    ),
-  );
-  static ThemeData cookifyDarkTheme = createTheme(
-    ColorScheme.fromSeed(
-        seedColor: Color(0xfffcccc5),
-        primary: Color(0xfffcccc5),
-        onPrimary: Color(0xffec371a),
-        primaryContainer: Color(0xffec6d5a),
-        onPrimaryContainer: Color(0xffffeeec),
-        secondary: Color(0xfffcc18e),
-        onSecondary: Color(0xff381f01),
-        secondaryContainer: Color(0xff54381e),
-        onSecondaryContainer: Color(0xffe7cbae),
-        onBackground: Color(0xffe6e1e5)),
-  );
-
-  static ThemeData datingTheme = AppTheme.themeType == ThemeType.light
-      ? datingLightTheme
-      : datingDarkTheme;
-
-  static ThemeData datingLightTheme = createTheme(
-    ColorScheme.fromSeed(
-        seedColor: Color(0xffB428C3),
-        secondary: Color(0xfff15f5f),
-        onSecondary: Color(0xffffffff),
-        secondaryContainer: Color(0xfffcd8d8),
-        onSecondaryContainer: Color(0xffea2929)),
-  );
-  static ThemeData datingDarkTheme = createTheme(
-    ColorScheme.fromSeed(
-        seedColor: Color(0xfff1b0f8),
-        primary: Color(0xfff1b0f8),
-        onPrimary: Color(0xff9614a4),
-        primaryContainer: Color(0xffde4cef),
-        onPrimaryContainer: Color(0xfff8d8fd),
-        secondary: Color(0xfff88686),
-        onSecondary: Color(0xff8f1313),
-        secondaryContainer: Color(0xffec3535),
-        onSecondaryContainer: Color(0xfff6cdcd),
-        onBackground: Color(0xffe6e1e5)),
-  );
-
-  // Change
-  static ThemeData estateTheme = AppTheme.themeType == ThemeType.light
-      ? estateLightTheme
-      : estateDarkTheme;
-
-  static ThemeData estateLightTheme = createTheme(
-    ColorScheme.fromSeed(
-        seedColor: Color(0xff1c8c8c),
-        primaryContainer: Color(0xffdafafa),
-        secondary: Color(0xfff15f5f),
-        onSecondary: Color(0xffffffff),
-        secondaryContainer: Color(0xfff8d6d6),
-        onSecondaryContainer: Color(0xff570202)),
-  );
-  static ThemeData estateDarkTheme = createTheme(
-    ColorScheme.fromSeed(
-        seedColor: Color(0xffcaffff),
-        primary: Color(0xffcaffff),
-        onPrimary: Color(0xff0b7777),
-        primaryContainer: Color(0xff18a6a6),
-        onPrimaryContainer: Color(0xffe5fdfd),
-        secondary: Color(0xffeea6a6),
-        onSecondary: Color(0xff491818),
-        secondaryContainer: Color(0xff7a2f2f),
-        onSecondaryContainer: Color(0xffefdada),
-        onBackground: Color(0xffe6e1e5)),
-  );
-
-  static ThemeData homemadeTheme = AppTheme.themeType == ThemeType.light
-      ? homemadeLightTheme
-      : homemadeDarkTheme;
-
-  static ThemeData homemadeLightTheme = createTheme(
-    ColorScheme.fromSeed(
-        seedColor: Color(0xffc5558e),
-        secondary: Color(0xffCC9D60),
-        onSecondary: Color(0xffffffff),
-        secondaryContainer: Color(0xfffce7cf),
-        onSecondaryContainer: Color(0xffc47712)),
-  );
-  static ThemeData homemadeDarkTheme = createTheme(
-    ColorScheme.fromSeed(
-        seedColor: Color(0xfffaafd4),
-        primary: Color(0xfffaafd4),
-        onPrimary: Color(0xffbb2e75),
-        primaryContainer: Color(0xffd95a9b),
-        onPrimaryContainer: Color(0xfffadaea),
-        secondary: Color(0xffecc797),
-        onSecondary: Color(0xff4f3616),
-        secondaryContainer: Color(0xff855b25),
-        onSecondaryContainer: Color(0xfff5e6d6),
-        onBackground: Color(0xffe6e1e5)),
-  );
-
-  static ThemeData learningTheme = AppTheme.themeType == ThemeType.light
-      ? learningLightTheme
-      : learningDarkTheme;
-
-  static ThemeData learningLightTheme = createTheme(
-    ColorScheme.fromSeed(
-        seedColor: Color(0xff6874E8),
-        secondary: Color(0xff548c2f),
-        onSecondary: Color(0xffffffff),
-        secondaryContainer: Color(0xffdef0d1),
-        onSecondaryContainer: Color(0xff131F0a)),
-  );
-  static ThemeData learningDarkTheme = createTheme(
-    ColorScheme.fromSeed(
-        seedColor: Color(0xffcfd2ff),
-        primary: Color(0xffcfd2ff),
-        onPrimary: Color(0xff1529e8),
-        primaryContainer: Color(0xff5563e8),
-        onPrimaryContainer: Color(0xffe6e7fd),
-        secondary: Color(0xffd3ebc1),
-        onSecondary: Color(0xff253e14),
-        secondaryContainer: Color(0xff4B7b28),
-        onSecondaryContainer: Color(0xffe9f5e0),
-        onBackground: Color(0xffe6e1e5)),
-  );
-
-  static ThemeData shoppingManagerTheme = getShoppingManagerTheme();
-
-  static ThemeData getShoppingManagerTheme() {
-    return createThemeM3(themeType, Color(0xff5a4a94));
-  }
-
-  static ThemeData shoppingTheme = AppTheme.themeType == ThemeType.light
-      ? shoppingLightTheme
-      : shoppingDarkTheme;
-
-  static ThemeData shoppingLightTheme = createTheme(
-    ColorScheme.fromSeed(
-      seedColor: Color(0xff1c8c8c),
-      primaryContainer: Color(0xffdafafa),
-      secondary: Color(0xfff15f5f),
-      onSecondary: Color(0xffffffff),
-      secondaryContainer: Color(0xfff8d6d6),
-      onSecondaryContainer: Color(0xff570202),
-    ),
-  );
-  static ThemeData shoppingDarkTheme = createTheme(
-    ColorScheme.fromSeed(
-        seedColor: Color(0xffcaffff),
-        primary: Color(0xffcaffff),
-        onPrimary: Color(0xff0b7777),
-        primaryContainer: Color(0xff18a6a6),
-        onPrimaryContainer: Color(0xffe5fdfd),
-        secondary: Color(0xffeea6a6),
-        onSecondary: Color(0xff491818),
-        secondaryContainer: Color(0xff7a2f2f),
-        onSecondaryContainer: Color(0xffefdada),
-        onBackground: Color(0xffe6e1e5)),
-  );
-
-  AppTheme._();
-
-  static init() {
-    initTextStyle();
-  }
-
-  static initTextStyle() {
-    //MyTextStyle.changeFontFamily(GoogleFonts.ibmPlexSans);
-    MyTextStyle.changeDefaultFontWeight({
-      100: FontWeight.w100,
-      200: FontWeight.w200,
-      300: FontWeight.w300,
-      400: FontWeight.w300,
-      500: FontWeight.w400,
-      600: FontWeight.w500,
-      700: FontWeight.w600,
-      800: FontWeight.w700,
-      900: FontWeight.w800,
-    });
-
-    MyTextStyle.changeDefaultTextFontWeight({
-      MyTextType.displayLarge: 500,
-      MyTextType.displayMedium: 500,
-      MyTextType.displaySmall: 500,
-      MyTextType.headlineLarge: 500,
-      MyTextType.headlineMedium: 500,
-      MyTextType.headlineSmall: 500,
-      MyTextType.titleLarge: 500,
-      MyTextType.titleMedium: 500,
-      MyTextType.titleSmall: 500,
-      MyTextType.labelLarge: 500,
-      MyTextType.labelMedium: 500,
-      MyTextType.labelSmall: 500,
-      MyTextType.bodyLarge: 500,
-      MyTextType.bodyMedium: 500,
-      MyTextType.bodySmall: 500,
-    });
-  }
-
-  static ThemeData getTheme([ThemeType? themeType]) {
-    themeType = themeType ?? AppTheme.themeType;
-    if (themeType == ThemeType.light) return lightTheme;
-    return darkTheme;
-  }
-
-  static CustomTheme getCustomTheme([ThemeType? themeType]) {
-    themeType = themeType ?? AppTheme.themeType;
-    if (themeType == ThemeType.light) return CustomTheme.lightCustomTheme;
-    return CustomTheme.darkCustomTheme;
+  static ThemeData get theme {
+    switch (themeType) {
+      case ThemeType.light:
+        return lightTheme;
+      case ThemeType.dark:
+        return darkTheme;
+      default:
+        return lightTheme;
+    }
   }
 
   /// -------------------------- Light Theme  -------------------------------------------- ///
   static final ThemeData lightTheme = ThemeData(
     /// Brightness
+    useMaterial3: true,
     brightness: Brightness.light,
+
     fontFamily: 'NotoSansJP',
+    visualDensity: VisualDensity.adaptivePlatformDensity,
 
-    /// Primary Color
-    primaryColor: Color(0xff3C4EC5),
-    scaffoldBackgroundColor: Color(0xffffffff),
+    primaryColor: const Color(0xFF2D6B27),
     canvasColor: Colors.transparent,
-
-    /// AppBar Theme
-    appBarTheme: AppBarTheme(
-        backgroundColor: Color(0xffffffff),
-        iconTheme: IconThemeData(color: Color(0xff495057)),
-        actionsIconTheme: IconThemeData(color: Color(0xff495057))),
-
-    /// Card Theme
-    cardTheme: CardTheme(color: Color(0xfff0f0f0)),
-    cardColor: Color(0xfff0f0f0),
-
-    textTheme: TextTheme(
-        titleLarge: GoogleFonts.aBeeZee(), bodyLarge: GoogleFonts.abel()),
-
-    /// Floating Action Theme
-    floatingActionButtonTheme: FloatingActionButtonThemeData(
-        backgroundColor: Color(0xff3C4EC5),
-        splashColor: Color(0xffeeeeee).withAlpha(100),
-        highlightElevation: 8,
-        elevation: 4,
-        focusColor: Color(0xff3C4EC5),
-        hoverColor: Color(0xff3C4EC5),
-        foregroundColor: Color(0xffeeeeee)),
-
-    /// Divider Theme
-    dividerTheme: DividerThemeData(color: Color(0xffe8e8e8), thickness: 1),
-    dividerColor: Color(0xffe8e8e8),
-
-    /// Bottom AppBar Theme
-    bottomAppBarTheme:
-        BottomAppBarTheme(color: Color(0xffeeeeee), elevation: 2),
-
-    /// Tab bar Theme
-    tabBarTheme: TabBarTheme(
-      unselectedLabelColor: Color(0xff495057),
-      labelColor: Color(0xff3d63ff),
-      indicatorSize: TabBarIndicatorSize.label,
-      indicator: UnderlineTabIndicator(
-        borderSide: BorderSide(color: Color(0xff3d63ff), width: 2.0),
-      ),
-    ),
-
-    /// CheckBox theme
-    checkboxTheme: CheckboxThemeData(
-      checkColor: MaterialStateProperty.all(Color(0xffeeeeee)),
-      fillColor: MaterialStateProperty.all(Color(0xff3C4EC5)),
-    ),
-
-    /// Radio theme
-    radioTheme: RadioThemeData(
-      fillColor: MaterialStateProperty.all(Color(0xff3C4EC5)),
-    ),
-
-    ///Switch Theme
-    switchTheme: SwitchThemeData(
-      trackColor: MaterialStateProperty.resolveWith((state) {
-        const Set<MaterialState> interactiveStates = <MaterialState>{
-          MaterialState.pressed,
-          MaterialState.hovered,
-          MaterialState.focused,
-          MaterialState.selected,
-        };
-        if (state.any(interactiveStates.contains)) {
-          return Color(0xffabb3ea);
-        }
-        return null;
-      }),
-      thumbColor: MaterialStateProperty.resolveWith((state) {
-        const Set<MaterialState> interactiveStates = <MaterialState>{
-          MaterialState.pressed,
-          MaterialState.hovered,
-          MaterialState.focused,
-          MaterialState.selected,
-        };
-        if (state.any(interactiveStates.contains)) {
-          return Color(0xff3C4EC5);
-        }
-        return null;
-      }),
-    ),
-
-    /// Slider Theme
-    sliderTheme: SliderThemeData(
-      activeTrackColor: Color(0xff3d63ff),
-      inactiveTrackColor: Color(0xff3d63ff).withAlpha(140),
-      trackShape: RoundedRectSliderTrackShape(),
-      trackHeight: 4.0,
-      thumbColor: Color(0xff3d63ff),
-      thumbShape: RoundSliderThumbShape(enabledThumbRadius: 10.0),
-      overlayShape: RoundSliderOverlayShape(overlayRadius: 24.0),
-      tickMarkShape: RoundSliderTickMarkShape(),
-      inactiveTickMarkColor: Colors.red[100],
-      valueIndicatorShape: PaddleSliderValueIndicatorShape(),
-      valueIndicatorTextStyle: TextStyle(
-        color: Color(0xffeeeeee),
-      ),
-    ),
-
-    /// Other Colors
-    splashColor: Colors.white.withAlpha(100),
-    indicatorColor: Color(0xffeeeeee),
-    highlightColor: Color(0xffeeeeee),
-    colorScheme: ColorScheme.fromSeed(
-            seedColor: Color(0xff3C4EC5), brightness: Brightness.light)
-        .copyWith(background: Color(0xffffffff))
-        .copyWith(error: Color(0xfff0323c)),
+    scaffoldBackgroundColor: const Color(0xffffffff),
+ 
+    colorScheme: lightColorScheme,
   );
 
   /// -------------------------- Dark Theme  -------------------------------------------- ///
   static final ThemeData darkTheme = ThemeData(
-    /// Brightness
+    useMaterial3: true,
     brightness: Brightness.dark,
     fontFamily: 'NotoSansJP',
+    visualDensity: VisualDensity.adaptivePlatformDensity,
 
-    /// Primary Color
-    primaryColor: Color(0xff069DEF),
-
-    /// Scaffold and Background color
-    scaffoldBackgroundColor: Color(0xff161616),
-    canvasColor: Colors.transparent,
-
-    /// AppBar Theme
-    appBarTheme: AppBarTheme(backgroundColor: Color(0xff161616)),
-
-    /// Card Theme
-    cardTheme: CardTheme(color: Color(0xff222327)),
-    cardColor: Color(0xff222327),
-
-    /// Input (Text-Field) Theme
-    inputDecorationTheme: InputDecorationTheme(
-      focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.all(Radius.circular(4)),
-        borderSide: BorderSide(width: 1, color: Color(0xff069DEF)),
-      ),
-      enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.all(Radius.circular(4)),
-        borderSide: BorderSide(width: 1, color: Colors.white70),
-      ),
-      border: OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(4)),
-          borderSide: BorderSide(width: 1, color: Colors.white70)),
+    colorScheme: darkColorScheme,
+    // 定义 NavigationRail 的暗主题样式
+    navigationRailTheme: NavigationRailThemeData(
+      backgroundColor: Colors.black, // 暗主题的背景颜色
+      selectedIconTheme: IconThemeData(color: Colors.green.shade700), // 选中图标颜色
+      unselectedIconTheme:
+          IconThemeData(color: Colors.grey.shade800), // 未选中图标颜色
+      selectedLabelTextStyle: TextStyle(color: Colors.green.shade700), // 选中文本样式
+      unselectedLabelTextStyle:
+          TextStyle(color: Colors.grey.shade800), // 未选中文本样式
     ),
-
-    /// Divider Color
-    dividerTheme: DividerThemeData(color: Color(0xff363636), thickness: 1),
-    dividerColor: Color(0xff363636),
-
-    /// Floating Action Theme
-    floatingActionButtonTheme: FloatingActionButtonThemeData(
-        backgroundColor: Color(0xff069DEF),
-        splashColor: Colors.white.withAlpha(100),
-        highlightElevation: 8,
-        elevation: 4,
-        focusColor: Color(0xff069DEF),
-        hoverColor: Color(0xff069DEF),
-        foregroundColor: Colors.white),
-
-    /// Bottom AppBar Theme
-    bottomAppBarTheme:
-        BottomAppBarTheme(color: Color(0xff464c52), elevation: 2),
-
-    /// Tab bar Theme
-    tabBarTheme: TabBarTheme(
-      unselectedLabelColor: Color(0xff495057),
-      labelColor: Color(0xff069DEF),
-      indicatorSize: TabBarIndicatorSize.label,
-      indicator: UnderlineTabIndicator(
-        borderSide: BorderSide(color: Color(0xff069DEF), width: 2.0),
-      ),
-    ),
-
-    ///Switch Theme
-    switchTheme: SwitchThemeData(
-      trackColor: MaterialStateProperty.resolveWith((state) {
-        const Set<MaterialState> interactiveStates = <MaterialState>{
-          MaterialState.pressed,
-          MaterialState.hovered,
-          MaterialState.focused,
-          MaterialState.selected,
-        };
-        if (state.any(interactiveStates.contains)) {
-          return Color(0xffabb3ea);
-        }
-        return null;
-      }),
-      thumbColor: MaterialStateProperty.resolveWith((state) {
-        const Set<MaterialState> interactiveStates = <MaterialState>{
-          MaterialState.pressed,
-          MaterialState.hovered,
-          MaterialState.focused,
-          MaterialState.selected,
-        };
-        if (state.any(interactiveStates.contains)) {
-          return Color(0xff3C4EC5);
-        }
-        return null;
-      }),
-    ),
-
-    /// Slider Theme
-    sliderTheme: SliderThemeData(
-      activeTrackColor: Color(0xff069DEF),
-      inactiveTrackColor: Color(0xff069DEF).withAlpha(100),
-      trackShape: RoundedRectSliderTrackShape(),
-      trackHeight: 4.0,
-      thumbColor: Color(0xff069DEF),
-      thumbShape: RoundSliderThumbShape(enabledThumbRadius: 10.0),
-      overlayShape: RoundSliderOverlayShape(overlayRadius: 24.0),
-      tickMarkShape: RoundSliderTickMarkShape(),
-      inactiveTickMarkColor: Colors.red[100],
-      valueIndicatorShape: PaddleSliderValueIndicatorShape(),
-      valueIndicatorTextStyle: TextStyle(
-        color: Colors.white,
-      ),
-    ),
-
-    ///Other Color
-    indicatorColor: Colors.white,
-    disabledColor: Color(0xffa3a3a3),
-    highlightColor: Colors.white.withAlpha(28),
-    splashColor: Colors.white.withAlpha(56),
-    colorScheme: ColorScheme.fromSeed(
-            seedColor: Color(0xff069DEF), brightness: Brightness.dark)
-        .copyWith(background: Color(0xff161616))
-        .copyWith(error: Colors.orange),
   );
-
-  static ThemeData createThemeM3(ThemeType themeType, Color seedColor) {
-    if (themeType == ThemeType.light) {
-      return lightTheme.copyWith(
-          colorScheme: ColorScheme.fromSeed(
-              seedColor: seedColor, brightness: Brightness.light));
-    }
-    return darkTheme.copyWith(
-        colorScheme: ColorScheme.fromSeed(
-            seedColor: seedColor,
-            brightness: Brightness.dark,
-            onBackground: Color(0xFFDAD9CA)));
-  }
-
-  static ThemeData createTheme(ColorScheme colorScheme) {
-    if (themeType != ThemeType.light) {
-      return darkTheme.copyWith(
-        colorScheme: colorScheme,
-      );
-    }
-    return lightTheme.copyWith(colorScheme: colorScheme);
-  }
-
-  static ThemeData getNFTTheme() {
-    if (themeType == ThemeType.light) {
-      return lightTheme.copyWith(
-          colorScheme: ColorScheme.fromSeed(
-              seedColor: Color(0xff232245), brightness: Brightness.light));
-    } else {
-      return darkTheme.copyWith(
-          colorScheme: ColorScheme.fromSeed(
-              seedColor: Color(0xff232245),
-              brightness: Brightness.dark,
-              onBackground: Color(0xFFDAD9CA)));
-    }
-    // return createTheme(ColorScheme.fromSeed(seedColor: Color(0xff232245)));
-  }
-
-  static ThemeData getRentalServiceTheme() {
-    return createThemeM3(themeType, Color(0xff2e87a6));
-  }
-
-  static resetThemeData() {
-    nftTheme = getNFTTheme();
-
-    estateTheme = AppTheme.themeType == ThemeType.light
-        ? estateLightTheme
-        : estateDarkTheme;
-
-    shoppingTheme = AppTheme.themeType == ThemeType.light
-        ? shoppingLightTheme
-        : shoppingDarkTheme;
-
-    cookifyTheme = AppTheme.themeType == ThemeType.light
-        ? cookifyLightTheme
-        : cookifyDarkTheme;
-
-    datingTheme = AppTheme.themeType == ThemeType.light
-        ? datingLightTheme
-        : datingDarkTheme;
-
-    homemadeTheme = AppTheme.themeType == ThemeType.light
-        ? homemadeLightTheme
-        : homemadeDarkTheme;
-
-    learningTheme = AppTheme.themeType == ThemeType.light
-        ? learningLightTheme
-        : learningDarkTheme;
-
-    plantTheme = AppTheme.plantTheme == ThemeType.light
-        ? plantLightTheme
-        : plantDarkTheme;
-
-    shoppingManagerTheme = getShoppingManagerTheme();
-    rentalServiceTheme = getRentalServiceTheme();
-  }
 }
+
+
+const lightColorScheme = ColorScheme(
+  brightness: Brightness.light,
+  primary: Color(0xFF126D34),
+  onPrimary: Color(0xFFFFFFFF),
+  primaryContainer: Color(0xFFA0F6AE),
+  onPrimaryContainer: Color(0xFF00210A),
+  secondary: Color(0xFF506351),
+  onSecondary: Color(0xFFFFFFFF),
+  secondaryContainer: Color(0xFFD3E8D2),
+  onSecondaryContainer: Color(0xFF0E1F11),
+  tertiary: Color(0xFF39656D),
+  onTertiary: Color(0xFFFFFFFF),
+  tertiaryContainer: Color(0xFFBDEAF4),
+  onTertiaryContainer: Color(0xFF001F24),
+  error: Color(0xFFBA1A1A),
+  errorContainer: Color(0xFFFFDAD6),
+  onError: Color(0xFFFFFFFF),
+  onErrorContainer: Color(0xFF410002),
+  background: Color(0xFFFCFDF7),
+  onBackground: Color(0xFF1A1C19),
+  surface: Color(0xFFFCFDF7),
+  onSurface: Color(0xFF1A1C19),
+  surfaceVariant: Color(0xFFDDE5DA),
+  onSurfaceVariant: Color(0xFF414941),
+  outline: Color(0xFF727970),
+  onInverseSurface: Color(0xFFF0F1EC),
+  inverseSurface: Color(0xFF2E312E),
+  inversePrimary: Color(0xFF85D993),
+  shadow: Color(0xFF000000),
+  surfaceTint: Color(0xFF126D34),
+  outlineVariant: Color(0xFFC1C9BE),
+  scrim: Color(0xFF000000),
+);
+
+const darkColorScheme = ColorScheme(
+  brightness: Brightness.dark,
+  primary: Color(0xFF85D993),
+  onPrimary: Color(0xFF003916),
+  primaryContainer: Color(0xFF005323),
+  onPrimaryContainer: Color(0xFFA0F6AE),
+  secondary: Color(0xFFB7CCB6),
+  onSecondary: Color(0xFF233425),
+  secondaryContainer: Color(0xFF394B3B),
+  onSecondaryContainer: Color(0xFFD3E8D2),
+  tertiary: Color(0xFFA1CED7),
+  onTertiary: Color(0xFF00363E),
+  tertiaryContainer: Color(0xFF204D55),
+  onTertiaryContainer: Color(0xFFBDEAF4),
+  error: Color(0xFFFFB4AB),
+  errorContainer: Color(0xFF93000A),
+  onError: Color(0xFF690005),
+  onErrorContainer: Color(0xFFFFDAD6),
+  background: Color(0xFF1A1C19),
+  onBackground: Color(0xFFE2E3DE),
+  surface: Color(0xFF1A1C19),
+  onSurface: Color(0xFFE2E3DE),
+  surfaceVariant: Color(0xFF414941),
+  onSurfaceVariant: Color(0xFFC1C9BE),
+  outline: Color(0xFF8B9389),
+  onInverseSurface: Color(0xFF1A1C19),
+  inverseSurface: Color(0xFFE2E3DE),
+  inversePrimary: Color(0xFF126D34),
+  shadow: Color(0xFF000000),
+  surfaceTint: Color(0xFF85D993),
+  outlineVariant: Color(0xFF414941),
+  scrim: Color(0xFF000000),
+);

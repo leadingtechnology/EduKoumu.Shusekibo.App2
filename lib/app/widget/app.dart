@@ -12,10 +12,8 @@ class App extends ConsumerWidget {
 
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
-      theme: AppTheme.theme.copyWith(
-              colorScheme: theme.colorScheme.copyWith(
-                  secondary: AppTheme.customTheme.groceryPrimary.withAlpha(80),
-              ),),
+      theme: AppTheme.lightTheme,
+      darkTheme: AppTheme.darkTheme,
       routerConfig: router,
     );
   }
