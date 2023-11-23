@@ -14,7 +14,8 @@ class App extends ConsumerWidget {
       debugShowCheckedModeBanner: false,
       theme: AppTheme.theme.copyWith(
               colorScheme: theme.colorScheme.copyWith(
-                  secondary: AppTheme.customTheme.groceryPrimary.withAlpha(80))),
+                  secondary: AppTheme.customTheme.groceryPrimary.withAlpha(80),
+              ),),
       routerConfig: router,
     );
   }

@@ -5,7 +5,6 @@ import 'package:kyoumutechou/feature/auth/provider/auth_provider.dart';
 import 'package:kyoumutechou/feature/home/provider/books_provider.dart';
 import 'package:kyoumutechou/feature/home/widget/row_book_widget.dart';
 import 'package:kyoumutechou/shared/http/app_exception.dart';
-import 'package:kyoumutechou/shared/route/app_router.dart';
 
 class HomePage extends ConsumerWidget {
   const HomePage({super.key});
@@ -13,22 +12,56 @@ class HomePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.blueGrey,
-        title:   Text("home".tr()),
-        actions: <Widget>[
-          IconButton(
-            icon: const Icon(Icons.logout),
-            onPressed: () {
-              //ref.read(routerProvider).go(SignInRoute.path);
-              ref.read(authNotifierProvider.notifier).logout();
-            },
+      body: Center(
+        child: Text(
+          'Selected Page: 1',
+          style: Theme.of(context).textTheme.headline4,
+        ),
+      ),
+      bottomNavigationBar: NavigationRail(
+        selectedIndex: 1,
+        //onDestinationSelected: _onItemTapped,
+        labelType: NavigationRailLabelType.all,
+        destinations: const [
+          NavigationRailDestination(
+            icon: Icon(Icons.favorite),
+            selectedIcon: Icon(Icons.favorite_border),
+            label: Text('Favorites'),
+          ),
+          NavigationRailDestination(
+            icon: Icon(Icons.book),
+            selectedIcon: Icon(Icons.book_outlined),
+            label: Text('Bookmarks'),
+          ),
+          NavigationRailDestination(
+            icon: Icon(Icons.star),
+            selectedIcon: Icon(Icons.star_border),
+            label: Text('Starred'),
           ),
         ],
       ),
-      body: _widgetContent(context, ref),
     );
   }
+
+  // @override
+  // Widget build(BuildContext context, WidgetRef ref) {
+  //   return Scaffold(
+  //     appBar: AppBar(
+  //       backgroundColor: Colors.blueGrey,
+  //       title:   Text('home'.tr()),
+  //       actions: <Widget>[
+  //         IconButton(
+  //           icon: const Icon(Icons.logout),
+  //           onPressed: () {
+  //             //ref.read(routerProvider).go(SignInRoute.path);
+  //             ref.read(authNotifierProvider.notifier).logout();
+  //           },
+  //         ),
+  //       ],
+  //     ),
+  //     body: _widgetContent(context, ref),
+  //   );
+
 
   Widget _widgetLoading(BuildContext context, WidgetRef ref) {
     return Center(
@@ -48,7 +81,7 @@ class HomePage extends ConsumerWidget {
             itemCount: books.length,
             itemBuilder: (BuildContext context, int index) {
               return RowBookWidget(book: books[index]);
-            });
+            },);
       },
       error: (AppException error) {
         return _widgetLoading(context, ref);

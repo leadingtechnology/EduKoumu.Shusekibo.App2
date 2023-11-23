@@ -50,18 +50,6 @@ class SignInRoute extends GoRouteData {
   }
 }
 
-// @TypedGoRoute<SignUpRoute>(path: SignUpRoute.path)
-// class SignUpRoute extends GoRouteData {
-//   const SignUpRoute();
-
-//   static const path = '/signUp';
-
-//   @override
-//   Widget build(BuildContext context, GoRouterState state) {
-//     return SignUpPage();
-//   }
-// }
-
 class GoNavigatorObserver extends NavigatorObserver {
   @override
   void didPush(Route<dynamic> route, Route<dynamic>? previousRoute) {

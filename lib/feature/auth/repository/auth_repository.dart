@@ -1,4 +1,3 @@
-import 'dart:convert';
 
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -32,13 +31,13 @@ class AuthRepository implements AuthRepositoryProtocol {
     }
     */
 
-    String _tenantId = '';
+    var tenantId = '';
     if (dotenv.env['TENANT_ID'] != null) {
-      _tenantId = dotenv.env['TENANT_ID']!;
+      tenantId = dotenv.env['TENANT_ID']!;
     }
     
     final params =
-        'grant_type=password&username=$_tenantId,$email&password=$password';
+        'grant_type=password&username=$tenantId,$email&password=$password';
 
     final loginResponse = await _api.post('token', params);
 
@@ -50,6 +49,6 @@ class AuthRepository implements AuthRepositoryProtocol {
       return const AuthState.loggedIn();
     }, error: (error) {
       return AuthState.error(error);
-    });
+    },);
   }
 }

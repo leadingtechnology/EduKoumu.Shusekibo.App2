@@ -29,10 +29,14 @@ dependencies:
   ## UI 
   flutter_native_splash: ^2.3.5
   lucide_icons: ^0.257.0
+  transparent_image: ^2.0.1
 
   ## Storage
   hive: ^2.2.3
   hive_flutter: ^1.1.0
+
+  ## i18n
+  intl: ^0.18.1
 
 
 dev_dependencies:
@@ -98,6 +102,7 @@ flutter:
         - asset: assets/fonts/NotoSansJP-Thin.ttf
 
 # dart run flutter_native_splash:create
+# dart run flutter_native_splash:remove
 flutter_native_splash:
   color: "#BFEEBB"
   image: assets/icons/koumu5.png

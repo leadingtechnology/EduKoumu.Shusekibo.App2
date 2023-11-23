@@ -18,6 +18,7 @@ class Language {
     ),
     Language(Locale('fr'), "French"),
     Language(Locale('zh'), "Chinese"),
+    Language(Locale('ja'), "Japanese"),
   ];
 
   static Language currentLanguage = languages.first;

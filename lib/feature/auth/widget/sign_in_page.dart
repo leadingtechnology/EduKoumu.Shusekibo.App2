@@ -6,16 +6,30 @@ import 'package:kyoumutechou/helpers/widgets/my_spacing.dart';
 import 'package:kyoumutechou/helpers/widgets/my_text.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 
-class SignInPage extends ConsumerWidget {
-  SignInPage({super.key});
-  
+class SignInPage extends ConsumerStatefulWidget {
+  const SignInPage({super.key});
+
+  @override
+  SignInPageState createState() => SignInPageState();
+}
+
+class SignInPageState extends ConsumerState<SignInPage> {
+  late CustomTheme customTheme;
+  late ThemeData theme;
+
+  @override
+  void initState() {
+    super.initState();
+    
+    customTheme = AppTheme.customTheme;
+    theme = AppTheme.theme;
+  }
+
   final _emailController = TextEditingController(text: 'login0001');
   final _passwordController = TextEditingController(text: 'P@ssw0rd');
 
-  final customTheme = AppTheme.customTheme;
-
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
         padding: const EdgeInsets.fromLTRB(0, 50, 0, 0),
@@ -25,20 +39,11 @@ class SignInPage extends ConsumerWidget {
           spacing: 8, // 水平方向のスペース
           runSpacing: 4, // 垂直方向のスペース
           children: [
-            Container(
-              decoration: BoxDecoration(
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    spreadRadius: 5,
-                    blurRadius: 7,
-                    offset: const Offset(0, 1), // 影の位置を調整
-                  ),
-                ],
-              ),
-              child: Image.asset('assets/images/login_page_picture.png'),
+            SizedBox(
+                height: 334,
+                width: 572,
+                child: Image.asset('assets/images/login_page_picture.png'),
             ),
-            
             Form(
               child: IntrinsicWidth(
                 child: Column(
@@ -46,7 +51,11 @@ class SignInPage extends ConsumerWidget {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
                     MySpacing.height(8),
-                    Image.asset('assets/images/login_page_logo.png'),
+                    SizedBox(
+                      height: 61,
+                      width: 353,
+                      child: Image.asset('assets/images/login_page_logo.png'),
+                    ),
                     MySpacing.height(8),
                     Padding(
                       padding: const EdgeInsets.fromLTRB(12, 8, 8, 4),

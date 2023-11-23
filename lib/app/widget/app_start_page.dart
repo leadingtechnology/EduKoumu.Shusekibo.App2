@@ -7,7 +7,7 @@ import 'package:kyoumutechou/shared/widget/connection_unavailable_widget.dart';
 import 'package:kyoumutechou/shared/widget/loading_widget.dart';
 
 class AppStartPage extends ConsumerWidget {
-  const AppStartPage({Key? key}) : super(key: key);
+  const AppStartPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -17,7 +17,9 @@ class AppStartPage extends ConsumerWidget {
         data: (data) {
           return data.maybeWhen(
             initial: () => const LoadingWidget(),
-            authenticated: () => const HomePage(),
+            authenticated: () {
+              return const HomePage();
+            },
             unauthenticated: SignInPage.new,
             internetUnAvailable: () => const ConnectionUnavailableWidget(),
             orElse: () => const LoadingWidget(),

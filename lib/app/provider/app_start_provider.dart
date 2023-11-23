@@ -24,7 +24,7 @@ class AppStartNotifier extends _$AppStartNotifier {
     }
 
     final token = Hive.box<String>('shusekibo').get('token');
-    if (token != null || token != '') {
+    if (token != null && token.isEmpty == false) {
       return const AppStartState.authenticated();
     } else {
       return const AppStartState.unauthenticated();
