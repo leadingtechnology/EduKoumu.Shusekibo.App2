@@ -11,6 +11,7 @@ _$StaffImpl _$$StaffImplFromJson(Map<String, dynamic> json) => _$StaffImpl(
       token_type: json['token_type'] as String,
       TenantId: json['TenantId'] as String,
       LoginId: json['LoginId'] as String,
+      DantaiId: json['DantaiId'] as String,
       Dantai: json['Dantai'] as String,
       UserName: json['UserName'] as String,
     );
@@ -21,6 +22,7 @@ Map<String, dynamic> _$$StaffImplToJson(_$StaffImpl instance) =>
       'token_type': instance.token_type,
       'TenantId': instance.TenantId,
       'LoginId': instance.LoginId,
+      'DantaiId': instance.DantaiId,
       'Dantai': instance.Dantai,
       'UserName': instance.UserName,
     };

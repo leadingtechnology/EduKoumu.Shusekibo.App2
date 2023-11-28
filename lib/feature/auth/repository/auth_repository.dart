@@ -45,6 +45,7 @@ class AuthRepository implements AuthRepositoryProtocol {
 
       final staff = Staff.fromJson(success as Map<String, dynamic>);
       await Hive.box<String>('shusekibo').put('token', staff.access_token);
+      await Hive.box<String>('shusekibo').put('user', staff.UserName);
 
       return const AuthState.loggedIn();
     }, error: (error) {

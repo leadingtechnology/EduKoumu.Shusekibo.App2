@@ -187,18 +187,15 @@ class ApiProvider {
     try {
       final response = await _dio.get(
         url,
-        queryParameters: query,
+        //queryParameters: query,
         options: Options(validateStatus: (status) => true, headers: headers),
       );
-      if (response == null) {
-        return const APIResponse.error(AppException.error());
-      }
       if (response.statusCode == null) {
         return const APIResponse.error(AppException.connectivity());
       }
 
       if (response.statusCode! < 300) {
-        return APIResponse.success(response.data['data']);
+        return APIResponse.success(response.data);
       } else {
         if (response.statusCode! == 404) {
           return const APIResponse.error(AppException.connectivity());

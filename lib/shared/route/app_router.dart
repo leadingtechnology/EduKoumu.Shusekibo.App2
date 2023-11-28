@@ -15,7 +15,6 @@ final _key = GlobalKey<NavigatorState>(debugLabel: 'routerKey');
 @riverpod
 GoRouter router(RouterRef ref) {
   //final notifier = ref.watch(routerNotifierProvider.notifier);
-  
 
   return GoRouter(
     navigatorKey: _key,
@@ -47,8 +46,7 @@ class SignInRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-
-    return SignInPage();
+    return const SignInPage();
   }
 }
 

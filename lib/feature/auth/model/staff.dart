@@ -17,6 +17,7 @@ class Staff with _$Staff {
     //required DateTime expires_in,
     required String TenantId,
     required String LoginId,
+    required String DantaiId,
     required String Dantai,
     required String UserName,
   }) = _Staff;

@@ -7,7 +7,7 @@ part 'dantai_model.g.dart';
 
 List<DantaiModel> dantaiListFromJson(List<dynamic> data) =>
     List<DantaiModel>.from(data.map((x) => 
-    DantaiModel.fromJson(x as Map<String, dynamic>)));
+    DantaiModel.fromJson(x as Map<String, dynamic>),),);
 
 DantaiModel dantaiFromJson(String str) => 
 DantaiModel.fromJson(json.decode(str) as Map<String, dynamic>);
