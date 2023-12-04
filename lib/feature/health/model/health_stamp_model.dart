@@ -6,11 +6,14 @@ part 'health_stamp_model.freezed.dart';
 part 'health_stamp_model.g.dart';
 
 List<HealthStampModel> healthStampListFromJson(List<dynamic> data) =>
-    List<HealthStampModel>.from(data.map((x) => 
-    HealthStampModel.fromJson(x as Map<String, dynamic>),),);
+    List<HealthStampModel>.from(
+      data.map(
+        (x) => HealthStampModel.fromJson(x as Map<String, dynamic>),
+      ),
+    );
 
 HealthStampModel healthStampFromJson(String str) => 
-HealthStampModel.fromJson(json.decode(str) as Map<String, dynamic>);
+HealthStampModel.fromJson(json.decode(str) as Map<String, HealthStampModel>);
 
 @freezed
 abstract class HealthStampModel with _$HealthStampModel {

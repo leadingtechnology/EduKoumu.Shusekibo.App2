@@ -5,8 +5,9 @@ import 'package:kyoumutechou/shared/http/api_provider.dart';
 import 'package:kyoumutechou/shared/http/api_response.dart';
 import 'package:kyoumutechou/shared/http/app_exception.dart';
 
+// ignore: one_member_abstracts
 abstract class ShozokusRepositoryProtocol {
-  Future<ShozokusState> fetch();
+  Future<ShozokusState> fetch(int dantaiId);
 }
 
 final shozokusRepositoryProvider = Provider(ShozokusRepository.new);
@@ -18,8 +19,9 @@ class ShozokusRepository implements ShozokusRepositoryProtocol {
   final Ref _ref;
 
   @override
-  Future<ShozokusState> fetch() async {
-    final response = await _api.get('shozokus');
+  Future<ShozokusState> fetch(int dantaiId) async {
+
+    final response = await _api.get('api/dantai/$dantaiId/shozoku');
 
     response.when(
       success: (success) {},

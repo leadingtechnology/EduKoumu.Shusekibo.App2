@@ -4,23 +4,21 @@ import 'package:kyoumutechou/feature/common/repository/dantais_repository.dart';
 
 
 final dantaiProvider = StateProvider<DantaiModel>((ref) => const DantaiModel());
-final dantaisProvider = StateNotifierProvider<DantaiNotifier, List<DantaiModel>>((ref) {
-  return DantaiNotifier(ref: ref);
+
+final dantaisProvider = 
+StateNotifierProvider<DantaiNotifier, List<DantaiModel>>((ref) {
+    return DantaiNotifier(ref: ref);
 });
-
-
 
 class DantaiNotifier extends StateNotifier<List<DantaiModel>> {
   DantaiNotifier({required this.ref}) : super([]) {
-    _fetchDantai();
+    _fetch();
   }
   
   final Ref ref;
   late final DantaisRepository _rep = ref.watch(dantaisRepositoryProvider);
- 
 
-
-  Future<void> _fetchDantai() async {
+  Future<void> _fetch() async {
     final result = await _rep.fetch();
     result.when(
       error: (e) {
@@ -39,4 +37,8 @@ class DantaiNotifier extends StateNotifier<List<DantaiModel>> {
       },
     );
   }
+
+  Future<void> refresh() async {
+    await _fetch();
+  }  
 }

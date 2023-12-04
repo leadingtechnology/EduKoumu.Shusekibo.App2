@@ -34,18 +34,18 @@ class SignInPageState extends ConsumerState<SignInPage> {
         padding: const EdgeInsets.fromLTRB(0, 50, 0, 0),
         alignment: Alignment.topCenter,
         child: Container(
-          // decoration: const BoxDecoration(
-          //   borderRadius: BorderRadius.all(Radius.circular(1)),
-          //   color: Colors.white,
-          //   boxShadow: [
-          //     BoxShadow(
-          //       spreadRadius: 1,
-          //       color: Colors.black26,
-          //       blurRadius: 10,
-          //       offset: Offset(2, 0),
-          //     ),
-          //   ],
-          // ),
+          decoration: const BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(1)),
+            color: Colors.white,
+            boxShadow: [
+              BoxShadow(
+                spreadRadius: 1,
+                color: Colors.black26,
+                blurRadius: 10,
+                offset: Offset(2, 0),
+              ),
+            ],
+          ),
           child: Wrap(
             alignment: WrapAlignment.center, // 中央揃え
             spacing: 8, // 水平方向のスペース
@@ -54,73 +54,76 @@ class SignInPageState extends ConsumerState<SignInPage> {
               SizedBox(
                   child: Image.asset('assets/images/login_page_picture.png'),
               ),
-              Form(
-                child: IntrinsicWidth(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: <Widget>[
-                      MySpacing.height(8),
-                      SizedBox(
-                        height: 61,
-                        width: 353,
-                        child: Image.asset('assets/images/login_page_logo.png'),
-                      ),
-                      MySpacing.height(8),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(12, 8, 8, 4),
-                        child: MyText.bodyLarge('ログインID', fontWeight: 800),
-                      ),
-                      Container(
-                        height: 50,
-                        alignment: Alignment.center,
-                        padding: const EdgeInsets.fromLTRB(12, 0, 8, 4),
-                        child: TextFormField(
-                          controller: _emailController,
-                          decoration: const InputDecoration(
-                            hintText: '',
-                            border: OutlineInputBorder(),
-                            contentPadding: EdgeInsets.fromLTRB(10, 10, 10, 0),
-                            prefixIcon: Icon(
-                              LucideIcons.user,
-                              size: 20,
-                            ),
-                          ),
-                          //cursorColor: customTheme.groceryPrimary,
-                          autofocus: true,
+              Padding(
+                padding: const EdgeInsets.fromLTRB(0,20,20,0),
+                child: Form(
+                  child: IntrinsicWidth(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: <Widget>[
+                        MySpacing.height(8),
+                        SizedBox(
+                          height: 61,
+                          width: 353,
+                          child: Image.asset('assets/images/login_page_logo.png'),
                         ),
-                      ),
-                      MySpacing.height(8),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(12, 8, 8, 4),
-                        child: MyText.bodyLarge('パスワード', fontWeight: 800),
-                      ),
-                      Container(
-                        height: 50,
-                        alignment: Alignment.center,
-                        padding: const EdgeInsets.fromLTRB(12, 0, 8, 8),
-                        child: TextFormField(
-                          controller: _passwordController,
-                          obscureText: true,
-                          decoration: const InputDecoration(
-                            hintText: '',
-                            border: OutlineInputBorder(),
-                            contentPadding: EdgeInsets.fromLTRB(10, 10, 10, 0),
-                            prefixIcon: Icon(
-                              LucideIcons.lock,
-                              size: 20,
-                            ),
-                          ),
-                          //cursorColor: customTheme.groceryPrimary,
-                          autofocus: true,
+                        //MySpacing.height(8),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(12, 8, 8, 4),
+                          child: MyText.bodyLarge('ログインID', fontWeight: 800),
                         ),
-                      ),
-                      const SizedBox(height: 20),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(12, 0, 8, 8),
-                        child: _widgetSignInButton(context, ref),
-                      ),
-                    ],
+                        Container(
+                          height: 40,
+                          alignment: Alignment.center,
+                          padding: const EdgeInsets.fromLTRB(12, 0, 8, 4),
+                          child: TextFormField(
+                            controller: _emailController,
+                            decoration: const InputDecoration(
+                              hintText: '',
+                              border: OutlineInputBorder(),
+                              contentPadding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+                              prefixIcon: Icon(
+                                LucideIcons.user,
+                                size: 20,
+                              ),
+                            ),
+                            //cursorColor: customTheme.groceryPrimary,
+                            autofocus: true,
+                          ),
+                        ),
+                        MySpacing.height(8),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(12, 8, 8, 4),
+                          child: MyText.bodyLarge('パスワード', fontWeight: 800),
+                        ),
+                        Container(
+                          height: 40,
+                          alignment: Alignment.center,
+                          padding: const EdgeInsets.fromLTRB(12, 0, 8, 4),
+                          child: TextFormField(
+                            controller: _passwordController,
+                            obscureText: true,
+                            decoration: const InputDecoration(
+                              hintText: '',
+                              border: OutlineInputBorder(),
+                              contentPadding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+                              prefixIcon: Icon(
+                                LucideIcons.lock,
+                                size: 20,
+                              ),
+                            ),
+                            //cursorColor: customTheme.groceryPrimary,
+                            autofocus: true,
+                          ),
+                        ),
+                        const SizedBox(height: 36),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(12, 0, 8, 8),
+                          child: _widgetSignInButton(context, ref),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -133,7 +136,7 @@ class SignInPageState extends ConsumerState<SignInPage> {
 
   Widget _widgetSignInButton(BuildContext context, WidgetRef ref) {
     return SizedBox(
-      height: 50,
+      height: 35,
       width: double.infinity,
       child: OutlinedButton(
         onPressed: () {

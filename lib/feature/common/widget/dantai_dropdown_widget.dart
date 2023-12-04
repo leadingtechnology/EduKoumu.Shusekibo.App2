@@ -9,6 +9,10 @@ class DantaiDropdownWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final dantaiList = ref.watch(dantaisProvider);
+    if (dantaiList.isEmpty) {
+      ref.read(dantaisProvider.notifier).refresh();
+    }
+
     return DropdownButton<DantaiModel>(
       value: ref.watch(dantaiProvider),
       //icon: const Icon(Icons.school),

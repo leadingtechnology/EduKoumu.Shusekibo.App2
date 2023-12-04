@@ -5,6 +5,7 @@ import 'package:kyoumutechou/shared/http/api_provider.dart';
 import 'package:kyoumutechou/shared/http/api_response.dart';
 import 'package:kyoumutechou/shared/http/app_exception.dart';
 
+// ignore: one_member_abstracts
 abstract class DantaisRepositoryProtocol {
   Future<DantaisState> fetch();
 }

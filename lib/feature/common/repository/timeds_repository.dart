@@ -4,9 +4,11 @@ import 'package:kyoumutechou/feature/common/state/timed_state.dart';
 import 'package:kyoumutechou/shared/http/api_provider.dart';
 import 'package:kyoumutechou/shared/http/api_response.dart';
 import 'package:kyoumutechou/shared/http/app_exception.dart';
+import 'package:kyoumutechou/shared/util/date_util.dart';
 
+// ignore: one_member_abstracts
 abstract class TimedsRepositoryProtocol {
-  Future<TimedsState> fetch();
+  Future<TimedsState> fetch(int shozokuId, DateTime targetDate);
 }
 
 final timedsRepositoryProvider = Provider(TimedsRepository.new);
@@ -18,8 +20,13 @@ class TimedsRepository implements TimedsRepositoryProtocol {
   final Ref _ref;
 
   @override
-  Future<TimedsState> fetch() async {
-    final response = await _api.get('timeds');
+  Future<TimedsState> fetch(int shozokuId, DateTime targetDate) async {
+    
+    final strDate = DateUtil.getStringDate(targetDate);
+    final url =
+        'api/shozoku/$shozokuId/JigenList?date=$strDate';
+
+    final response = await _api.get(url);
 
     response.when(
       success: (success) {},

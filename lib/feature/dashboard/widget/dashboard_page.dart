@@ -3,9 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kyoumutechou/feature/dashboard/widget/attendance_summary_widget.dart';
 import 'package:kyoumutechou/feature/dashboard/widget/health_summary_widget.dart';
 import 'package:kyoumutechou/helpers/theme/app_theme.dart';
-import 'package:kyoumutechou/helpers/utils/my_shadow.dart';
 import 'package:kyoumutechou/helpers/widgets/my_card.dart';
-import 'package:kyoumutechou/helpers/widgets/my_spacing.dart';
 
 // ダッシュボードwidget
 class DashboardPage extends ConsumerStatefulWidget {
@@ -75,23 +73,26 @@ class DashboardPageState extends ConsumerState<DashboardPage>
           ),
         ),
       ),
-      body: TabBarView(
-        controller: tabController,
-        children: const <Widget>[
-          HealthSummary(),
-          AttendanceSummaryWidget(),
-          MyCard(
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    Text('欠席者一覧'),
-                  ],
-                ),
-              ],
+      body: ColoredBox(
+        color: theme.colorScheme.background,
+        child: TabBarView(
+          controller: tabController,
+          children: const <Widget>[
+            HealthSummary(),
+            AttendanceSummaryWidget(),
+            MyCard(
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      Text('欠席者一覧'),
+                    ],
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
