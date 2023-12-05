@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kyoumutechou/feature/boxes.dart';
+import 'package:kyoumutechou/feature/common/model/filter_model.dart';
 import 'package:kyoumutechou/feature/common/provider/filter_provider.dart';
 import 'package:kyoumutechou/feature/common/state/api_state.dart';
 import 'package:kyoumutechou/feature/dashboard/repository/home_health_repository.dart';
@@ -10,27 +11,31 @@ import 'package:kyoumutechou/feature/health/model/health_stamp_model.dart';
 import 'package:kyoumutechou/feature/health/model/health_status_model.dart';
 import 'package:kyoumutechou/feature/health/repository/health_meibo_repository.dart';
 
-final healthMeiboListProvider = 
+final healthMeiboListProvider =
     StateNotifierProvider<HealthMeiboListProvider, ApiState>((ref) {
   final filter = ref.watch(filterProvider);
 
-  return HealthMeiboListProvider(ref);
+  return HealthMeiboListProvider(ref, filter);
 });
 
-final healthMeiboProvider = StateProvider<HealthMeiboModel>((ref) => HealthMeiboModel());
+final healthMeiboProvider =
+    StateProvider<HealthMeiboModel>((ref) => HealthMeiboModel());
 final healthShiftProvider = StateProvider<bool>((ref) => false);
 
 class HealthMeiboListProvider extends StateNotifier<ApiState> {
-  HealthMeiboListProvider(this.ref)
+  HealthMeiboListProvider(this.ref, this.filter)
       : super(const ApiState.loading()) {
     _init();
   }
 
   final Ref ref;
+  final FilterModel filter;
   final reason = HealthReasonModel();
 
-  late final HealthMeiboRepository _repository = ref.read(healthMeiboRepositoryProvider);
-  late final HomeHealthRepository _homeRepository =  ref.read(homeHealthRepositoryProvider);
+  late final HealthMeiboRepository _repository =
+      ref.read(healthMeiboRepositoryProvider);
+  late final HomeHealthRepository _homeRepository =
+      ref.read(homeHealthRepositoryProvider);
 
   Future<void> _init() async {
     _fetchHealthMeiboList();
@@ -45,7 +50,10 @@ class HealthMeiboListProvider extends StateNotifier<ApiState> {
 
   Future<void> save() async {
     state = await _repository.save();
-    final response = await _homeRepository.fetch(0, DateTime.now());
+    final response = await _homeRepository.fetch(
+      filter.dantaiId ?? 0, 
+      filter.targetDate ?? DateTime.now(),
+    );
   }
 
   // set stamp by Id
@@ -65,7 +73,8 @@ class HealthMeiboListProvider extends StateNotifier<ApiState> {
     //clear all and set one
     if (meibo.jokyoList![0].jokyoCode!.startsWith('5')) {
       List<HealthMeiboModel> meibos = Boxes.getHealthMeiboBox().values.toList();
-      HealthStampModel s = HealthStampModel(jokyoCd: '999', jokyoNmRyaku: ' ', jokyoKey: ' ');
+      HealthStampModel s =
+          HealthStampModel(jokyoCd: '999', jokyoNmRyaku: ' ', jokyoKey: ' ');
 
       for (HealthMeiboModel m in meibos) {
         if (m.studentKihonId == meibo.studentKihonId)
@@ -83,13 +92,14 @@ class HealthMeiboListProvider extends StateNotifier<ApiState> {
   // cover blank values
   Future<void> updateByBlank() async {
     List<HealthMeiboModel> meibos = Boxes.getHealthMeiboBox().values.toList();
-    
+
     if (meibos.length <= 0) return;
 
     HealthStampModel? stamp = Boxes.getRegistHealthStampBox().get('100');
     for (HealthMeiboModel m in meibos) {
-      if (m.jokyoList![0].jokyoCode!.isEmpty) 
-        await updateBox(m, stamp!, HealthReasonModel(jiyuNmSeishiki:'健康'), HealthReasonModel());
+      if (m.jokyoList![0].jokyoCode!.isEmpty)
+        await updateBox(m, stamp!, HealthReasonModel(jiyuNmSeishiki: '健康'),
+            HealthReasonModel());
     }
   }
 
@@ -107,8 +117,7 @@ class HealthMeiboListProvider extends StateNotifier<ApiState> {
             jiyu1Code: '',
             jiyu1: '',
             jiyu2: '',
-            isEditable: true
-          )
+            isEditable: true)
         : HealthStatusModel(
             kokyoDate: DateTime.now(),
             jokyoCode: stamp.jokyoCd,
@@ -117,25 +126,22 @@ class HealthMeiboListProvider extends StateNotifier<ApiState> {
             jiyu1: reason1.jiyuNmSeishiki ?? '',
             jiyu2: reason2.jiyuNmSeishiki ?? '',
             isEditable: true);
-          
+
     final newMeibo = HealthMeiboModel(
-      studentKihonId: meibo.studentKihonId,
-      studentSeq: meibo.studentSeq,
-      gakunen: meibo.gakunen,
-      className: meibo.className,
-      studentNumber: meibo.studentNumber,
-      photoImageFlg: meibo.photoImageFlg,
-      name: meibo.name,
-      genderCode: meibo.genderCode,
-      photoUrl: meibo.photoUrl,            
-      jokyoList: [status]
-    );
+        studentKihonId: meibo.studentKihonId,
+        studentSeq: meibo.studentSeq,
+        gakunen: meibo.gakunen,
+        className: meibo.className,
+        studentNumber: meibo.studentNumber,
+        photoImageFlg: meibo.photoImageFlg,
+        name: meibo.name,
+        genderCode: meibo.genderCode,
+        photoUrl: meibo.photoUrl,
+        jokyoList: [status]);
 
     var _box = Boxes.getHealthMeiboBox();
-    // final int index = Boxes.getAttendanceMeiboModelBox().keys.firstWhere(
-    //     (k) => _box.getAt(k)?.studentKihonId == newMeibo.studentKihonId);
-    final int index = Boxes.getHealthMeiboBox().keys.cast<int>().firstWhere(
-      (k) => _box.getAt(k)?.studentKihonId == newMeibo.studentKihonId);
+    final index = Boxes.getAttendanceMeiboModelBox().keys.firstWhere(
+        (k) => _box.getAt(k as int)?.studentKihonId == newMeibo.studentKihonId,);
 
     await _box.put(index, newMeibo);
   }

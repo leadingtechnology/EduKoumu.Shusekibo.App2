@@ -43,15 +43,15 @@ class DashboardPageState extends ConsumerState<DashboardPage>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(50.0),
+        preferredSize: const Size.fromHeight(50),
         child: AppBar(
           bottom: TabBar(
             controller: tabController,
             isScrollable: true,
-            labelColor: Theme.of(context).colorScheme.primary,
+            labelColor: theme.colorScheme.primary,
             labelStyle: const TextStyle(fontWeight: FontWeight.bold),
             unselectedLabelColor: Colors.grey,
-            indicatorColor: Theme.of(context).colorScheme.primary,
+            indicatorColor: theme.colorScheme.primary,
             tabs: const <Widget>[
               Tab(
                 child: Text(

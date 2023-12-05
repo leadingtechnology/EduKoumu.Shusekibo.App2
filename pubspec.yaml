@@ -26,11 +26,18 @@ dependencies:
   go_router: ^12.1.1
   easy_localization: ^3.0.3
 
+  ## 設備
+  camera: ^0.10.5+5
+  google_ml_kit: ^0.16.3
+  dropdown_search: ^5.0.6
+
   ## UI 
   flutter_native_splash: ^2.3.5
   lucide_icons: ^0.257.0
   transparent_image: ^2.0.1
   font_awesome_flutter: ^10.6.0
+  auto_size_text: ^3.0.0
+  pluto_grid: ^7.0.2
 
   ## Storage
   hive: ^2.2.3

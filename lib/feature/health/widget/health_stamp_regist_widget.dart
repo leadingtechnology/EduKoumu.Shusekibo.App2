@@ -27,9 +27,13 @@ class HealthStampRegistWidget extends ConsumerWidget {
         return Row(children: [ToggleButtons(
           constraints: const BoxConstraints.expand(width: 50),
           fillColor: Theme.of(context).colorScheme.secondaryContainer,
+          onPressed: (int index) {
+            ref.read(healthStampProvider.notifier).state = stamps[index] as HealthStampModel;
+          },
+          isSelected: isSelected,
           //selectedColor: Colors.white,
           children: stamps.map((e) {
-            double fontSize = 15.0;
+            var fontSize = 15.0;
             if (e.jokyoCd == '001' || e.jokyoCd == '999'){
               fontSize = 13.0;
             }
@@ -46,10 +50,6 @@ class HealthStampRegistWidget extends ConsumerWidget {
               ),
             );
           }).toList(),
-          onPressed: (int index) {
-            ref.read(healthStampProvider.notifier).state = stamps[index] as HealthStampModel;
-          },
-          isSelected: isSelected,
         ),],);
       },
     );

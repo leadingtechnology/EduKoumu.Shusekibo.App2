@@ -27,20 +27,22 @@ class HealthStampUnregistWidget extends ConsumerWidget {
         return Row(children: [ToggleButtons(
           constraints: const BoxConstraints.expand(width: 50),
           fillColor: Theme.of(context).colorScheme.secondaryContainer,
+          onPressed: (int index) {
+            ref.read(healthStampProvider.notifier).state = stamps[index] as HealthStampModel;
+          },
+          isSelected: isSelected,
           //selectedColor: Colors.white,
           children: stamps.map((e) => Tooltip(
             message: '${e.jokyoNmTsu}',
             child: SizedBox(
               height: 40,
               width: 100,
-              child: Center(child: Text('${e.jokyoNmRyaku}', style: TextStyle(fontSize: 15)))
+              child: Center(child: Text(
+                '${e.jokyoNmRyaku}', 
+                style: const TextStyle(fontSize: 15),),),
             ),
-          )).toList(),
-          onPressed: (int index) {
-            ref.read(healthStampProvider.notifier).state = stamps[index] as HealthStampModel;
-          },
-          isSelected: isSelected,
-        )],);
+          ),).toList(),
+        ),],);
       },
     );
   }  

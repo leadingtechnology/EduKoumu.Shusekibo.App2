@@ -9,7 +9,6 @@ class ClipGakunen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final gakunenList = ref.watch(gakunensProvider);
-    final themeData = Theme.of(context);
 
     return Wrap(
         spacing: 10,

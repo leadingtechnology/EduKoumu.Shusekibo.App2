@@ -1,187 +1,126 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:kyoumutechou/feature/attendance/model/attendance_meibo_model.dart';
+import 'package:kyoumutechou/feature/attendance/model/attendance_status_model.dart';
+import 'package:kyoumutechou/feature/attendance/provider/attendance_meibo_provider.dart';
+import 'package:kyoumutechou/feature/attendance/provider/attendance_reason_provider.dart';
+import 'package:kyoumutechou/feature/attendance/provider/attendance_stamp_provider.dart';
 import 'package:kyoumutechou/helpers/widgets/my_spacing.dart';
-import 'package:kyoumutechou/helpers/widgets/my_text.dart';
 
-// 出欠（日）widget
 class AttendanceSeatWidget extends ConsumerWidget {
-  AttendanceSeatWidget({super.key});
+  AttendanceSeatWidget(
+      {required this.index, required this.meibo, super.key,});
 
-
-
-  final List<Student> studentList = [
-    Student(
-      avatarUrl: 'https://picsum.photos/250?image=9',
-      studentNumber: '1',
-      name: '学生1',
-    ),
-    Student(
-      avatarUrl: 'https://picsum.photos/250?image=9',
-      studentNumber: '2',
-      name: '学生2',
-    ),
-    Student(
-      avatarUrl: 'https://picsum.photos/250?image=9',
-      studentNumber: '3',
-      name: '学生3',
-    ),
-    Student(
-      avatarUrl: 'https://picsum.photos/250?image=9',
-      studentNumber: '4',
-      name: '学生4',
-    ),
-    Student(
-      avatarUrl: 'https://picsum.photos/250?image=9',
-      studentNumber: '5',
-      name: '学生5',
-    ),
-    Student(
-      avatarUrl: 'https://picsum.photos/250?image=9',
-      studentNumber: '6',
-      name: '学生6',
-    ),
-    Student(
-      avatarUrl: 'https://picsum.photos/250?image=9',
-      studentNumber: '7',
-      name: '学生7',
-    ),
-    Student(
-      avatarUrl: 'https://picsum.photos/250?image=9',
-      studentNumber: '8',
-      name: '学生8',
-    ),
-    Student(
-      avatarUrl: 'https://picsum.photos/250?image=9',
-      studentNumber: '9',
-      name: '学生9',
-    ),
-    Student(
-      avatarUrl: 'https://picsum.photos/250?image=9',
-      studentNumber: '0',
-      name: '学生10',
-    ),
-    Student(
-      avatarUrl: 'https://picsum.photos/250?image=9',
-      studentNumber: '11',
-      name: '学生11',
-    ),
-    Student(
-      avatarUrl: 'https://picsum.photos/250?image=9',
-      studentNumber: '12',
-      name: '学生12',
-    ),
-  ];
+  final int index;
+  final AttendanceMeiboModel meibo;
+  final _baseUrl = dotenv.env['BASE_URL']!;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return buildGridView(studentList);
-  }
-}
+    final stamp = ref.watch(attendanceStampProvider);
+    final reason1 = ref.watch(attendanceReason1Provider);
+    final reason2 = ref.watch(attendanceReason2Provider);
 
-Widget buildGridView(List<Student> students) {
-  return Container(
-    padding: const EdgeInsets.fromLTRB(12, 8, 8, 12),
-    child: GridView.builder(
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 6,
-        childAspectRatio: 3 / 2,
-        crossAxisSpacing: 15,
-        mainAxisSpacing: 15,
-      ),
-      itemCount: students.length,
-      itemBuilder: (context, index) {
-        return buildGridTile(students[index]);
+    Color color;
+    final url = '$_baseUrl${meibo.photoUrl}';
+    final accessToken = Hive.box<String>('shusekibo').get('token').toString();
+
+    late AttendanceStatusModel jokyo;
+    if (meibo.jokyoList != null) {
+      jokyo = meibo.jokyoList![0];
+    } else {
+      jokyo = const AttendanceStatusModel();
+    }
+
+    if (jokyo.shukketsuKbn == '' || jokyo.shukketsuKbn == null) {
+      color = Theme.of(context).colorScheme.errorContainer;
+    } else if (jokyo.shukketsuKbn != '101') {
+      color = Theme.of(context).colorScheme.primaryContainer;
+    } else {
+      color = Colors.grey.withAlpha(50);
+    }
+
+    return GestureDetector(
+      onTap: () async {
+        await ref.read(attendanceMeiboListProvider.notifier).updateById(
+              meibo,
+              stamp,
+              reason1,
+              reason2,
+            );
       },
-    ),
-  );
-}
-
-class Student {
-  final String avatarUrl;
-  final String studentNumber;
-  final String name;
-  // 其他属性如下半部分的文字等
-
-  Student(
-      {required this.avatarUrl,
-      required this.studentNumber,
-      required this.name});
-}
-
-Widget buildGridTile(Student student) {
-  return Container(
-    decoration: const BoxDecoration(
-      //color: Colors.primaries[Random().nextInt(Colors.primaries.length)],
-      borderRadius: BorderRadius.all(Radius.circular(10)),
-      color: Colors.white,
-      boxShadow: [
-        BoxShadow(
-          spreadRadius: 1,
-          color: Colors.black26,
-          blurRadius: 2,
-          offset: Offset(2, 0),
-        ),
-      ],
-    ),
-    child: Column(
-      children: [
-        // 上半部分，大于下半部分，使用黄金分割比
-        Expanded(
-          flex: 5, // 较大的部分
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(8, 8, 10, 0),
-                  child: CircleAvatar(
-                    backgroundImage: NetworkImage(student.avatarUrl),
-                  ),
-                ),
-                Expanded(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      MyText.bodyMedium(
-                        student.studentNumber,
-                        fontWeight: 700,
-                      ),
-                      MyText.bodySmall(
-                        student.name,
-                        fontWeight: 700,
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-        // 下半部分，小于上半部分
-        MySpacing.height(2),
-        Expanded(
-          flex: 3, // 较小的部分
-          child: Container(
-            height: 30,
-            decoration: BoxDecoration(
-              color: Colors.grey[300],
-              borderRadius: const BorderRadius.only(
-                bottomLeft: Radius.circular(6),
-                bottomRight: Radius.circular(6),
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(0, 0, 5, 5),
+        child: Container(
+          decoration: const BoxDecoration(
+            //color:Colors.primaries[Random().nextInt(Colors.primaries.length)]
+            borderRadius: BorderRadius.all(Radius.circular(6)),
+            color: Colors.white,
+            boxShadow: [
+              BoxShadow(
+                spreadRadius: 1,
+                color: Colors.black26,
+                blurRadius: 2,
+                offset: Offset(2, 0),
               ),
-            ),
-            child: const Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Text('左边'), // 替换为实际数据
-                Text('右边'), // 替换为实际数据
-              ],
-            ),
+            ],
+          ),
+          child: Column(
+            children: [
+              // User Information
+              Expanded(
+                child: Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(8, 4, 8, 0),
+                      child:ClipOval(child: Image.network(
+                        url,
+                        headers: {'Authorization': 'Bearer $accessToken'},
+                      ),),
+                    ),
+                    Expanded(
+                        child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Text(
+                          meibo.studentNumber??'',
+                          style: const TextStyle(fontSize: 12),
+                        ),
+                        Text(
+                          '${meibo.name}', 
+                          style: const TextStyle(fontSize: 14),
+                        ),
+                      ],
+                    ),),
+                  ],
+                ),
+              ),
+
+              // status bar
+              MySpacing.height(4),
+              Container(
+                  height: 30,
+                  decoration: BoxDecoration(
+                    color: color,
+                    borderRadius: const BorderRadius.only(
+                      bottomLeft: Radius.circular(6),
+                      bottomRight: Radius.circular(6),
+                    ),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Text(jokyo.ryaku ?? ''),
+                      Text(jokyo.jiyu1 ?? ''),
+                    ],
+                  ),),
+            ],
           ),
         ),
-      ],
-    ),
-  );
+      ),
+    );
+  }
 }

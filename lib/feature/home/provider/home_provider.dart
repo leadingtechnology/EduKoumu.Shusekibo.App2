@@ -1,8 +1,4 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:kyoumutechou/feature/home/state/home_state.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
-
-part 'home_provider.g.dart';
 
 enum Menu { 
   dashboard, 
@@ -12,15 +8,14 @@ enum Menu {
   awareness, 
   setting, 
 }
+final menuProvider = StateProvider<Menu>((ref) {return Menu.health; });
 
-final menuProvider = StateProvider<Menu>((ref) {
-  return Menu.health; // 初始值
+enum DashboardTab {health, attendance,absentee,}
+final dashboardTabProvider = StateProvider<DashboardTab>((ref) {
+  return DashboardTab.health; // 初始值
 });
 
-@riverpod
-class HomeNotifier extends _$HomeNotifier {
-  @override
-  HomeState build() {
-    return const HomeState.loading();
-  }
-}
+enum AwarenessTab {situation, awareness,}
+final awarenessTabProvider = StateProvider<AwarenessTab>((ref) {
+  return AwarenessTab.situation; // 初始值
+});

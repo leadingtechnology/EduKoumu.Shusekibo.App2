@@ -7,8 +7,6 @@ import 'package:kyoumutechou/feature/health/provider/health_stamp_provider.dart'
 import 'package:kyoumutechou/helpers/widgets/my_spacing.dart';
 import 'package:kyoumutechou/shared/http/app_exception.dart';
 
-
-
 class HealthReasonWidget extends ConsumerWidget {
   const HealthReasonWidget({super.key});
 
