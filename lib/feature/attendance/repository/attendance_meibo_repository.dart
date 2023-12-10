@@ -53,8 +53,8 @@ class AttendanceMeiboRepository implements AttendanceMeiboRepositoryProtocol {
         final Map<int, AttendanceMeiboModel>  _attendanceMeiboMap = _attendanceMeiboList.asMap();
 
         // 3) save to hive with key
-        await Boxes.getAttendanceMeiboModelBox().clear();
-        await Boxes.getAttendanceMeiboModelBox().putAll(_attendanceMeiboMap);
+        await Boxes.getAttendanceMeibo().clear();
+        await Boxes.getAttendanceMeibo().putAll(_attendanceMeiboMap);
 
         return ApiState.loaded();
       } catch (e) {
@@ -73,7 +73,7 @@ class AttendanceMeiboRepository implements AttendanceMeiboRepositoryProtocol {
     
     final String strDate = DateFormat('yyyy-MM-dd').format(filter.targetDate ?? DateTime.now()).toString();
 
-    List<AttendanceMeiboModel> meibos = Boxes.getAttendanceMeiboModelBox().values.toList();
+    List<AttendanceMeiboModel> meibos = Boxes.getAttendanceMeibo().values.toList();
     String json = jsonEncode(meibos.map((v) => v.toNewJson()).toList()); //jsonEncode(meibos.map((i) => i.toJson()).toList()).toString();
 
     final response = await _api.post2('api/shozoku/${filter.classId}/ShukketsuShussekibo?date=${strDate}', json);

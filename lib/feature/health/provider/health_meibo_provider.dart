@@ -38,11 +38,11 @@ class HealthMeiboListProvider extends StateNotifier<ApiState> {
       ref.read(homeHealthRepositoryProvider);
 
   Future<void> _init() async {
-    _fetchHealthMeiboList();
+    await _fetch();
   }
 
-  Future<void> _fetchHealthMeiboList() async {
-    final response = await _repository.fetchHealthMeibo();
+  Future<void> _fetch() async {
+    final response = await _repository.fetch(filter);
     if (mounted) {
       state = response;
     }
@@ -95,7 +95,7 @@ class HealthMeiboListProvider extends StateNotifier<ApiState> {
 
     if (meibos.length <= 0) return;
 
-    HealthStampModel? stamp = Boxes.getRegistHealthStampBox().get('100');
+    HealthStampModel? stamp = Boxes.getRegistHealthStamp().get('100');
     for (HealthMeiboModel m in meibos) {
       if (m.jokyoList![0].jokyoCode!.isEmpty)
         await updateBox(m, stamp!, HealthReasonModel(jiyuNmSeishiki: '健康'),
@@ -140,7 +140,7 @@ class HealthMeiboListProvider extends StateNotifier<ApiState> {
         jokyoList: [status]);
 
     var _box = Boxes.getHealthMeiboBox();
-    final index = Boxes.getAttendanceMeiboModelBox().keys.firstWhere(
+    final index = Boxes.getAttendanceMeibo().keys.firstWhere(
         (k) => _box.getAt(k as int)?.studentKihonId == newMeibo.studentKihonId,);
 
     await _box.put(index, newMeibo);

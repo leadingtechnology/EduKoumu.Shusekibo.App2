@@ -58,6 +58,6 @@ Future<void> pickDate(BuildContext context, WidgetRef ref) async {
     locale: const Locale('ja', 'JP'),
   );
   if (selected != null) {
-    ref.read(filterDateProvider.notifier).state = selected;
+    ref.read(targetDateProvider.notifier).state = selected;
   }
 }

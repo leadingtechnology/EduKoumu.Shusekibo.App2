@@ -16,8 +16,10 @@ import 'package:kyoumutechou/feature/attendance/model/attendance_timed_meibo_mod
 import 'package:kyoumutechou/feature/attendance/model/attendance_timed_status_model.dart';
 import 'package:kyoumutechou/feature/awareness/model/awareness_kizuki_model.dart';
 import 'package:kyoumutechou/feature/awareness/model/awareness_meibo_model.dart';
+import 'package:kyoumutechou/feature/common/model/dantai_model.dart';
 import 'package:kyoumutechou/feature/common/model/gakunen_model.dart';
 import 'package:kyoumutechou/feature/common/model/shozoku_model.dart';
+import 'package:kyoumutechou/feature/common/model/tannin_model.dart';
 import 'package:kyoumutechou/feature/common/model/timed_model.dart';
 import 'package:kyoumutechou/feature/common/model/tokobi_model.dart';
 import 'package:kyoumutechou/feature/health/model/health_meibo_model.dart';
@@ -47,21 +49,34 @@ Future<void> start() async {
   await Hive.openBox<String>('shusekibo');
   await Hive.box<String>('shusekibo').put('token', '');
 
+  // 団体
+  Hive.registerAdapter(DantaiModelAdapter());
+  await Hive.openBox<DantaiModel>('Dantai');
+
   // 学年
   Hive.registerAdapter(GakunenModelAdapter());
-  await Hive.openBox<GakunenModel>('Gakunen');
+  final gakunenBox = await Hive.openBox<GakunenModel>('Gakunen');
+  await gakunenBox.clear();
 
   // クラス
   Hive.registerAdapter(ShozokuModelAdapter());
-  await Hive.openBox<ShozokuModel>('Shozoku');
+  final shozokuBox = await Hive.openBox<ShozokuModel>('Shozoku');
+  await shozokuBox.clear();
 
   // 時限
   Hive.registerAdapter(TimedModelAdapter());
-  await Hive.openBox<TimedModel>('Timed');
+  final timedBox = await Hive.openBox<TimedModel>('Timed');
+  await timedBox.clear();
 
   // 登校日
   Hive.registerAdapter(TokobiModelAdapter());
-  await Hive.openBox<TokobiModel>('Tokobi');
+  final tokobiBox = await Hive.openBox<TokobiModel>('Tokobi');
+  await tokobiBox.clear();
+
+  // 担任
+  Hive.registerAdapter(TanninModelAdapter());
+  final tanninBox = await Hive.openBox<TanninModel>('Tannin');
+  await tanninBox.clear();
 
   // 健康観察スタンプ
   Hive.registerAdapter(HealthStampModelAdapter());
@@ -76,7 +91,9 @@ Future<void> start() async {
 
   //
   Hive.registerAdapter(HealthMeiboModelAdapter());
-  await Hive.openBox<HealthMeiboModel>('HealthMeibo');
+  final hmBox = await Hive.openBox<HealthMeiboModel>('HealthMeibo');
+  await hmBox.clear();
+  
 
   // 出欠スタンプ
   Hive.registerAdapter(AttendanceStampModelAdapter());
@@ -89,21 +106,27 @@ Future<void> start() async {
   await Hive.openBox<AttendanceReasonModel>('AttendanceReason2');
 
   // 出欠名簿(日)
-  Hive..registerAdapter(AttendanceStatusModelAdapter())
-  ..registerAdapter(AttendanceMeiboModelAdapter());
-  await Hive.openBox<AttendanceMeiboModel>('AttendanceMeibo');
-  await Hive.openBox<TimedModel>('Timed');
+  Hive.registerAdapter(AttendanceMeiboModelAdapter());
+  final amBox = await Hive.openBox<AttendanceMeiboModel>('AttendanceMeibo');
+  await amBox.clear();
 
+  Hive.registerAdapter(AttendanceStatusModelAdapter());
+  
   // 出欠名簿(時限)
-  Hive..registerAdapter(AttendanceTimedStatusModelAdapter())
-  ..registerAdapter(AttendanceTimedMeiboModelAdapter());
-  await Hive.openBox<AttendanceTimedMeiboModel>('AttendanceTimedMeibo');
+  
+  Hive.registerAdapter(AttendanceTimedMeiboModelAdapter());
+  final atmBox = await Hive.openBox<AttendanceTimedMeiboModel>('AttendanceTimedMeibo');
+  await atmBox.clear();
 
+  Hive.registerAdapter(AttendanceTimedStatusModelAdapter());
   // 気づき
-  Hive..registerAdapter(AwarenessMeiboModelAdapter())
-  ..registerAdapter(AwarenessKizukiModelAdapter());
-  await Hive.openBox<AwarenessMeiboModel>('AwarenessMeibo');
-  await Hive.openBox<AwarenessKizukiModel>('AwarenessKizuki');
+  Hive.registerAdapter(AwarenessMeiboModelAdapter());
+  final awBox = await Hive.openBox<AwarenessMeiboModel>('AwarenessMeibo');
+  await awBox.clear(); 
+
+  Hive.registerAdapter(AwarenessKizukiModelAdapter());
+  final akBox = await Hive.openBox<AwarenessKizukiModel>('AwarenessKizuki');
+  await akBox.clear();
 
 
   // Hive アダプター登録

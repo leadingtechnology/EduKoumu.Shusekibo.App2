@@ -24,6 +24,13 @@ class AttendanceStampRepository implements AttendanceStampRepositoryProtocol {
   @override
   Future<ApiState> fetch() async {
 
+    // box にデータがあれば、それを返す
+    final registStampBox = Boxes.getRegistAttendanceStamp();
+    final unregistStampBox = Boxes.getUnregistAttendanceStamp();
+    if (registStampBox.isNotEmpty && unregistStampBox.isNotEmpty) {
+      return const ApiState.loaded();
+    }
+
     final response = await _api.get('api/ShukketsuShussekibo/stamps');
 
     response.when(
@@ -63,7 +70,7 @@ class AttendanceStampRepository implements AttendanceStampRepositoryProtocol {
           registStampList.map((e) => e).toList(),
         );
 
-        await Boxes.getRegistAttendanceStampBox().putAll(registStampMap);
+        await Boxes.getRegistAttendanceStamp().putAll(registStampMap);
         ref.read(attendanceStampProvider.notifier).state=registStampList.first;
 
         // 2) Unregist Stamp  // value['UnregistStampList']
@@ -76,7 +83,7 @@ class AttendanceStampRepository implements AttendanceStampRepositoryProtocol {
           unregistStampList.map((e) => e.shukketsuJokyoCd).toList(),
           unregistStampList.map((e) => e).toList(),
         );
-        await Boxes.getUnregistAttendanceStampBox().putAll(unregistStampMap);
+        await Boxes.getUnregistAttendanceStamp().putAll(unregistStampMap);
 
         return const ApiState.loaded();
       } catch (e) {

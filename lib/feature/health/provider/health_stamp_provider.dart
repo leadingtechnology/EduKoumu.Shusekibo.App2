@@ -29,7 +29,7 @@ class HealthStampListProvider extends StateNotifier<ApiState> {
 
   Future<void> _fetch() async {
     
-    if (Boxes.getRegistHealthStampBox().values.isNotEmpty) {
+    if (Boxes.getRegistHealthStamp().values.isNotEmpty) {
       state = const ApiState.loaded();
       return;
     }

@@ -20,6 +20,13 @@ class HealthStampRepository implements HealthStampRepositoryProtocol {
   @override
   Future<ApiState> fetch() async {
 
+    // box にデータがあれば、それを返す
+    final registStampBox = Boxes.getRegistHealthStamp();
+    final unregistStampBox = Boxes.getUnregistHealthStamp();
+    if (registStampBox.isNotEmpty && unregistStampBox.isNotEmpty) {
+      return const ApiState.loaded();
+    }
+
     final response = await _api.get('api/KenkouKansatsubo/stamps');
 
     response.when(
@@ -50,7 +57,7 @@ class HealthStampRepository implements HealthStampRepositoryProtocol {
           registStampList.map((e) => e.jokyoCd).toList(),
           registStampList.map((e) => e).toList(),
         );
-        await Boxes.getRegistHealthStampBox().putAll(registStampMap);
+        await Boxes.getRegistHealthStamp().putAll(registStampMap);
 
         // Unregist Stamp
         final unr = value['UnregistStampList'];
@@ -60,7 +67,7 @@ class HealthStampRepository implements HealthStampRepositoryProtocol {
           unregistStampList.map((e) => e.jokyoCd).toList(),
           unregistStampList.map((e) => e).toList(),
         );
-        await Boxes.getUnregistHealthStampBox().putAll(unregistStampMap);
+        await Boxes.getUnregistHealthStamp().putAll(unregistStampMap);
     
         return const ApiState.loaded();
       } catch (e) {

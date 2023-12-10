@@ -29,7 +29,7 @@ class AttendanceStampListProvider extends StateNotifier<ApiState> {
   Future<void> _init() async { await _fetch(); }
 
   Future<void> _fetch() async {
-    if (Boxes.getRegistAttendanceStampBox().values.isNotEmpty) {
+    if (Boxes.getRegistAttendanceStamp().values.isNotEmpty) {
       state = const ApiState.loaded();
       return;
     }

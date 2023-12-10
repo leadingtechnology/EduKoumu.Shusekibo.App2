@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:kyoumutechou/feature/boxes.dart';
-import 'package:kyoumutechou/feature/common/provider/common.provider.dart';
+import 'package:kyoumutechou/feature/common/provider/common_provider.dart';
 import 'package:kyoumutechou/feature/common/widget/common_page.dart';
 import 'package:kyoumutechou/feature/health/model/health_meibo_model.dart';
 import 'package:kyoumutechou/feature/health/provider/health_meibo_provider.dart';
@@ -35,6 +35,8 @@ class HealthPage extends ConsumerWidget {
       },
       setBlank: () {},
       onSavePressed: () {},
+      buttomName: pageType == PageType.seat ? 'リスト' : '座席表',
+      buttonIcon: pageType == PageType.seat ? Icons.list : Icons.grid_view,
     );
 
   }
@@ -49,7 +51,7 @@ class SeatWidget extends ConsumerWidget {
     final state = ref.watch(healthMeiboListProvider);
 
     return state.when(
-      loading: (){return const Center(child: CircularProgressIndicator(),);}, 
+      loading: (){return const SizedBox();}, 
       error: (AppException e){ return Text(e.toString()); },
       loaded: (){
         return ValueListenableBuilder(

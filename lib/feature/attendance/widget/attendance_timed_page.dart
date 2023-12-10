@@ -7,7 +7,7 @@ import 'package:kyoumutechou/feature/attendance/provider/attendance_timed_meibo_
 import 'package:kyoumutechou/feature/attendance/widget/attendance_timed_list_widget.dart';
 import 'package:kyoumutechou/feature/attendance/widget/attendance_timeed_seat_widget.dart';
 import 'package:kyoumutechou/feature/boxes.dart';
-import 'package:kyoumutechou/feature/common/provider/common.provider.dart';
+import 'package:kyoumutechou/feature/common/provider/common_provider.dart';
 import 'package:kyoumutechou/feature/common/provider/filter_provider.dart';
 import 'package:kyoumutechou/feature/common/widget/common_page.dart';
 import 'package:kyoumutechou/shared/http/app_exception.dart';
@@ -26,14 +26,16 @@ class AttendanceTimedPage extends ConsumerWidget {
     return CommonPage(
       scaffoldKey: _scaffoldKey,
       contentWidget: pageType == PageType.seat
-          ? SeatsWidget() // 座位图组件
-          : AttendanceTimedListWidget(), // 列表组件
+          ? const SeatsWidget() // 座位图组件
+          : const AttendanceTimedListWidget(), // 列表组件
       onShift: () {
         ref.read(attendanceTimedPageTypeProvider.notifier).state =
             pageType == PageType.seat ? PageType.list : PageType.seat;
       },
       setBlank: () {},
       onSavePressed: () {},
+      buttomName: pageType == PageType.seat ? 'リスト' : '座席表',
+      buttonIcon: pageType == PageType.seat ? Icons.list : Icons.grid_view,
     );
   }
 }

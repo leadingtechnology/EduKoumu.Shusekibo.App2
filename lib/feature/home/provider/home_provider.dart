@@ -8,7 +8,7 @@ enum Menu {
   awareness, 
   setting, 
 }
-final menuProvider = StateProvider<Menu>((ref) {return Menu.health; });
+final menuProvider = StateProvider<Menu>((ref) {return Menu.dashboard; });
 
 enum DashboardTab {health, attendance,absentee,}
 final dashboardTabProvider = StateProvider<DashboardTab>((ref) {

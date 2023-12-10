@@ -1,5 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:kyoumutechou/feature/boxes.dart';
 import 'package:kyoumutechou/feature/common/model/gakunen_model.dart';
+import 'package:kyoumutechou/feature/common/state/api_state.dart';
 import 'package:kyoumutechou/feature/common/state/gakunen_state.dart';
 import 'package:kyoumutechou/shared/http/api_provider.dart';
 import 'package:kyoumutechou/shared/http/api_response.dart';
@@ -7,7 +9,7 @@ import 'package:kyoumutechou/shared/http/app_exception.dart';
 
 // ignore: one_member_abstracts
 abstract class GakunensRepositoryProtocol {
-  Future<GakunensState> fetch(String organizationKbn);
+  Future<ApiState> fetch(String organizationKbn);
 }
 
 final gakunensRepositoryProvider = Provider(GakunensRepository.new);
@@ -19,8 +21,26 @@ class GakunensRepository implements GakunensRepositoryProtocol {
   final Ref _ref;
 
   @override
-  Future<GakunensState> fetch(String organizationKbn) async {
+  Future<ApiState> fetch(String organizationKbn) async {
+    // パラメーターのチェック。空白の場合、終了する。
+    if (organizationKbn.isEmpty) {
+      return const ApiState.loaded();
+    }  
     
+    final box = Boxes.getGakunens();
+    
+    // organizationKbnの学年が存在する場合、正常終了とする
+    if (box.isNotEmpty) {
+      final keys = box.keys.toList().where(
+            (element) => element.toString().startsWith('$organizationKbn-'),
+          );
+      
+      // keysの値が存在した場合、正常終了とする
+      if (keys.isNotEmpty) {
+        return const ApiState.loaded();
+      }
+    }
+
     final url = 'api/gakunen?kbn=$organizationKbn';
     final response = await _api.get(url);
 
@@ -36,8 +56,11 @@ class GakunensRepository implements GakunensRepositoryProtocol {
       try {
         // 1) get the list
         final gakunens = gakunenListFromJson(value as List<dynamic>);
+        
+        // ignore: cascade_invocations
+        gakunens.sort((a, b) => a.id??0.compareTo(b.id??0));
 
-        //1.3 set no grade button.
+        // 2) set no grade button.
         final l = gakunens.last;
         final nashi = GakunenModel(
             id: 999,
@@ -50,15 +73,21 @@ class GakunensRepository implements GakunensRepositoryProtocol {
             name: '学年なし',);
         gakunens.add(nashi);
 
+        // 3) save to local
+        final gakunenMap = Map.fromIterables(
+          gakunens.map((e) => '$organizationKbn-${e.id}').toList(),
+          gakunens.map((e) => e).toList(),
+        );
+        await box.putAll(gakunenMap);
 
-        return GakunensState.loaded(gakunens);
+        return const ApiState.loaded();
       } catch (e) {
-        return GakunensState.error(AppException.errorWithMessage(e.toString()));
+        return ApiState.error(AppException.errorWithMessage(e.toString()));
       }
     } else if (response is APIError) {
-      return GakunensState.error(response.exception);
+      return ApiState.error(response.exception);
     } else {
-      return const GakunensState.loading();
+      return const ApiState.loading();
     }
   }
 }

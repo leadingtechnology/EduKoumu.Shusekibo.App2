@@ -147,7 +147,7 @@ class AttendanceTimedMeiboListProvider extends StateNotifier<ApiState> {
     );
 
     final box = Boxes.getAttendanceTimedMeiboModelBox();
-    final index = Boxes.getAttendanceMeiboModelBox().keys.firstWhere(
+    final index = Boxes.getAttendanceMeibo().keys.firstWhere(
         (k) => box.getAt(k as int)?.studentKihonId == newMeibo.studentKihonId,);
 
     await box.put(index, newMeibo);

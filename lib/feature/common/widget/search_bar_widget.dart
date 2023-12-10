@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kyoumutechou/feature/common/provider/filter_provider.dart';
+import 'package:kyoumutechou/feature/common/widget/control_tokobi.dart';
 import 'package:kyoumutechou/feature/home/provider/home_provider.dart';
 import 'package:kyoumutechou/helpers/widgets/my_spacing.dart';
 import 'package:kyoumutechou/helpers/widgets/my_text.dart';
@@ -23,6 +24,7 @@ class SearchBarWidget extends ConsumerWidget {
           // 左側の検索条件
           Expanded(
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 // 1.1 学年と学年の表示
                 Row(
@@ -116,13 +118,43 @@ class SearchBarWidget extends ConsumerWidget {
                           child: Text(filter.japanDate ?? ''),
                         ),
                       ),
+                      const ControlTokobi(),
                     ],
                   ),
-                  MySpacing.width(20),
+
+                  if (menuId == Menu.attendanceTimed)...[
+                    MySpacing.width(20),
+                    // 1.5 時限
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children:[
+                        MyText.bodyLarge(
+                          '時限',
+                          fontWeight: 700,
+                        ),
+                        MySpacing.width(5),
+                        InkWell(
+                          onTap: () {
+                            _scaffoldKey.currentState?.openEndDrawer();
+                          },
+                          child: Container(
+                            width: 45,
+                            padding: MySpacing.x(4),
+                            decoration: BoxDecoration(
+                              border: Border.all(),
+                              borderRadius: BorderRadius.circular(3),
+                            ),
+                            child: Text(filter.jigenRyaku ?? ''),
+                          ),
+                        ),
+
+                      ],
+                    ),
+                  ],
                 ]
                 // menuId.state == Menu.awareness の場合のみ表示
                 else if (menuId == Menu.awareness) ...[
-                  // 1.4 期間の表示
+                  // 1.5 期間の表示
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -165,7 +197,7 @@ class SearchBarWidget extends ConsumerWidget {
                       ),
                     ],
                   ),
-                ]
+                ],
               ],
             ),
           ),

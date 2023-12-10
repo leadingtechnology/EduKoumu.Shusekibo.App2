@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:kyoumutechou/feature/boxes.dart';
 import 'package:kyoumutechou/feature/common/model/dantai_model.dart';
 import 'package:kyoumutechou/feature/common/provider/dantais_provider.dart';
 
@@ -8,10 +9,7 @@ class DantaiDropdownWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final dantaiList = ref.watch(dantaisProvider);
-    if (dantaiList.isEmpty) {
-      ref.read(dantaisProvider.notifier).refresh();
-    }
+    final dantaiList = Boxes.getDantais().values.toList();
 
     return DropdownButton<DantaiModel>(
       value: ref.watch(dantaiProvider),
@@ -35,6 +33,6 @@ class DantaiDropdownWidget extends ConsumerWidget {
           ),
         );
       }).toList(),
-    );
+    );        
   }
 }

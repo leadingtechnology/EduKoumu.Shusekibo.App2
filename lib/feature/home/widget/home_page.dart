@@ -5,12 +5,15 @@ import 'package:kyoumutechou/feature/attendance/widget/attendance_page.dart';
 import 'package:kyoumutechou/feature/attendance/widget/attendance_timed_page.dart';
 import 'package:kyoumutechou/feature/auth/provider/auth_provider.dart';
 import 'package:kyoumutechou/feature/awareness/weidget/awareness_page.dart';
+import 'package:kyoumutechou/feature/common/provider/dantais_provider.dart';
+import 'package:kyoumutechou/feature/common/widget/control_tannin.dart';
 import 'package:kyoumutechou/feature/common/widget/dantai_dropdown_widget.dart';
 import 'package:kyoumutechou/feature/dashboard/widget/dashboard_page.dart';
 import 'package:kyoumutechou/feature/health/widget/health_page.dart';
 import 'package:kyoumutechou/feature/home/provider/home_provider.dart';
 import 'package:kyoumutechou/helpers/theme/app_theme.dart';
 import 'package:kyoumutechou/helpers/widgets/my_text.dart';
+import 'package:kyoumutechou/shared/http/app_exception.dart';
 import 'package:kyoumutechou/shared/util/date_util.dart';
 
 class HomePage extends ConsumerStatefulWidget {
@@ -92,6 +95,27 @@ class HomePageState extends ConsumerState<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final state = ref.watch(dantaisProvider);
+
+    return state.when(
+      loading: () {
+        return const Column(
+          //mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            LinearProgressIndicator(),
+          ],
+        );
+      },
+      error: (AppException error) {
+        return Text('$error');
+      },
+      loaded: () {
+        return switchToPage(context);
+      },
+    );
+  }
+
+  Widget switchToPage(BuildContext context) {
     final selectedIndex = ref.watch(menuProvider).index;
     return Scaffold(
       body: Row(
@@ -172,7 +196,7 @@ class HomePageState extends ConsumerState<HomePage> {
                       children: [
                         // 団体DropdownButton
                         const DantaiDropdownWidget(),
-
+                        const ControlTannin(),
                         // IconButton(
                         //   icon: const Icon(Icons.menu),
                         //   onPressed: _setMenu,

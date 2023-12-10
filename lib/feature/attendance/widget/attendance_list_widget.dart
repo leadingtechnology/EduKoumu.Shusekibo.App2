@@ -88,7 +88,7 @@ class _AttendanceListWidgetState extends ConsumerState<AttendanceListWidget> {
       PlutoColumn(title: '理由2',   field: 'reason2',   readOnly: true, type: PlutoColumnType.text(),               width: 216, enableContextMenu: false, textAlign: PlutoColumnTextAlign.left, titleTextAlign: PlutoColumnTextAlign.center),
     ]);
 
-    final List<AttendanceMeiboModel> meibos = Boxes.getAttendanceMeiboModelBox().values.toList();
+    final List<AttendanceMeiboModel> meibos = Boxes.getAttendanceMeibo().values.toList();
     
     rows.addAll(meibos.map((e) => setPlutRow(e)).toList()); 
   }
@@ -104,7 +104,7 @@ class _AttendanceListWidgetState extends ConsumerState<AttendanceListWidget> {
     if (studentNumber.isEmpty) return;
 
     final List<AttendanceMeiboModel> meibos =
-        Boxes.getAttendanceMeiboModelBox().values.toList();
+        Boxes.getAttendanceMeibo().values.toList();
     AttendanceMeiboModel meibo;
     try {
       meibo =

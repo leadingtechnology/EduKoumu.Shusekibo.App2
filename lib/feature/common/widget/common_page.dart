@@ -16,6 +16,8 @@ class CommonPage extends ConsumerWidget {
     required this.onShift,
     required this.setBlank,
     required this.onSavePressed,
+    required this.buttomName,
+    required this.buttonIcon,
     super.key,
   });
 
@@ -24,6 +26,8 @@ class CommonPage extends ConsumerWidget {
   final VoidCallback onShift; // ボタン1の処理
   final VoidCallback setBlank; // ボタン2の処理
   final VoidCallback onSavePressed; // 保存ボタンの処理
+  final String buttomName;
+  final IconData buttonIcon;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -68,13 +72,13 @@ class CommonPage extends ConsumerWidget {
                     children: <Widget>[
                       ElevatedButton.icon(
                         onPressed: onShift,
-                        icon: const Icon(
-                          Icons.view_compact,
+                        icon: Icon(
+                          buttonIcon,
                           color: Colors.black,
                         ),
-                        label: const Text(
-                          '一覧',
-                          style: TextStyle(color: Colors.black),
+                        label: Text(
+                          buttomName,
+                          style: const TextStyle(color: Colors.black),
                         ),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.white,

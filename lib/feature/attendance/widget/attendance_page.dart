@@ -8,7 +8,7 @@ import 'package:kyoumutechou/feature/attendance/provider/attendance_provider.dar
 import 'package:kyoumutechou/feature/attendance/widget/attendance_list_widget.dart';
 import 'package:kyoumutechou/feature/attendance/widget/attendance_seat_widget.dart';
 import 'package:kyoumutechou/feature/boxes.dart';
-import 'package:kyoumutechou/feature/common/provider/common.provider.dart';
+import 'package:kyoumutechou/feature/common/provider/common_provider.dart';
 import 'package:kyoumutechou/feature/common/widget/common_page.dart';
 import 'package:kyoumutechou/shared/http/app_exception.dart';
 
@@ -36,6 +36,8 @@ class AttendancePage extends ConsumerWidget {
       },
       setBlank: () {},
       onSavePressed: () {},
+      buttomName: pageType == PageType.seat ? 'リスト' : '座席表',
+      buttonIcon: pageType == PageType.seat ? Icons.list : Icons.grid_view,
     );
   }
 }
@@ -49,9 +51,7 @@ class Gridview extends ConsumerWidget {
     final state = ref.watch(attendanceMeiboListProvider);
 
     return state.when(
-      loading: () {
-        return const Center(child: CircularProgressIndicator());
-      },
+      loading: () {return const SizedBox();},
       error: (AppException e) {
         print('attendanceMeiboListProvider get error. $e');
         return Text(e.toString());
@@ -59,7 +59,7 @@ class Gridview extends ConsumerWidget {
       loaded: () {
         // Boxes.getHealthMeiboModelBox()
         return ValueListenableBuilder(
-            valueListenable: Boxes.getAttendanceMeiboModelBox().listenable(),
+            valueListenable: Boxes.getAttendanceMeibo().listenable(),
             builder: (context, Box<AttendanceMeiboModel> box, _) {
               final meibos = box.values.toList();
 

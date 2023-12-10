@@ -53,7 +53,7 @@ class AttendanceMeiboListProvider extends StateNotifier<ApiState> {
 
     // set all.
     if (stamp.shukketsuBunrui == '50' || stamp.shukketsuBunrui == '60') {
-      final meibos = Boxes.getAttendanceMeiboModelBox().values.toList();
+      final meibos = Boxes.getAttendanceMeibo().values.toList();
       for (final m in meibos) {
         await updateBox(m, stamp, reason1, reason2);
       }
@@ -64,7 +64,7 @@ class AttendanceMeiboListProvider extends StateNotifier<ApiState> {
     if (meibo.jokyoList![0].shukketsuBunrui == '50' || 
         meibo.jokyoList![0].shukketsuBunrui == '60') 
     {
-      final meibos = Boxes.getAttendanceMeiboModelBox().values.toList();
+      final meibos = Boxes.getAttendanceMeibo().values.toList();
       const s = AttendanceStampModel(
         shukketsuJokyoCd: '999', 
         shukketsuBunrui: '', 
@@ -92,11 +92,11 @@ class AttendanceMeiboListProvider extends StateNotifier<ApiState> {
 
   // cover blank values
   Future<void> updateByBlank() async {
-    final meibos = Boxes.getAttendanceMeiboModelBox().values.toList();
+    final meibos = Boxes.getAttendanceMeibo().values.toList();
     
     if (meibos.isEmpty) return;
 
-    final stamp = Boxes.getRegistAttendanceStampBox().get('100');
+    final stamp = Boxes.getRegistAttendanceStamp().get('100');
     for (final m in meibos) {
       if (m.jokyoList![0].shukketsuBunrui!.isEmpty) {
         await updateBox(
@@ -143,13 +143,13 @@ class AttendanceMeiboListProvider extends StateNotifier<ApiState> {
       jokyoList: [status],
     );
 
-    final box = Boxes.getAttendanceMeiboModelBox();
-    final index = Boxes.getAttendanceMeiboModelBox().keys
+    final box = Boxes.getAttendanceMeibo();
+    final index = Boxes.getAttendanceMeibo().keys
         .firstWhere(
           (k) => box.getAt(k as int)?.studentKihonId == newMeibo.studentKihonId,
         );
 
-    await Boxes.getAttendanceMeiboModelBox().put(index, newMeibo);
+    await Boxes.getAttendanceMeibo().put(index, newMeibo);
   }
 
   Future<void> getPhoto() async {

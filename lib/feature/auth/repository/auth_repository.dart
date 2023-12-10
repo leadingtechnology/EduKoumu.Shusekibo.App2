@@ -39,13 +39,14 @@ class AuthRepository implements AuthRepositoryProtocol {
     final params =
         'grant_type=password&username=$tenantId,$email&password=$password';
 
-    final loginResponse = await _api.post('token', params);
+    final response = await _api.post('token', params);
 
-    return loginResponse.when(success: (success) async {
+    return response.when(success: (value) async {
 
-      final staff = Staff.fromJson(success as Map<String, dynamic>);
+      final staff = Staff.fromJson(value as Map<String, dynamic>);
       await Hive.box<String>('shusekibo').put('token', staff.access_token);
       await Hive.box<String>('shusekibo').put('user', staff.UserName);
+      await Hive.box<String>('shusekibo').put('dantaiId', staff.DantaiId);
 
       return const AuthState.loggedIn();
     }, error: (error) {

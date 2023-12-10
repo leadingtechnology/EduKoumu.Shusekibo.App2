@@ -38,6 +38,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/koumu5.png
   AssetGenImage get koumu5 => const AssetGenImage('assets/icons/koumu5.png');
 
+  /// File path: assets/icons/koumu6.png
+  AssetGenImage get koumu6 => const AssetGenImage('assets/icons/koumu6.png');
+
   /// File path: assets/icons/seito.png
   AssetGenImage get seito => const AssetGenImage('assets/icons/seito.png');
 
@@ -52,7 +55,7 @@ class $AssetsIconsGen {
 
   /// List of all assets
   List<AssetGenImage> get values =>
-      [defaultPkgIcon, koumu, koumu5, seito, seito1, seito2, seito3];
+      [defaultPkgIcon, koumu, koumu5, koumu6, seito, seito1, seito2, seito3];
 }
 
 class $AssetsImagesGen {
@@ -62,12 +65,17 @@ class $AssetsImagesGen {
   AssetGenImage get loginPageLogo =>
       const AssetGenImage('assets/images/login_page_logo.png');
 
+  /// File path: assets/images/login_page_logo2.png
+  AssetGenImage get loginPageLogo2 =>
+      const AssetGenImage('assets/images/login_page_logo2.png');
+
   /// File path: assets/images/login_page_picture.png
   AssetGenImage get loginPagePicture =>
       const AssetGenImage('assets/images/login_page_picture.png');
 
   /// List of all assets
-  List<AssetGenImage> get values => [loginPageLogo, loginPagePicture];
+  List<AssetGenImage> get values =>
+      [loginPageLogo, loginPageLogo2, loginPagePicture];
 }
 
 class $AssetsLangGen {

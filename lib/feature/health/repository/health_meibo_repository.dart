@@ -6,18 +6,17 @@ import 'package:kyoumutechou/feature/boxes.dart';
 import 'package:kyoumutechou/feature/common/model/filter_model.dart';
 import 'package:kyoumutechou/feature/common/provider/filter_provider.dart';
 import 'package:kyoumutechou/feature/common/state/api_state.dart';
+import 'package:kyoumutechou/feature/health/model/health_meibo_model.dart';
+import 'package:kyoumutechou/shared/http/api_provider.dart';
+import 'package:kyoumutechou/shared/http/api_response.dart';
+import 'package:kyoumutechou/shared/http/app_exception.dart';
 
-import '../../../shared/http/api_provider.dart';
-import '../../../shared/http/api_response.dart';
-import '../../../shared/http/app_exception.dart';
-import '../model/health_meibo_model.dart';
-
+// ignore: one_member_abstracts
 abstract class HealthMeiboRepositoryProtocol {
-  Future<ApiState> fetchHealthMeibo();
+  Future<ApiState> fetch(FilterModel filter);
 }
 
-final healthMeiboRepositoryProvider =
-    Provider((ref) => HealthMeiboRepository(ref));
+final healthMeiboRepositoryProvider = Provider(HealthMeiboRepository.new);
 
 class HealthMeiboRepository implements HealthMeiboRepositoryProtocol {
   HealthMeiboRepository(this.ref);
@@ -26,16 +25,19 @@ class HealthMeiboRepository implements HealthMeiboRepositoryProtocol {
   late final ApiProvider _api = ref.read(apiProvider);
 
   @override
-  Future<ApiState> fetchHealthMeibo() async {
-    final FilterModel filter = ref.read(filterProvider);
+  Future<ApiState> fetch(FilterModel filter) async {
     
-    final String strDate = DateFormat('yyyy-MM-dd').format(filter.targetDate?? DateTime.now()).toString();
+    final strDate = DateFormat('yyyy-MM-dd').format(
+      filter.targetDate?? DateTime.now(),
+    );
 
     if (filter.classId == null) {
       return const ApiState.loading();
     }
 
-    final response = await _api.get('api/shozoku/${filter.classId}/KenkouKansatsubo?date=${strDate}&kouryuGakkyu=${filter.kouryuGakkyu}');
+    var url = 'api/shozoku/${filter.classId}/KenkouKansatsubo';
+    url =  '$url?date=$strDate&kouryuGakkyu=${filter.kouryuGakkyu}';
+    final response = await _api.get(url);
 
     response.when(
         success: (success) {},

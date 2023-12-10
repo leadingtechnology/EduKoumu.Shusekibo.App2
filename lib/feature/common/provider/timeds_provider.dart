@@ -4,71 +4,75 @@ import 'package:kyoumutechou/feature/common/model/timed_model.dart';
 import 'package:kyoumutechou/feature/common/provider/filter_provider.dart';
 import 'package:kyoumutechou/feature/common/provider/shozokus_provider.dart';
 import 'package:kyoumutechou/feature/common/repository/timeds_repository.dart';
+import 'package:kyoumutechou/feature/common/state/api_state.dart';
+import 'package:kyoumutechou/shared/util/date_util.dart';
 
-final timedProvider = StateProvider<TimedModel>((ref) => const TimedModel());
+final timedProvider = StateProvider<TimedModel>(
+  (ref) => const TimedModel(),
+);
 
 final timedsProvider =
-    StateNotifierProvider<TimedsNotifier, List<TimedModel>>((ref) {
+    StateNotifierProvider<TimedsNotifier, ApiState>((ref) {
 
   final shozoku = ref.watch(shozokuProvider);
-  final targetDate = ref.watch(filterDateProvider);
+  final targetDate = ref.watch(targetDateProvider);
 
   return TimedsNotifier(
     ref: ref, 
     shozokuId: shozoku.id??0, 
-    targetDate: targetDate,
+    strDate: DateUtil.getStringDate(targetDate) ,
   );
 
 });
 
-class TimedsNotifier extends StateNotifier<List<TimedModel>> {
+class TimedsNotifier extends StateNotifier<ApiState> {
   TimedsNotifier({
     required this.shozokuId, 
-    required this.targetDate, 
+    required this.strDate, 
     required this.ref,
-  }) : super([]) {
+  }) : super(const ApiState.loading()) {
     _fetch();
   }
 
   final Ref ref;
   final int shozokuId;
-  final DateTime targetDate;
-  final box = Boxes.getTimedModelBox();
+  final String strDate;
+  final box = Boxes.getTimeds();
   late final TimedsRepository _rep = ref.watch(timedsRepositoryProvider);
 
   Future<void> _fetch() async {
-    // 1.所属Idが空の場合、空のリストを返す
+    // 所属Idが空の場合、空のリストを返す
     if (shozokuId == 0) {
-      state = [];
+      state = const ApiState.loaded();
       return;
     }
+    
+    // データを取得する
+    final response = await _rep.fetch(shozokuId, strDate);
 
-    // 2.ローカルデータを取得する
+    setDefaultValue();
+    
+    if (mounted) {
+      state = response;
+    }
+  }
 
+  void setDefaultValue(){
+    // 初期値の設定
+    final keys = box.keys.toList().where(
+      (element) => element.toString().startsWith('$shozokuId-$strDate-'),
+    ).toList();
 
-    // 3.リモートデータを取得する
-    final result = await _rep.fetch(shozokuId, targetDate);
-    result.when(
-      error: (e) {
-        print(e);
-        state = [];
-      },
-      loading: () {
-        print('loading');
-        state = [];
-      },
-      loaded: (timedList) {
-        if (timedList.isNotEmpty) {
-          ref.read(timedProvider.notifier).state = timedList.first;
-        }
+    if (keys.isNotEmpty) {
+      try{
+        keys.sort((a, b) => a.toString().compareTo(b.toString()));
 
-        // ローカルデータを保存する
-        for (final element in timedList) {
-          box.put('$shozokuId-${element.jigenIdx}', element);
-        }
+        final firstKey = keys.first;
+        final firstValue = box.get(firstKey);
 
-        state = timedList;
-      },
-    );
+        ref.read(timedProvider.notifier).state = firstValue!;        
+      } catch (e) {}
+    }
+
   }
 }

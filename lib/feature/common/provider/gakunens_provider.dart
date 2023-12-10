@@ -1,77 +1,78 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kyoumutechou/feature/boxes.dart';
+import 'package:kyoumutechou/feature/common/model/dantai_model.dart';
 import 'package:kyoumutechou/feature/common/model/gakunen_model.dart';
 import 'package:kyoumutechou/feature/common/provider/dantais_provider.dart';
 import 'package:kyoumutechou/feature/common/repository/gakunens_repository.dart';
+import 'package:kyoumutechou/feature/common/state/api_state.dart';
 
-final gakunenProvider =
-    StateProvider<GakunenModel>((ref) => const GakunenModel());
+final gakunenProvider = StateProvider<GakunenModel>(
+  (ref) => const GakunenModel(),
+);
 
-final gakunensProvider =
-    StateNotifierProvider<GakunenNotifier, List<GakunenModel>>((ref) {
-      final dantai = ref.watch(dantaiProvider);
+final gakunensProvider = 
+StateNotifierProvider<GakunenNotifier, ApiState>((ref) {
+  final dantai = ref.watch(dantaiProvider);
 
-  return GakunenNotifier(ref: ref, organizationKbn: dantai.organizationKbn??'');
+  return GakunenNotifier(
+    ref: ref, 
+    dantai: dantai,
+  );
 });
 
-class GakunenNotifier extends StateNotifier<List<GakunenModel>> {
+class GakunenNotifier extends StateNotifier<ApiState> {
   GakunenNotifier({
     required this.ref, 
-    required this.organizationKbn,}) : super([]) {
+    required this.dantai,
+  }) : super(const ApiState.loading()) {
     _fetch();
   }
 
   final Ref ref;
-  final String organizationKbn;
-  final box = Boxes.getGakunenModelBox();
+  final DantaiModel dantai;
+
+  final box = Boxes.getGakunens();
   late final GakunensRepository _rep = ref.watch(gakunensRepositoryProvider);
 
+  Future<void> init() async {
+    state = const ApiState.loading();
+    await _fetch();
+  }
+
   Future<void> _fetch() async {
-    // 1.団体区分が空の場合、空のリストを返す
-    if (organizationKbn.isEmpty) {
-      state = [];
-      return;
+    // データを取得する
+    final response = await _rep.fetch('${dantai.organizationKbn}' );
+
+    setDefaultValue();
+    
+    if (mounted) {
+      state = response;
     }
-    
-    // 2.ローカルデータを取得する
-    // if (box.isNotEmpty) {
-    //   final keys = box.keys.toList().where(
-    //         (element) => element.toString().startsWith('$organizationKbn-'),
-    //       );
-      
-    //   // keysの値が存在した場合、boxから取得したデータをstateにセットする
-    //   if (keys.isNotEmpty) {
-    //     final gakunenList = keys
-    //         .map(box.get)
-    //         .toList();
-    //     state = gakunenList as List<GakunenModel>;
-    //     return;
-    //   }
-    // }    
-    
-    // 3.リモートデータを取得する
-    final result = await _rep.fetch(organizationKbn);
-    result.when(
-      error: (e) {
-        print(e);
-        state = [];
-      },
-      loading: () {
-        print('loading');
-        state = [];
-      },
-      loaded: (gakunenList) {
-        if (gakunenList.isNotEmpty) {
-          ref.read(gakunenProvider.notifier).state = gakunenList.first;
-        }
+  }
 
-        // ローカルデータを保存する
-        for (final element in gakunenList) {
-          box.put('$organizationKbn-${element.id}', element);
-        }
+  void setDefaultValue(){
+    // 初期値の設定
+    final keys = box.keys.toList().where(
+          (e) => e.toString().startsWith('${dantai.organizationKbn}-'),
+        ).toList(); 
+    
+    // ignore: cascade_invocations    
+    keys.sort((a, b) => a.toString().compareTo(b.toString()),);
 
-        state = gakunenList;
-      },
-    );
+    if(keys.isNotEmpty){
+      try {
+        final oldGakunen = ref.read(gakunenProvider);
+        
+        if (!keys.contains('${dantai.organizationKbn}-${oldGakunen.id}'))
+        {
+          final gakunen = box.get(keys.first)!;
+
+          if (gakunen.code != oldGakunen.code) {
+            ref.read(gakunenProvider.notifier).state = gakunen;
+          }
+        }
+        // ignore: empty_catches
+      } catch (e) {}
+    }
   }
 }
