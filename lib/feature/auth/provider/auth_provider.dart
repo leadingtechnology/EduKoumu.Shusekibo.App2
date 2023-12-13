@@ -75,6 +75,6 @@ class AuthNotifier extends _$AuthNotifier {
     ;
 
     // ログアウト
-    state = const AuthState.loggedOut();
+    state = AuthState.loggedOut();
   }
 }

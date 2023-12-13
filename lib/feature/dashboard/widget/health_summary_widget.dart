@@ -14,7 +14,7 @@ class HealthSummary extends ConsumerWidget {
     final state = ref.watch(homeHealthNotifierProvider);
 
     return state.when(loading: () {
-      return Container();
+      return const Center(child: CircularProgressIndicator());
     }, error: (AppException e) {
       return Text(e.toString());
     }, loaded: (healthList) {

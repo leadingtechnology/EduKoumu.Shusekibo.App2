@@ -4,6 +4,7 @@ import 'package:kyoumutechou/feature/boxes.dart';
 import 'package:kyoumutechou/feature/common/provider/dantais_provider.dart';
 import 'package:kyoumutechou/feature/common/provider/gakunens_provider.dart';
 import 'package:kyoumutechou/feature/common/provider/shozokus_provider.dart';
+import 'package:kyoumutechou/helpers/theme/app_theme.dart';
 
 
 class ClipShozoku extends ConsumerWidget {
@@ -13,7 +14,7 @@ class ClipShozoku extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(shozokusProvider);
     final shozoku = ref.watch(shozokuProvider);
-    
+
     return state.when(
       loading: () {return const SizedBox();},
       error: (error) {return Text('$error');},
@@ -39,12 +40,20 @@ class ClipShozoku extends ConsumerWidget {
           spacing: 10,
           runSpacing: 6,
           children: shozokuList.map((element) {
+            final isSelected = element == shozoku;
             return ChoiceChip(
               label: Text('${element?.className}',),
-              selected: element == shozoku,
+              labelStyle: TextStyle(
+                color: isSelected
+                    ? theme.colorScheme.onPrimary
+                    : theme.colorScheme.primary,
+              ),
+              selected: isSelected,
               onSelected: (bool selected) {
                 ref.read(shozokuProvider.notifier).state = element!;
               },
+              backgroundColor: theme.colorScheme.background,
+              selectedColor: theme.colorScheme.primary,
               showCheckmark: false, 
             );
           }).toList(),

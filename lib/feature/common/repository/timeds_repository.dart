@@ -36,7 +36,10 @@ class TimedsRepository implements TimedsRepositoryProtocol {
       }
     }
 
-    
+    if(shozokuId == 0){
+      return const ApiState.loaded();
+    }
+
     final url = 'api/shozoku/$shozokuId/JigenList?date=$strDate';
     final response = await _api.get(url);
 

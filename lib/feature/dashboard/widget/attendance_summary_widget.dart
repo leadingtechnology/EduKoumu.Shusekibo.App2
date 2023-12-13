@@ -1,30 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:kyoumutechou/feature/dashboard/model/home_attendance_model.dart';
 import 'package:kyoumutechou/feature/dashboard/provider/home_attendance_provider.dart';
 import 'package:kyoumutechou/helpers/widgets/my_spacing.dart';
 import 'package:kyoumutechou/shared/http/app_exception.dart';
 
 class AttendanceSummaryWidget extends ConsumerWidget {
-  const AttendanceSummaryWidget({Key? key}) : super(key: key);
+  const AttendanceSummaryWidget({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(homeAttendanceNotifierProvider);
 
     return state.when(loading: () {
-      return Container();
+      return const Center(child: CircularProgressIndicator());
     }, error: (AppException e) {
-      return Container(
-        child: Text('${e.toString()}'),
-      );
+      return Text(e.toString());
     }, loaded: (attendanceList) {
       return SingleChildScrollView(
         child: Column(
           children: attendanceList.map((e) {
             String inputStates;
-            Color? inputColor = Colors.pink[100];
+            var inputColor = Colors.pink[100];
 
             if (e.doneAttendanceFlg ?? false) {
               inputStates = '　済　';
@@ -45,7 +42,7 @@ class AttendanceSummaryWidget extends ConsumerWidget {
                   child: Container(
                       decoration: BoxDecoration(
                         color: Colors.yellow[100],
-                        border: Border.all(width: 1),
+                        border: Border.all(),
                         borderRadius: BorderRadius.circular(3),
                       ),
                       alignment: Alignment.center,
@@ -54,18 +51,17 @@ class AttendanceSummaryWidget extends ConsumerWidget {
                         children: [
                           MySpacing.height(8),
                           Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               MySpacing.width(12),
-                              FaIcon(
+                              const FaIcon(
                                 FontAwesomeIcons.clipboard,
                                 size: 16,
                               ),
                               MySpacing.width(8),
                               Text(
                                 '${e.className}',
-                                style: TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.bold),
+                                style: const TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.bold,),
                               ),
                               MySpacing.width(16),
                               Container(
@@ -73,7 +69,7 @@ class AttendanceSummaryWidget extends ConsumerWidget {
                                   color: inputColor,
                                   borderRadius: BorderRadius.circular(10),
                                 ),
-                                child: Text('$inputStates'),
+                                child: Text(inputStates),
                               ),
                             ],
                           ),
@@ -83,42 +79,48 @@ class AttendanceSummaryWidget extends ConsumerWidget {
                             children: [
                               Column(
                                 children: [
-                                  Text('出席'),
+                                  const Text('出席'),
                                   MySpacing.height(4),
                                   Text(
                                     '${e.shusseki}',
                                     style:
-                                        TextStyle(fontWeight: FontWeight.bold),
+                                        const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                   ),
                                 ],
                               ),
                               Container(
                                   color: Colors.grey,
                                   height: 45,
-                                  child: VerticalDivider(width: 1)),
+                                  child: const VerticalDivider(width: 1),),
                               Column(
                                 children: [
-                                  Text('遅刻'),
+                                  const Text('遅刻'),
                                   MySpacing.height(4),
                                   Text(
                                     '${e.tikoku}',
                                     style:
-                                        TextStyle(fontWeight: FontWeight.bold),
+                                        const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                   ),
                                 ],
                               ),
                               Container(
                                   color: Colors.grey,
                                   height: 45,
-                                  child: VerticalDivider(width: 1)),
+                                  child: const VerticalDivider(width: 1),),
                               Column(
                                 children: [
-                                  Text('早退'),
+                                  const Text('早退'),
                                   MySpacing.height(4),
                                   Text(
                                     '${e.sotai}',
                                     style:
-                                        TextStyle(fontWeight: FontWeight.bold),
+                                        const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                   ),
                                   MySpacing.height(4),
                                 ],
@@ -126,15 +128,17 @@ class AttendanceSummaryWidget extends ConsumerWidget {
                               Container(
                                   color: Colors.grey,
                                   height: 45,
-                                  child: VerticalDivider(width: 1)),
+                                  child: const VerticalDivider(width: 1),),
                               Column(
                                 children: [
-                                  Text('欠席・出停等'),
+                                  const Text('欠席・出停等'),
                                   MySpacing.height(4),
                                   Text(
                                     '${e.kessekiShuttei}',
                                     style:
-                                        TextStyle(fontWeight: FontWeight.bold),
+                                        const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                   ),
                                 ],
                               ),

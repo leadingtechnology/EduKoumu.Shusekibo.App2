@@ -1,11 +1,13 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kyoumutechou/feature/boxes.dart';
+import 'package:kyoumutechou/feature/common/model/tokobi_model.dart';
 import 'package:kyoumutechou/feature/common/provider/filter_provider.dart';
 import 'package:kyoumutechou/feature/common/repository/tokobis_repository.dart';
 import 'package:kyoumutechou/feature/common/state/api_state.dart';
 import 'package:kyoumutechou/shared/util/date_util.dart';
 
 final isTokobiProvider = StateProvider<bool>((ref) => false);
+final tokobiProvider = StateProvider<TokobiModel>((ref) => const TokobiModel());
 
 final tokobisProvider =
     StateNotifierProvider<TokobiNotifier, ApiState>((ref) {
@@ -26,7 +28,7 @@ class TokobiNotifier extends StateNotifier<ApiState> {
     required this.targetDate,
     required this.isKoryu,
   }) : super(const ApiState.loading()) {
-    _fetch();
+    _fetch(ref);
   }
 
   final Ref ref;
@@ -37,7 +39,7 @@ class TokobiNotifier extends StateNotifier<ApiState> {
   final box = Boxes.getTokobis();
   late final TokobisRepository _rep = ref.watch(tokobisRepositoryProvider);
 
-  Future<void> _fetch() async {
+  Future<void> _fetch(Ref ref) async {
     // 所属IDが空の場合、空のリストを返す
     if (shozokuId == 0) {
       state = const ApiState.loaded();
@@ -48,13 +50,15 @@ class TokobiNotifier extends StateNotifier<ApiState> {
     final strDate = DateUtil.getStringDate(targetDate);
     final key = box.keys.toList().where(
           (element) => element.toString().startsWith('$shozokuId-$strDate'),
-        ).first;
+        ).toList().firstOrNull;
     
     var isEditable = false ;
     if(key != null){
       final tokobi = box.get(key);
       if(tokobi != null){
         isEditable = tokobi.isEditable ?? false;
+
+        ref.read(tokobiProvider.notifier).state = tokobi;
       }
     }
 

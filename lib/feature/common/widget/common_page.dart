@@ -15,7 +15,7 @@ class CommonPage extends ConsumerWidget {
     required this.contentWidget,
     required this.onShift,
     required this.setBlank,
-    required this.onSavePressed,
+    required this.saveWidget,
     required this.buttomName,
     required this.buttonIcon,
     super.key,
@@ -25,7 +25,7 @@ class CommonPage extends ConsumerWidget {
   final Widget contentWidget; // コンテンツ表示用のウィジェット
   final VoidCallback onShift; // ボタン1の処理
   final VoidCallback setBlank; // ボタン2の処理
-  final VoidCallback onSavePressed; // 保存ボタンの処理
+  final Widget saveWidget; // 保存ボタン
   final String buttomName;
   final IconData buttonIcon;
 
@@ -58,6 +58,7 @@ class CommonPage extends ConsumerWidget {
             Expanded(
               child: Container(
                 color: Colors.grey[100],
+                padding: MySpacing.all(8),
                 child: contentWidget,
               ),
             ),
@@ -84,9 +85,7 @@ class CommonPage extends ConsumerWidget {
                           backgroundColor: Colors.white,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8),
-                            side: const BorderSide(
-                              color: Colors.black,
-                            ),
+                            side: const BorderSide(),
                           ),
                         ),
                       ),
@@ -97,9 +96,7 @@ class CommonPage extends ConsumerWidget {
                           backgroundColor: Colors.white,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8),
-                            side: const BorderSide(
-                              color: Colors.black,
-                            ),
+                            side: const BorderSide(),
                           ),
                         ),
                         child: const Text(
@@ -109,10 +106,7 @@ class CommonPage extends ConsumerWidget {
                       ),
                     ],
                   ),
-                  SaveButtonWidget(
-                    onPressed: onSavePressed,
-                    label: '保存',
-                  ),
+                  saveWidget,
                 ],
               ),
             ),

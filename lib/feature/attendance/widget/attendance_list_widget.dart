@@ -6,6 +6,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:kyoumutechou/feature/attendance/model/attendance_meibo_model.dart';
 import 'package:kyoumutechou/feature/attendance/model/attendance_reason_model.dart';
 import 'package:kyoumutechou/feature/attendance/model/attendance_stamp_model.dart';
+import 'package:kyoumutechou/feature/attendance/model/attendance_status_model.dart';
 import 'package:kyoumutechou/feature/attendance/provider/attendance_meibo_provider.dart';
 import 'package:kyoumutechou/feature/attendance/provider/attendance_reason_provider.dart';
 import 'package:kyoumutechou/feature/attendance/provider/attendance_stamp_provider.dart';
@@ -15,50 +16,63 @@ import 'package:kyoumutechou/feature/common/provider/filter_provider.dart';
 import 'package:kyoumutechou/shared/util/date_util.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
-GlobalKey<_AttendanceListWidgetState> attendanceGlobalKey = GlobalKey();
+// ignore: library_private_types_in_public_api
+GlobalKey<_AttendanceListWidgetState> 
+attendanceGlobalKey = GlobalKey();
 
 class AttendanceListWidget extends ConsumerStatefulWidget {
-  const AttendanceListWidget({Key? key}) : super(key: key);
+  const AttendanceListWidget({super.key});
 
   @override
-  ConsumerState<AttendanceListWidget> createState() => _AttendanceListWidgetState();
+  ConsumerState<AttendanceListWidget> 
+  createState() => _AttendanceListWidgetState();
 }
 
+// 出欠（日）widget
 class _AttendanceListWidgetState extends ConsumerState<AttendanceListWidget> {
-  final List<PlutoColumn> columns = [];
-  final List<PlutoRow> rows = [];
+  late final List<PlutoColumn> columns = [];
+  late final List<PlutoRow> rows = [];
 
-  late final PlutoGridStateManager stateManager;
   late FilterModel filter;
+  late final PlutoGridStateManager stateManager;
 
   final _baseUrl = dotenv.env['BASE_URL']!;
   String accessToken = Hive.box<String>('shusekibo').get('token').toString();
 
 
   PlutoRow setPlutRow(AttendanceMeiboModel e) {
-    print('行設定時の写真パス：${e.photoUrl}');
+    AttendanceStatusModel jokyo;
+    if (e.jokyoList != null && e.jokyoList!.isNotEmpty) {
+      try {
+        jokyo = e.jokyoList!.first;
+      } catch (ex) {
+        jokyo = const AttendanceStatusModel();
+      }
+    } else {
+      jokyo = const AttendanceStatusModel();
+    }
+    
     return PlutoRow(cells: {
-      'gakunen': PlutoCell(value: e.gakunen),
-      'classNo': PlutoCell(value: e.className),
+      //'gakunen': PlutoCell(value: e.gakunen),
+      //'classNo': PlutoCell(value: e.className),
       'shusekiNo': PlutoCell(value: e.studentNumber??''),
       'photoPath': PlutoCell(value: e.photoUrl),
       'fullName': PlutoCell(value: e.name),
       'sex': PlutoCell(value: e.genderCode == '1' ? '男' : '女'),
-      'mark': PlutoCell(value: e.jokyoList![0].ryaku ?? ''),
-      'reason1': PlutoCell(value: e.jokyoList![0].jiyu1 ?? ''),
-      'reason2': PlutoCell(value: e.jokyoList![0].jiyu2 ?? ''),
-    });
+      'mark': PlutoCell(value: jokyo.ryaku ?? ''),
+      'reason1': PlutoCell(value: jokyo.jiyu1 ?? ''),
+      'reason2': PlutoCell(value: jokyo.jiyu2 ?? ''),
+    },);
   }
 
   @override
   void initState() {
     super.initState();
-    // "ref" can be used in all life-cycles of a StatefulWidget.
     filter = ref.read(filterProvider);
 
     columns.addAll([
-      PlutoColumn(title: '学年',    field: 'gakunen',   readOnly: true, type: PlutoColumnType.text(), width: 70,  enableContextMenu:false, textAlign: PlutoColumnTextAlign.left, titleTextAlign: PlutoColumnTextAlign.center),
-      PlutoColumn(title: 'クラス',  field: 'classNo',   readOnly: true, type: PlutoColumnType.text(), width: 90, enableContextMenu: false, textAlign: PlutoColumnTextAlign.left, titleTextAlign: PlutoColumnTextAlign.center),
+      //PlutoColumn(title: '学年',    field: 'gakunen',   readOnly: true, type: PlutoColumnType.text(), width: 70,  enableContextMenu:false, textAlign: PlutoColumnTextAlign.left, titleTextAlign: PlutoColumnTextAlign.center),
+      //PlutoColumn(title: 'クラス',  field: 'classNo',   readOnly: true, type: PlutoColumnType.text(), width: 90, enableContextMenu: false, textAlign: PlutoColumnTextAlign.left, titleTextAlign: PlutoColumnTextAlign.center),
       PlutoColumn(title: '出席番号',field: 'shusekiNo', readOnly: true, type: PlutoColumnType.text(), width: 80, enableContextMenu: false, textAlign: PlutoColumnTextAlign.right, titleTextAlign: PlutoColumnTextAlign.center),
       PlutoColumn(
         title: '写真',    
@@ -88,33 +102,32 @@ class _AttendanceListWidgetState extends ConsumerState<AttendanceListWidget> {
       PlutoColumn(title: '理由2',   field: 'reason2',   readOnly: true, type: PlutoColumnType.text(),               width: 216, enableContextMenu: false, textAlign: PlutoColumnTextAlign.left, titleTextAlign: PlutoColumnTextAlign.center),
     ]);
 
-    final List<AttendanceMeiboModel> meibos = Boxes.getAttendanceMeibo().values.toList();
-    
-    rows.addAll(meibos.map((e) => setPlutRow(e)).toList()); 
+    final meibos = Boxes.getAttendanceMeibo().values.toList();
+    rows.addAll(meibos.map(setPlutRow).toList()); 
   }
 
-  void setReason(PlutoRow row, WidgetRef ref) async {
-    AttendanceStampModel stamp = ref.read(attendanceStampProvider);
+  Future<void> setReason(PlutoRow row, WidgetRef ref) async {
+    final stamp = ref.read(attendanceStampProvider);
     if (stamp.shukketsuJokyoCd == '001') return;
 
-    AttendanceReasonModel reason1 = ref.watch(attendanceReason1Provider);
-    AttendanceReasonModel reason2 = ref.watch(attendanceReason2Provider);
+    final reason1 = ref.watch(attendanceReason1Provider);
+    final reason2 = ref.watch(attendanceReason2Provider);
 
-    String studentNumber = row.cells['shusekiNo']!.value.toString();
+    final studentNumber = row.cells['shusekiNo']!.value.toString();
     if (studentNumber.isEmpty) return;
 
-    final List<AttendanceMeiboModel> meibos =
-        Boxes.getAttendanceMeibo().values.toList();
+    final meibos = Boxes.getAttendanceMeibo().values.toList();
     AttendanceMeiboModel meibo;
     try {
-      meibo =
-          meibos.where((e) => e.studentNumber == studentNumber).toList().first;
+      meibo = meibos.where(
+        (e) => e.studentNumber == studentNumber,
+      ).toList().first;
     } catch (e) {
-      print('HealthListWidget PlutoGrid get meibo error. ${e.toString()}');
+      print('AttendanceList PlutoGrid get meibo error. ${e.toString()}');
       return;
     }
 
-    ref.read(attendanceMeiboListProvider.notifier).updateById(
+    await ref.read(attendanceMeiboListProvider.notifier).updateById(
           meibo,
           stamp,
           reason1,
@@ -123,20 +136,23 @@ class _AttendanceListWidgetState extends ConsumerState<AttendanceListWidget> {
     
     // set all.
     if (stamp.shukketsuBunrui == '50' || stamp.shukketsuBunrui == '60') {
-      stateManager.rows.forEach((r) {
+      for (final r in stateManager.rows) {
         r.cells['mark']!.value = stamp.shukketsuJokyoNmRyaku;
         r.cells['reason1']!.value = reason1.shukketsuJiyuNmSeishiki ?? '';
         r.cells['reason2']!.value = reason2.shukketsuJiyuNmSeishiki ?? '';
-      });
+      }
       stateManager.notifyListeners();
       return;
     }
 
     //clear all and set one
-    if(row.cells['mark']!.value == '臨１' || row.cells['mark']!.value == '臨２') {
-      stateManager.rows.forEach((r) {
+    if(row.cells['mark']!.value == '臨１' || 
+        row.cells['mark']!.value == '臨２') {
+      
+      for (final r in stateManager.rows) {
         if (r.sortIdx == row.sortIdx) {
-          r.cells['mark']!.value = stamp.shukketsuJokyoCd=='999'?'':stamp.shukketsuJokyoNmRyaku;;
+          r.cells['mark']!.value = stamp.shukketsuJokyoCd=='999'
+              ? '' : stamp.shukketsuJokyoNmRyaku;
           r.cells['reason1']!.value = reason1.shukketsuJiyuNmSeishiki ?? '';
           r.cells['reason2']!.value = reason2.shukketsuJiyuNmSeishiki ?? '';
         }else{
@@ -144,34 +160,35 @@ class _AttendanceListWidgetState extends ConsumerState<AttendanceListWidget> {
           r.cells['reason1']!.value = '';
           r.cells['reason2']!.value = '';
         }
-      });
+      }
       stateManager.notifyListeners();
       return;
     }
 
-    row.cells['mark']!.value = stamp.shukketsuJokyoCd=='999'?'':stamp.shukketsuJokyoNmRyaku;
+    row.cells['mark']!.value = stamp.shukketsuJokyoCd=='999'
+        ? '' : stamp.shukketsuJokyoNmRyaku;
     row.cells['reason1']!.value = reason1.shukketsuJiyuNmSeishiki ?? '';
     row.cells['reason2']!.value = reason2.shukketsuJiyuNmSeishiki ?? '';
     stateManager.notifyListeners();
   }
 
   void setBlank() {
-    stateManager.rows.forEach((row) { 
+    for (final row in stateManager.rows) { 
       if (row.cells['mark']!.value.toString().isEmpty) {
         row.cells['mark']!.value = '・';
         row.cells['reason1']!.value = '';
         row.cells['reason2']!.value = '';
       }
-    });
+    }
     stateManager.notifyListeners();
   } 
 
   void setAll(String mark, String reason1, String reason2){
-    stateManager.rows.forEach((row) {
+    for (final row in stateManager.rows) {
       row.cells['mark']!.value = mark;
       row.cells['reason1']!.value = reason1;
       row.cells['reason2']!.value = reason2;
-    });
+    }
   }
 
   @override

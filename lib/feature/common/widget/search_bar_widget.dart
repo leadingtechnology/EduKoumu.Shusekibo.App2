@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kyoumutechou/feature/common/provider/filter_provider.dart';
 import 'package:kyoumutechou/feature/common/widget/control_tokobi.dart';
+import 'package:kyoumutechou/feature/common/widget/control_tokobi2.dart';
 import 'package:kyoumutechou/feature/home/provider/home_provider.dart';
 import 'package:kyoumutechou/helpers/widgets/my_spacing.dart';
 import 'package:kyoumutechou/helpers/widgets/my_text.dart';
@@ -24,7 +25,6 @@ class SearchBarWidget extends ConsumerWidget {
           // 左側の検索条件
           Expanded(
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 // 1.1 学年と学年の表示
                 Row(
@@ -39,7 +39,7 @@ class SearchBarWidget extends ConsumerWidget {
                         _scaffoldKey.currentState?.openEndDrawer();
                       },
                       child: Container(
-                        width: 50,
+                        constraints: const BoxConstraints(minWidth: 60),
                         padding: MySpacing.x(4),
                         decoration: BoxDecoration(
                           border: Border.all(),
@@ -55,7 +55,7 @@ class SearchBarWidget extends ConsumerWidget {
                   ],
                 ),
                 //
-                MySpacing.width(20), // 间隔
+                MySpacing.width(60), // 间隔
                 // 1.2 クラスとクラスの表示、チェックボックス
                 Row(
                   children: [
@@ -69,7 +69,7 @@ class SearchBarWidget extends ConsumerWidget {
                         _scaffoldKey.currentState?.openEndDrawer();
                       },
                       child: Container(
-                        width: 80,
+                        constraints: const BoxConstraints(minWidth: 60),
                         padding: MySpacing.x(4),
                         decoration: BoxDecoration(
                           border: Border.all(),
@@ -92,7 +92,7 @@ class SearchBarWidget extends ConsumerWidget {
                     ),
                   ],
                 ),
-                MySpacing.width(20),
+                MySpacing.width(60),
 
                 if (menuId != Menu.awareness) ...[
                   // 1.3 対象日
@@ -109,21 +109,25 @@ class SearchBarWidget extends ConsumerWidget {
                           _scaffoldKey.currentState?.openEndDrawer();
                         },
                         child: Container(
-                          width: 80,
+                          constraints: const BoxConstraints(minWidth: 60),
                           padding: MySpacing.x(4),
                           decoration: BoxDecoration(
                             border: Border.all(),
                             borderRadius: BorderRadius.circular(3),
                           ),
-                          child: Text(filter.japanDate ?? ''),
+                          child: Text(
+                            filter.className == '' ? 
+                            '' :  filter.japanDate ?? '',
+                          ),
                         ),
                       ),
                       const ControlTokobi(),
+                      const ControlTokobi2(),
                     ],
                   ),
 
                   if (menuId == Menu.attendanceTimed)...[
-                    MySpacing.width(20),
+                    MySpacing.width(60),
                     // 1.5 時限
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -147,7 +151,6 @@ class SearchBarWidget extends ConsumerWidget {
                             child: Text(filter.jigenRyaku ?? ''),
                           ),
                         ),
-
                       ],
                     ),
                   ],
@@ -207,7 +210,9 @@ class SearchBarWidget extends ConsumerWidget {
             children: <Widget>[
               IconButton(
                 icon: const Icon(Icons.refresh),
-                onPressed: () => _scaffoldKey.currentState?.openEndDrawer(),
+                onPressed: () {
+                  ref.read(filterProvider.notifier).refresh();
+                },
               ),
               MySpacing.width(15),
               IconButton(

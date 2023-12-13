@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -9,7 +8,10 @@ import 'package:kyoumutechou/feature/attendance/widget/attendance_list_widget.da
 import 'package:kyoumutechou/feature/attendance/widget/attendance_seat_widget.dart';
 import 'package:kyoumutechou/feature/boxes.dart';
 import 'package:kyoumutechou/feature/common/provider/common_provider.dart';
+import 'package:kyoumutechou/feature/common/provider/tokobis_provider.dart';
 import 'package:kyoumutechou/feature/common/widget/common_page.dart';
+import 'package:kyoumutechou/feature/common/widget/save_button_widget.dart';
+import 'package:kyoumutechou/feature/common/widget/toast_helper.dart';
 import 'package:kyoumutechou/shared/http/app_exception.dart';
 
 // 出欠（日）widget
@@ -22,6 +24,7 @@ class AttendancePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final pageType = ref.watch(attendancePageTypeProvider);
+    final isEditable = ref.watch(isTokobiProvider);
 
     return CommonPage(
       scaffoldKey: _scaffoldKey,
@@ -35,14 +38,20 @@ class AttendancePage extends ConsumerWidget {
                 : PageType.seat;
       },
       setBlank: () {},
-      onSavePressed: () {},
-      buttomName: pageType == PageType.seat ? 'リスト' : '座席表',
+      saveWidget: SaveButtonWidget(
+        label: '保存',
+        onPressed: !isEditable ? null : () {
+          ref.read(attendanceMeiboListProvider.notifier).save();
+          ToastHelper.showToast(context, '　保存しました　');
+        },
+      ),
+      buttomName: pageType == PageType.seat ? '一覧' : 'テーブル',
       buttonIcon: pageType == PageType.seat ? Icons.list : Icons.grid_view,
     );
   }
 }
 
-// ShuketuSeat
+// 出欠（日）テーブル
 class Gridview extends ConsumerWidget {
   const Gridview({super.key});
 
@@ -51,13 +60,11 @@ class Gridview extends ConsumerWidget {
     final state = ref.watch(attendanceMeiboListProvider);
 
     return state.when(
-      loading: () {return const SizedBox();},
-      error: (AppException e) {
-        print('attendanceMeiboListProvider get error. $e');
-        return Text(e.toString());
+      loading: () {
+        return const Center(child: CircularProgressIndicator());
       },
+      error: (AppException e) {return Text(e.toString());},
       loaded: () {
-        // Boxes.getHealthMeiboModelBox()
         return ValueListenableBuilder(
             valueListenable: Boxes.getAttendanceMeibo().listenable(),
             builder: (context, Box<AttendanceMeiboModel> box, _) {
@@ -93,14 +100,12 @@ class ListView extends ConsumerWidget {
 
     return state.when(
       loading: () {
-        return Container(); //Center(child: CircularProgressIndicator());
+        return const Center(child: CircularProgressIndicator());
       },
       error: (AppException e) {
-        print('attendanceMeiboListProvider get error. $e');
-        return Text('$e');
+        return Center(child: Text(e.toString()));
       },
       loaded: () {
-        // Boxes.getHealthMeiboModelBox()
         return AttendanceListWidget(
           key: attendanceGlobalKey,
         );

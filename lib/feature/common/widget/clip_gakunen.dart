@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kyoumutechou/feature/boxes.dart';
 import 'package:kyoumutechou/feature/common/provider/dantais_provider.dart';
 import 'package:kyoumutechou/feature/common/provider/gakunens_provider.dart';
+import 'package:kyoumutechou/feature/common/provider/shozokus_provider.dart';
+import 'package:kyoumutechou/helpers/theme/app_theme.dart';
 
 class ClipGakunen extends ConsumerWidget {
   const ClipGakunen({super.key});
@@ -34,12 +36,26 @@ class ClipGakunen extends ConsumerWidget {
           spacing: 10,
           runSpacing: 6,
           children: gakunenList.map((gakunen) {
+            final isSelected = gakunen == ref.watch(gakunenProvider);
+
             return ChoiceChip(
               label: Text('${gakunen?.gakunenRyakusho}',),
-              selected: gakunen == ref.watch(gakunenProvider),
+              labelStyle: TextStyle(
+                color: isSelected? 
+                theme.colorScheme.onPrimary : 
+                theme.colorScheme.primary,
+              ),
+              selected: isSelected,
               onSelected: (bool selected) {
                 ref.read(gakunenProvider.notifier).state = gakunen!;
+                setShozokuValue(
+                  ref as Ref<Object?>,
+                  ref.read(dantaiProvider).id!,
+                  gakunen.code ?? '',
+                );
               },
+              backgroundColor: theme.colorScheme.background,
+              selectedColor: theme.colorScheme.primary,
               showCheckmark: false, 
             );
           }).toList(),

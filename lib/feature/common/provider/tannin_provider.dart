@@ -10,12 +10,10 @@ import 'package:kyoumutechou/shared/util/date_util.dart';
 
 final tanninListProvider =
     StateNotifierProvider<TanninNotifier, ApiState>((ref) {
-  final dantai = ref.watch(dantaiProvider);
   final targetDate = ref.watch(targetDateProvider);
       
   return TanninNotifier(
     ref,
-    dantai.id??0,
     DateUtil.getStringDate(targetDate) ,
   );
 });
@@ -25,20 +23,20 @@ final tanninProvider = StateProvider<TanninModel>((ref) => const TanninModel());
 class TanninNotifier extends StateNotifier<ApiState> {
   TanninNotifier(
     this.ref,
-    this.dantaiId,
     this.strDate,
   ) : super(const ApiState.loading()) {
     _fetch();
   }
 
   final Ref ref;
-  final int dantaiId;
   final String strDate;
 
   final box = Boxes.getTannin();
   late final TanninRepository _repository = ref.read(tanninRepositoryProvider);
 
   Future<void> _fetch() async {
+    final dantaiId = ref.read(dantaiProvider).id ?? 0;
+
     if (dantaiId == 0) {
       return;
     }

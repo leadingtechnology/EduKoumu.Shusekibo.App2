@@ -37,7 +37,9 @@ class ControlTannin extends ConsumerWidget {
         if (keys.isEmpty) {
           return const SizedBox();
         }
-        return const Text('.');
+        final tannin = box.get(keys.first);
+        return Text(
+          '${tannin!.gakunenCode}・${tannin.className}・${tannin.shozokuId}',);
       },
     );
   }

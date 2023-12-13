@@ -4,6 +4,7 @@ import 'package:kyoumutechou/feature/boxes.dart';
 import 'package:kyoumutechou/feature/common/provider/filter_provider.dart';
 import 'package:kyoumutechou/feature/common/provider/shozokus_provider.dart';
 import 'package:kyoumutechou/feature/common/provider/timeds_provider.dart';
+import 'package:kyoumutechou/helpers/theme/app_theme.dart';
 import 'package:kyoumutechou/shared/util/date_util.dart';
 
 class ClipTimed extends ConsumerWidget {
@@ -39,12 +40,20 @@ class ClipTimed extends ConsumerWidget {
           spacing: 10,
           runSpacing: 6,
           children: timedList.map((timed) {
+            final isSelected = timed == ref.watch(timedProvider);
             return ChoiceChip(
               label: Text('${timed?.ryaku}',),
-              selected: timed == ref.watch(timedProvider),
+              labelStyle: TextStyle(
+                color: isSelected
+                    ? theme.colorScheme.onPrimary
+                    : theme.colorScheme.primary,
+              ),
+              selected: isSelected,
               onSelected: (bool selected) {
                 ref.read(timedProvider.notifier).state = timed!;
               },
+              backgroundColor: theme.colorScheme.background,
+              selectedColor: theme.colorScheme.primary,
               showCheckmark: false, 
             );
           }).toList(),

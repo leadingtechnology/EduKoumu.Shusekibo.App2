@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:kyoumutechou/feature/common/provider/filter_provider.dart';
-import 'package:kyoumutechou/feature/common/provider/tannin_provider.dart';
 import 'package:kyoumutechou/feature/common/widget/clip_gakunen.dart';
 import 'package:kyoumutechou/feature/common/widget/clip_shozoku.dart';
 import 'package:kyoumutechou/feature/common/widget/clip_timed.dart';

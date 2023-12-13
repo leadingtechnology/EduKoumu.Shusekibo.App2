@@ -42,10 +42,16 @@ class HealthStampRepository implements HealthStampRepositoryProtocol {
 
         // Add 2 stamps
         const handStamp = HealthStampModel(
-          jokyoCd: '001', jokyoNmRyaku: '(未選択)', jokyoKey : '', jokyoNmTsu: '',
+          jokyoCd: '001', 
+          jokyoNmRyaku: '(未選択)', 
+          jokyoKey : '', 
+          jokyoNmTsu: '(未選択)',
         );
         const delStamp = HealthStampModel(
-          jokyoCd: '999', jokyoNmRyaku: 'クリア', jokyoKey: 'Delete', jokyoNmTsu: '',
+          jokyoCd: '999', 
+          jokyoNmRyaku: 'クリア', 
+          jokyoKey: 'Delete', 
+          jokyoNmTsu: 'クリア',
         );
         
         registStampList

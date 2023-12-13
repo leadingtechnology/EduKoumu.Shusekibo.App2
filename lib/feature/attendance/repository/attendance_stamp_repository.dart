@@ -52,13 +52,13 @@ class AttendanceStampRepository implements AttendanceStampRepositoryProtocol {
             shukketsuJokyoCd: '001',
             shukketsuJokyoNmRyaku: '(未選択)',
             shukketsuJokyoKey: '',
-            shukketsuJokyoNmTsu: '',
+            shukketsuJokyoNmTsu: '(未選択)',
             );
         const delStamp = AttendanceStampModel(
             shukketsuJokyoCd: '999',
             shukketsuJokyoNmRyaku: 'クリア',
             shukketsuJokyoKey: 'Delete',
-            shukketsuJokyoNmTsu: '',
+            shukketsuJokyoNmTsu: 'クリア',
             );
 
         registStampList

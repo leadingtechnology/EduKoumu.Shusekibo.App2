@@ -14,22 +14,25 @@ import 'package:kyoumutechou/feature/common/provider/filter_provider.dart';
 import 'package:kyoumutechou/shared/util/date_util.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
-GlobalKey<_AttendanceTimedListWidgetState> attendanceTimedGlobalKey = GlobalKey();
+// ignore: library_private_types_in_public_api
+GlobalKey<_AttendanceTimedListWidgetState> 
+attendanceTimedGlobalKey = GlobalKey();
 
 class AttendanceTimedListWidget extends ConsumerStatefulWidget {
   const AttendanceTimedListWidget({super.key});
 
   @override
-  ConsumerState<AttendanceTimedListWidget> createState() => _AttendanceTimedListWidgetState();
+  ConsumerState<AttendanceTimedListWidget> 
+  createState() => _AttendanceTimedListWidgetState();
 }
 
 // 出欠（時限）widget
 class _AttendanceTimedListWidgetState extends ConsumerState<AttendanceTimedListWidget> {
-  final List<PlutoColumn> columns = [];
-  final List<PlutoRow> rows = [];
+  late final List<PlutoColumn> columns = [];
+  late final List<PlutoRow> rows = [];
 
-  late final PlutoGridStateManager stateManager;
   late FilterModel filter;
+  late final PlutoGridStateManager stateManager;
 
   final _baseUrl = dotenv.env['BASE_URL']!;
   String accessToken = Hive.box<String>('shusekibo').get('token').toString();
@@ -37,9 +40,11 @@ class _AttendanceTimedListWidgetState extends ConsumerState<AttendanceTimedListW
 
   PlutoRow setPlutRow(AttendanceTimedMeiboModel e, int jigenIdx) {
     AttendanceTimedStatusModel jokyo;
-    if (e.jokyoList != null) {
+    if (e.jokyoList != null && e.jokyoList!.isNotEmpty) {
       try {
-        jokyo = e.jokyoList!.where((e) => e.jigenIdx == jigenIdx).toList().first;
+        jokyo = e.jokyoList!.where(
+          (e) => e.jigenIdx == jigenIdx,
+        ).toList().first;
       } catch (ex) {
         jokyo = const AttendanceTimedStatusModel();
       }
@@ -48,8 +53,8 @@ class _AttendanceTimedListWidgetState extends ConsumerState<AttendanceTimedListW
     }
 
     return PlutoRow(cells: {
-      'gakunen': PlutoCell(value: e.gakunen),
-      'classNo': PlutoCell(value: e.className),
+      //'gakunen': PlutoCell(value: e.gakunen),
+      //'classNo': PlutoCell(value: e.className),
       'shusekiNo': PlutoCell(value: e.studentNumber ?? ''),
       'photoPath': PlutoCell(value: e.photoUrl),
       'fullName': PlutoCell(value: e.name),
@@ -63,12 +68,11 @@ class _AttendanceTimedListWidgetState extends ConsumerState<AttendanceTimedListW
   @override
   void initState() {
     super.initState();
-    // "ref" can be used in all life-cycles of a StatefulWidget.
     filter = ref.read(filterProvider);
 
     columns.addAll([
-      PlutoColumn(title: '学年',    field: 'gakunen',   readOnly: true, type: PlutoColumnType.text(),               width: 70,  enableContextMenu:false, textAlign: PlutoColumnTextAlign.left, titleTextAlign: PlutoColumnTextAlign.center),
-      PlutoColumn(title: 'クラス',  field: 'classNo',   readOnly: true, type: PlutoColumnType.text(),               width: 90, enableContextMenu: false, textAlign: PlutoColumnTextAlign.left, titleTextAlign: PlutoColumnTextAlign.center),
+      //PlutoColumn(title: '学年',    field: 'gakunen',   readOnly: true, type: PlutoColumnType.text(),               width: 70,  enableContextMenu:false, textAlign: PlutoColumnTextAlign.left, titleTextAlign: PlutoColumnTextAlign.center),
+      //PlutoColumn(title: 'クラス',  field: 'classNo',   readOnly: true, type: PlutoColumnType.text(),               width: 90, enableContextMenu: false, textAlign: PlutoColumnTextAlign.left, titleTextAlign: PlutoColumnTextAlign.center),
       PlutoColumn(title: '出席番号',field: 'shusekiNo', readOnly: true, type: PlutoColumnType.text(), width: 80, enableContextMenu: false, textAlign: PlutoColumnTextAlign.right, titleTextAlign: PlutoColumnTextAlign.center),
       PlutoColumn(title: '写真',    field: 'photoPath', readOnly: true, type: PlutoColumnType.text(), enableDropToResize:false,
         enableContextMenu: false,
@@ -95,7 +99,6 @@ class _AttendanceTimedListWidgetState extends ConsumerState<AttendanceTimedListW
     ]);
 
     final meibos = Boxes.getAttendanceTimedMeiboModelBox().values.toList();
-
     rows.addAll(meibos.map((e) => setPlutRow(e, filter.jigenIdx??0)).toList()); 
   }
 
@@ -109,14 +112,14 @@ class _AttendanceTimedListWidgetState extends ConsumerState<AttendanceTimedListW
     final studentNumber = row.cells['shusekiNo']!.value.toString();
     if (studentNumber.isEmpty) return;
 
-    final meibos =
-        Boxes.getAttendanceTimedMeiboModelBox().values.toList();
+    final meibos = Boxes.getAttendanceTimedMeiboModelBox().values.toList();
     AttendanceTimedMeiboModel meibo;
     try {
-      meibo =
-          meibos.where((e) => e.studentNumber == studentNumber).toList().first;
+      meibo = meibos.where(
+        (e) => e.studentNumber == studentNumber,
+      ).toList().first;
     } catch (e) {
-      print('HealthListWidget PlutoGrid get meibo error. $e');
+      print('AttendanceTimedList PlutoGrid get meibo error. $e');
       return;
     }
 
@@ -140,10 +143,13 @@ class _AttendanceTimedListWidgetState extends ConsumerState<AttendanceTimedListW
     }
 
     //clear all and set one
-    if(row.cells['mark']!.value == '臨１' || row.cells['mark']!.value == '臨２') {
+    if(row.cells['mark']!.value == '臨１' || 
+        row.cells['mark']!.value == '臨２') {
+      
       for (final r in stateManager.rows) {
         if (r.sortIdx == row.sortIdx) {
-          r.cells['mark']!.value = stamp.shukketsuJokyoCd=='999'?'':stamp.shukketsuJokyoNmRyaku;;
+          r.cells['mark']!.value = stamp.shukketsuJokyoCd=='999'
+              ? '' : stamp.shukketsuJokyoNmRyaku;
           r.cells['reason1']!.value = reason1.shukketsuJiyuNmSeishiki ?? '';
           r.cells['reason2']!.value = reason2.shukketsuJiyuNmSeishiki ?? '';
         }else{
@@ -156,7 +162,8 @@ class _AttendanceTimedListWidgetState extends ConsumerState<AttendanceTimedListW
       return;
     }
 
-    row.cells['mark']!.value = stamp.shukketsuJokyoCd=='999'?'':stamp.shukketsuJokyoNmRyaku;
+    row.cells['mark']!.value = stamp.shukketsuJokyoCd=='999'
+        ? '' : stamp.shukketsuJokyoNmRyaku;
     row.cells['reason1']!.value = reason1.shukketsuJiyuNmSeishiki ?? '';
     row.cells['reason2']!.value = reason2.shukketsuJiyuNmSeishiki ?? '';
     stateManager.notifyListeners();

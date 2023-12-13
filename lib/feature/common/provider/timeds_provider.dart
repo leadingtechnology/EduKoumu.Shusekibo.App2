@@ -13,7 +13,6 @@ final timedProvider = StateProvider<TimedModel>(
 
 final timedsProvider =
     StateNotifierProvider<TimedsNotifier, ApiState>((ref) {
-
   final shozoku = ref.watch(shozokuProvider);
   final targetDate = ref.watch(targetDateProvider);
 
@@ -37,7 +36,7 @@ class TimedsNotifier extends StateNotifier<ApiState> {
   final Ref ref;
   final int shozokuId;
   final String strDate;
-  final box = Boxes.getTimeds();
+
   late final TimedsRepository _rep = ref.watch(timedsRepositoryProvider);
 
   Future<void> _fetch() async {
@@ -50,29 +49,33 @@ class TimedsNotifier extends StateNotifier<ApiState> {
     // データを取得する
     final response = await _rep.fetch(shozokuId, strDate);
 
-    setDefaultValue();
+    setTimedValue(ref, shozokuId: shozokuId, strDate: strDate);
     
     if (mounted) {
       state = response;
     }
   }
+}
 
-  void setDefaultValue(){
-    // 初期値の設定
-    final keys = box.keys.toList().where(
-      (element) => element.toString().startsWith('$shozokuId-$strDate-'),
-    ).toList();
+void setTimedValue(Ref ref, {int? shozokuId, String? strDate}) {
+  final box = Boxes.getTimeds();
 
-    if (keys.isNotEmpty) {
-      try{
-        keys.sort((a, b) => a.toString().compareTo(b.toString()));
+  // 初期値の設定
+  final keys = box.keys
+      .toList()
+      .where(
+        (element) => element.toString().startsWith('$shozokuId-$strDate-'),
+      )
+      .toList();
 
-        final firstKey = keys.first;
-        final firstValue = box.get(firstKey);
+  if (keys.isNotEmpty) {
+    try {
+      keys.sort((a, b) => a.toString().compareTo(b.toString()));
 
-        ref.read(timedProvider.notifier).state = firstValue!;        
-      } catch (e) {}
-    }
+      final firstKey = keys.first;
+      final firstValue = box.get(firstKey);
 
+      ref.read(timedProvider.notifier).state = firstValue!;
+    } catch (e) {}
   }
 }

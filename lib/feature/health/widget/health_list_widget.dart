@@ -6,6 +6,7 @@ import 'package:kyoumutechou/feature/boxes.dart';
 import 'package:kyoumutechou/feature/common/model/filter_model.dart';
 import 'package:kyoumutechou/feature/common/provider/filter_provider.dart';
 import 'package:kyoumutechou/feature/health/model/health_meibo_model.dart';
+import 'package:kyoumutechou/feature/health/model/health_status_model.dart';
 import 'package:kyoumutechou/feature/health/provider/health_meibo_provider.dart';
 import 'package:kyoumutechou/feature/health/provider/health_reason_provider.dart';
 import 'package:kyoumutechou/feature/health/provider/health_stamp_provider.dart';
@@ -13,33 +14,62 @@ import 'package:kyoumutechou/shared/util/date_util.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
 
-GlobalKey<_HealthListWidgetState> helthGlobalKey = GlobalKey();
+// ignore: library_private_types_in_public_api
+GlobalKey<_HealthListWidgetState> 
+helthGlobalKey = GlobalKey();
 
 class HealthListWidget extends ConsumerStatefulWidget {
-  const HealthListWidget({Key? key}) : super(key: key);
+  const HealthListWidget({super.key});
 
   @override
-  ConsumerState<HealthListWidget> createState() => _HealthListWidgetState();
+  ConsumerState<HealthListWidget> 
+  createState() => _HealthListWidgetState();
 }
 
+// 健康widget
 class _HealthListWidgetState extends ConsumerState<HealthListWidget> {
-  final List<PlutoColumn> columns = [];
+  late final List<PlutoColumn> columns = [];
+  late final List<PlutoRow> rows = [];
+
   late FilterModel filter;
-  final List<PlutoRow> rows = [];
   late final PlutoGridStateManager stateManager;
   
   final _baseUrl = dotenv.env['BASE_URL']!;
   String accessToken = Hive.box<String>('shusekibo').get('token').toString();
- 
+
+  PlutoRow setPlutRow(HealthMeiboModel e) {
+    HealthStatusModel jokyo;
+    if (e.jokyoList != null && e.jokyoList!.isNotEmpty) {
+      try {
+        jokyo = e.jokyoList!.first;
+      } catch (ex) {
+        jokyo = const HealthStatusModel();
+      }
+    } else {
+      jokyo = const HealthStatusModel();
+    }
+    
+    return PlutoRow(cells: {
+      //'gakunen': PlutoCell(value: e.gakunen),
+      //'classNo': PlutoCell(value: e.className),
+      'shusekiNo': PlutoCell(value: e.studentNumber ?? ''),
+      'photoPath': PlutoCell(value: e.photoUrl),
+      'fullName': PlutoCell(value: e.name),
+      'sex': PlutoCell(value: e.genderCode == '1' ? '男' : '女'),
+      'mark': PlutoCell(value: jokyo.ryaku ?? ''),
+      'reason1': PlutoCell(value: jokyo.jiyu1 ?? ''),
+      'reason2': PlutoCell(value: jokyo.jiyu2 ?? ''),
+    },);
+  }
+
   @override
   void initState() {
     super.initState();
-
     filter = ref.read(filterProvider);
 
     columns.addAll([
-      PlutoColumn(title: '学年',    field: 'gakunen',   readOnly: true, type: PlutoColumnType.text(),               width: 70,  enableContextMenu:false, textAlign: PlutoColumnTextAlign.left, titleTextAlign: PlutoColumnTextAlign.center),
-      PlutoColumn(title: 'クラス',  field: 'classNo',   readOnly: true, type: PlutoColumnType.text(),               width: 90, enableContextMenu: false, textAlign: PlutoColumnTextAlign.left, titleTextAlign: PlutoColumnTextAlign.center),
+      //PlutoColumn(title: '学年',    field: 'gakunen',   readOnly: true, type: PlutoColumnType.text(),               width: 70,  enableContextMenu:false, textAlign: PlutoColumnTextAlign.left, titleTextAlign: PlutoColumnTextAlign.center),
+      //PlutoColumn(title: 'クラス',  field: 'classNo',   readOnly: true, type: PlutoColumnType.text(),               width: 90, enableContextMenu: false, textAlign: PlutoColumnTextAlign.left, titleTextAlign: PlutoColumnTextAlign.center),
       PlutoColumn(title: '出席番号',field: 'shusekiNo', readOnly: true, type: PlutoColumnType.text(), width: 80, enableContextMenu: false, textAlign: PlutoColumnTextAlign.right, titleTextAlign: PlutoColumnTextAlign.center),
       PlutoColumn(title: '写真',    field: 'photoPath', readOnly: true, type: PlutoColumnType.text(), enableDropToResize:false,
         enableContextMenu: false,
@@ -67,26 +97,12 @@ class _HealthListWidgetState extends ConsumerState<HealthListWidget> {
       PlutoColumn(title: '理由2',   field: 'reason2',   readOnly: true, type: PlutoColumnType.text(),               width: 216, enableContextMenu: false, textAlign: PlutoColumnTextAlign.left, titleTextAlign: PlutoColumnTextAlign.center),    
     ]);
 
-    final List<HealthMeiboModel> meibos = Boxes.getHealthMeiboBox().values.toList();
-
-    rows.addAll(meibos.map((e) => setPlutRow(e)).toList()); 
+    final meibos = Boxes.getHealthMeiboBox().values.toList();
+    rows.addAll(meibos.map(setPlutRow).toList()); 
   }
 
-  PlutoRow setPlutRow(HealthMeiboModel e) {
-    return PlutoRow(cells: {
-      'gakunen': PlutoCell(value: e.gakunen),
-      'classNo': PlutoCell(value: e.className),
-      'shusekiNo': PlutoCell(value: e.studentNumber ?? ''),
-      'photoPath': PlutoCell(value: e.photoUrl  ),
-      'fullName': PlutoCell(value: e.name),
-      'sex': PlutoCell(value: e.genderCode == '1' ? '男' : '女'),
-      'mark': PlutoCell(value: e.jokyoList![0].ryaku ?? ''),
-      'reason1': PlutoCell(value: e.jokyoList![0].jiyu1 ?? ''),
-      'reason2': PlutoCell(value: e.jokyoList![0].jiyu2 ?? ''),
-    });
-  }
 
-  void setReason(PlutoRow row, WidgetRef ref) async {
+  Future<void> setReason(PlutoRow row, WidgetRef ref) async {
     final stamp = ref.watch(healthStampProvider);
     if(stamp.jokyoCd == '001') return ;
 
@@ -103,7 +119,7 @@ class _HealthListWidgetState extends ConsumerState<HealthListWidget> {
         (e) => e.studentNumber == studentNumber,
       ).toList().first;
     }catch(e){
-      print('HealthListWidget PlutoGrid get meibo error. $e');
+      print('HealthList PlutoGrid get meibo error. $e');
       return ;
     }
 
@@ -127,9 +143,11 @@ class _HealthListWidgetState extends ConsumerState<HealthListWidget> {
 
     //clear all and set one
     if(row.cells['mark']!.value.toString().startsWith('臨')) {
+
       for (final r in stateManager.rows) {
         if (r.sortIdx == row.sortIdx) {
-          r.cells['mark']!.value = stamp.jokyoCd =='999'?'':stamp.jokyoNmRyaku;
+          r.cells['mark']!.value = stamp.jokyoCd =='999'
+              ? '' : stamp.jokyoNmRyaku;
           r.cells['reason1']!.value = reason1.jiyuNmSeishiki ?? '';
           r.cells['reason2']!.value = reason2.jiyuNmSeishiki ?? '';
         }else{
@@ -142,7 +160,8 @@ class _HealthListWidgetState extends ConsumerState<HealthListWidget> {
       return;
     }
 
-    row.cells['mark']!.value = stamp.jokyoCd =='999'?'':stamp.jokyoNmRyaku;
+    row.cells['mark']!.value = stamp.jokyoCd =='999'
+        ? '' : stamp.jokyoNmRyaku;
     row.cells['reason1']!.value = reason1.jiyuNmSeishiki ?? '';
     row.cells['reason2']!.value = reason2.jiyuNmSeishiki ?? '';
     stateManager.notifyListeners();
@@ -158,6 +177,14 @@ class _HealthListWidgetState extends ConsumerState<HealthListWidget> {
     }
     stateManager.notifyListeners();
   } 
+
+  void setAll(String mark, String reason1, String reason2) {
+    for (final row in stateManager.rows) {
+      row.cells['mark']!.value = mark;
+      row.cells['reason1']!.value = reason1;
+      row.cells['reason2']!.value = reason2;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

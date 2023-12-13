@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:kyoumutechou/feature/common/provider/tokobis_provider.dart';
 import 'package:kyoumutechou/feature/health/model/health_meibo_model.dart';
 import 'package:kyoumutechou/feature/health/model/health_status_model.dart';
 import 'package:kyoumutechou/feature/health/provider/health_meibo_provider.dart';
@@ -15,7 +16,8 @@ class HealthSeatWidget extends ConsumerWidget {
   HealthSeatWidget({
     required this.index, 
     required this.healthMeibo, 
-    super.key,});
+    super.key,
+  });
 
   final int index;
   final HealthMeiboModel healthMeibo;
@@ -26,29 +28,34 @@ class HealthSeatWidget extends ConsumerWidget {
     final stamp = ref.watch(healthStampProvider);
     final reason1 = ref.watch(healthReason1Provider);
     final reason2 = ref.watch(healthReason2Provider);
+    final isEditable = ref.watch(isTokobiProvider);
 
     Color color;
     final url = '$_baseUrl${healthMeibo.photoUrl}';
     final accessToken = Hive.box<String>('shusekibo').get('token').toString();
 
-
-    late HealthStatusModel Jokyo;
-    if (healthMeibo.jokyoList != null && healthMeibo.jokyoList![0] != null){
-      Jokyo = healthMeibo.jokyoList![0];
+    late HealthStatusModel jokyo;
+    
+    if (healthMeibo.jokyoList != null && healthMeibo.jokyoList!.isNotEmpty){
+      jokyo = healthMeibo.jokyoList?.first ?? const HealthStatusModel();
     }else{
-      Jokyo = const HealthStatusModel();
+      jokyo = const HealthStatusModel();
     }
     
-    if ( Jokyo.jokyoCode  == '' || Jokyo.jokyoCode == null) {
-      color = Theme.of(context).colorScheme.errorContainer;
-    }else if (Jokyo.jokyoCode != '100') {
-      color = Theme.of(context).colorScheme.primaryContainer;
-    } else {
-      color = Colors.grey.withAlpha(50);
+    if (isEditable){
+      if (jokyo.jokyoCode == '' || jokyo.jokyoCode == null) {
+        color = Theme.of(context).colorScheme.errorContainer;
+      } else if (jokyo.jokyoCode != '100') {
+        color = Theme.of(context).colorScheme.primaryContainer;
+      } else {
+        color = Colors.grey.withAlpha(50);
+      }
+    }else{
+      color = const Color(0xFFDDDDDD);
     }
 
     return GestureDetector(
-      onTap: () async{
+      onTap: !isEditable ? null : () async{
         await ref.read(healthMeiboListProvider.notifier).updateById(
           healthMeibo, 
           stamp,
@@ -60,7 +67,6 @@ class HealthSeatWidget extends ConsumerWidget {
         padding: const EdgeInsets.fromLTRB(0, 0, 5, 5),
         child: Container(
           decoration: const BoxDecoration(
-            //color:Colors.primaries[Random().nextInt(Colors.primaries.length)]
             borderRadius: BorderRadius.all(Radius.circular(6)),
             color: Colors.white,
             boxShadow: [
@@ -117,9 +123,9 @@ class HealthSeatWidget extends ConsumerWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Text(Jokyo.ryaku ?? ''),
+                      Text(jokyo.ryaku ?? ''),
                       AutoSizeText(
-                        '${Jokyo.jiyu1 ?? ''}${Jokyo.jiyu2 ?? ''}', 
+                        (jokyo.jiyu1 ?? '').trim(), 
                         maxLines: 1, 
                         overflow: TextOverflow.ellipsis,
                       ),

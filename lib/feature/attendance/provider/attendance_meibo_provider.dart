@@ -5,41 +5,48 @@ import 'package:kyoumutechou/feature/attendance/model/attendance_stamp_model.dar
 import 'package:kyoumutechou/feature/attendance/model/attendance_status_model.dart';
 import 'package:kyoumutechou/feature/attendance/repository/attendance_meibo_repository.dart';
 import 'package:kyoumutechou/feature/boxes.dart';
+import 'package:kyoumutechou/feature/common/model/filter_model.dart';
 import 'package:kyoumutechou/feature/common/provider/filter_provider.dart';
 import 'package:kyoumutechou/feature/common/state/api_state.dart';
 
-final attendanceMeiboListProvider = StateNotifierProvider<AttendanceMeiboListProvider, ApiState>((ref) {
+final attendanceMeiboListProvider = 
+    StateNotifierProvider<AttendanceMeiboListProvider, ApiState>((ref) {
+
   final filter = ref.watch(filterProvider);
 
-  return AttendanceMeiboListProvider(ref);
+  return AttendanceMeiboListProvider(ref, filter);
 });
 
+// 選択された生徒情報
 final attendanceMeiboProvider = StateProvider<AttendanceMeiboModel>(
   (ref) => const AttendanceMeiboModel(),
 );
-
 final attendanceShiftProvider = StateProvider<bool>((ref) => false);
 
+// 出欠（日）
 class AttendanceMeiboListProvider extends StateNotifier<ApiState> {
-  AttendanceMeiboListProvider(this.ref) : super(const ApiState.loading()) {
+  AttendanceMeiboListProvider(this.ref, this.filter) 
+  : super(const ApiState.loading()) {
     _init();
   }
 
   final Ref ref;
-
+  final FilterModel filter;
   late final _repository = ref.read(attendanceMeiboRepositoryProvider);
 
-  Future<void> _init() async { await _fetch(); }
+  Future<void> _init() async { 
+    await _fetch(); 
+  }
 
   Future<void> _fetch() async {
-    final response = await _repository.fetchAttendanceMeiboList();
+    final response = await _repository.fetch(filter);
     if (mounted) {
       state = response;
     }
   }
 
   Future<void> save() async {
-    state = await _repository.save();
+    state = await _repository.save(filter);
   }
 
   // set stamp by Id
@@ -49,11 +56,13 @@ class AttendanceMeiboListProvider extends StateNotifier<ApiState> {
     AttendanceReasonModel reason1, 
     AttendanceReasonModel reason2,
   ) async {
+
     if (stamp.shukketsuJokyoCd == '001') return;
 
     // set all.
     if (stamp.shukketsuBunrui == '50' || stamp.shukketsuBunrui == '60') {
       final meibos = Boxes.getAttendanceMeibo().values.toList();
+
       for (final m in meibos) {
         await updateBox(m, stamp, reason1, reason2);
       }
@@ -62,8 +71,8 @@ class AttendanceMeiboListProvider extends StateNotifier<ApiState> {
 
     //clear all and set one
     if (meibo.jokyoList![0].shukketsuBunrui == '50' || 
-        meibo.jokyoList![0].shukketsuBunrui == '60') 
-    {
+        meibo.jokyoList![0].shukketsuBunrui == '60'
+    ) {
       final meibos = Boxes.getAttendanceMeibo().values.toList();
       const s = AttendanceStampModel(
         shukketsuJokyoCd: '999', 
@@ -85,18 +94,19 @@ class AttendanceMeiboListProvider extends StateNotifier<ApiState> {
       }
       return;
     }
-
     // set one
     await updateBox(meibo, stamp, reason1, reason2);
   }
 
-  // cover blank values
+
+  // 未設定の場合、すべての生徒を健康にする
   Future<void> updateByBlank() async {
     final meibos = Boxes.getAttendanceMeibo().values.toList();
     
     if (meibos.isEmpty) return;
 
     final stamp = Boxes.getRegistAttendanceStamp().get('100');
+
     for (final m in meibos) {
       if (m.jokyoList![0].shukketsuBunrui!.isEmpty) {
         await updateBox(
@@ -144,16 +154,15 @@ class AttendanceMeiboListProvider extends StateNotifier<ApiState> {
     );
 
     final box = Boxes.getAttendanceMeibo();
-    final index = Boxes.getAttendanceMeibo().keys
-        .firstWhere(
+    final index = box.keys.firstWhere(
           (k) => box.getAt(k as int)?.studentKihonId == newMeibo.studentKihonId,
         );
 
     await Boxes.getAttendanceMeibo().put(index, newMeibo);
   }
 
-  Future<void> getPhoto() async {
-    state = await _repository.save();
-  }
+  // Future<void> getPhoto() async {
+  //   state = await _repository.save(filter);
+  // }
 
 }

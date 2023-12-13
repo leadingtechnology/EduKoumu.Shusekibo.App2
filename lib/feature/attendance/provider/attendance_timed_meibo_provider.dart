@@ -1,60 +1,69 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:kyoumutechou/feature/attendance/model/attendance_timed_meibo_model.dart';
+import 'package:kyoumutechou/feature/attendance/model/attendance_timed_reason_model.dart';
+import 'package:kyoumutechou/feature/attendance/model/attendance_timed_stamp_model.dart';
+import 'package:kyoumutechou/feature/attendance/model/attendance_timed_status_model.dart';
+import 'package:kyoumutechou/feature/attendance/repository/attendance_timed_meibo_repository.dart';
 import 'package:kyoumutechou/feature/boxes.dart';
 import 'package:kyoumutechou/feature/common/model/filter_model.dart';
 import 'package:kyoumutechou/feature/common/provider/filter_provider.dart';
 import 'package:kyoumutechou/feature/common/state/api_state.dart';
 
-import '../model/attendance_timed_meibo_model.dart';
-import '../model/attendance_timed_reason_model.dart';
-import '../model/attendance_timed_stamp_model.dart';
-import '../model/attendance_timed_status_model.dart';
-import '../repository/attendance_timed_meibo_repository.dart';
-
 final attendanceTimedMeiboListProvider = 
-  StateNotifierProvider<AttendanceTimedMeiboListProvider, ApiState>((ref) {
+    StateNotifierProvider<AttendanceTimedMeiboListProvider, ApiState>((ref) {
+  
   final filter = ref.watch(filterProvider);
 
-  return AttendanceTimedMeiboListProvider(ref);
+  return AttendanceTimedMeiboListProvider(ref, filter);
 });
 
-final attendanceTimedMeiboProvider = StateProvider<AttendanceTimedMeiboModel>((ref) => AttendanceTimedMeiboModel());
+// 選択された生徒情報
+final attendanceTimedMeiboProvider = StateProvider<AttendanceTimedMeiboModel>(
+  (ref) => const AttendanceTimedMeiboModel(),
+);
 final attendanceTimedShiftProvider = StateProvider<bool>((ref) => false);
 
+// 出欠（時）
 class AttendanceTimedMeiboListProvider extends StateNotifier<ApiState> {
-  AttendanceTimedMeiboListProvider(this.ref)
-      : super(const ApiState.loading()) {
+  AttendanceTimedMeiboListProvider(this.ref, this.filter)
+  : super(const ApiState.loading()) {
     _init();
   }
 
   final Ref ref;
-  late final _repository = ref.read(attendanceTimedMeiboRepositoryProvider);
+  final FilterModel filter;
+  late final _repository = ref.read(timedMeiboRepositoryProvider);
 
-  Future<void> _init() async { await _fetch(); }
+  Future<void> _init() async { 
+    await _fetch(); 
+  }
 
   Future<void> _fetch() async {
-    final response = await _repository.fetchAttendanceTimedMeibo();
+    final response = await _repository.fetch(filter);
     if (mounted) {
       state = response;
     }
   }
 
   Future<void> save() async {
-    state = await _repository.save();
+    state = await _repository.save(filter);
   }
 
   // set stamp by Id
   Future<void> updateById(
-      AttendanceTimedMeiboModel meibo,
-      AttendanceTimedStampModel stamp,
-      FilterModel filter,
-      AttendanceTimedReasonModel reason1,
-      AttendanceTimedReasonModel reason2) async {
+    AttendanceTimedMeiboModel meibo,
+    AttendanceTimedStampModel stamp,
+    FilterModel filter,
+    AttendanceTimedReasonModel reason1,
+    AttendanceTimedReasonModel reason2,
+  ) async {
     
     if (stamp.shukketsuJokyoCd == '001') return;
 
     // set all.
     if (stamp.shukketsuBunrui == '50' || stamp.shukketsuBunrui == '60') {
       final meibos = Boxes.getAttendanceTimedMeiboModelBox().values.toList();
+
       for (final m in meibos) {
         await updateBox(m, stamp, filter, reason1, reason2);
       }
@@ -63,10 +72,15 @@ class AttendanceTimedMeiboListProvider extends StateNotifier<ApiState> {
 
     //clear all and set one
     if (meibo.jokyoList![0].shukketsuBunrui == '50' ||
-        meibo.jokyoList![0].shukketsuBunrui == '60') {
+        meibo.jokyoList![0].shukketsuBunrui == '60'
+    ) {
+
       final meibos = Boxes.getAttendanceTimedMeiboModelBox().values.toList();
       const s = AttendanceTimedStampModel(
-          shukketsuJokyoCd: '999', shukketsuBunrui: '', shukketsuKbn: '',);
+        shukketsuJokyoCd: '999', 
+        shukketsuBunrui: '', 
+        shukketsuKbn: '',
+      );
 
       for (final m in meibos) {
         if (m.studentKihonId == meibo.studentKihonId) {
@@ -83,12 +97,12 @@ class AttendanceTimedMeiboListProvider extends StateNotifier<ApiState> {
       }
       return;
     }
-
     // set one
     await updateBox(meibo, stamp, filter,reason1, reason2);
   }
 
-  // cover blank values
+
+  // 未設定の場合、すべての生徒を健康にする
   Future<void> updateByBlank() async {
     final filter = ref.read(filterProvider);
     final meibos = Boxes.getAttendanceTimedMeiboModelBox().values.toList();
@@ -100,7 +114,9 @@ class AttendanceTimedMeiboListProvider extends StateNotifier<ApiState> {
     for (final m in meibos) {
       if (m.jokyoList![0].shukketsuBunrui!.isEmpty) {
         await updateBox(
-            m, stamp!, filter, 
+            m, 
+            stamp!, 
+            filter, 
             const AttendanceTimedReasonModel(), 
             const AttendanceTimedReasonModel(),
         );
@@ -147,8 +163,9 @@ class AttendanceTimedMeiboListProvider extends StateNotifier<ApiState> {
     );
 
     final box = Boxes.getAttendanceTimedMeiboModelBox();
-    final index = Boxes.getAttendanceMeibo().keys.firstWhere(
-        (k) => box.getAt(k as int)?.studentKihonId == newMeibo.studentKihonId,);
+    final index = box.keys.firstWhere(
+        (k) => box.getAt(k as int)?.studentKihonId == newMeibo.studentKihonId,
+      );
 
     await box.put(index, newMeibo);
   }

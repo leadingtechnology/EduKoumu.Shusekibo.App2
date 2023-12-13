@@ -5,58 +5,62 @@ import 'package:intl/intl.dart';
 import 'package:kyoumutechou/feature/attendance/model/attendance_meibo_model.dart';
 import 'package:kyoumutechou/feature/boxes.dart';
 import 'package:kyoumutechou/feature/common/model/filter_model.dart';
-import 'package:kyoumutechou/feature/common/provider/filter_provider.dart';
 import 'package:kyoumutechou/feature/common/state/api_state.dart';
 import 'package:kyoumutechou/shared/http/api_provider.dart';
 import 'package:kyoumutechou/shared/http/api_response.dart';
 import 'package:kyoumutechou/shared/http/app_exception.dart';
+import 'package:kyoumutechou/shared/util/date_util.dart';
 
-abstract class AttendanceMeiboRepositoryProtocol {
-  Future<ApiState> fetchAttendanceMeiboList();
+abstract class AttendanceRepositoryProtocol {
+  Future<ApiState> fetch(FilterModel filter);
+  Future<ApiState> save(FilterModel filter);
 }
 
-final attendanceMeiboRepositoryProvider =
-    Provider(AttendanceMeiboRepository.new);
+final attendanceMeiboRepositoryProvider = Provider(
+  AttendanceMeiboRepository.new,
+);
 
-class AttendanceMeiboRepository implements AttendanceMeiboRepositoryProtocol {
+class AttendanceMeiboRepository implements AttendanceRepositoryProtocol {
   AttendanceMeiboRepository(this.ref);
 
-  late final ApiProvider _api = ref.read(apiProvider);
   final Ref ref;
+  late final ApiProvider _api = ref.read(apiProvider);
 
   @override
-  Future<ApiState> fetchAttendanceMeiboList() async {
-    final filter = ref.read(filterProvider);
+  Future<ApiState> fetch(FilterModel filter) async {
 
-    final strDate = DateFormat('yyyy-MM-dd').format(filter.targetDate?? DateTime.now()).toString();
+    final strDate = DateUtil.getStringDate(filter.targetDate ?? DateTime.now());
 
-    if (filter.classId == null) {
-      return const ApiState.loading();
+    if (filter.classId == null || filter.classId == 0) {
+      return const ApiState.loaded();
     }
 
-    final String url =  'api/shozoku/${filter.classId}/ShukketsuShussekibo?date=${strDate}&kouryuGakkyu=${filter.kouryuGakkyu}';
+    var url =  'api/shozoku/${filter.classId}/ShukketsuShussekibo';
+    url = '$url?date=$strDate&kouryuGakkyu=${filter.kouryuGakkyu}';
     final response = await _api.get(url);
     
     response.when(
         success: (success) {},
         error: (error) {
           return ApiState.error(error);
-        });
+        },);
 
     if (response is APISuccess) {
       final value = response.value;
       try {
         // 1) change response to list
-        final _attendanceMeiboList = attendanceMeiboListFromJson(value as List<dynamic>);
+        final attendanceMeiboList = attendanceMeiboListFromJson(
+          value as List<dynamic>,
+        );
 
         // 2) change list to map
-        final Map<int, AttendanceMeiboModel>  _attendanceMeiboMap = _attendanceMeiboList.asMap();
+        final attendanceMeiboMap = attendanceMeiboList.asMap();
 
         // 3) save to hive with key
         await Boxes.getAttendanceMeibo().clear();
-        await Boxes.getAttendanceMeibo().putAll(_attendanceMeiboMap);
+        await Boxes.getAttendanceMeibo().putAll(attendanceMeiboMap);
 
-        return ApiState.loaded();
+        return const ApiState.loaded();
       } catch (e) {
         return ApiState.error(AppException.errorWithMessage(e.toString()));
       }
@@ -68,15 +72,17 @@ class AttendanceMeiboRepository implements AttendanceMeiboRepositoryProtocol {
   }
 
   @override
-  Future<ApiState> save() async {
-    final FilterModel filter = ref.read(filterProvider);
+  Future<ApiState> save(FilterModel filter) async {
     
-    final String strDate = DateFormat('yyyy-MM-dd').format(filter.targetDate ?? DateTime.now()).toString();
+    final strDate = DateUtil.getStringDate(filter.targetDate ?? DateTime.now());
 
-    List<AttendanceMeiboModel> meibos = Boxes.getAttendanceMeibo().values.toList();
-    String json = jsonEncode(meibos.map((v) => v.toNewJson()).toList()); //jsonEncode(meibos.map((i) => i.toJson()).toList()).toString();
+    final meibos = Boxes.getAttendanceMeibo().values.toList();
+    final json = jsonEncode(
+      meibos.map((v) => v.toNewJson()).toList(),
+    ); //jsonEncode(meibos.map((i) => i.toJson()).toList()).toString();
 
-    final response = await _api.post2('api/shozoku/${filter.classId}/ShukketsuShussekibo?date=${strDate}', json);
+    final url = 'api/shozoku/${filter.classId}/ShukketsuShussekibo?date=$strDate';
+    final response = await _api.post2(url, json);
 
     return response.when(success: (success) async {
 

@@ -56,7 +56,7 @@ class AttendanceTimedStampRepository implements AttendanceTimedStampRepositoryPr
         );
         await Boxes.getUnregistAttendanceTimedStampBox().putAll(_unregistStampMap);
 
-        return ApiState.loaded();
+        return const ApiState.loaded();
       } catch (e) {
         return ApiState.error(
             AppException.errorWithMessage(e.toString()));

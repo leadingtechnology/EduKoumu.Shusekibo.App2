@@ -3,7 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:kyoumutechou/feature/boxes.dart';
 import 'package:kyoumutechou/feature/common/provider/common_provider.dart';
+import 'package:kyoumutechou/feature/common/provider/tokobis_provider.dart';
 import 'package:kyoumutechou/feature/common/widget/common_page.dart';
+import 'package:kyoumutechou/feature/common/widget/save_button_widget.dart';
+import 'package:kyoumutechou/feature/common/widget/toast_helper.dart';
 import 'package:kyoumutechou/feature/health/model/health_meibo_model.dart';
 import 'package:kyoumutechou/feature/health/provider/health_meibo_provider.dart';
 import 'package:kyoumutechou/feature/health/provider/health_provider.dart';
@@ -21,6 +24,7 @@ class HealthPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final pageType = ref.watch(healthPageTypeProvider);
+    final isEditable = ref.watch(isTokobiProvider);
 
     return CommonPage(
       scaffoldKey: _scaffoldKey,
@@ -34,15 +38,27 @@ class HealthPage extends ConsumerWidget {
                 : PageType.seat;
       },
       setBlank: () {},
-      onSavePressed: () {},
-      buttomName: pageType == PageType.seat ? 'リスト' : '座席表',
+      saveWidget: ValueListenableBuilder(
+        valueListenable: Boxes.getHealthMeiboBox().listenable(),
+        builder: (context, Box<HealthMeiboModel> box, _) {
+          final length = box.values.length;
+
+          return SaveButtonWidget(
+            label: '保存',
+            onPressed: length<1 || !isEditable ? null :(){
+              ref.read(healthMeiboListProvider.notifier).save();
+              ToastHelper.showToast(context, '　保存しました　');
+            },
+          );
+        },
+      ),
+      buttomName: pageType == PageType.seat ? '一覧' : 'テーブル',
       buttonIcon: pageType == PageType.seat ? Icons.list : Icons.grid_view,
     );
-
   }
 }
 
-// 健康観察座席表
+// 健康観察テーブル
 class SeatWidget extends ConsumerWidget {
   const SeatWidget({super.key});
 
@@ -51,7 +67,9 @@ class SeatWidget extends ConsumerWidget {
     final state = ref.watch(healthMeiboListProvider);
 
     return state.when(
-      loading: (){return const SizedBox();}, 
+      loading: (){
+        return const Center(child: CircularProgressIndicator());
+      }, 
       error: (AppException e){ return Text(e.toString()); },
       loaded: (){
         return ValueListenableBuilder(
@@ -74,7 +92,6 @@ class SeatWidget extends ConsumerWidget {
                         healthMeibo: meibos[index],
                       );
                     },
-                    
             );
           },
         );
@@ -92,11 +109,10 @@ class ListWidget extends ConsumerWidget {
 
     return state.when(
       loading: () {
-        return Container();
+        return const Center(child: CircularProgressIndicator());
       },
       error: (AppException e) {
-        print('healthMeiboListProvider get error. $e');
-        return Text(e.toString());
+        return Center(child: Text(e.toString()));
       },
       loaded: () {
         return HealthListWidget(

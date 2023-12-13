@@ -8,8 +8,10 @@ import 'package:kyoumutechou/feature/attendance/widget/attendance_timed_list_wid
 import 'package:kyoumutechou/feature/attendance/widget/attendance_timeed_seat_widget.dart';
 import 'package:kyoumutechou/feature/boxes.dart';
 import 'package:kyoumutechou/feature/common/provider/common_provider.dart';
-import 'package:kyoumutechou/feature/common/provider/filter_provider.dart';
+import 'package:kyoumutechou/feature/common/provider/tokobis_provider.dart';
 import 'package:kyoumutechou/feature/common/widget/common_page.dart';
+import 'package:kyoumutechou/feature/common/widget/save_button_widget.dart';
+import 'package:kyoumutechou/feature/common/widget/toast_helper.dart';
 import 'package:kyoumutechou/shared/http/app_exception.dart';
 
 // 出欠（時限）widget
@@ -22,6 +24,7 @@ class AttendanceTimedPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final pageType = ref.watch(attendanceTimedPageTypeProvider);
+    final isEditable = ref.watch(isTokobiProvider);
 
     return CommonPage(
       scaffoldKey: _scaffoldKey,
@@ -33,27 +36,33 @@ class AttendanceTimedPage extends ConsumerWidget {
             pageType == PageType.seat ? PageType.list : PageType.seat;
       },
       setBlank: () {},
-      onSavePressed: () {},
-      buttomName: pageType == PageType.seat ? 'リスト' : '座席表',
+      saveWidget: SaveButtonWidget(
+            label: '保存',
+            onPressed: !isEditable ? null : (){
+              ref.read(attendanceTimedMeiboListProvider.notifier).save();
+              ToastHelper.showToast(context, '　保存しました　');
+            },
+          ),
+      buttomName: pageType == PageType.seat ? '一覧' : 'テーブル',
       buttonIcon: pageType == PageType.seat ? Icons.list : Icons.grid_view,
     );
   }
 }
 
-// ShuketuSeat
+// 出欠（時限）テーブル
 class SeatsWidget extends ConsumerWidget {
   const SeatsWidget({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(attendanceTimedMeiboListProvider);
-    final filter = ref.watch(filterProvider);
 
     return state.when(
-      loading: () {return Container();},
+      loading: () {
+        return const Center(child: CircularProgressIndicator());
+      },
       error: (AppException e) {return Text(e.toString());},
       loaded: () {
-        // Boxes.getHealthMeiboModelBox()
         return ValueListenableBuilder(
             valueListenable:Boxes.getAttendanceTimedMeiboModelBox().listenable(),
             builder: (context, Box<AttendanceTimedMeiboModel> box, _) {
@@ -81,18 +90,23 @@ class SeatsWidget extends ConsumerWidget {
 }
 
 class AttendanceTimedListView extends ConsumerWidget {
-  const AttendanceTimedListView({Key? key}) : super(key: key);
+  const AttendanceTimedListView({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(attendanceTimedMeiboListProvider);
-    final filter = ref.watch(filterProvider);
 
     return state.when(
-      loading: () {return Container();},
-      error: (AppException e) {return Text(e.toString());},
+      loading: () {
+        return const Center(child: CircularProgressIndicator());
+      },
+      error: (AppException e) {
+        return Center(child: Text(e.toString()));
+      },
       loaded: () {
-        return const AttendanceTimedListWidget();
+        return AttendanceTimedListWidget(
+          key: attendanceTimedGlobalKey,
+        );
       },
     );
   }

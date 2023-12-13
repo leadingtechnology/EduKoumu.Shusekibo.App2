@@ -4,21 +4,24 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:kyoumutechou/feature/boxes.dart';
 import 'package:kyoumutechou/feature/common/model/filter_model.dart';
-import 'package:kyoumutechou/feature/common/provider/filter_provider.dart';
 import 'package:kyoumutechou/feature/common/state/api_state.dart';
 import 'package:kyoumutechou/feature/health/model/health_meibo_model.dart';
 import 'package:kyoumutechou/shared/http/api_provider.dart';
 import 'package:kyoumutechou/shared/http/api_response.dart';
 import 'package:kyoumutechou/shared/http/app_exception.dart';
+import 'package:kyoumutechou/shared/util/date_util.dart';
 
 // ignore: one_member_abstracts
-abstract class HealthMeiboRepositoryProtocol {
+abstract class HealthRepositoryProtocol {
   Future<ApiState> fetch(FilterModel filter);
+  Future<ApiState> save(FilterModel filter);
 }
 
-final healthMeiboRepositoryProvider = Provider(HealthMeiboRepository.new);
+final healthMeiboRepositoryProvider = Provider(
+  HealthMeiboRepository.new,
+);
 
-class HealthMeiboRepository implements HealthMeiboRepositoryProtocol {
+class HealthMeiboRepository implements HealthRepositoryProtocol {
   HealthMeiboRepository(this.ref);
 
   final Ref ref;
@@ -27,12 +30,10 @@ class HealthMeiboRepository implements HealthMeiboRepositoryProtocol {
   @override
   Future<ApiState> fetch(FilterModel filter) async {
     
-    final strDate = DateFormat('yyyy-MM-dd').format(
-      filter.targetDate?? DateTime.now(),
-    );
+    final strDate = DateUtil.getStringDate(filter.targetDate?? DateTime.now());
 
-    if (filter.classId == null) {
-      return const ApiState.loading();
+    if (filter.classId == null || filter.classId == 0) {
+      return const ApiState.loaded();
     }
 
     var url = 'api/shozoku/${filter.classId}/KenkouKansatsubo';
@@ -43,22 +44,24 @@ class HealthMeiboRepository implements HealthMeiboRepositoryProtocol {
         success: (success) {},
         error: (error) {
           return ApiState.error(error);
-        });
+        },);
 
     if (response is APISuccess) {
       final value = response.value;
       try {
         // 1) change response to list
-        final meiboList = healthMeiboListFromJson(value as List<dynamic>);
+        final meiboList = healthMeiboListFromJson(
+          value as List<dynamic>,
+        );
         
         // 2) change list to map
-        final Map<int, HealthMeiboModel> _meiboMap = meiboList.asMap();
+        final meiboMap = meiboList.asMap();
 
         // 3) save to hive with key
         await Boxes.getHealthMeiboBox().clear();
-        await Boxes.getHealthMeiboBox().putAll(_meiboMap);
+        await Boxes.getHealthMeiboBox().putAll(meiboMap);
 
-        return ApiState.loaded();
+        return const ApiState.loaded();
       } catch (e) {
         return ApiState.error(AppException.errorWithMessage(e.toString()));
       }
@@ -70,15 +73,17 @@ class HealthMeiboRepository implements HealthMeiboRepositoryProtocol {
   }
 
   @override
-  Future<ApiState> save() async {
-    final FilterModel filter = ref.read(filterProvider);
+  Future<ApiState> save(FilterModel filter) async {
     
-    final String strDate = DateFormat('yyyy-MM-dd').format(filter.targetDate??DateTime.now()).toString();
+    final strDate = DateUtil.getStringDate(filter.targetDate ?? DateTime.now());
 
-    List<HealthMeiboModel> meibos = Boxes.getHealthMeiboBox().values.toList();
-    String json =  jsonEncode(meibos.map((v) => v.toNewJson()).toList()); //jsonEncode(meibos.map((i) => i.toJson()).toList()).toString();
+    final meibos = Boxes.getHealthMeiboBox().values.toList();
+    final json =  jsonEncode(
+      meibos.map((v) => v.toNewJson()).toList(),
+    ); //jsonEncode(meibos.map((i) => i.toJson()).toList()).toString();
 
-    final response = await _api.post2('api/shozoku/${filter.classId}/KenkouKansatsubo?date=${strDate}', json);
+    final url = 'api/shozoku/${filter.classId}/KenkouKansatsubo?date=$strDate';
+    final response = await _api.post2(url, json);
 
     return response.when(success: (success) async {
 

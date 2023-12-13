@@ -6,6 +6,7 @@ import 'package:kyoumutechou/feature/attendance/widget/attendance_timed_page.dar
 import 'package:kyoumutechou/feature/auth/provider/auth_provider.dart';
 import 'package:kyoumutechou/feature/awareness/weidget/awareness_page.dart';
 import 'package:kyoumutechou/feature/common/provider/dantais_provider.dart';
+import 'package:kyoumutechou/feature/common/widget/control_dantai_change.dart';
 import 'package:kyoumutechou/feature/common/widget/control_tannin.dart';
 import 'package:kyoumutechou/feature/common/widget/dantai_dropdown_widget.dart';
 import 'package:kyoumutechou/feature/dashboard/widget/dashboard_page.dart';
@@ -197,6 +198,7 @@ class HomePageState extends ConsumerState<HomePage> {
                         // 団体DropdownButton
                         const DantaiDropdownWidget(),
                         const ControlTannin(),
+                        const ControlDantaiChange(),
                         // IconButton(
                         //   icon: const Icon(Icons.menu),
                         //   onPressed: _setMenu,
