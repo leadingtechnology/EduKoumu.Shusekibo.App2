@@ -3,17 +3,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kyoumutechou/helpers/widgets/my_spacing.dart';
 
 class AwarenessDialogRightWidget extends ConsumerWidget {
-  AwarenessDialogRightWidget({
-    Key? key,
-    required this.kizukiController,
-  }) : super(key: key);
+  const AwarenessDialogRightWidget({
+    required this.kizukiController, super.key,
+  });
 
   final TextEditingController kizukiController;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return SizedBox(width: 300, child: Column(crossAxisAlignment: CrossAxisAlignment.start,  children: [
-      Text('テンプレート文(学校共通)', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),),
+      const Text('テンプレート文(学校共通)', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),),
       //AwarenessTemplateSearchText(kizukiController: kizukiController,),
       
       MySpacing.height(12),

@@ -8,15 +8,16 @@ import 'package:kyoumutechou/helpers/widgets/my_spacing.dart';
 import 'package:kyoumutechou/helpers/widgets/my_text.dart';
 
 class SearchBarWidget extends ConsumerWidget {
-  const SearchBarWidget(this._scaffoldKey, {super.key});
+  const SearchBarWidget(this._scaffoldKey, {this.isPeriod, super.key});
 
   final GlobalKey<ScaffoldState> _scaffoldKey;
+  final bool? isPeriod;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final menuId = ref.watch(menuProvider);
     final filter = ref.watch(filterProvider);
-
+    
     return Padding(
       padding: const EdgeInsets.all(8),
       child: Row(
@@ -80,8 +81,8 @@ class SearchBarWidget extends ConsumerWidget {
                     ),
                     Row(
                       children: [
-                        const Checkbox(
-                          value: true,
+                        Checkbox(
+                          value: filter.kouryuGakkyu,
                           onChanged: null,
                         ),
                         MyText.bodyLarge(
@@ -156,7 +157,7 @@ class SearchBarWidget extends ConsumerWidget {
                   ],
                 ]
                 // menuId.state == Menu.awareness の場合のみ表示
-                else if (menuId == Menu.awareness) ...[
+                else if (isPeriod??false) ...[
                   // 1.5 期間の表示
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,

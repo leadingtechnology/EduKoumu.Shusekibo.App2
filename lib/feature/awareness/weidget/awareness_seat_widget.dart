@@ -17,11 +17,12 @@ class AwarenessSeatWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // ignore: use_if_null_to_convert_nulls_to_bools
     if (meibo.changedFlag != null && meibo.changedFlag == true){
       changeColor = Colors.blue;
     }
 
-    String url = '${_baseUrl}${meibo.photoUrl}';
+    final url = '$_baseUrl${meibo.photoUrl}';
     String accessToken = Hive.box<String>('shusekibo').get('token').toString();
 
     return GestureDetector(
@@ -55,8 +56,8 @@ class AwarenessSeatWidget extends ConsumerWidget {
                           padding: const EdgeInsets.fromLTRB(8, 4, 8, 0),
                           child: ClipOval(child: Image.network(
                             url,
-                            headers: {"Authorization": "Bearer " + accessToken},
-                          )),
+                            headers: {'Authorization': 'Bearer $accessToken'},
+                          ),),
                         ),
                         Expanded(
                             child: Column(

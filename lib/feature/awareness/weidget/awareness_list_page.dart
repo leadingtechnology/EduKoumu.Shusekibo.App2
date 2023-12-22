@@ -9,29 +9,29 @@ import 'package:kyoumutechou/feature/awareness/provider/awareness_kizuki_provide
 import 'package:kyoumutechou/feature/awareness/weidget/dialog/awareness_regist_dialog.dart';
 import 'package:kyoumutechou/feature/boxes.dart';
 import 'package:kyoumutechou/feature/common/widget/dialog_util.dart';
+import 'package:kyoumutechou/feature/common/widget/search_bar_widget.dart';
 import 'package:kyoumutechou/helpers/widgets/my_spacing.dart';
-
-import '../../../shared/http/app_exception.dart';
-import '../../../shared/util/date_util.dart';
+import 'package:kyoumutechou/shared/http/app_exception.dart';
+import 'package:kyoumutechou/shared/util/date_util.dart';
 
 class AwarenessListPage extends ConsumerWidget {
-  const AwarenessListPage({
+  AwarenessListPage({
     super.key,
     this.screenTitle = '',
   });
+
+  // draw key
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
 
   final String screenTitle;
   
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        // search bar
-        MySpacing.height(8),
-        //AwarenessSearchWidget(scaffoldKey: scaffoldKey),
-        //AwarenessListSearchWidget(),
+        SearchBarWidget(_scaffoldKey, isPeriod: true),
         //AwarenessListSearchWidget(scaffoldKey: scaffoldKey),
 
         // screen
@@ -47,7 +47,7 @@ class AwarenessListPage extends ConsumerWidget {
 }
 
 class AwarenessListView extends ConsumerWidget {
-  AwarenessListView({Key? key}) : super(key: key);
+  AwarenessListView({super.key});
 
   final List<String> opeItem = [
     'edit',
@@ -84,9 +84,7 @@ class AwarenessListView extends ConsumerWidget {
         return Container();
       },
       error: (AppException e) {
-        return Container(
-          child: Text('${e.toString()}'),
-        );
+        return Text(e.toString());
       },
       loaded: () {
         return ValueListenableBuilder(
@@ -94,15 +92,17 @@ class AwarenessListView extends ConsumerWidget {
             builder: (context, Box<AwarenessKizukiModel> box, _) {
               List<AwarenessKizukiModel> kizuki =
                   Boxes.getAwarenessKizukiModelBox().values.toList();
-              kizuki.sort((a, b) => a.studentId ?? 0.compareTo(b.studentId ?? 0));
+              kizuki.sort(
+                (a, b) => a.studentId ?? 0.compareTo(b.studentId ?? 0),
+              );
 
               return ListView.separated(
                 padding: EdgeInsets.only(top: 20.0),
                 itemBuilder: (context, index) => ListTile(
                   leading: ClipOval(child: Image.network(
                     '${_baseUrl}api/images?seitoseq=${kizuki[index].seitoSeq}',
-                    headers: {"Authorization": "Bearer " + accessToken},
-                  )),
+                    headers: {'Authorization': 'Bearer $accessToken'},
+                  ),),
                   
                   title: Text('${kizuki[index].studentName}'),
                   isThreeLine: true,
@@ -126,7 +126,7 @@ class AwarenessListView extends ConsumerWidget {
                         ]),
                   ])),
                   selected: false,
-                  trailing: popUpMenu(kizuki: kizuki[index]),
+                  trailing: PopUpMenu(kizuki: kizuki[index]),
                 ),
                 itemCount: kizuki.length,
                 separatorBuilder: (context, index) {
@@ -143,14 +143,14 @@ class AwarenessListView extends ConsumerWidget {
   }
 }
 
-class popUpMenu extends ConsumerWidget {
-  popUpMenu({
-    Key? key,
-    required this.kizuki,
-  }) : super(key: key);
+class PopUpMenu extends ConsumerWidget {
+  PopUpMenu({
+    required this.kizuki, super.key,
+  });
 
   final AwarenessKizukiModel kizuki;
-  final TextStyle style = TextStyle(fontSize: 14); 
+  final TextStyle style = const TextStyle(fontSize: 14); 
+  final box = Boxes.getBox();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -162,22 +162,24 @@ class popUpMenu extends ConsumerWidget {
           <PopupMenuEntry<AwarenessOperationItem>>[
         PopupMenuItem<AwarenessOperationItem>(
           value: AwarenessOperationItem.edit,
+          enabled:
+              box.get('kihonId').toString() == kizuki.tourokusyaId.toString(),
           child: Row(
             children: [
-              SizedBox(
+              const SizedBox(
                   width: 24,
                   child: Center(child: FaIcon(FontAwesomeIcons.pen, size: 18))),
               MySpacing.width(8),
               Text('気づきの編集', style: style),
             ],
           ),
-        ),
+        ), 
         const PopupMenuDivider(),
         PopupMenuItem<AwarenessOperationItem>(
           value: AwarenessOperationItem.copy,
           child: Row(
             children: [
-              SizedBox(
+              const SizedBox(
                   width: 24,
                   child:
                       Center(child: FaIcon(FontAwesomeIcons.copy, size: 18))),
@@ -189,12 +191,14 @@ class popUpMenu extends ConsumerWidget {
         const PopupMenuDivider(),
         PopupMenuItem<AwarenessOperationItem>(
           value: AwarenessOperationItem.delete,
+          enabled:
+              box.get('kihonId').toString() == kizuki.tourokusyaId.toString(),
           child: Row(
             children: [
-              SizedBox(
+              const SizedBox(
                   width: 24,
                   child: Center(
-                      child: FaIcon(FontAwesomeIcons.trashCan, size: 18))),
+                      child: FaIcon(FontAwesomeIcons.trashCan, size: 18),),),
               MySpacing.width(8),
               Text('削除', style: style),
             ],
@@ -237,18 +241,20 @@ Future<void> _handlePressActionButton(
     BuildContext context,
     AwarenessKizukiModel kizuki,
     AwarenessOperationItem opt,
-    WidgetRef ref
+    WidgetRef ref,
 ) async {
   //if (opt == AwarenessOperationItem.edit)
   //  await ref.read(awarenessMeiboListProvider.notifier).updateById(id);
 
-  if (opt == AwarenessOperationItem.copy || opt == AwarenessOperationItem.edit)
+  if (opt == AwarenessOperationItem.copy || 
+      opt == AwarenessOperationItem.edit) {
     await DialogUtil.show(
       context: context,
       builder: (BuildContext context) {
         return AwarenessRegistDialog(kizuki:kizuki, opt: opt);
       },
     );
+  }
 
   if (opt == AwarenessOperationItem.delete) {
     await ref.read(awarenessKizukiListProvider.notifier).delete(kizuki);

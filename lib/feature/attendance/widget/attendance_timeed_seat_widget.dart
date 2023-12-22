@@ -5,9 +5,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:kyoumutechou/feature/attendance/model/attendance_timed_meibo_model.dart';
 import 'package:kyoumutechou/feature/attendance/model/attendance_timed_status_model.dart';
+import 'package:kyoumutechou/feature/attendance/provider/attendance_reason_provider.dart';
+import 'package:kyoumutechou/feature/attendance/provider/attendance_stamp_provider.dart';
 import 'package:kyoumutechou/feature/attendance/provider/attendance_timed_meibo_provider.dart';
-import 'package:kyoumutechou/feature/attendance/provider/attendance_timed_reason_provider.dart';
-import 'package:kyoumutechou/feature/attendance/provider/attendance_timed_stamp_provider.dart';
 import 'package:kyoumutechou/feature/common/provider/filter_provider.dart';
 import 'package:kyoumutechou/feature/common/provider/tokobis_provider.dart';
 import 'package:kyoumutechou/helpers/widgets/my_spacing.dart';
@@ -25,9 +25,9 @@ class AttendanceTimedSeatWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final stamp = ref.watch(attendanceTimedStampProvider);
-    final reason1 = ref.watch(attendanceTimedReason1Provider);
-    final reason2 = ref.watch(attendanceTimedReason2Provider);
+    final stamp = ref.watch(attendanceStampProvider);
+    final reason1 = ref.watch(attendanceReason1Provider);
+    final reason2 = ref.watch(attendanceReason2Provider);
     final filter = ref.watch(filterProvider);
     final isEditable = ref.watch(isTokobiProvider);
 

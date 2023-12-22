@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Camera</title>
+</head>
+
+<body>
+    <input type="file" accept="image/*" capture="camera" id="inputCamera">
+    <script>
+        document.getElementById('inputCamera').addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            if (file) {
+                // 发送文件到 Flutter
+                window.parent.postMessage({ type: 'capture', file: file }, '*');
+            }
+        });
+    </script>
+</body>
+
+</html>

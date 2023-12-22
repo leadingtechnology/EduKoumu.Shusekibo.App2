@@ -113,6 +113,9 @@ mixin _$AwarenessKizukiModel {
   @JsonKey(name: 'PhotoUrl', disallowNullValue: false)
   @HiveField(30)
   String? get photoUrl => throw _privateConstructorUsedError;
+  @JsonKey(name: 'TenpuFileList', disallowNullValue: false)
+  @HiveField(31)
+  List<TenpuModel>? get tenpuFileList => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -217,7 +220,10 @@ abstract class $AwarenessKizukiModelCopyWith<$Res> {
       String? timeStamp,
       @JsonKey(name: 'PhotoUrl', disallowNullValue: false)
       @HiveField(30)
-      String? photoUrl});
+      String? photoUrl,
+      @JsonKey(name: 'TenpuFileList', disallowNullValue: false)
+      @HiveField(31)
+      List<TenpuModel>? tenpuFileList});
 }
 
 /// @nodoc
@@ -265,6 +271,7 @@ class _$AwarenessKizukiModelCopyWithImpl<$Res,
     Object? updateDate = freezed,
     Object? timeStamp = freezed,
     Object? photoUrl = freezed,
+    Object? tenpuFileList = freezed,
   }) {
     return _then(_value.copyWith(
       id: freezed == id
@@ -391,6 +398,10 @@ class _$AwarenessKizukiModelCopyWithImpl<$Res,
           ? _value.photoUrl
           : photoUrl // ignore: cast_nullable_to_non_nullable
               as String?,
+      tenpuFileList: freezed == tenpuFileList
+          ? _value.tenpuFileList
+          : tenpuFileList // ignore: cast_nullable_to_non_nullable
+              as List<TenpuModel>?,
     ) as $Val);
   }
 }
@@ -494,7 +505,10 @@ abstract class _$$AwarenessKizukiModelImplCopyWith<$Res>
       String? timeStamp,
       @JsonKey(name: 'PhotoUrl', disallowNullValue: false)
       @HiveField(30)
-      String? photoUrl});
+      String? photoUrl,
+      @JsonKey(name: 'TenpuFileList', disallowNullValue: false)
+      @HiveField(31)
+      List<TenpuModel>? tenpuFileList});
 }
 
 /// @nodoc
@@ -539,6 +553,7 @@ class __$$AwarenessKizukiModelImplCopyWithImpl<$Res>
     Object? updateDate = freezed,
     Object? timeStamp = freezed,
     Object? photoUrl = freezed,
+    Object? tenpuFileList = freezed,
   }) {
     return _then(_$AwarenessKizukiModelImpl(
       id: freezed == id
@@ -665,6 +680,10 @@ class __$$AwarenessKizukiModelImplCopyWithImpl<$Res>
           ? _value.photoUrl
           : photoUrl // ignore: cast_nullable_to_non_nullable
               as String?,
+      tenpuFileList: freezed == tenpuFileList
+          ? _value._tenpuFileList
+          : tenpuFileList // ignore: cast_nullable_to_non_nullable
+              as List<TenpuModel>?,
     ));
   }
 }
@@ -764,7 +783,11 @@ class _$AwarenessKizukiModelImpl implements _AwarenessKizukiModel {
       this.timeStamp,
       @JsonKey(name: 'PhotoUrl', disallowNullValue: false)
       @HiveField(30)
-      this.photoUrl});
+      this.photoUrl,
+      @JsonKey(name: 'TenpuFileList', disallowNullValue: false)
+      @HiveField(31)
+      final List<TenpuModel>? tenpuFileList})
+      : _tenpuFileList = tenpuFileList;
 
   factory _$AwarenessKizukiModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$AwarenessKizukiModelImplFromJson(json);
@@ -893,6 +916,17 @@ class _$AwarenessKizukiModelImpl implements _AwarenessKizukiModel {
   @JsonKey(name: 'PhotoUrl', disallowNullValue: false)
   @HiveField(30)
   final String? photoUrl;
+  final List<TenpuModel>? _tenpuFileList;
+  @override
+  @JsonKey(name: 'TenpuFileList', disallowNullValue: false)
+  @HiveField(31)
+  List<TenpuModel>? get tenpuFileList {
+    final value = _tenpuFileList;
+    if (value == null) return null;
+    if (_tenpuFileList is EqualUnmodifiableListView) return _tenpuFileList;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
 
   @override
   bool operator ==(dynamic other) {
@@ -954,7 +988,9 @@ class _$AwarenessKizukiModelImpl implements _AwarenessKizukiModel {
             (identical(other.timeStamp, timeStamp) ||
                 other.timeStamp == timeStamp) &&
             (identical(other.photoUrl, photoUrl) ||
-                other.photoUrl == photoUrl));
+                other.photoUrl == photoUrl) &&
+            const DeepCollectionEquality()
+                .equals(other._tenpuFileList, _tenpuFileList));
   }
 
   @JsonKey(ignore: true)
@@ -991,7 +1027,8 @@ class _$AwarenessKizukiModelImpl implements _AwarenessKizukiModel {
         createDate,
         updateDate,
         timeStamp,
-        photoUrl
+        photoUrl,
+        const DeepCollectionEquality().hash(_tenpuFileList)
       ]);
 
   @JsonKey(ignore: true)
@@ -1104,7 +1141,10 @@ abstract class _AwarenessKizukiModel implements AwarenessKizukiModel {
       final String? timeStamp,
       @JsonKey(name: 'PhotoUrl', disallowNullValue: false)
       @HiveField(30)
-      final String? photoUrl}) = _$AwarenessKizukiModelImpl;
+      final String? photoUrl,
+      @JsonKey(name: 'TenpuFileList', disallowNullValue: false)
+      @HiveField(31)
+      final List<TenpuModel>? tenpuFileList}) = _$AwarenessKizukiModelImpl;
 
   factory _AwarenessKizukiModel.fromJson(Map<String, dynamic> json) =
       _$AwarenessKizukiModelImpl.fromJson;
@@ -1233,6 +1273,10 @@ abstract class _AwarenessKizukiModel implements AwarenessKizukiModel {
   @JsonKey(name: 'PhotoUrl', disallowNullValue: false)
   @HiveField(30)
   String? get photoUrl;
+  @override
+  @JsonKey(name: 'TenpuFileList', disallowNullValue: false)
+  @HiveField(31)
+  List<TenpuModel>? get tenpuFileList;
   @override
   @JsonKey(ignore: true)
   _$$AwarenessKizukiModelImplCopyWith<_$AwarenessKizukiModelImpl>

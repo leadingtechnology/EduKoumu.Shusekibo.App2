@@ -15,9 +15,11 @@ StateNotifierProvider<AwarenessMeiboListProvider, ApiState>((ref) {
   return AwarenessMeiboListProvider(ref);
 });
 
-final awarenessMeiboProvider = StateProvider<AwarenessMeiboModel>((ref) => AwarenessMeiboModel());
+final awarenessMeiboProvider = StateProvider<AwarenessMeiboModel>(
+  (ref) => const AwarenessMeiboModel(),
+);
 final awarenessTabProvider = StateProvider<int>((ref) => 0); // switch the tab.
-final awarenessBunruiProvider = StateProvider<int>((ref) => 10); 
+final awarenessBunruiProvider = StateProvider<String>((ref) => '10'); 
 final awarenessJuyoProvider = StateProvider<bool>((ref) => false);
 final awarenessStudentAddProvider = StateProvider<List<int>>((ref) => []);
 final awarenessEditProvider = StateProvider<int>((ref) => 0);
@@ -60,7 +62,7 @@ class AwarenessMeiboListProvider extends StateNotifier<ApiState> {
           photoUrl: meibo.photoUrl,
           genderCode: meibo.genderCode,
           kizukiCount: meibo.kizukiCount,
-          selectFlag: !(meibo.selectFlag ?? false)
+          selectFlag: !(meibo.selectFlag ?? false),
       );
 
       final index =

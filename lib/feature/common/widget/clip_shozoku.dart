@@ -52,6 +52,12 @@ class ClipShozoku extends ConsumerWidget {
               onSelected: (bool selected) {
                 ref.read(shozokuProvider.notifier).state = element!;
               },
+              side: BorderSide(
+                width: 0,
+                color: isSelected
+                    ? theme.colorScheme.primary
+                    : theme.colorScheme.outline,
+              ),
               backgroundColor: theme.colorScheme.background,
               selectedColor: theme.colorScheme.primary,
               showCheckmark: false, 

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kyoumutechou/feature/attendance/provider/attendance_stamp_provider.dart';
 import 'package:kyoumutechou/feature/boxes.dart';
+import 'package:kyoumutechou/helpers/theme/app_theme.dart';
 
 class AttendanceStampUnregistWidget extends ConsumerWidget {
   const AttendanceStampUnregistWidget({ super.key });
@@ -24,6 +25,8 @@ class AttendanceStampUnregistWidget extends ConsumerWidget {
           onPressed: (int index) {
             ref.read(attendanceStampProvider.notifier).state = stamps[index];
           },
+          borderColor: theme.colorScheme.outlineVariant,
+          selectedBorderColor: theme.colorScheme.primary,
           isSelected: isSelected,
           children: stamps.map((e) {
             var fontSize = 15.0;

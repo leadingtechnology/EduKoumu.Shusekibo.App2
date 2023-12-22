@@ -6,7 +6,6 @@ import 'package:kyoumutechou/feature/awareness/weidget/awareness_list_page.dart'
 import 'package:kyoumutechou/feature/awareness/weidget/awareness_seat_page.dart';
 import 'package:kyoumutechou/feature/awareness/weidget/dialog/awareness_regist_dialog.dart';
 import 'package:kyoumutechou/feature/common/widget/dialog_util.dart';
-import 'package:kyoumutechou/feature/home/provider/home_provider.dart';
 import 'package:kyoumutechou/helpers/theme/app_theme.dart';
 import 'package:kyoumutechou/helpers/widgets/my_spacing.dart';
 
@@ -42,7 +41,6 @@ class AwarenessPageState extends ConsumerState<AwarenessPage>
 
   @override
   Widget build(BuildContext context) {
-    int tabIndex = ref.watch(awarenessTabProvider).index;
     final count = ref.watch(awarenessCountProvider);
 
     return Scaffold(
@@ -81,7 +79,7 @@ class AwarenessPageState extends ConsumerState<AwarenessPage>
               color: theme.colorScheme.background,
               child: TabBarView(
                 controller: tabController,
-                children: const <Widget>[
+                children: <Widget>[
                   AwarenessSeatPage(),
                   AwarenessListPage(),
                 ],
@@ -98,10 +96,10 @@ class AwarenessPageState extends ConsumerState<AwarenessPage>
               Expanded(child: Container()),
               OutlinedButton.icon(
                 onPressed: count <= 0
-                      ? null
-                      : () async {
-                          await _handlePressActionButton(context);
-                        },
+                    ? null
+                    : () async {
+                        await _handlePressActionButton(context);
+                      },
                 label: const Text(' 気づきの登録 '),
                 icon: const Icon(Icons.add),
                 style: OutlinedButton.styleFrom(

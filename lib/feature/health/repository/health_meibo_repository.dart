@@ -78,18 +78,18 @@ class HealthMeiboRepository implements HealthRepositoryProtocol {
     final strDate = DateUtil.getStringDate(filter.targetDate ?? DateTime.now());
 
     final meibos = Boxes.getHealthMeiboBox().values.toList();
-    final json =  jsonEncode(
-      meibos.map((v) => v.toNewJson()).toList(),
-    ); //jsonEncode(meibos.map((i) => i.toJson()).toList()).toString();
+    final json = jsonEncode(meibos.map((v) => v.toNewJson()).toList()); 
 
     final url = 'api/shozoku/${filter.classId}/KenkouKansatsubo?date=$strDate';
     final response = await _api.post2(url, json);
 
-    return response.when(success: (success) async {
-
-      return const ApiState.loaded();
-    }, error: (error) {
-      return ApiState.error(AppException.errorWithMessage(error.toString()));
-    },);
+    return response.when(
+      success: (success) async {
+        return const ApiState.loaded();
+      },
+      error: (error) {
+        return ApiState.error(AppException.errorWithMessage(error.toString()));
+      },
+    );
   }  
 }

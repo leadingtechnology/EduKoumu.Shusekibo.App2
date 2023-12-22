@@ -86,8 +86,15 @@ class DantaiNotifier extends StateNotifier<ApiState> {
 
   DantaiModel setDefaultValue() {
     // 120) ログイン時の団体IDにより、団体モデルを取得する。
-    final dantai = Boxes.getDantais().values.first;
-
+    var dantai = const DantaiModel();
+    try{
+      dantai = Boxes.getDantais().values.where(
+        (e) => '${e.id}' == Boxes.getBox().get('dantaiId'),
+      ).first;
+    }catch(e) {
+      dantai = Boxes.getDantais().values.first;
+    }
+   
     // 団体ドローンダウンの初期値を設定する。
     ref.read(dantaiProvider.notifier).state = dantai;
 
@@ -97,4 +104,5 @@ class DantaiNotifier extends StateNotifier<ApiState> {
   Future<void> reset() async {
     state = const ApiState.loading();
   }
+
 }

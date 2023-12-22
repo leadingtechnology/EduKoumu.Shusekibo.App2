@@ -36,7 +36,6 @@ class HealthMeiboListProvider extends StateNotifier<ApiState> {
   final reason = const HealthReasonModel();
 
   late final _repository = ref.read(healthMeiboRepositoryProvider);
-  late final _homeRepository = ref.read(homeHealthRepositoryProvider);
 
   Future<void> _init() async {
     await _fetch();

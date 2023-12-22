@@ -1,14 +1,14 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kyoumutechou/feature/awareness/model/awareness_code_model.dart';
 import 'package:kyoumutechou/feature/awareness/provider/awareness_code_provider.dart';
-import 'package:kyoumutechou/feature/common/state/api_state.dart';
+import 'package:kyoumutechou/feature/common/state/code_state.dart';
 import 'package:kyoumutechou/shared/http/api_provider.dart';
 import 'package:kyoumutechou/shared/http/api_response.dart';
 import 'package:kyoumutechou/shared/http/app_exception.dart';
 
 // ignore: one_member_abstracts
 abstract class AwarenessCodeRepositoryProtocol { 
-  Future<ApiState> fetchAwarenessCode(); 
+  Future<CodesState> fetch(); 
 }
 
 final awarenessCodeRepositoryProvider = Provider(AwarenessCodeRepository.new,);
@@ -20,12 +20,12 @@ class AwarenessCodeRepository implements AwarenessCodeRepositoryProtocol {
   late final ApiProvider _api = ref.read(apiProvider);
 
   @override
-  Future<ApiState> fetchAwarenessCode() async {
-    final response = await _api.get('api/kizuki/Bunrui');
+  Future<CodesState> fetch() async {
+    final response = await _api.get('api/kizuki/bunrui/');
 
     response.when(
-        success: (success) {},
-        error: (error) {return ApiState.error(error);},
+      success: (success) {},
+      error: (error) { return CodesState.error(error); },
     );
 
     if (response is APISuccess) {
@@ -33,18 +33,21 @@ class AwarenessCodeRepository implements AwarenessCodeRepositoryProtocol {
       try {
         final awarenessCode = awarenessCodeListFromJson(value as List<dynamic>);
 
-
+        if (awarenessCode.isEmpty) {
+          return const CodesState.loaded([]);
+        }
+        
         ref.read(awarenessCodeProvider.notifier).state = awarenessCode.first;
 
-        return const ApiState.loaded();
+        return CodesState.loaded(awarenessCode);
       } catch (e) {
-        return ApiState.error(
+        return CodesState.error(
             AppException.errorWithMessage(e.toString(),),);
       }
     } else if (response is APIError) {
-      return ApiState.error(response.exception);
+      return CodesState.error(response.exception);
     } else {
-      return const ApiState.loading();
+      return const CodesState.loading();
     }
   }
 }

@@ -20,6 +20,7 @@ import 'package:kyoumutechou/feature/common/model/dantai_model.dart';
 import 'package:kyoumutechou/feature/common/model/gakunen_model.dart';
 import 'package:kyoumutechou/feature/common/model/shozoku_model.dart';
 import 'package:kyoumutechou/feature/common/model/tannin_model.dart';
+import 'package:kyoumutechou/feature/common/model/tenpu_model.dart';
 import 'package:kyoumutechou/feature/common/model/timed_model.dart';
 import 'package:kyoumutechou/feature/common/model/tokobi_model.dart';
 import 'package:kyoumutechou/feature/health/model/health_meibo_model.dart';
@@ -124,7 +125,8 @@ Future<void> start() async {
   final awBox = await Hive.openBox<AwarenessMeiboModel>('AwarenessMeibo');
   await awBox.clear(); 
 
-  Hive.registerAdapter(AwarenessKizukiModelAdapter());
+  Hive..registerAdapter(TenpuModelAdapter())
+  ..registerAdapter(AwarenessKizukiModelAdapter());
   final akBox = await Hive.openBox<AwarenessKizukiModel>('AwarenessKizuki');
   await akBox.clear();
 

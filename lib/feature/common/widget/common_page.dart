@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kyoumutechou/feature/attendance/widget/attendance_stamp_reason_widget.dart';
 import 'package:kyoumutechou/feature/common/widget/filter_widget.dart';
-import 'package:kyoumutechou/feature/common/widget/save_button_widget.dart';
 import 'package:kyoumutechou/feature/common/widget/search_bar_widget.dart';
 import 'package:kyoumutechou/feature/health/widget/health_stamp_reason_widget.dart';
 import 'package:kyoumutechou/feature/home/provider/home_provider.dart';
@@ -14,7 +13,7 @@ class CommonPage extends ConsumerWidget {
     required this.scaffoldKey,
     required this.contentWidget,
     required this.onShift,
-    required this.setBlank,
+    this.setBlank,
     required this.saveWidget,
     required this.buttomName,
     required this.buttonIcon,
@@ -24,7 +23,7 @@ class CommonPage extends ConsumerWidget {
   final GlobalKey<ScaffoldState> scaffoldKey;
   final Widget contentWidget; // コンテンツ表示用のウィジェット
   final VoidCallback onShift; // ボタン1の処理
-  final VoidCallback setBlank; // ボタン2の処理
+  final VoidCallback? setBlank; // ボタン2の処理
   final Widget saveWidget; // 保存ボタン
   final String buttomName;
   final IconData buttonIcon;

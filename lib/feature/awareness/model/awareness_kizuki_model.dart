@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:kyoumutechou/feature/common/model/tenpu_model.dart';
 
 part 'awareness_kizuki_model.freezed.dart';
 part 'awareness_kizuki_model.g.dart';
@@ -50,11 +51,12 @@ abstract class AwarenessKizukiModel with _$AwarenessKizukiModel {
     @JsonKey(name: 'UpdateDate', disallowNullValue: false) @HiveField(28) DateTime? updateDate,
     @JsonKey(name: 'TimeStamp', disallowNullValue: false) @HiveField(29) String? timeStamp,
     @JsonKey(name: 'PhotoUrl', disallowNullValue: false) @HiveField(30) String? photoUrl,
+    @JsonKey(name: 'TenpuFileList', disallowNullValue: false) @HiveField(31) List<TenpuModel>? tenpuFileList,
   }) = _AwarenessKizukiModel;
 
   @override
   String toString() {
-    return 'AwarenessKizukiModel($id, $nendo, $karuteSettingId, $shubetsuCode, $shubetsuName, $bunruiCode, $bunruiName, $naiyou, $gakkiId, $gakkiName, $gakunen, $shozokuId, $shozokuBunrui, $shozokuKbn, $shozokuCode, $className, $shussekiNo, $studentId, $seitoSeq, $studentName, $existPhoto, $tourokusyaId, $tourokusyaName, $juyoFlg, $torokuDate, $hasAttachment, $commentCount, $createDate, $updateDate, $timeStamp, $photoUrl)';
+    return 'AwarenessKizukiModel($id, $nendo, $karuteSettingId, $shubetsuCode, $shubetsuName, $bunruiCode, $bunruiName, $naiyou, $gakkiId, $gakkiName, $gakunen, $shozokuId, $shozokuBunrui, $shozokuKbn, $shozokuCode, $className, $shussekiNo, $studentId, $seitoSeq, $studentName, $existPhoto, $tourokusyaId, $tourokusyaName, $juyoFlg, $torokuDate, $hasAttachment, $commentCount, $createDate, $updateDate, $timeStamp, $photoUrl, $tenpuFileList)';
   }
   factory AwarenessKizukiModel.fromJson(Map<String, dynamic> json) => _$AwarenessKizukiModelFromJson(json);
 }

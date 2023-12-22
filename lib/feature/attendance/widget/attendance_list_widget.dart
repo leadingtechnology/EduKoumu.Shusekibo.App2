@@ -4,8 +4,6 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:kyoumutechou/feature/attendance/model/attendance_meibo_model.dart';
-import 'package:kyoumutechou/feature/attendance/model/attendance_reason_model.dart';
-import 'package:kyoumutechou/feature/attendance/model/attendance_stamp_model.dart';
 import 'package:kyoumutechou/feature/attendance/model/attendance_status_model.dart';
 import 'package:kyoumutechou/feature/attendance/provider/attendance_meibo_provider.dart';
 import 'package:kyoumutechou/feature/attendance/provider/attendance_reason_provider.dart';
@@ -13,6 +11,7 @@ import 'package:kyoumutechou/feature/attendance/provider/attendance_stamp_provid
 import 'package:kyoumutechou/feature/boxes.dart';
 import 'package:kyoumutechou/feature/common/model/filter_model.dart';
 import 'package:kyoumutechou/feature/common/provider/filter_provider.dart';
+import 'package:kyoumutechou/feature/common/provider/tokobis_provider.dart';
 import 'package:kyoumutechou/shared/util/date_util.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
@@ -193,6 +192,8 @@ class _AttendanceListWidgetState extends ConsumerState<AttendanceListWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final isEditable = ref.watch(isTokobiProvider);
+    
     return PlutoGrid(
       columns: columns,
       rows: rows,
@@ -201,7 +202,7 @@ class _AttendanceListWidgetState extends ConsumerState<AttendanceListWidget> {
         stateManager.setSelectingMode(PlutoGridSelectingMode.cell);
       },
       onSelected: (PlutoGridOnSelectedEvent event) {
-        if (event.row != null) {
+        if (event.row != null && isEditable) {
           setReason(event.row!, ref);
         }
       },

@@ -5,12 +5,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:kyoumutechou/feature/attendance/model/attendance_timed_meibo_model.dart';
 import 'package:kyoumutechou/feature/attendance/model/attendance_timed_status_model.dart';
+import 'package:kyoumutechou/feature/attendance/provider/attendance_reason_provider.dart';
+import 'package:kyoumutechou/feature/attendance/provider/attendance_stamp_provider.dart';
 import 'package:kyoumutechou/feature/attendance/provider/attendance_timed_meibo_provider.dart';
-import 'package:kyoumutechou/feature/attendance/provider/attendance_timed_reason_provider.dart';
-import 'package:kyoumutechou/feature/attendance/provider/attendance_timed_stamp_provider.dart';
 import 'package:kyoumutechou/feature/boxes.dart';
 import 'package:kyoumutechou/feature/common/model/filter_model.dart';
 import 'package:kyoumutechou/feature/common/provider/filter_provider.dart';
+import 'package:kyoumutechou/feature/common/provider/tokobis_provider.dart';
 import 'package:kyoumutechou/shared/util/date_util.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
@@ -103,11 +104,11 @@ class _AttendanceTimedListWidgetState extends ConsumerState<AttendanceTimedListW
   }
 
   Future<void> setReason(PlutoRow row, WidgetRef ref) async {
-    final stamp = ref.read(attendanceTimedStampProvider);
+    final stamp = ref.read(attendanceStampProvider);
     if (stamp.shukketsuJokyoCd == '001') return;
 
-    final reason1 = ref.watch(attendanceTimedReason1Provider);
-    final reason2 = ref.watch(attendanceTimedReason2Provider);
+    final reason1 = ref.watch(attendanceReason1Provider);
+    final reason2 = ref.watch(attendanceReason2Provider);
 
     final studentNumber = row.cells['shusekiNo']!.value.toString();
     if (studentNumber.isEmpty) return;
@@ -190,6 +191,8 @@ class _AttendanceTimedListWidgetState extends ConsumerState<AttendanceTimedListW
 
   @override
   Widget build(BuildContext context) {
+    final isEditable = ref.watch(isTokobiProvider);
+    
     return PlutoGrid(
       columns: columns,
       rows: rows,
@@ -198,7 +201,7 @@ class _AttendanceTimedListWidgetState extends ConsumerState<AttendanceTimedListW
         stateManager.setSelectingMode(PlutoGridSelectingMode.cell);
       },
       onSelected: (PlutoGridOnSelectedEvent event) {
-        if (event.row != null) {
+        if (event.row != null && isEditable) {
           setReason(event.row!, ref);
         }
       },

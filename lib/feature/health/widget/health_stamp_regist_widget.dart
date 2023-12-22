@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kyoumutechou/feature/boxes.dart';
-import 'package:kyoumutechou/feature/health/model/health_stamp_model.dart';
 import 'package:kyoumutechou/feature/health/provider/health_stamp_provider.dart';
+import 'package:kyoumutechou/helpers/theme/app_theme.dart';
 
 class HealthStampRegistWidget extends ConsumerWidget {
   const HealthStampRegistWidget({ super.key });
@@ -25,10 +25,11 @@ class HealthStampRegistWidget extends ConsumerWidget {
           fillColor: Theme.of(context).colorScheme.secondaryContainer,
           onPressed: (int index) {
             ref.read(healthStampProvider.notifier).state =
-                stamps[index] as HealthStampModel;
+                stamps[index];
           },
           isSelected: isSelected,
-          //selectedColor: Colors.white,
+          borderColor:theme.colorScheme.outlineVariant,
+          selectedBorderColor: theme.colorScheme.primary,
           children: stamps.map((e) {
             var fontSize = 15.0;
             if (e.jokyoCd == '001' || e.jokyoCd == '999') {
@@ -43,7 +44,7 @@ class HealthStampRegistWidget extends ConsumerWidget {
                 preferBelow: false,
                 child: Center(
                   child: Text('${e.jokyoNmRyaku}',
-                      style: TextStyle(fontSize: fontSize)),
+                      style: TextStyle(fontSize: fontSize),),
                 ),
               ),
             );

@@ -200,11 +200,15 @@ class ApiProvider {
       }
 
       if (response.statusCode! < 300) {
-        if (response.data['data'] != null) {
-          return APIResponse.success(response.data['data']);
-        } else {
+        try{
+          if (response.data['data'] != null) {
+            return APIResponse.success(response.data['data']);
+          } else {
+            return APIResponse.success(response.data);
+          }
+        }catch(e){
           return APIResponse.success(response.data);
-        }
+        } 
       } else {
         // if (response.statusCode! == 404) {
         //   return const APIResponse.error(AppException.connectivity());

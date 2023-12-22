@@ -37,7 +37,10 @@ class HealthPage extends ConsumerWidget {
                 ? PageType.list
                 : PageType.seat;
       },
-      setBlank: () {},
+      setBlank: !isEditable ? null :  () {
+        ref.read(healthMeiboListProvider.notifier).updateByBlank();
+        helthGlobalKey.currentState?.setBlank();
+      },
       saveWidget: ValueListenableBuilder(
         valueListenable: Boxes.getHealthMeiboBox().listenable(),
         builder: (context, Box<HealthMeiboModel> box, _) {

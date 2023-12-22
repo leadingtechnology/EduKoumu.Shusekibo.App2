@@ -26,7 +26,7 @@ class AwarenessMeiboRepository implements AwarenessMeiboRepositoryProtocol {
   Future<ApiState> fetchAwarenessMeibo() async {
     final filter = ref.read(filterProvider);
 
-    if (filter.classId == null) {
+    if (filter.classId == null || filter.classId == 0) {
       return const ApiState.loading();
     }
 

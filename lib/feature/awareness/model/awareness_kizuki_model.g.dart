@@ -49,13 +49,14 @@ class AwarenessKizukiModelAdapter
       updateDate: fields[28] as DateTime?,
       timeStamp: fields[29] as String?,
       photoUrl: fields[30] as String?,
+      tenpuFileList: (fields[31] as List?)?.cast<TenpuModel>(),
     );
   }
 
   @override
   void write(BinaryWriter writer, _$AwarenessKizukiModelImpl obj) {
     writer
-      ..writeByte(31)
+      ..writeByte(32)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -117,7 +118,9 @@ class AwarenessKizukiModelAdapter
       ..writeByte(29)
       ..write(obj.timeStamp)
       ..writeByte(30)
-      ..write(obj.photoUrl);
+      ..write(obj.photoUrl)
+      ..writeByte(31)
+      ..write(obj.tenpuFileList);
   }
 
   @override
@@ -173,6 +176,9 @@ _$AwarenessKizukiModelImpl _$$AwarenessKizukiModelImplFromJson(
           : DateTime.parse(json['UpdateDate'] as String),
       timeStamp: json['TimeStamp'] as String?,
       photoUrl: json['PhotoUrl'] as String?,
+      tenpuFileList: (json['TenpuFileList'] as List<dynamic>?)
+          ?.map((e) => TenpuModel.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$$AwarenessKizukiModelImplToJson(
@@ -209,4 +215,5 @@ Map<String, dynamic> _$$AwarenessKizukiModelImplToJson(
       'UpdateDate': instance.updateDate?.toIso8601String(),
       'TimeStamp': instance.timeStamp,
       'PhotoUrl': instance.photoUrl,
+      'TenpuFileList': instance.tenpuFileList,
     };

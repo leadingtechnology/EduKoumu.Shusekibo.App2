@@ -35,7 +35,10 @@ class AttendanceTimedPage extends ConsumerWidget {
         ref.read(attendanceTimedPageTypeProvider.notifier).state =
             pageType == PageType.seat ? PageType.list : PageType.seat;
       },
-      setBlank: () {},
+      setBlank: !isEditable ? null :  () {
+        ref.read(attendanceTimedMeiboListProvider.notifier).updateByBlank();
+        attendanceTimedGlobalKey.currentState?.setBlank();
+      },
       saveWidget: SaveButtonWidget(
             label: '保存',
             onPressed: !isEditable ? null : (){

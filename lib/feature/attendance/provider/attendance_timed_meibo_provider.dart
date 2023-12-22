@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:kyoumutechou/feature/attendance/model/attendance_reason_model.dart';
+import 'package:kyoumutechou/feature/attendance/model/attendance_stamp_model.dart';
 import 'package:kyoumutechou/feature/attendance/model/attendance_timed_meibo_model.dart';
-import 'package:kyoumutechou/feature/attendance/model/attendance_timed_reason_model.dart';
-import 'package:kyoumutechou/feature/attendance/model/attendance_timed_stamp_model.dart';
 import 'package:kyoumutechou/feature/attendance/model/attendance_timed_status_model.dart';
 import 'package:kyoumutechou/feature/attendance/repository/attendance_timed_meibo_repository.dart';
 import 'package:kyoumutechou/feature/boxes.dart';
@@ -52,10 +52,10 @@ class AttendanceTimedMeiboListProvider extends StateNotifier<ApiState> {
   // set stamp by Id
   Future<void> updateById(
     AttendanceTimedMeiboModel meibo,
-    AttendanceTimedStampModel stamp,
+    AttendanceStampModel stamp,
     FilterModel filter,
-    AttendanceTimedReasonModel reason1,
-    AttendanceTimedReasonModel reason2,
+    AttendanceReasonModel reason1,
+    AttendanceReasonModel reason2,
   ) async {
     
     if (stamp.shukketsuJokyoCd == '001') return;
@@ -76,7 +76,7 @@ class AttendanceTimedMeiboListProvider extends StateNotifier<ApiState> {
     ) {
 
       final meibos = Boxes.getAttendanceTimedMeiboModelBox().values.toList();
-      const s = AttendanceTimedStampModel(
+      const s = AttendanceStampModel(
         shukketsuJokyoCd: '999', 
         shukketsuBunrui: '', 
         shukketsuKbn: '',
@@ -90,8 +90,8 @@ class AttendanceTimedMeiboListProvider extends StateNotifier<ApiState> {
             m, 
             s, 
             filter, 
-            const AttendanceTimedReasonModel(), 
-            const AttendanceTimedReasonModel(),
+            const AttendanceReasonModel(), 
+            const AttendanceReasonModel(),
           );
         }
       }
@@ -109,7 +109,7 @@ class AttendanceTimedMeiboListProvider extends StateNotifier<ApiState> {
 
     if (meibos.isEmpty) return;
 
-    final stamp = Boxes.getRegistAttendanceTimedStampBox().get('100');
+    final stamp = Boxes.getRegistAttendanceStamp().get('100');
 
     for (final m in meibos) {
       if (m.jokyoList![0].shukketsuBunrui!.isEmpty) {
@@ -117,8 +117,8 @@ class AttendanceTimedMeiboListProvider extends StateNotifier<ApiState> {
             m, 
             stamp!, 
             filter, 
-            const AttendanceTimedReasonModel(), 
-            const AttendanceTimedReasonModel(),
+            const AttendanceReasonModel(), 
+            const AttendanceReasonModel(),
         );
       }
     }
@@ -126,10 +126,10 @@ class AttendanceTimedMeiboListProvider extends StateNotifier<ApiState> {
 
   Future<void> updateBox(
     AttendanceTimedMeiboModel meibo,
-    AttendanceTimedStampModel stamp,
+    AttendanceStampModel stamp,
     FilterModel filter,
-    AttendanceTimedReasonModel reason1,
-    AttendanceTimedReasonModel reason2,
+    AttendanceReasonModel reason1,
+    AttendanceReasonModel reason2,
   ) async {
     final status = stamp.shukketsuJokyoCd == '999'
         ? AttendanceTimedStatusModel(

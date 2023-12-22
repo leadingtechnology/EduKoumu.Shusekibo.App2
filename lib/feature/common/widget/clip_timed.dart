@@ -52,6 +52,12 @@ class ClipTimed extends ConsumerWidget {
               onSelected: (bool selected) {
                 ref.read(timedProvider.notifier).state = timed!;
               },
+              side: BorderSide(
+                width: 0,
+                color: isSelected
+                    ? theme.colorScheme.primary
+                    : theme.colorScheme.outline,
+              ),
               backgroundColor: theme.colorScheme.background,
               selectedColor: theme.colorScheme.primary,
               showCheckmark: false, 

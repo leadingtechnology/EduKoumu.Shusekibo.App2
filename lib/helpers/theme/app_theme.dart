@@ -3,11 +3,8 @@
 * Version : 1.0.0
 * */
 
-import 'package:kyoumutechou/helpers/theme/custom_theme.dart';
-import 'package:kyoumutechou/helpers/theme/theme_type.dart';
-import 'package:kyoumutechou/helpers/widgets/my_text_style.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:kyoumutechou/helpers/theme/theme_type.dart';
 
 export 'custom_theme.dart';
 export 'navigation_theme.dart';

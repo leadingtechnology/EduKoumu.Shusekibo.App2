@@ -1,13 +1,14 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:kyoumutechou/feature/common/widget/camera/camera_view.dart';
 import 'package:kyoumutechou/feature/common/widget/dialog_util.dart';
 import 'package:kyoumutechou/helpers/widgets/my_spacing.dart';
 
-
 class AwarenessDialogLeftWidget extends StatelessWidget {
-   const AwarenessDialogLeftWidget({
-    required this.kizukiController, super.key,
+  const AwarenessDialogLeftWidget({
+    required this.kizukiController,
+    super.key,
   });
 
   final TextEditingController kizukiController;
@@ -15,22 +16,25 @@ class AwarenessDialogLeftWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 88, 
+      width: 88,
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.end,  
+        crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           const Text(
-            '気づき', 
+            '気づき',
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
           ),
-          
-          MySpacing.height(24),
-          
 
           MySpacing.height(24),
-          
-          MySpacing.height(24),
-    ],),);
+          IconButton(
+            icon: const FaIcon(FontAwesomeIcons.image),
+            onPressed: () async {
+              await _handleCamera(context);
+            },
+          ),
+        ],
+      ),
+    );
   }
 }
 

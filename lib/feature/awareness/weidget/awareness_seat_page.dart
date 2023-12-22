@@ -5,25 +5,24 @@ import 'package:kyoumutechou/feature/awareness/model/awareness_meibo_model.dart'
 import 'package:kyoumutechou/feature/awareness/provider/awareness_meibo_provider.dart';
 import 'package:kyoumutechou/feature/awareness/weidget/awareness_seat_widget.dart';
 import 'package:kyoumutechou/feature/boxes.dart';
+import 'package:kyoumutechou/feature/common/widget/search_bar_widget.dart';
 import 'package:kyoumutechou/helpers/widgets/my_spacing.dart';
-
-import '../../../shared/http/app_exception.dart';
+import 'package:kyoumutechou/shared/http/app_exception.dart';
 
 
 class AwarenessSeatPage extends ConsumerWidget {
-  const AwarenessSeatPage({ Key? key}) : super(key: key);
+  AwarenessSeatPage({ super.key});
 
-  //final GlobalKey<ScaffoldState> scaffoldKey;
+  // draw key
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        MySpacing.height(8),
-        // search bar
-        //AwarenessSearchWidget(scaffoldKey: scaffoldKey),
+        SearchBarWidget(_scaffoldKey, isPeriod: false),
 
         // screen
         MySpacing.height(8),
@@ -33,18 +32,18 @@ class AwarenessSeatPage extends ConsumerWidget {
               child: Container(
                 color: Colors.grey[100],
                 padding: MySpacing.all(16),
-                child: AwarenessSeats()
+                child: const AwarenessSeats(),
               ),
             ),
           // tools bar
-        ])),
+        ],),),
       ],
     );
   }
 }
 
 class AwarenessSeats extends ConsumerWidget {
-  AwarenessSeats({Key? key}) : super(key: key);
+  const AwarenessSeats({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -52,12 +51,12 @@ class AwarenessSeats extends ConsumerWidget {
 
     return state.when(
       loading: () { return Container(); },
-      error: (AppException e){ return Container(child: Text('${e.toString()}'),); },
+      error: (AppException e){ return Text(e.toString()); },
       loaded: (){
         return ValueListenableBuilder(
           valueListenable: Boxes.getAwarenessMeiboBox().listenable(), 
           builder: (context, Box<AwarenessMeiboModel> box, _){
-            final List<AwarenessMeiboModel> meibos = box.values.toList();
+            final meibos = box.values.toList();
             
             return GridView.builder(
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -73,9 +72,9 @@ class AwarenessSeats extends ConsumerWidget {
                 );
               },
             );
-          }
+          },
         );
-      }
+      },
     );
   }
 }

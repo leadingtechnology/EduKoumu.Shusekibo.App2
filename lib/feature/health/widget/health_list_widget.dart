@@ -5,6 +5,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:kyoumutechou/feature/boxes.dart';
 import 'package:kyoumutechou/feature/common/model/filter_model.dart';
 import 'package:kyoumutechou/feature/common/provider/filter_provider.dart';
+import 'package:kyoumutechou/feature/common/provider/tokobis_provider.dart';
 import 'package:kyoumutechou/feature/health/model/health_meibo_model.dart';
 import 'package:kyoumutechou/feature/health/model/health_status_model.dart';
 import 'package:kyoumutechou/feature/health/provider/health_meibo_provider.dart';
@@ -188,6 +189,8 @@ class _HealthListWidgetState extends ConsumerState<HealthListWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final isEditable = ref.watch(isTokobiProvider);
+
     return PlutoGrid(
       columns: columns,
       rows: rows,
@@ -196,7 +199,7 @@ class _HealthListWidgetState extends ConsumerState<HealthListWidget> {
         stateManager.setSelectingMode(PlutoGridSelectingMode.cell);
       },
       onSelected: (PlutoGridOnSelectedEvent event) {
-        if (event.row != null) {
+        if (event.row != null && isEditable) {
           setReason(event.row!, ref);
         }
       },

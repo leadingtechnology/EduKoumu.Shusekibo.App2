@@ -27,7 +27,8 @@ dependencies:
   easy_localization: ^3.0.3
 
   ## 設備
-  camera: ^0.10.5+5
+  camera: ^0.10.5+7
+  path_provider: ^2.1.1
   google_ml_kit: ^0.16.3
   dropdown_search: ^5.0.6
 

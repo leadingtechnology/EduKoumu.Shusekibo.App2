@@ -37,7 +37,10 @@ class AttendancePage extends ConsumerWidget {
                 ? PageType.list
                 : PageType.seat;
       },
-      setBlank: () {},
+      setBlank: !isEditable ? null :  () {
+        ref.read(attendanceMeiboListProvider.notifier).updateByBlank();
+        attendanceGlobalKey.currentState?.setBlank();
+      },
       saveWidget: SaveButtonWidget(
         label: '保存',
         onPressed: !isEditable ? null : () {

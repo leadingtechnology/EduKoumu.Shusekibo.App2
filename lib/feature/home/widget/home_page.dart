@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:kyoumutechou/feature/attendance/widget/attendance_page.dart';
 import 'package:kyoumutechou/feature/attendance/widget/attendance_timed_page.dart';
@@ -46,43 +47,43 @@ class HomePageState extends ConsumerState<HomePage> {
       Menu.dashboard,
       'ホーム',
       const DashboardPage(),
-      Icons.home,
-      Icons.home_outlined,
+      const Icon(Icons.home),
+      const Icon(Icons.home_outlined),
     ),
     NavItem(
       Menu.health,
       '健康観察',
       HealthPage(),
-      Icons.medical_services,
-      Icons.medical_services_outlined,
+      const FaIcon(FontAwesomeIcons.stethoscope,),
+      const FaIcon(FontAwesomeIcons.stethoscope,),
     ),
     NavItem(
       Menu.attendance,
       '出欠(日)',
       AttendancePage(),
-      Icons.content_paste,
-      Icons.content_paste_outlined,
+      const Icon(Icons.content_paste),
+      const Icon(Icons.content_paste_outlined),
     ),
     NavItem(
       Menu.attendanceTimed,
       '出欠(時限)',
       AttendanceTimedPage(),
-      Icons.content_paste,
-      Icons.content_paste_outlined,
+      const Icon(Icons.content_paste),
+      const Icon(Icons.content_paste_outlined),
     ),
     NavItem(
       Menu.awareness,
       '気づき',
       const AwarenessPage(),
-      Icons.lightbulb,
-      Icons.lightbulb_outlined,
+      const Icon(Icons.lightbulb),
+      const Icon(Icons.lightbulb_outlined),
     ),
     // NavItem(
     //   Menu.setting,
     //   '設定',
     //   Page2(),
-    //   Icons.settings,
-    //   Icons.settings_outlined,
+    //   const Icon(Icons.settings),
+    //   const Icon(Icons.settings_outlined),
     // ),
   ];
 
@@ -150,8 +151,8 @@ class HomePageState extends ConsumerState<HomePage> {
                       labelType: NavigationRailLabelType.all,
                       destinations: navItems.map((NavItem navItem) {
                         return NavigationRailDestination(
-                          icon: Icon(navItem.icon),
-                          selectedIcon: Icon(navItem.selectedIcon),
+                          icon: navItem.icon,
+                          selectedIcon: navItem.selectedIcon,
                           label: Padding(
                             padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
                             child: Text(navItem.title),
@@ -262,10 +263,10 @@ class HomePageState extends ConsumerState<HomePage> {
 
 // 定义一个表示导航项的类
 class NavItem {
-  NavItem(this.menuId, this.title, this.page, this.icon, this.selectedIcon);
+  NavItem(this.menuId, this.title, this.page, this.icon, this.selectedIcon,);
   final Menu menuId;
   final String title;
   final Widget page;
-  final IconData icon;
-  final IconData selectedIcon;
+  final Widget icon;
+  final Widget selectedIcon;
 }

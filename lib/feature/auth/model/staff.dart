@@ -20,6 +20,7 @@ class Staff with _$Staff {
     required String DantaiId,
     required String Dantai,
     required String UserName,
+    required String KihonId,
   }) = _Staff;
 
   factory Staff.fromJson(Map<String, dynamic> json) => _$StaffFromJson(json);

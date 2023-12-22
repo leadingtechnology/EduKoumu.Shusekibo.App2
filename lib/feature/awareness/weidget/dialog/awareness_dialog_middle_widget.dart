@@ -4,7 +4,7 @@ import 'package:kyoumutechou/feature/awareness/provider/awareness_meibo_provider
 
 
 class AwarenessDialogMiddleWidget extends ConsumerWidget {
-  const AwarenessDialogMiddleWidget({Key? key, required this.controller}) : super(key: key);
+  const AwarenessDialogMiddleWidget({required this.controller, super.key});
 
   final TextEditingController controller;
 
@@ -18,8 +18,8 @@ class AwarenessDialogMiddleWidget extends ConsumerWidget {
       TextFormField(
         controller: controller,
         keyboardType: TextInputType.multiline,
-        maxLength: 100,
-        maxLines: 7,
+        maxLength: 300,
+        maxLines: 11,
         decoration: const InputDecoration(
           border: OutlineInputBorder(),
         ),
@@ -33,7 +33,7 @@ class AwarenessDialogMiddleWidget extends ConsumerWidget {
       
       // show importent checkbo. 
       Positioned(
-        bottom: -14.0,
+        bottom: -14,
         child: SizedBox(
           width: 120,
           child: CheckboxListTile(
@@ -42,11 +42,10 @@ class AwarenessDialogMiddleWidget extends ConsumerWidget {
             controlAffinity: ListTileControlAffinity.leading,
             onChanged: (bool? value) {
               ref.read(awarenessJuyoProvider.notifier).state = value!;
-            }
+            },
           ),
-        )
+        ),
       ),
-    
-    ],));
+    ],),);
   }
 }

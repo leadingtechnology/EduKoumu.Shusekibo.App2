@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kyoumutechou/feature/boxes.dart';
 import 'package:kyoumutechou/feature/health/model/health_stamp_model.dart';
 import 'package:kyoumutechou/feature/health/provider/health_stamp_provider.dart';
+import 'package:kyoumutechou/helpers/theme/app_theme.dart';
 
 class HealthStampUnregistWidget extends ConsumerWidget {
   const HealthStampUnregistWidget({ super.key });
@@ -22,6 +23,8 @@ class HealthStampUnregistWidget extends ConsumerWidget {
         ToggleButtons(
           constraints: const BoxConstraints.expand(width: 50),
           fillColor: Theme.of(context).colorScheme.secondaryContainer,
+          borderColor: theme.colorScheme.outlineVariant,
+          selectedBorderColor: theme.colorScheme.primary,
           onPressed: (int index) {
             ref.read(healthStampProvider.notifier).state =
                 stamps[index] as HealthStampModel;

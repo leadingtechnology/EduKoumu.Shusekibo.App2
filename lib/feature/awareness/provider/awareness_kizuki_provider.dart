@@ -19,6 +19,10 @@ final awarenessKizukiProvider = StateProvider<AwarenessKizukiModel>(
   (ref) => const AwarenessKizukiModel(),
 );
 
+// カメラ撮った写真リストを保持する
+final tenpuList = StateProvider<List<String>>((ref) => []);
+
+
 final awarenessCountProvider = StateProvider<int>((ref) => 0);
 final awarenessListSearchProvider = StateProvider<int>((ref) => 0);
 
