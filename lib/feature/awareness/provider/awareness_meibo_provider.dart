@@ -1,12 +1,18 @@
+import 'dart:html' as html;
+import 'dart:typed_data';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kyoumutechou/feature/awareness/model/awareness_common.dart';
 import 'package:kyoumutechou/feature/awareness/model/awareness_meibo_model.dart';
 import 'package:kyoumutechou/feature/awareness/provider/awareness_kizuki_provider.dart';
+import 'package:kyoumutechou/feature/awareness/provider/tenpu_provider.dart';
 import 'package:kyoumutechou/feature/awareness/repsitory/awareness_kizuki_repository.dart';
 import 'package:kyoumutechou/feature/awareness/repsitory/awareness_meibo_repository.dart';
 import 'package:kyoumutechou/feature/boxes.dart';
 import 'package:kyoumutechou/feature/common/provider/filter_provider.dart';
 import 'package:kyoumutechou/feature/common/state/api_state.dart';
+import 'package:kyoumutechou/shared/util/date_util.dart';
+import 'package:kyoumutechou/shared/util/image_handler.dart';
 
 final awarenessMeiboListProvider = 
 StateNotifierProvider<AwarenessMeiboListProvider, ApiState>((ref) {
@@ -134,6 +140,7 @@ class AwarenessMeiboListProvider extends StateNotifier<ApiState> {
   Future<void> save(String str, AwarenessOperationItem opt) async {
     final juyo = ref.read(awarenessJuyoProvider);
     final burui = ref.read(awarenessBunruiProvider);
+    final images = ref.read(tenpuListProvider);
     
     String students;
     int shozokuId;
@@ -153,16 +160,34 @@ class AwarenessMeiboListProvider extends StateNotifier<ApiState> {
       students = ref.read(awarenessStudentAddProvider).toString();
     }
 
+    final tenpuList = <String>[];
+    var id = 33;
+    for (final image in images){
+      final imageData = await ImageHandler.fetchImageData(image);
+      id ++ ;
 
-    String json = '''
+      final value = '''
+{
+  "tenpuFileName": "${DateUtil.getDatetimeStamp()}.JPEG",
+  "tenpuFileSize": ${imageData.length},
+  "tenpuFileData": $imageData
+}
+''';
+      tenpuList.add(value);
+    }
+
+
+    // jsonの作成
+    final json = '''
 {
     "ShozokuId": $shozokuId,
     "studentKihonIdList": $students,
     "kizuki": "$str",
     "juyoFlg": $juyo,
-    "karuteBunruiCode": "$burui"
+    "karuteBunruiCode": $burui,
+    "TenpuFileList": $tenpuList
 }
-   ''';
+''';
 
     final response = await _repository.save(json);
     final res = await _rep.fetch();
@@ -173,4 +198,13 @@ class AwarenessMeiboListProvider extends StateNotifier<ApiState> {
       state = response;
     }
   }
+
+  // List<Map<String, dynamic>> tenpuListToJson(List<TenpuModel> tenpuList) {
+  //   final tenpuListJson = <Map<String, dynamic>>[];
+  //   for (final tenpu in tenpuList){
+  //     final tenpuJson = tenpu.toJson() ;
+  //     tenpuListJson.add(tenpuJson);
+  //   }
+  //   return tenpuListJson;
+  // }
 }

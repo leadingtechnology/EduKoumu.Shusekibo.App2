@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kyoumutechou/feature/awareness/model/awareness_kizuki_model.dart';
 import 'package:kyoumutechou/feature/awareness/provider/awareness_kizuki_provider.dart';
+import 'package:kyoumutechou/feature/awareness/provider/tenpu_provider.dart';
 import 'package:kyoumutechou/feature/awareness/weidget/awareness_list_page.dart';
 import 'package:kyoumutechou/feature/awareness/weidget/awareness_seat_page.dart';
 import 'package:kyoumutechou/feature/awareness/weidget/dialog/awareness_regist_dialog.dart';
@@ -121,6 +122,7 @@ class AwarenessPageState extends ConsumerState<AwarenessPage>
   }
 
   Future<void> _handlePressActionButton(BuildContext context) async {
+    ref.read(tenpuListProvider.notifier).state = [];  
     await DialogUtil.show(
       context: context,
       builder: (BuildContext context) {

@@ -19,10 +19,6 @@ final awarenessKizukiProvider = StateProvider<AwarenessKizukiModel>(
   (ref) => const AwarenessKizukiModel(),
 );
 
-// カメラ撮った写真リストを保持する
-final tenpuList = StateProvider<List<String>>((ref) => []);
-
-
 final awarenessCountProvider = StateProvider<int>((ref) => 0);
 final awarenessListSearchProvider = StateProvider<int>((ref) => 0);
 
@@ -41,6 +37,14 @@ class AwarenessKizukiListProvider extends StateNotifier<ApiState> {
 
   Future<void> _fetch() async {
     final response = await _repository.fetch();
+    if (mounted) {
+      state = response;
+    }
+  }
+
+  Future<void> get(int kizukiId) async {
+    
+    final response = await _repository.get(kizukiId);
     if (mounted) {
       state = response;
     }

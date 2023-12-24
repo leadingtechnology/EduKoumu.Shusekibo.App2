@@ -130,6 +130,13 @@ Future<void> start() async {
   final akBox = await Hive.openBox<AwarenessKizukiModel>('AwarenessKizuki');
   await akBox.clear();
 
+  final tenpuBox = await Hive.openBox<TenpuModel>('Tenpu');
+  await tenpuBox.clear();
+
+  final urlBox = await Hive.openBox<String>('ImageUrl');
+  await urlBox.clear();
+
+
 
   // Hive アダプター登録
 

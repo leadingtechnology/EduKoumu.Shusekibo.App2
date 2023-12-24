@@ -40,6 +40,15 @@ class DateUtil {
     return '${date.year}-${NumberFormat('00').format(date.month)}-${NumberFormat('00').format(date.day)}';
   } 
 
+  // yyyyMMdd_HHmmss.SSS
+  static String getDatetimeStamp() {
+    final timestamp = DateTime.now().millisecondsSinceEpoch;
+    final dateTime = DateTime.fromMillisecondsSinceEpoch(timestamp);
+    final formattedDate = DateFormat('yyyyMMdd_HHmmss.SSS').format(dateTime);
+    
+    return formattedDate;
+  }   
+
   // yyyy-mm-dd
   static String getStringDate(DateTime date) {
     return '${date.year}-${NumberFormat('00').format(date.month)}-${NumberFormat('00').format(date.day)}' ;

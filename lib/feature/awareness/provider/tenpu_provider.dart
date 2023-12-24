@@ -25,4 +25,10 @@ class TenpuListProvider extends StateNotifier<List<String>> {
     state.add(path);
     state = [...state];
   }
+
+  
+  void addAll(List<String> paths) {
+    state = paths;
+    state = [...state];
+  }
 }

@@ -6,11 +6,11 @@ import 'package:kyoumutechou/feature/awareness/model/awareness_kizuki_model.dart
 import 'package:kyoumutechou/feature/awareness/model/awareness_meibo_model.dart';
 import 'package:kyoumutechou/feature/awareness/provider/awareness_kizuki_provider.dart';
 import 'package:kyoumutechou/feature/awareness/provider/awareness_meibo_provider.dart';
-import 'package:kyoumutechou/feature/awareness/provider/tenpu_provider.dart';
 import 'package:kyoumutechou/feature/awareness/weidget/dialog/awareness_bunrui.dart';
 import 'package:kyoumutechou/feature/awareness/weidget/dialog/awareness_dialog_left_widget.dart';
 import 'package:kyoumutechou/feature/awareness/weidget/dialog/awareness_dialog_middle_widget.dart';
 import 'package:kyoumutechou/feature/awareness/weidget/dialog/awareness_template_search_student%20copy.dart';
+import 'package:kyoumutechou/feature/awareness/weidget/dialog/photo_widget.dart';
 import 'package:kyoumutechou/feature/awareness/weidget/dialog/seito_widget.dart';
 import 'package:kyoumutechou/feature/boxes.dart';
 import 'package:kyoumutechou/feature/common/widget/save_button_widget.dart';
@@ -31,29 +31,16 @@ class AwarenessRegistDialog extends ConsumerWidget {
 
   final kizukiController = TextEditingController();
 
-  // 画像を表示する
-  void _showFullImage(BuildContext context, String url) {
-    showDialog<Widget>(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          content: Image.network(url), 
-        );
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final meiboBox = Boxes.getAwarenessMeiboBox();
-
-    
-    bool juyo; //  = ref.watch(awarenessJuyoProvider);
     var meibos = <AwarenessMeiboModel>[];
 
     // Add Mode
     if (opt == AwarenessOperationItem.add){
-      meibos = meiboBox.values.toList().where((e) => e.selectFlag ?? false).toList();
+      meibos = meiboBox.values.toList().where(
+        (e) => e.selectFlag ?? false
+      ,).toList();
     }
     
     // Edit Mode
@@ -155,36 +142,7 @@ class AwarenessRegistDialog extends ConsumerWidget {
 
                   // 2.4 写真
                   MySpacing.height(8),
-                  if(ref.watch(tenpuListProvider).isNotEmpty)
-                  Row(
-                    children: [
-                      Container(
-                        width: 88,
-                        alignment: Alignment.centerRight,
-                        child: const Text('写真', style:TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 14,),),
-                      ),
-                      MySpacing.width(12),
-                      Expanded(
-                        child: Row(
-                          children: ref.watch(tenpuListProvider).map(
-                            (e) => InkWell(
-                              onTap: () => _showFullImage(context, e),
-                              child: SizedBox(
-                                height:50, 
-                                width: 100,
-                                child:Image.network(e),
-                              ),
-                            ),
-                          ).toList(),
-                        ),
-                      ),
-                      // OutlinedButton(
-                      //   onPressed: (){}, 
-                      //   child: const Text('写真を追加'),
-                      // ),
-                    ],
-                  ),
+                  PhotoWidget(kizukiId : kizuki.id??0),
                 ],
               ),
             ),

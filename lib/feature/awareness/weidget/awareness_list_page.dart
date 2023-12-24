@@ -6,6 +6,8 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:kyoumutechou/feature/awareness/model/awareness_common.dart';
 import 'package:kyoumutechou/feature/awareness/model/awareness_kizuki_model.dart';
 import 'package:kyoumutechou/feature/awareness/provider/awareness_kizuki_provider.dart';
+import 'package:kyoumutechou/feature/awareness/provider/awareness_meibo_provider.dart';
+import 'package:kyoumutechou/feature/awareness/provider/awareness_photo_provider.dart';
 import 'package:kyoumutechou/feature/awareness/weidget/dialog/awareness_regist_dialog.dart';
 import 'package:kyoumutechou/feature/boxes.dart';
 import 'package:kyoumutechou/feature/common/widget/dialog_util.dart';
@@ -90,14 +92,14 @@ class AwarenessListView extends ConsumerWidget {
         return ValueListenableBuilder(
             valueListenable: Boxes.getAwarenessKizukiModelBox().listenable(),
             builder: (context, Box<AwarenessKizukiModel> box, _) {
-              List<AwarenessKizukiModel> kizuki =
-                  Boxes.getAwarenessKizukiModelBox().values.toList();
+              final kizuki = Boxes.getAwarenessKizukiModelBox().values.toList();
+              
               kizuki.sort(
                 (a, b) => a.studentId ?? 0.compareTo(b.studentId ?? 0),
               );
 
               return ListView.separated(
-                padding: EdgeInsets.only(top: 20.0),
+                padding: const EdgeInsets.only(top: 20),
                 itemBuilder: (context, index) => ListTile(
                   leading: ClipOval(child: Image.network(
                     '${_baseUrl}api/images?seitoseq=${kizuki[index].seitoSeq}',
@@ -106,38 +108,37 @@ class AwarenessListView extends ConsumerWidget {
                   
                   title: Text('${kizuki[index].studentName}'),
                   isThreeLine: true,
-                  subtitle: Container(
-                      child: Column(children: [
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [Text('${kizuki[index].naiyou}')]),
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Text('${kizuki[index].tourokusyaName}'),
-                          MySpacing.width(10),
-                          SizedBox(
-                            width: 10,
-                            child: Text('|'),
-                          ),
-                          Text(
-                              '${DateUtil.getJapaneseDate(DateTime.parse(kizuki[index].torokuDate ?? ''))}'),
-                        ]),
-                  ])),
-                  selected: false,
+                  subtitle: Column(children: [
+                                      Row(
+                    children: [Text('${kizuki[index].naiyou}')],),
+                                      Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Text('${kizuki[index].tourokusyaName}'),
+                      MySpacing.width(10),
+                      const SizedBox(
+                        width: 10,
+                        child: Text('|'),
+                      ),
+                      Text(
+                          DateUtil.getJapaneseDate(
+                            DateTime.parse(kizuki[index].torokuDate ?? ''),
+                          ),),
+                    ],),
+                                    ],),
                   trailing: PopUpMenu(kizuki: kizuki[index]),
                 ),
                 itemCount: kizuki.length,
                 separatorBuilder: (context, index) {
-                  return Divider(
+                  return const Divider(
                     height: 0.5,
                     indent: 75,
                     endIndent: 20,
                   );
                 },
               );
-            });
+            },);
       },
     );
   }
@@ -248,6 +249,12 @@ Future<void> _handlePressActionButton(
 
   if (opt == AwarenessOperationItem.copy || 
       opt == AwarenessOperationItem.edit) {
+    
+    ref.read(awarenessBunruiProvider.notifier).state = '${kizuki.bunruiCode}';
+    ref.read(awarenessJuyoProvider.notifier).state = kizuki.juyoFlg ?? false;
+    ref.read(awarenessIdProvider.notifier).state = kizuki.id??0;
+
+
     await DialogUtil.show(
       context: context,
       builder: (BuildContext context) {
@@ -261,8 +268,8 @@ Future<void> _handlePressActionButton(
     return;
   }
 
-  if (opt == AwarenessOperationItem.favorite) return null;
-  if (opt == AwarenessOperationItem.template) return null;
+  if (opt == AwarenessOperationItem.favorite) return;
+  if (opt == AwarenessOperationItem.template) return;
 
-  return null;
+  return;
 }
