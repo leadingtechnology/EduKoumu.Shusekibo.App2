@@ -10,6 +10,7 @@ class DantaiDropdownWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final dantaiList = Boxes.getDantais().values.toList();
+    dantaiList.sort((a, b) => '${a.organizationBunrui}${a.organizationKbn}${a.code}'.compareTo('${b.organizationBunrui}${b.organizationKbn}${b.code}'));
 
     return DropdownButton<DantaiModel>(
       value: ref.watch(dantaiProvider),

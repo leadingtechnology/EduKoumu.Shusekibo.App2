@@ -44,11 +44,10 @@ class HealthPage extends ConsumerWidget {
       saveWidget: ValueListenableBuilder(
         valueListenable: Boxes.getHealthMeiboBox().listenable(),
         builder: (context, Box<HealthMeiboModel> box, _) {
-          final length = box.values.length;
 
           return SaveButtonWidget(
             label: '保存',
-            onPressed: length<1 || !isEditable ? null :(){
+            onPressed: !isEditable ? null :(){
               ref.read(healthMeiboListProvider.notifier).save();
               ToastHelper.showToast(context, '　保存しました　');
             },

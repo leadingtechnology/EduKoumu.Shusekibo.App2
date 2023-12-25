@@ -12,9 +12,10 @@ final shozokuProvider = StateProvider<ShozokuModel>(
 
 final shozokusProvider = 
 StateNotifierProvider<ShozokuNotifier, ApiState>((ref) {
-  final gakunen = ref.watch(gakunenProvider);
+  //final gakunen = ref.watch(gakunenProvider);
   
-  return ShozokuNotifier(ref: ref, gakunenCode: gakunen.code??'',);
+  //return ShozokuNotifier(ref: ref, gakunenCode: gakunen.code??'',);
+  return ShozokuNotifier(ref: ref, gakunenCode: '',);
 });
 
 class ShozokuNotifier extends StateNotifier<ApiState> {
@@ -33,61 +34,58 @@ class ShozokuNotifier extends StateNotifier<ApiState> {
   }
 
   Future<void> _fetch(String gakunenCode) async {
-    final gakunen = ref.read(gakunenProvider);
-    setShozokuValue(ref, gakunen);
+    // final gakunen = ref.read(gakunenProvider);
+    // final shozoku = setShozokuValue(ref, gakunen);
+    // ref.read(shozokuProvider.notifier).state = shozoku; 
 
     state = const ApiState.loaded();
   }
-}
 
-ShozokuModel setShozokuValue(
-  Ref ref,
-  GakunenModel gakunen,
- {
-  int? shozokuId,
-}) {
-  final dantaiId = ref.read(dantaiProvider).id ?? 0;
-  final gakunenCode = gakunen.code ?? '';
+  ShozokuModel setShozokuValue(
+    GakunenModel gakunen, {
+    int? shozokuId,
+  }) {
+    final dantaiId = ref.read(dantaiProvider).id ?? 0;
+    final gakunenCode = gakunen.gakunenCode ?? '';
 
-  // 学年コードが空の場合は返す
-  if (gakunenCode.isEmpty) {
-    
-    return const ShozokuModel();
-  }
+    // 学年コードが空の場合は返す
+    if (gakunenCode.isEmpty) {
+      return const ShozokuModel();
+    }
 
-  final box = Boxes.getShozokus();
-  ShozokuModel? shozoku = const ShozokuModel();
-
-  try{
-    // 初期値の設定
-    final keys = box.keys
-        .toList()
-        .where((e) => e.toString().startsWith('$dantaiId-$gakunenCode-'))
-        .toList();
-
-    // ignore: cascade_invocations
-    keys.sort((a, b) => a.toString().compareTo(b.toString()));
-
-    // 取得したKeysにより、shozokuListを取得する
-    final shozokuList = keys.map(box.get).toList();
+    final box = Boxes.getShozokus();
+    ShozokuModel? shozoku = const ShozokuModel();
 
     try {
-      if (shozokuId != null && shozokuId > 0) {
-        shozoku = shozokuList
-            .where((e) => e?.id == shozokuId)
-            .first;
-      } else {
+      // 初期値の設定
+      final keys = box.keys
+          .toList()
+          .where((e) => e.toString().startsWith('$dantaiId-$gakunenCode-'))
+          .toList();
+
+      // ignore: cascade_invocations
+      keys.sort((a, b) => a.toString().compareTo(b.toString()));
+
+      // 取得したKeysにより、shozokuListを取得する
+      final shozokuList = keys.map(box.get).toList();
+
+      try {
+        if (shozokuId != null && shozokuId > 0) {
+          shozoku = shozokuList.where((e) => e?.id == shozokuId).first;
+        } else {
+          shozoku = shozokuList.first;
+        }
+      } catch (e) {
         shozoku = shozokuList.first;
       }
     } catch (e) {
-      shozoku = shozokuList.first;
+      shozoku = const ShozokuModel();
     }
 
-  }catch(e){
-    shozoku = const ShozokuModel();
+    shozoku ??= const ShozokuModel();
+
+    return shozoku;
   }
 
-  shozoku ??= const ShozokuModel();
-
-  return shozoku;
 }
+

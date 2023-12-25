@@ -62,6 +62,6 @@ class Boxes {
   static Box<AwarenessKizukiModel> getAwarenessKizukiModelBox() => Hive.box<AwarenessKizukiModel>('AwarenessKizuki');
   static Box<TenpuModel> getTenpuBox() => Hive.box<TenpuModel>('Tenpu');
   static Box<String> getImageUrl() => Hive.box<String>('ImageUrl');
-  static Box<AwarenessCodeModel> getBunruiBox =  Hive.box<AwarenessCodeModel>('bunrui');
+  static Box<AwarenessCodeModel> getBunruiBox() =>  Hive.box<AwarenessCodeModel>('bunrui');
 
 }

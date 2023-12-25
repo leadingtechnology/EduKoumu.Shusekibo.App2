@@ -39,13 +39,18 @@ class AttendanceTimedPage extends ConsumerWidget {
         ref.read(attendanceTimedMeiboListProvider.notifier).updateByBlank();
         attendanceTimedGlobalKey.currentState?.setBlank();
       },
-      saveWidget: SaveButtonWidget(
+      saveWidget: !isEditable ? 
+          const SaveButtonWidget(
+            label: '保存',
+          ) : 
+          SaveButtonWidget(
             label: '保存',
             onPressed: !isEditable ? null : (){
               ref.read(attendanceTimedMeiboListProvider.notifier).save();
               ToastHelper.showToast(context, '　保存しました　');
             },
-          ),
+          )
+          ,
       buttomName: pageType == PageType.seat ? '一覧' : 'テーブル',
       buttonIcon: pageType == PageType.seat ? Icons.list : Icons.grid_view,
     );

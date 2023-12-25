@@ -22,9 +22,9 @@ class DantaiNotifier extends StateNotifier<ApiState> {
   }
 
   final Ref ref;
-  late final _dantai = ref.watch(dantaisRepositoryProvider);
-  late final _healthStamp = ref.watch(healthStampRepositoryProvider);
-  late final _attendStamp = ref.watch(attendanceStampRepositoryProvider);
+  late final _dantai = ref.read(dantaisRepositoryProvider);
+  late final _healthStamp = ref.read(healthStampRepositoryProvider);
+  late final _attendStamp = ref.read(attendanceStampRepositoryProvider);
 
 
   Future<void> init() async {
@@ -95,7 +95,12 @@ class DantaiNotifier extends StateNotifier<ApiState> {
         (e) => '${e.id}' == Boxes.getBox().get('dantaiId'),
       ).first;
     }catch(e) {
-      dantai = Boxes.getDantais().values.first;
+      final dantaiList = Boxes.getDantais().values.toList();
+      dantaiList.sort((a, b) =>
+          '${a.organizationBunrui}${a.organizationKbn}${a.code}'.compareTo(
+              '${b.organizationBunrui}${b.organizationKbn}${b.code}',));
+      
+      dantai = dantaiList.first;
     }
    
     // 団体ドローンダウンの初期値を設定する。

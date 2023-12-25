@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kyoumutechou/feature/common/provider/filter_provider.dart';
+import 'package:kyoumutechou/feature/common/provider/timeds_provider.dart';
 import 'package:kyoumutechou/helpers/theme/app_theme.dart';
 import 'package:kyoumutechou/helpers/widgets/my_spacing.dart';
 import 'package:kyoumutechou/helpers/widgets/my_text.dart';
@@ -59,5 +60,9 @@ Future<void> pickDate(BuildContext context, WidgetRef ref) async {
   );
   if (selected != null) {
     ref.read(targetDateProvider.notifier).state = selected;
+
+    // 時限情報の初期値を設定する
+    final timed = ref.read(timedsProvider.notifier).setTimedValue();
+    ref.read(timedProvider.notifier).state = timed;
   }
 }

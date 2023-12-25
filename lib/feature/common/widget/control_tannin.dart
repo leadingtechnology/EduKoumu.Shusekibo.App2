@@ -4,6 +4,7 @@ import 'package:kyoumutechou/feature/boxes.dart';
 import 'package:kyoumutechou/feature/common/provider/dantais_provider.dart';
 import 'package:kyoumutechou/feature/common/provider/filter_provider.dart';
 import 'package:kyoumutechou/feature/common/provider/tannin_provider.dart';
+import 'package:kyoumutechou/helpers/theme/app_theme.dart';
 import 'package:kyoumutechou/shared/util/date_util.dart';
 
 
@@ -39,7 +40,12 @@ class ControlTannin extends ConsumerWidget {
         }
         final tannin = box.get(keys.first);
         return Text(
-          '${tannin!.gakunenCode}・${tannin.className}・${tannin.shozokuId}',);
+          '${tannin!.gakunenCode}・${tannin.className}・${tannin.shozokuId}',
+          style: TextStyle(
+            color: theme.colorScheme.surface,
+            fontSize: 12,
+          ),
+        );
       },
     );
   }

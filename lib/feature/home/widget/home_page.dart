@@ -198,7 +198,7 @@ class HomePageState extends ConsumerState<HomePage> {
                       children: [
                         // 団体DropdownButton
                         const DantaiDropdownWidget(),
-                        //const ControlTannin(),
+                        const ControlTannin(),
                         const ControlDantaiChange(),
                         // IconButton(
                         //   icon: const Icon(Icons.menu),
@@ -210,13 +210,13 @@ class HomePageState extends ConsumerState<HomePage> {
                             child: MyText.bodyLarge('', fontWeight: 800),
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-                          child: IconButton(
-                            icon: const Icon(Icons.campaign_outlined),
-                            onPressed: () {},
-                          ),
-                        ),
+                        // Padding(
+                        //   padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+                        //   child: IconButton(
+                        //     icon: const Icon(Icons.campaign_outlined),
+                        //     onPressed: () {},
+                        //   ),
+                        // ),
                         Column(
                           mainAxisAlignment: MainAxisAlignment.end,
                           crossAxisAlignment: CrossAxisAlignment.end,

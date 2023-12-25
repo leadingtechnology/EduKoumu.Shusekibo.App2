@@ -6,6 +6,7 @@ import 'package:kyoumutechou/feature/common/widget/control_tokobi2.dart';
 import 'package:kyoumutechou/feature/home/provider/home_provider.dart';
 import 'package:kyoumutechou/helpers/widgets/my_spacing.dart';
 import 'package:kyoumutechou/helpers/widgets/my_text.dart';
+import 'package:kyoumutechou/shared/util/date_util.dart';
 
 class SearchBarWidget extends ConsumerWidget {
   const SearchBarWidget(this._scaffoldKey, {this.isPeriod, super.key});
@@ -17,6 +18,9 @@ class SearchBarWidget extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final menuId = ref.watch(menuProvider);
     final filter = ref.watch(filterProvider);
+
+    final strBeginDate = DateUtil.getJapaneseDate(filter.beginDate ?? DateTime.now());
+    final strEndDate = DateUtil.getJapaneseDate(filter.endDate ?? DateTime.now());
     
     return Padding(
       padding: const EdgeInsets.all(8),
@@ -79,7 +83,8 @@ class SearchBarWidget extends ConsumerWidget {
                         child: Text(filter.className ?? ''),
                       ),
                     ),
-                    Row(
+                    if (menuId != Menu.awareness)
+                      Row(
                       children: [
                         Checkbox(
                           value: filter.kouryuGakkyu ?? false,
@@ -98,7 +103,6 @@ class SearchBarWidget extends ConsumerWidget {
                 if (menuId != Menu.awareness) ...[
                   // 1.3 対象日
                   Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       MyText.bodyLarge(
                         '対象日',
@@ -131,7 +135,6 @@ class SearchBarWidget extends ConsumerWidget {
                     MySpacing.width(60),
                     // 1.5 時限
                     Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
                       children:[
                         MyText.bodyLarge(
                           '時限',
@@ -178,7 +181,7 @@ class SearchBarWidget extends ConsumerWidget {
                             border: Border.all(),
                             borderRadius: BorderRadius.circular(3),
                           ),
-                          child: Text(filter.japanDate ?? ''),
+                          child: Text(strBeginDate),
                         ),
                       ),
                       MyText.bodyLarge(
@@ -196,7 +199,7 @@ class SearchBarWidget extends ConsumerWidget {
                             border: Border.all(),
                             borderRadius: BorderRadius.circular(3),
                           ),
-                          child: Text(filter.japanDate ?? ''),
+                          child: Text(strEndDate),
                         ),
                       ),
                     ],

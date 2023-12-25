@@ -11,63 +11,54 @@ class ClipGakunen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(gakunensProvider);
+    final organizationKbn = ref.watch(dantaiProvider).organizationKbn;
+    final box = Boxes.getGakunens();
 
-    return state.when(
-      loading: () {return const SizedBox();},
-      error: (error) {return Text('$error');},
-      loaded: () {
-        final organizationKbn = ref.watch(dantaiProvider).organizationKbn;
-        final box = Boxes.getGakunens();
-
-        final keys = box.keys.toList().where(
-              (element) =>
-                  element.toString().startsWith('$organizationKbn-'),
-            );
-        
-        if (keys.isEmpty) {
-          return const SizedBox();
-        }
-
-        final gakunenList = keys.map(box.get).toList();
-        //ref.read(gakunenProvider.notifier).state = gakunenList.first!;
-
-        return Wrap(
-          spacing: 10,
-          runSpacing: 6,
-          children: gakunenList.map((gakunen) {
-            final isSelected = gakunen == ref.watch(gakunenProvider);
-
-            return ChoiceChip(
-              label: Text('${gakunen?.gakunenRyakusho}',),
-              labelStyle: TextStyle(
-                color: isSelected? 
-                theme.colorScheme.onPrimary : 
-                theme.colorScheme.primary,
-              ),
-              selected: isSelected,
-              onSelected: (bool selected) {
-                ref.read(gakunenProvider.notifier).state = gakunen!;
-                final shozoku = setShozokuValue(
-                  ref as Ref<Object?>,
-                  gakunen,
-                );
-                ref.read(shozokuProvider.notifier).state = shozoku;
-              },
-              side: BorderSide(
-                width: 0,
-                color: isSelected? 
-                theme.colorScheme.primary : 
-                theme.colorScheme.outline,
-              ),
-              backgroundColor: theme.colorScheme.background,
-              selectedColor: theme.colorScheme.primary,
-              showCheckmark: false, 
-            );
-          }).toList(),
+    final keys = box.keys.toList().where(
+          (element) => element.toString().startsWith('$organizationKbn-'),
         );
 
-      },
+    if (keys.isEmpty) {
+      return const SizedBox();
+    }
+
+    final gakunenList = keys.map(box.get).toList();
+    //ref.read(gakunenProvider.notifier).state = gakunenList.first!;
+
+    return Wrap(
+      spacing: 10,
+      runSpacing: 6,
+      children: gakunenList.map((gakunen) {
+        final isSelected = gakunen == ref.watch(gakunenProvider);
+
+        return ChoiceChip(
+          label: Text(
+            '${gakunen?.gakunenRyakusho}',
+          ),
+          labelStyle: TextStyle(
+            color: isSelected
+                ? theme.colorScheme.onPrimary
+                : theme.colorScheme.primary,
+          ),
+          selected: isSelected,
+          onSelected: (bool selected) {
+            ref.read(gakunenProvider.notifier).state = gakunen!;
+            final shozoku = ref.read(shozokusProvider.notifier).setShozokuValue(
+              gakunen,
+            );
+            ref.read(shozokuProvider.notifier).state = shozoku;
+          },
+          side: BorderSide(
+            width: 0,
+            color: isSelected
+                ? theme.colorScheme.primary
+                : theme.colorScheme.outline,
+          ),
+          backgroundColor: theme.colorScheme.background,
+          selectedColor: theme.colorScheme.primary,
+          showCheckmark: false,
+        );
+      }).toList(),
     );
 
 

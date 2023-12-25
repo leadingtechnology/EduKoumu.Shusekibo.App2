@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:kyoumutechou/feature/awareness/provider/awareness_code_provider.dart';
 import 'package:kyoumutechou/feature/awareness/provider/awareness_meibo_provider.dart';
 import 'package:kyoumutechou/feature/boxes.dart';
-import 'package:kyoumutechou/shared/http/app_exception.dart';
+import 'package:kyoumutechou/feature/common/provider/dantais_provider.dart';
 
 
 class AwarenessBunrui extends ConsumerWidget {
@@ -33,27 +32,32 @@ class AwarenessBunrui extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(awarenessCodeListProvider);
-    
-    return state.when(
-      loading: () {
-        return const Center(child: CircularProgressIndicator());
-      },
-      error: (AppException error) { return Text('$error'); },
-      loaded: () {
-        final codeList = Boxes.getBunruiBox.values.toList();
-        
-        return codeList.isEmpty
-            ? Container(color: Colors.red,)
-            :
-        Wrap(
-          children: codeList
-              .map(
-                (e) => _buildRadioButton(ref, '${e.code}', '${e.name}'),
-              )
-              .toList(),
+    final dantaiId = ref.watch(dantaiProvider).id;
+    final box = Boxes.getBunruiBox();
+
+    final keys = box.keys.toList().where(
+          (element) =>
+              element.toString().startsWith('$dantaiId-'),
         );
-      },
-    );
+    
+    if (keys.isEmpty) {
+      return const SizedBox();
+    }
+
+    final codeList = keys.map(box.get).toList(); 
+    codeList.sort((a, b) => a?.id??0.compareTo(b?.id??0 ),);
+
+
+    return codeList.isEmpty
+        ? Container(
+            color: Colors.red,
+          )
+        : Wrap(
+            children: codeList
+                .map(
+                  (e) => _buildRadioButton(ref, '${e?.code}', '${e?.name}'),
+                )
+                .toList(),
+          );
   }
 }

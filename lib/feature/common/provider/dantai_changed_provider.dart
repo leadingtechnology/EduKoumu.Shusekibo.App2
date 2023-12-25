@@ -1,4 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:kyoumutechou/feature/awareness/provider/awareness_code_provider.dart';
+import 'package:kyoumutechou/feature/awareness/repsitory/awareness_code_repository.dart';
 import 'package:kyoumutechou/feature/boxes.dart';
 import 'package:kyoumutechou/feature/common/model/dantai_model.dart';
 import 'package:kyoumutechou/feature/common/model/tannin_model.dart';
@@ -31,11 +33,12 @@ class DantaiChangedNotifier extends StateNotifier<ApiState> {
   final Ref ref;
   final DantaiModel dantai;
 
-  late final _tannin = ref.watch(tanninRepositoryProvider);
-  late final _gakunen = ref.watch(gakunensRepositoryProvider);
-  late final _shozoku = ref.watch(shozokusRepositoryProvider);
+  late final _tannin = ref.read(tanninRepositoryProvider);
+  late final _gakunen = ref.read(gakunensRepositoryProvider);
+  late final _shozoku = ref.read(shozokusRepositoryProvider);
+  late final _burun = ref.read(awarenessCodeRepositoryProvider);
 
-  late final _timed = ref.watch(timedsRepositoryProvider);
+  late final _timed = ref.read(timedsRepositoryProvider);
 
   Future<void> fetch(DantaiModel dantai) async {
     // 団体Idが0の場合は返す
@@ -59,6 +62,8 @@ class DantaiChangedNotifier extends StateNotifier<ApiState> {
         //　所属情報を取得す情報
         _shozoku.fetch(dantaiId),
 
+        // 分類コード情報を取得する。
+        _burun.fetch(dantaiId),
       ]);
 
       var isError = false;
@@ -83,14 +88,15 @@ class DantaiChangedNotifier extends StateNotifier<ApiState> {
         );
       }
 
+      // 対象日付のリセット
+      ref.read(targetDateProvider.notifier).state = DateTime.now();
 
       // 担任情報の取得
       final strDate = DateUtil.getStringDate(DateTime.now());
       final key = Boxes.getTannin().keys.toList().where(
-            (element) =>
-                element.toString().startsWith('$dantaiId-$strDate'),
+            (element) => element.toString().startsWith('$dantaiId-$strDate'),
           );
-      
+
       TanninModel? tannin;
       try {
         tannin = Boxes.getTannin().get(key.first) ?? const TanninModel();
@@ -99,36 +105,47 @@ class DantaiChangedNotifier extends StateNotifier<ApiState> {
       }
 
       // 学年情報の取得
-      final gakunen = setGakunenValue(
-            ref,
-            dantai,
-            gakunenCode: tannin.gakunenCode,
-          );
+      final gakunen = 
+      ref.read(gakunensProvider.notifier).setGakunenValue(
+        ref,
+        dantai,
+        gakunenCode: tannin.gakunenCode,
+      );
       ref.read(gakunenProvider.notifier).state = gakunen;
-      
 
       // 所属初期値の設定
-      final shozoku = setShozokuValue(
-        ref,
-        gakunen, 
+      final shozoku = 
+      ref.read(shozokusProvider.notifier).setShozokuValue(
+        gakunen,
         shozokuId: tannin.shozokuId,
       );
       ref.read(shozokuProvider.notifier).state = shozoku;
-      
+
+      // 分類コード初期値の設定
+      final awarenessCode = 
+      ref.read(awarenessCodeListProvider.notifier).setCodeValue(
+        ref,
+        dantai,
+      );
+      ref.read(awarenessCodeProvider.notifier).state = awarenessCode;
+
       // 時限情報の取得
       await _timed.fetch(
         shozoku.id ?? 0,
         strDate,
       );
-   
-      setTimedValue(
-        ref,
-        shozokuId: shozoku.id, 
-        strDate: strDate,
-      );
 
+      // 時限初期値の設定
+      final timed = 
+      ref.read(timedsProvider.notifier).setTimedValue();
+      ref.read(timedProvider.notifier).state = timed;
+
+      ///
+      ///検索条件の初期化
+      ///
       ref.read(filterProvider.notifier).reset();
 
+      // 処理正常終了
       state = const ApiState.loaded();
     } catch (e) {
       // ignore: avoid_print
@@ -136,4 +153,3 @@ class DantaiChangedNotifier extends StateNotifier<ApiState> {
     }
   }
 }
-  

@@ -8,12 +8,14 @@ import 'package:kyoumutechou/feature/common/provider/shozokus_provider.dart';
 import 'package:kyoumutechou/feature/common/provider/timeds_provider.dart';
 import 'package:kyoumutechou/shared/util/date_util.dart';
 
-final beginDateProvider = StateProvider<DateTime>((ref) => DateTime.now());
+final beginDateProvider = StateProvider<DateTime>(
+  (ref) => DateTime.now().subtract(const Duration(days: 7)),
+);
 final endDateProvider = StateProvider<DateTime>((ref) => DateTime.now());
 final targetDateProvider = StateProvider<DateTime>((ref) => DateTime.now());
 final kouryuProvider = StateProvider<bool>((ref) => false);
 
-final hasData = StateProvider<bool>((ref) => false);
+//final hasData = StateProvider<bool>((ref) => false);
 
 final filterProvider = StateNotifierProvider<FilterNotifier, FilterModel>((ref){
   final dantai = ref.watch(dantaiProvider);
@@ -76,6 +78,8 @@ class FilterNotifier extends StateNotifier<FilterModel> {
     final shozoku = ref.read(shozokuProvider);
     final kouryu = ref.read(kouryuProvider);
     final timed = ref.read(timedProvider);
+    final startDate = ref.read(beginDateProvider);
+    final endDate = ref.read(endDateProvider);
 
     state = state.copyWith(
       dantaiId: Dantai.id,
@@ -89,6 +93,8 @@ class FilterNotifier extends StateNotifier<FilterModel> {
       japanDate: DateUtil.getJapaneseDate(targetDate),
       jigenIdx: timed.jigenIdx,
       jigenRyaku: timed.ryaku,
+      beginDate: startDate,
+      endDate: endDate,
     );
   }
 
@@ -98,6 +104,9 @@ class FilterNotifier extends StateNotifier<FilterModel> {
     final shozoku = ref.read(shozokuProvider);
     final kouryu = ref.read(kouryuProvider);
     final timed = ref.read(timedProvider);
+    final startDate = ref.read(beginDateProvider);
+    final endDate = ref.read(endDateProvider);
+
 
     state = state.copyWith(
       dantaiId: dantai.id,
@@ -111,6 +120,8 @@ class FilterNotifier extends StateNotifier<FilterModel> {
       japanDate: DateUtil.getJapaneseDate(DateTime.now()),
       jigenIdx: timed.jigenIdx,
       jigenRyaku: timed.ryaku,
+      beginDate: startDate,
+      endDate: endDate,      
     );
   }
 

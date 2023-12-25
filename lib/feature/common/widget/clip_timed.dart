@@ -31,9 +31,9 @@ class ClipTimed extends ConsumerWidget {
         if (keys.isEmpty) {
           return const SizedBox();
         }
-        keys.sort((a, b) => a.toString().compareTo(b.toString()));
 
         final timedList = keys.map(box.get).toList();
+        timedList.sort((a, b) => a?.jigenIdx ?? 0.compareTo(b?.jigenIdx ?? 0));
         //ref.read(timedProvider.notifier).state = timedList.first!;
 
         return Wrap(

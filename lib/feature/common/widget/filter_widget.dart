@@ -13,18 +13,53 @@ import 'package:kyoumutechou/shared/util/date_util.dart';
 
 // ignore: must_be_immutable
 class FilterWidget extends ConsumerWidget {
-  FilterWidget({super.key});
+  FilterWidget({super.key, this.isPeriod = false});
 
+  final bool? isPeriod;
   int selectedLocation = 0;
   int selectedDate = 2;
   int selectedTOD = 1;
   bool isKouryuGrade = false;
+
+  Future _pickDateRange(BuildContext context, WidgetRef ref) async {
+    final initialDateRange =
+        DateTimeRange(start: DateTime.now(), end: DateTime.now());
+
+    final newDateRange = await showDateRangePicker(
+        context: context,
+        initialDateRange: initialDateRange,
+        firstDate: DateTime(2023, 4, 1),
+        lastDate: DateTime(2024, 3, 31),
+        locale: const Locale('ja', 'JP'),
+        builder: (context, child) {
+          return Column(
+            children: [
+              ConstrainedBox(
+                constraints: const BoxConstraints(
+                  maxWidth: 400,
+                ),
+                child: child,
+              ),
+            ],
+          );
+        },);
+
+    if (newDateRange != null) {
+      ref.read(beginDateProvider.notifier).state = newDateRange.start;
+      ref.read(endDateProvider.notifier).state = newDateRange.end;
+    } else {
+      return;
+    }
+  }  
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final targetDate = ref.watch(targetDateProvider);
     final menuId = ref.watch(menuProvider);
     final themeData = Theme.of(context);
+
+    final beginDate = ref.watch(beginDateProvider);
+    final endDate = ref.watch(endDateProvider);
 
     return Container(
       width: 300,
@@ -80,6 +115,7 @@ class FilterWidget extends ConsumerWidget {
             Row(
               children: [
                 MyText.bodyMedium('クラス'),
+                if (menuId != Menu.awareness)...[
                 Checkbox(
                   activeColor: const Color(0xFF2D4E27),
                   value: ref.watch(kouryuProvider),
@@ -88,6 +124,7 @@ class FilterWidget extends ConsumerWidget {
                   },
                 ),
                 MyText.bodyMedium('交流学級で表示'),
+                ],
               ],
             ),
             MySpacing.height(8),
@@ -97,6 +134,7 @@ class FilterWidget extends ConsumerWidget {
             ),
             MySpacing.height(16),
             // -- 3 --
+            if (menuId != Menu.awareness) ...[
             MyText.bodyMedium('対象日'),
             MySpacing.height(8),
             Container(
@@ -112,9 +150,10 @@ class FilterWidget extends ConsumerWidget {
                 ),
               ),
             ),
-            MySpacing.height(16),
+            ],
             // -- 4 --
             if (menuId == Menu.attendanceTimed) ...[
+              MySpacing.height(16),
               MyText.bodyMedium('時限'),
               MySpacing.height(8),
               Container(
@@ -122,6 +161,26 @@ class FilterWidget extends ConsumerWidget {
                 child: const ClipTimed(),
               ),
             ],
+
+            if (isPeriod == true)...[
+              MySpacing.height(16),
+              MyText.bodyMedium('期間'),
+              MySpacing.height(8),
+              Padding(
+                padding: const EdgeInsets.only(left: 12),
+                child: InkWell(
+                  onTap: () async {
+                    await _pickDateRange(context, ref);
+                  },
+                  child: SingleIconChip(
+                    isSelected: true,
+                    text:
+                          '${DateUtil.getJapaneseDate(beginDate)} ~ ${DateUtil.getJapaneseDate(endDate)}',
+                      iconData: Icons.calendar_month_outlined,
+                  ),
+                ),
+              ),
+            ]
           ],
         ),
       ),

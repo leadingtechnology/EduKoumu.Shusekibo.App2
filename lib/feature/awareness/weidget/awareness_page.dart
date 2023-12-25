@@ -50,7 +50,7 @@ class AwarenessPageState extends ConsumerState<AwarenessPage>
 
     return Scaffold(
       key: _scaffoldKey,
-      endDrawer: FilterWidget(),
+      endDrawer: FilterWidget(isPeriod: true,),
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(50),
         child: AppBar(

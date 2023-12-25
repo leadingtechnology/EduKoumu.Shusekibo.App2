@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kyoumutechou/feature/boxes.dart';
+import 'package:kyoumutechou/feature/common/model/shozoku_model.dart';
 import 'package:kyoumutechou/feature/common/model/timed_model.dart';
 import 'package:kyoumutechou/feature/common/provider/filter_provider.dart';
 import 'package:kyoumutechou/feature/common/provider/shozokus_provider.dart';
@@ -11,14 +12,13 @@ final timedProvider = StateProvider<TimedModel>(
   (ref) => const TimedModel(),
 );
 
-final timedsProvider =
-    StateNotifierProvider<TimedsNotifier, ApiState>((ref) {
-  final shozoku = ref.watch(shozokuProvider);
+final timedsProvider = StateNotifierProvider<TimedsNotifier, ApiState>((ref) {
   final targetDate = ref.watch(targetDateProvider);
+  final shozoku = ref.watch(shozokuProvider);
 
   return TimedsNotifier(
     ref: ref, 
-    shozokuId: shozoku.id??0, 
+    shozoku: shozoku,
     strDate: DateUtil.getStringDate(targetDate) ,
   );
 
@@ -26,69 +26,69 @@ final timedsProvider =
 
 class TimedsNotifier extends StateNotifier<ApiState> {
   TimedsNotifier({
-    required this.shozokuId, 
     required this.strDate, 
+    required this.shozoku,
     required this.ref,
   }) : super(const ApiState.loading()) {
     _fetch();
   }
 
   final Ref ref;
-  final int shozokuId;
+  final ShozokuModel shozoku;
   final String strDate;
 
-  late final TimedsRepository _rep = ref.watch(timedsRepositoryProvider);
+  late final _rep = ref.read(timedsRepositoryProvider);
 
   Future<void> _fetch() async {
-    // 所属Idが空の場合、空のリストを返す
-    if (shozokuId == 0) {
-      state = const ApiState.loaded();
-      return;
-    }
+    // 所属Idの取得
+    final shozokuId = ref.read(shozokuProvider).id;
     
-    // データを取得する
-    final response = await _rep.fetch(shozokuId, strDate);
-
-    setTimedValue(ref, shozokuId: shozokuId, strDate: strDate);
+    // 最新情報の取得
+    final response = ref.read(timedsRepositoryProvider).fetch(
+          shozoku.id ?? 0,
+          strDate,
+        );
     
-    if (mounted) {
-      state = response;
+    state = const ApiState.loaded();
+  }
+
+  // 初期値を設定する
+  TimedModel setTimedValue() {
+    // 最新情報の取得条件
+    final targetDate = ref.read(targetDateProvider);
+    final strDate = DateUtil.getStringDate(targetDate);
+    final shozoku = ref.read(shozokuProvider);
+
+    // 最新情報の取得
+    final response = ref.read(timedsRepositoryProvider).fetch(
+          shozoku.id ?? 0,
+          strDate,
+        );
+
+    final box = Boxes.getTimeds();
+    var timed = const TimedModel();
+
+    // 初期値の設定
+    final keys = box.keys
+        .toList()
+        .where(
+          (element) => element.toString().startsWith('${shozoku.id}-$strDate-'),
+        )
+        .toList();
+
+    if (keys.isNotEmpty) {
+      try {
+        final timedList = keys.map(box.get).toList();
+        timedList.sort((a, b) => a?.jigenIdx ?? 0.compareTo(b?.jigenIdx ?? 0));
+
+        final firstValue = timedList.first;
+        timed = firstValue ?? const TimedModel();
+      } catch (e) {
+        timed = const TimedModel();
+      }
     }
-  }
-}
 
-void setTimedValue(
-  Ref ref, {int? shozokuId, String? strDate,
-}) {
-  final box = Boxes.getTimeds();
-  var timed = const TimedModel();
-
-  if (shozokuId == 0) {
-    ref.read(timedProvider.notifier).state = timed;
-    return ;
+    return timed;
   }
 
-  // 初期値の設定
-  final keys = box.keys
-      .toList()
-      .where(
-        (element) => element.toString().startsWith('$shozokuId-$strDate-'),
-      )
-      .toList();
-  
-  if (keys.isNotEmpty) {
-    try {
-      keys.sort((a, b) => a.toString().compareTo(b.toString()));
-
-      final firstKey = keys.first;
-      final firstValue = box.get(firstKey);
-
-      timed = firstValue ?? const TimedModel();
-
-    } catch (e) {
-      timed = const TimedModel();
-    }
-  }
-
-  ref.read(timedProvider.notifier).state = timed;
 }

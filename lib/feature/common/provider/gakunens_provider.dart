@@ -38,56 +38,58 @@ class GakunenNotifier extends StateNotifier<ApiState> {
 
     state = const ApiState.loaded();
   }
-}
 
-GakunenModel setGakunenValue(
-  Ref ref,
-  DantaiModel dantai, {
-  String? gakunenCode,
-}) {
-  final box = Boxes.getGakunens();
-  GakunenModel? gakunen = const GakunenModel();
+  GakunenModel setGakunenValue(
+    Ref ref,
+    DantaiModel dantai, {
+    String? gakunenCode,
+  }) {
+    final box = Boxes.getGakunens();
+    GakunenModel? gakunen = const GakunenModel();
 
-  // 団体Idが空の場合は返す
-  if (dantai.id == 0) {
-    return const GakunenModel();
-  }
-
-  try{
-    // 初期値の設定
-    final keys = box.keys
-        .toList()
-        .where(
-          (e) => e.toString().startsWith('${dantai.organizationKbn}-'),
-        )
-        .toList();
-
-    // ignore: cascade_invocations
-    keys.sort(
-      (a, b) => a.toString().compareTo(b.toString()),
-    );
-
-    // 取得したKeysにより、gakunenListを取得する
-    final gakunenList = keys.map(box.get).toList();
+    // 団体Idが空の場合は返す
+    if (dantai.id == 0) {
+      return const GakunenModel();
+    }
 
     try {
-      if (gakunenCode != null && gakunenCode.isNotEmpty) {
-        gakunen = gakunenList
-            .where(
-              (e) => e?.gakunenCode == gakunenCode,
-            )
-            .first;
-      } else {
+      // 初期値の設定
+      final keys = box.keys
+          .toList()
+          .where(
+            (e) => e.toString().startsWith('${dantai.organizationKbn}-'),
+          )
+          .toList();
+
+      // ignore: cascade_invocations
+      keys.sort(
+        (a, b) => a.toString().compareTo(b.toString()),
+      );
+
+      // 取得したKeysにより、gakunenListを取得する
+      final gakunenList = keys.map(box.get).toList();
+
+      try {
+        if (gakunenCode != null && gakunenCode.isNotEmpty) {
+          gakunen = gakunenList
+              .where(
+                (e) => e?.gakunenCode == gakunenCode,
+              )
+              .first;
+        } else {
+          gakunen = gakunenList.first;
+        }
+      } catch (e) {
         gakunen = gakunenList.first;
       }
     } catch (e) {
-      gakunen = gakunenList.first;
+      gakunen = const GakunenModel();
     }
-  }catch(e) {
-    gakunen = const GakunenModel();
+
+    gakunen ??= const GakunenModel();
+
+    return gakunen;
   }
 
-  gakunen ??= const GakunenModel();
-
-  return gakunen;
 }
+

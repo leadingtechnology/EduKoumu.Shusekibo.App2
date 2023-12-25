@@ -9,7 +9,7 @@ import 'package:kyoumutechou/shared/http/app_exception.dart';
 
 // ignore: one_member_abstracts
 abstract class AwarenessCodeRepositoryProtocol { 
-  Future<ApiState> fetch(); 
+  Future<ApiState> fetch(int dantaiId); 
 }
 
 final awarenessCodeRepositoryProvider = Provider(AwarenessCodeRepository.new,);
@@ -18,11 +18,24 @@ class AwarenessCodeRepository implements AwarenessCodeRepositoryProtocol {
   AwarenessCodeRepository(this.ref);
 
   final Ref ref;
-  final box = Boxes.getBunruiBox;
   late final ApiProvider _api = ref.read(apiProvider);
 
   @override
-  Future<ApiState> fetch() async {
+  Future<ApiState> fetch(int dantaiId) async {
+    final box = Boxes.getBunruiBox();
+
+    // dantaiIdの所属が存在する場合、正常終了とする
+    if (box.isNotEmpty) {
+      final keys = box.keys.toList().where(
+            (element) => element.toString().startsWith('$dantaiId-'),
+          );
+
+      // keysの値が存在した場合、正常終了とする
+      if (keys.isNotEmpty) {
+        return const ApiState.loaded();
+      }
+    }    
+
     final response = await _api.get('api/kizuki/bunrui/');
 
     response.when(
@@ -38,13 +51,10 @@ class AwarenessCodeRepository implements AwarenessCodeRepositoryProtocol {
 
         // 2) change to map and save the box
         final awarenessCodeMap = Map.fromIterables(
-          awarenessCode.map((e) => e.code).toList(),
+          awarenessCode.map((e) => '$dantaiId-${e.code}').toList(),
           awarenessCode.map((e) => e).toList(),
         );
-        
-        await box.clear();
         await box.putAll(awarenessCodeMap);
-        ref.read(awarenessCodeProvider.notifier).state = box.values.first;
 
         return const ApiState.loaded();
       } catch (e) {
