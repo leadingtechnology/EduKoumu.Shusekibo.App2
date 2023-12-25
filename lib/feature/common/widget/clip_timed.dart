@@ -33,7 +33,7 @@ class ClipTimed extends ConsumerWidget {
         }
 
         final timedList = keys.map(box.get).toList();
-        timedList.sort((a, b) => a?.jigenIdx ?? 0.compareTo(b?.jigenIdx ?? 0));
+        timedList.sort((a, b) => b?.jigenIdx ?? 0.compareTo(a?.jigenIdx ?? 0));
         //ref.read(timedProvider.notifier).state = timedList.first!;
 
         return Wrap(

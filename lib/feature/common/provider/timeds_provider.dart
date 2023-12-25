@@ -81,7 +81,7 @@ class TimedsNotifier extends StateNotifier<ApiState> {
         final timedList = keys.map(box.get).toList();
         timedList.sort((a, b) => a?.jigenIdx ?? 0.compareTo(b?.jigenIdx ?? 0));
 
-        final firstValue = timedList.first;
+        final firstValue = timedList.last;
         timed = firstValue ?? const TimedModel();
       } catch (e) {
         timed = const TimedModel();

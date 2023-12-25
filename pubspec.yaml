@@ -1,5 +1,5 @@
 name: kyoumutechou
-description: A simple boilerplate project
+description: 教務手帳
 version: 1.0.0+1
 publish_to: none
 
@@ -117,4 +117,4 @@ flutter:
 # dart run flutter_native_splash:remove
 flutter_native_splash:
   color: "#BFEEBB"
-  image: assets/icons/koumu5.png
+  image: assets/icons/koumu6.png

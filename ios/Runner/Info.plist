@@ -53,9 +53,9 @@
 		<key>UIStatusBarHidden</key>
 		<false/>
 		<key>NSCameraUsageDescription</key>
-        <string>Need to use the camera for taking pictures</string>
-        <key>NSPhotoLibraryUsageDescription</key>
-        <string>Need to access photo library for saving pictures</string>
+		<string>Need to use the camera for taking pictures</string>
+		<key>NSPhotoLibraryUsageDescription</key>
+		<string>Need to access photo library for saving pictures</string>
 		<key>NSMicrophoneUsageDescription</key>
 		<string>Need to use the microphone for recording videos</string>
 		<key>NSPhotoLibraryAddUsageDescription</key>

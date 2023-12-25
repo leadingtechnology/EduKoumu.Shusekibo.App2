@@ -24,8 +24,8 @@ class SignInPageState extends ConsumerState<SignInPage> {
     theme = AppTheme.theme;
   }
 
-  final _emailController = TextEditingController(text: 'login0001');
-  final _passwordController = TextEditingController(text: 'P@ssw0rd');
+  final _emailController = TextEditingController(text: '');
+  final _passwordController = TextEditingController(text: '');
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +66,7 @@ class SignInPageState extends ConsumerState<SignInPage> {
                         SizedBox(
                           height: 61,
                           width: 353,
-                          child: Image.asset('assets/images/login_page_logo.png'),
+                          child: Image.asset('assets/images/login_page_logo2.png'),
                         ),
                         //MySpacing.height(8),
                         Padding(
