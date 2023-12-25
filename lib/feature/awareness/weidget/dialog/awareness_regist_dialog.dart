@@ -168,24 +168,24 @@ class AwarenessRegistDialog extends ConsumerWidget {
                     SaveButtonWidget(
                       label: '保存',
                       onPressed: () async {
-                        if (kizukiController.text.isEmpty){
+                        if (_formKey.currentState!.validate() == false) {
+                          ToastHelper.showToast(context, '　必須項目を入力してください　');
                           return;
                         }
 
-                          if (opt == AwarenessOperationItem.edit){
-                            ref.read(awarenessEditProvider.notifier).state = 
-                            kizuki.id!;
-                            await ref.read(awarenessKizukiListProvider.notifier)
-                            .patch(kizukiController.text);
-                          }else{
-                            await ref.read(awarenessMeiboListProvider.notifier)
-                            .save(kizukiController.text, opt);
-                          }
-                          ToastHelper.showToast(context, '　保存しました　');
-                          Navigator.of(context).pop();
+                        if (opt == AwarenessOperationItem.edit){
+                          ref.read(awarenessEditProvider.notifier).state = 
+                          kizuki.id!;
+                          await ref.read(awarenessKizukiListProvider.notifier)
+                          .patch(kizukiController.text);
+                        }else{
+                          await ref.read(awarenessMeiboListProvider.notifier)
+                          .save(kizukiController.text, opt);
+                        }
+                        ToastHelper.showToast(context, '　保存しました　');
+                        Navigator.of(context).pop();
                       },
                     ),
-                    
                   ],
                 ),),
           ],

@@ -26,6 +26,7 @@ class DantaiNotifier extends StateNotifier<ApiState> {
   late final _healthStamp = ref.watch(healthStampRepositoryProvider);
   late final _attendStamp = ref.watch(attendanceStampRepositoryProvider);
 
+
   Future<void> init() async {
     state = const ApiState.loading();
     await fetch();
@@ -43,6 +44,7 @@ class DantaiNotifier extends StateNotifier<ApiState> {
 
         // 出欠スタンプの取得
         _attendStamp.fetch(),
+
       ]);
 
       var isError = false;
@@ -76,7 +78,8 @@ class DantaiNotifier extends StateNotifier<ApiState> {
       ref.read(attendanceStampProvider.notifier).state =
           Boxes.getRegistAttendanceStamp().values.first;
       
-      setDefaultValue();
+      // 団体初期値を設定する。
+      setDantai();
 
       state = const ApiState.loaded();
     } catch (error) {
@@ -84,7 +87,7 @@ class DantaiNotifier extends StateNotifier<ApiState> {
     }
   }
 
-  DantaiModel setDefaultValue() {
+  DantaiModel setDantai() {
     // 120) ログイン時の団体IDにより、団体モデルを取得する。
     var dantai = const DantaiModel();
     try{
@@ -99,10 +102,6 @@ class DantaiNotifier extends StateNotifier<ApiState> {
     ref.read(dantaiProvider.notifier).state = dantai;
 
     return dantai;
-  }
-
-  Future<void> reset() async {
-    state = const ApiState.loading();
   }
 
 }

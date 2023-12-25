@@ -161,10 +161,8 @@ class AwarenessMeiboListProvider extends StateNotifier<ApiState> {
     }
 
     final tenpuList = <String>[];
-    var id = 33;
     for (final image in images){
       final imageData = await ImageHandler.fetchImageData(image);
-      id ++ ;
 
       final value = '''
 {

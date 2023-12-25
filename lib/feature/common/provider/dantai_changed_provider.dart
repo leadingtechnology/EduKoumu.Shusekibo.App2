@@ -25,7 +25,7 @@ final dantaiChangedProvider =
 class DantaiChangedNotifier extends StateNotifier<ApiState> {
   DantaiChangedNotifier({required this.ref, required this.dantai})
       : super(const ApiState.loading()) {
-     fetch(dantai);
+    fetch(dantai);
   }
 
   final Ref ref;
@@ -38,6 +38,13 @@ class DantaiChangedNotifier extends StateNotifier<ApiState> {
   late final _timed = ref.watch(timedsRepositoryProvider);
 
   Future<void> fetch(DantaiModel dantai) async {
+    // 団体Idが0の場合は返す
+    if (dantai.id == 0) {
+      state = const ApiState.loaded();
+      return;
+    }
+
+    // 団体Idを取得する
     final dantaiId = dantai.id ?? 0;
 
     try {
@@ -92,33 +99,34 @@ class DantaiChangedNotifier extends StateNotifier<ApiState> {
       }
 
       // 学年情報の取得
-      setGakunenValue(
+      final gakunen = setGakunenValue(
             ref,
             dantai,
             gakunenCode: tannin.gakunenCode,
           );
+      ref.read(gakunenProvider.notifier).state = gakunen;
+      
 
       // 所属初期値の設定
-      setShozokuValue(
+      final shozoku = setShozokuValue(
         ref,
-        dantai.id ?? 0, 
-        tannin.gakunenCode??'', 
+        gakunen, 
         shozokuId: tannin.shozokuId,
       );
+      ref.read(shozokuProvider.notifier).state = shozoku;
       
       // 時限情報の取得
       await _timed.fetch(
-        ref.read(shozokuProvider).id ??0 , 
+        shozoku.id ?? 0,
         strDate,
       );
+   
       setTimedValue(
         ref,
-        shozokuId: ref.read(shozokuProvider).id ??0, 
+        shozokuId: shozoku.id, 
         strDate: strDate,
       );
 
-      // // フィルターの初期値を設定する
-      ref.read(filterProvider.notifier).init();
       ref.read(filterProvider.notifier).reset();
 
       state = const ApiState.loaded();

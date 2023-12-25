@@ -18,7 +18,6 @@ class Staff with _$Staff {
     required String TenantId,
     required String LoginId,
     required String DantaiId,
-    required String Dantai,
     required String UserName,
     required String KihonId,
   }) = _Staff;

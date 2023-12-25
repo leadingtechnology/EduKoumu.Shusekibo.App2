@@ -57,8 +57,16 @@ class TimedsNotifier extends StateNotifier<ApiState> {
   }
 }
 
-void setTimedValue(Ref ref, {int? shozokuId, String? strDate}) {
+void setTimedValue(
+  Ref ref, {int? shozokuId, String? strDate,
+}) {
   final box = Boxes.getTimeds();
+  var timed = const TimedModel();
+
+  if (shozokuId == 0) {
+    ref.read(timedProvider.notifier).state = timed;
+    return ;
+  }
 
   // 初期値の設定
   final keys = box.keys
@@ -67,7 +75,7 @@ void setTimedValue(Ref ref, {int? shozokuId, String? strDate}) {
         (element) => element.toString().startsWith('$shozokuId-$strDate-'),
       )
       .toList();
-
+  
   if (keys.isNotEmpty) {
     try {
       keys.sort((a, b) => a.toString().compareTo(b.toString()));
@@ -75,7 +83,12 @@ void setTimedValue(Ref ref, {int? shozokuId, String? strDate}) {
       final firstKey = keys.first;
       final firstValue = box.get(firstKey);
 
-      ref.read(timedProvider.notifier).state = firstValue!;
-    } catch (e) {}
+      timed = firstValue ?? const TimedModel();
+
+    } catch (e) {
+      timed = const TimedModel();
+    }
   }
+
+  ref.read(timedProvider.notifier).state = timed;
 }

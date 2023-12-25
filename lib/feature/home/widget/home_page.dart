@@ -198,7 +198,7 @@ class HomePageState extends ConsumerState<HomePage> {
                       children: [
                         // 団体DropdownButton
                         const DantaiDropdownWidget(),
-                        const ControlTannin(),
+                        //const ControlTannin(),
                         const ControlDantaiChange(),
                         // IconButton(
                         //   icon: const Icon(Icons.menu),

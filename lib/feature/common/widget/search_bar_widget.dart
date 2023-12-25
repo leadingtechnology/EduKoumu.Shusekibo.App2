@@ -82,7 +82,7 @@ class SearchBarWidget extends ConsumerWidget {
                     Row(
                       children: [
                         Checkbox(
-                          value: filter.kouryuGakkyu,
+                          value: filter.kouryuGakkyu ?? false,
                           onChanged: null,
                         ),
                         MyText.bodyLarge(

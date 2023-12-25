@@ -2,11 +2,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:kyoumutechou/feature/awareness/model/awareness_kizuki_model.dart';
 import 'package:kyoumutechou/feature/awareness/provider/awareness_meibo_provider.dart';
+import 'package:kyoumutechou/feature/awareness/provider/tenpu_provider.dart';
 import 'package:kyoumutechou/feature/awareness/repsitory/awareness_kizuki_repository.dart';
 import 'package:kyoumutechou/feature/awareness/repsitory/awareness_meibo_repository.dart';
 import 'package:kyoumutechou/feature/boxes.dart';
 import 'package:kyoumutechou/feature/common/provider/filter_provider.dart';
 import 'package:kyoumutechou/feature/common/state/api_state.dart';
+import 'package:kyoumutechou/shared/util/date_util.dart';
+import 'package:kyoumutechou/shared/util/image_handler.dart';
 
 final awarenessKizukiListProvider = 
 StateNotifierProvider<AwarenessKizukiListProvider, ApiState>((ref) {
@@ -53,6 +56,7 @@ class AwarenessKizukiListProvider extends StateNotifier<ApiState> {
   Future<void> patch(String str) async {
     final juyo = ref.read(awarenessJuyoProvider);
     final burui = ref.read(awarenessBunruiProvider);
+    final images = ref.read(tenpuListProvider);
 
     final boxKizuki = Boxes.getAwarenessKizukiModelBox();
     final studentList = boxKizuki.values.toList();
@@ -60,14 +64,41 @@ class AwarenessKizukiListProvider extends StateNotifier<ApiState> {
     final id = ref.read(awarenessEditProvider);
     final kizuki = studentList.where((e) => e.id == id).toList().first;
 
+    // 添付ファイルデータの作成
+    final box = Boxes.getImageUrl();
+    final tenpuList = <String>[];
+    for (final image in images) {
+      final imageData = await ImageHandler.fetchImageData(image);
+      
+      int? id = 0;
+      for (final key in box.keys) {
+        if (box.get(key) == image) {
+          id = key as int?;
+          break;
+        }
+      }
+
+      final value = '''
+{
+  "tenpuId": $id,
+  "tenpuFileName": "${DateUtil.getDatetimeStamp()}.JPEG",
+  "tenpuFileSize": ${imageData.length},
+  "tenpuFileData": $imageData
+}
+''';
+      tenpuList.add(value);
+    }
+
+
     final json = '''
 {
     "Id": ${kizuki.id},
     "Kizuki": "$str",
     "JuyoFlg": $juyo,
     "KaruteBunruiCode": $burui,
+    "TenpuFileList": $tenpuList
 }
-   ''';
+''';
 
     await _repository.patch(id, json);
     await _repository.fetch();

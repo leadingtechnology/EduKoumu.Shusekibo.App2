@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kyoumutechou/feature/boxes.dart';
+import 'package:kyoumutechou/feature/common/model/gakunen_model.dart';
 import 'package:kyoumutechou/feature/common/model/shozoku_model.dart';
 import 'package:kyoumutechou/feature/common/provider/dantais_provider.dart';
 import 'package:kyoumutechou/feature/common/provider/gakunens_provider.dart';
@@ -32,57 +33,61 @@ class ShozokuNotifier extends StateNotifier<ApiState> {
   }
 
   Future<void> _fetch(String gakunenCode) async {
-    final dantaiId = ref.read(dantaiProvider).id;
-    
-    if (dantaiId! > 0 && gakunenCode.isNotEmpty){
-      setShozokuValue(ref, dantaiId, gakunenCode);
-    }
+    final gakunen = ref.read(gakunenProvider);
+    setShozokuValue(ref, gakunen);
+
     state = const ApiState.loaded();
   }
 }
 
-void setShozokuValue(
+ShozokuModel setShozokuValue(
   Ref ref,
-  int dantaiId,
-  String gakunenCode, {
+  GakunenModel gakunen,
+ {
   int? shozokuId,
 }) {
-  final box = Boxes.getShozokus();
-  ShozokuModel? shozoku;
+  final dantaiId = ref.read(dantaiProvider).id ?? 0;
+  final gakunenCode = gakunen.code ?? '';
 
-  var gcode = '';
+  // 学年コードが空の場合は返す
   if (gakunenCode.isEmpty) {
-    gcode = ref.read(gakunenProvider).code ?? '';
-  } else {
-    gcode = gakunenCode;
+    
+    return const ShozokuModel();
   }
 
-  // 初期値の設定
-  final keys = box.keys
-      .toList()
-      .where((e) => e.toString().startsWith('$dantaiId-$gcode-'))
-      .toList();
+  final box = Boxes.getShozokus();
+  ShozokuModel? shozoku = const ShozokuModel();
 
-  // ignore: cascade_invocations
-  keys.sort((a, b) => a.toString().compareTo(b.toString()));
+  try{
+    // 初期値の設定
+    final keys = box.keys
+        .toList()
+        .where((e) => e.toString().startsWith('$dantaiId-$gakunenCode-'))
+        .toList();
 
-  if (keys.isNotEmpty) {
+    // ignore: cascade_invocations
+    keys.sort((a, b) => a.toString().compareTo(b.toString()));
+
+    // 取得したKeysにより、shozokuListを取得する
+    final shozokuList = keys.map(box.get).toList();
+
     try {
       if (shozokuId != null && shozokuId > 0) {
-        shozoku = Boxes.getShozokus()
-            .values
-            .where(
-              (e) => e.id == shozokuId,
-            )
+        shozoku = shozokuList
+            .where((e) => e?.id == shozokuId)
             .first;
       } else {
-        shozoku = box.get(keys.first);
+        shozoku = shozokuList.first;
       }
+    } catch (e) {
+      shozoku = shozokuList.first;
+    }
 
-      ref.read(shozokuProvider.notifier).state =
-          shozoku ?? const ShozokuModel();
-
-      // ignore: empty_catches
-    } catch (e) {}
+  }catch(e){
+    shozoku = const ShozokuModel();
   }
+
+  shozoku ??= const ShozokuModel();
+
+  return shozoku;
 }

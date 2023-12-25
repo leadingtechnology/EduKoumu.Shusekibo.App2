@@ -14,6 +14,7 @@ import 'package:kyoumutechou/feature/attendance/model/attendance_stamp_model.dar
 import 'package:kyoumutechou/feature/attendance/model/attendance_status_model.dart';
 import 'package:kyoumutechou/feature/attendance/model/attendance_timed_meibo_model.dart';
 import 'package:kyoumutechou/feature/attendance/model/attendance_timed_status_model.dart';
+import 'package:kyoumutechou/feature/awareness/model/awareness_code_model.dart';
 import 'package:kyoumutechou/feature/awareness/model/awareness_kizuki_model.dart';
 import 'package:kyoumutechou/feature/awareness/model/awareness_meibo_model.dart';
 import 'package:kyoumutechou/feature/common/model/dantai_model.dart';
@@ -89,6 +90,10 @@ Future<void> start() async {
   ..registerAdapter(HealthReasonModelAdapter());
   await Hive.openBox<HealthReasonModel>('HealthReason1');
   await Hive.openBox<HealthReasonModel>('HealthReason2');
+
+  // 気づき分類
+  Hive.registerAdapter(AwarenessCodeModelAdapter());
+  await Hive.openBox<AwarenessCodeModel>('bunrui');
 
   //
   Hive.registerAdapter(HealthMeiboModelAdapter());

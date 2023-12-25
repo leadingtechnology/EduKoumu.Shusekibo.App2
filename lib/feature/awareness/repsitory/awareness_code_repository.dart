@@ -1,14 +1,15 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kyoumutechou/feature/awareness/model/awareness_code_model.dart';
 import 'package:kyoumutechou/feature/awareness/provider/awareness_code_provider.dart';
-import 'package:kyoumutechou/feature/common/state/code_state.dart';
+import 'package:kyoumutechou/feature/boxes.dart';
+import 'package:kyoumutechou/feature/common/state/api_state.dart';
 import 'package:kyoumutechou/shared/http/api_provider.dart';
 import 'package:kyoumutechou/shared/http/api_response.dart';
 import 'package:kyoumutechou/shared/http/app_exception.dart';
 
 // ignore: one_member_abstracts
 abstract class AwarenessCodeRepositoryProtocol { 
-  Future<CodesState> fetch(); 
+  Future<ApiState> fetch(); 
 }
 
 final awarenessCodeRepositoryProvider = Provider(AwarenessCodeRepository.new,);
@@ -17,37 +18,43 @@ class AwarenessCodeRepository implements AwarenessCodeRepositoryProtocol {
   AwarenessCodeRepository(this.ref);
 
   final Ref ref;
+  final box = Boxes.getBunruiBox;
   late final ApiProvider _api = ref.read(apiProvider);
 
   @override
-  Future<CodesState> fetch() async {
+  Future<ApiState> fetch() async {
     final response = await _api.get('api/kizuki/bunrui/');
 
     response.when(
       success: (success) {},
-      error: (error) { return CodesState.error(error); },
+      error: (error) { return ApiState.error(error); },
     );
 
     if (response is APISuccess) {
       final value = response.value;
       try {
+        // 1) get the list
         final awarenessCode = awarenessCodeListFromJson(value as List<dynamic>);
 
-        if (awarenessCode.isEmpty) {
-          return const CodesState.loaded([]);
-        }
+        // 2) change to map and save the box
+        final awarenessCodeMap = Map.fromIterables(
+          awarenessCode.map((e) => e.code).toList(),
+          awarenessCode.map((e) => e).toList(),
+        );
         
-        ref.read(awarenessCodeProvider.notifier).state = awarenessCode.first;
+        await box.clear();
+        await box.putAll(awarenessCodeMap);
+        ref.read(awarenessCodeProvider.notifier).state = box.values.first;
 
-        return CodesState.loaded(awarenessCode);
+        return const ApiState.loaded();
       } catch (e) {
-        return CodesState.error(
+        return ApiState.error(
             AppException.errorWithMessage(e.toString(),),);
       }
     } else if (response is APIError) {
-      return CodesState.error(response.exception);
+      return ApiState.error(response.exception);
     } else {
-      return const CodesState.loading();
+      return const ApiState.loading();
     }
   }
 }

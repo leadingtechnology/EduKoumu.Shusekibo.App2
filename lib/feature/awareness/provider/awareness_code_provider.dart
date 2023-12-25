@@ -2,10 +2,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:kyoumutechou/feature/awareness/model/awareness_code_model.dart';
 import 'package:kyoumutechou/feature/awareness/repsitory/awareness_code_repository.dart';
-import 'package:kyoumutechou/feature/common/state/code_state.dart';
+import 'package:kyoumutechou/feature/common/state/api_state.dart';
 
 final awarenessCodeListProvider = 
-StateNotifierProvider<AwarenessCodeListProvider, CodesState>((ref) {
+StateNotifierProvider<AwarenessCodeListProvider, ApiState>((ref) {
   return AwarenessCodeListProvider(ref);
 });
 
@@ -13,9 +13,9 @@ final awarenessCodeProvider = StateProvider<AwarenessCodeModel>(
   (ref) => const AwarenessCodeModel(),
 );
 
-class AwarenessCodeListProvider extends StateNotifier<CodesState> {
+class AwarenessCodeListProvider extends StateNotifier<ApiState> {
   AwarenessCodeListProvider(this.ref)
-      : super(const CodesState.loading()) {
+      : super(const ApiState.loading()) {
     _init();
   }
 

@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:kyoumutechou/feature/boxes.dart';
 import 'package:kyoumutechou/feature/common/model/filter_model.dart';
+import 'package:kyoumutechou/feature/common/provider/filter_provider.dart';
 import 'package:kyoumutechou/feature/common/state/api_state.dart';
 import 'package:kyoumutechou/feature/health/model/health_meibo_model.dart';
 import 'package:kyoumutechou/shared/http/api_provider.dart';
@@ -29,6 +30,7 @@ class HealthMeiboRepository implements HealthRepositoryProtocol {
 
   @override
   Future<ApiState> fetch(FilterModel filter) async {
+    ref.read(hasData.notifier).state = false;
     
     final strDate = DateUtil.getStringDate(filter.targetDate?? DateTime.now());
 
@@ -60,6 +62,10 @@ class HealthMeiboRepository implements HealthRepositoryProtocol {
         // 3) save to hive with key
         await Boxes.getHealthMeiboBox().clear();
         await Boxes.getHealthMeiboBox().putAll(meiboMap);
+
+        if (meiboList.isNotEmpty) {
+          ref.read(hasData.notifier).state = true;
+        }
 
         return const ApiState.loaded();
       } catch (e) {

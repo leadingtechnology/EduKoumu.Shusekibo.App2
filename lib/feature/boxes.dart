@@ -6,6 +6,7 @@ import 'package:kyoumutechou/feature/attendance/model/attendance_status_model.da
 import 'package:kyoumutechou/feature/attendance/model/attendance_timed_meibo_model.dart';
 import 'package:kyoumutechou/feature/attendance/model/attendance_timed_reason_model.dart';
 import 'package:kyoumutechou/feature/attendance/model/attendance_timed_stamp_model.dart';
+import 'package:kyoumutechou/feature/awareness/model/awareness_code_model.dart';
 import 'package:kyoumutechou/feature/awareness/model/awareness_kizuki_model.dart';
 import 'package:kyoumutechou/feature/awareness/model/awareness_meibo_model.dart';
 import 'package:kyoumutechou/feature/common/model/dantai_model.dart';
@@ -61,5 +62,6 @@ class Boxes {
   static Box<AwarenessKizukiModel> getAwarenessKizukiModelBox() => Hive.box<AwarenessKizukiModel>('AwarenessKizuki');
   static Box<TenpuModel> getTenpuBox() => Hive.box<TenpuModel>('Tenpu');
   static Box<String> getImageUrl() => Hive.box<String>('ImageUrl');
+  static Box<AwarenessCodeModel> getBunruiBox =  Hive.box<AwarenessCodeModel>('bunrui');
 
 }

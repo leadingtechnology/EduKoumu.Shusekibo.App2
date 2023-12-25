@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kyoumutechou/feature/attendance/model/attendance_timed_meibo_model.dart';
 import 'package:kyoumutechou/feature/boxes.dart';
 import 'package:kyoumutechou/feature/common/model/filter_model.dart';
+import 'package:kyoumutechou/feature/common/provider/filter_provider.dart';
 import 'package:kyoumutechou/feature/common/state/api_state.dart';
 import 'package:kyoumutechou/shared/http/api_provider.dart';
 import 'package:kyoumutechou/shared/http/api_response.dart';
@@ -27,6 +28,7 @@ class TimedMeiboRepository implements TimedRepositoryProtocol {
 
   @override
   Future<ApiState> fetch(FilterModel filter) async {
+    ref.read(hasData.notifier).state = false;
 
     final strDate = DateUtil.getStringDate(filter.targetDate ?? DateTime.now());
 
@@ -57,6 +59,10 @@ class TimedMeiboRepository implements TimedRepositoryProtocol {
         // 3) save to hive with key
         await Boxes.getAttendanceTimedMeiboModelBox().clear();
         await Boxes.getAttendanceTimedMeiboModelBox().putAll(timedMeiboMap);
+
+        if (timedMeibo.isNotEmpty) {
+          ref.read(hasData.notifier).state = true;
+        }
 
         return const ApiState.loaded();
       } catch (e) {

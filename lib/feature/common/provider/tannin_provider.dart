@@ -32,7 +32,7 @@ class TanninNotifier extends StateNotifier<ApiState> {
   final String strDate;
 
   final box = Boxes.getTannin();
-  late final TanninRepository _repository = ref.read(tanninRepositoryProvider);
+  late final _repository = ref.read(tanninRepositoryProvider);
 
   Future<void> _fetch() async {
     final dantaiId = ref.read(dantaiProvider).id ?? 0;

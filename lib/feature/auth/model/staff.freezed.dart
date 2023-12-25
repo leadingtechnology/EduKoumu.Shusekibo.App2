@@ -26,7 +26,6 @@ mixin _$Staff {
   String get TenantId => throw _privateConstructorUsedError;
   String get LoginId => throw _privateConstructorUsedError;
   String get DantaiId => throw _privateConstructorUsedError;
-  String get Dantai => throw _privateConstructorUsedError;
   String get UserName => throw _privateConstructorUsedError;
   String get KihonId => throw _privateConstructorUsedError;
 
@@ -46,7 +45,6 @@ abstract class $StaffCopyWith<$Res> {
       String TenantId,
       String LoginId,
       String DantaiId,
-      String Dantai,
       String UserName,
       String KihonId});
 }
@@ -69,7 +67,6 @@ class _$StaffCopyWithImpl<$Res, $Val extends Staff>
     Object? TenantId = null,
     Object? LoginId = null,
     Object? DantaiId = null,
-    Object? Dantai = null,
     Object? UserName = null,
     Object? KihonId = null,
   }) {
@@ -93,10 +90,6 @@ class _$StaffCopyWithImpl<$Res, $Val extends Staff>
       DantaiId: null == DantaiId
           ? _value.DantaiId
           : DantaiId // ignore: cast_nullable_to_non_nullable
-              as String,
-      Dantai: null == Dantai
-          ? _value.Dantai
-          : Dantai // ignore: cast_nullable_to_non_nullable
               as String,
       UserName: null == UserName
           ? _value.UserName
@@ -123,7 +116,6 @@ abstract class _$$StaffImplCopyWith<$Res> implements $StaffCopyWith<$Res> {
       String TenantId,
       String LoginId,
       String DantaiId,
-      String Dantai,
       String UserName,
       String KihonId});
 }
@@ -144,7 +136,6 @@ class __$$StaffImplCopyWithImpl<$Res>
     Object? TenantId = null,
     Object? LoginId = null,
     Object? DantaiId = null,
-    Object? Dantai = null,
     Object? UserName = null,
     Object? KihonId = null,
   }) {
@@ -169,10 +160,6 @@ class __$$StaffImplCopyWithImpl<$Res>
           ? _value.DantaiId
           : DantaiId // ignore: cast_nullable_to_non_nullable
               as String,
-      Dantai: null == Dantai
-          ? _value.Dantai
-          : Dantai // ignore: cast_nullable_to_non_nullable
-              as String,
       UserName: null == UserName
           ? _value.UserName
           : UserName // ignore: cast_nullable_to_non_nullable
@@ -194,7 +181,6 @@ class _$StaffImpl extends _Staff {
       required this.TenantId,
       required this.LoginId,
       required this.DantaiId,
-      required this.Dantai,
       required this.UserName,
       required this.KihonId})
       : super._();
@@ -214,15 +200,13 @@ class _$StaffImpl extends _Staff {
   @override
   final String DantaiId;
   @override
-  final String Dantai;
-  @override
   final String UserName;
   @override
   final String KihonId;
 
   @override
   String toString() {
-    return 'Staff(access_token: $access_token, token_type: $token_type, TenantId: $TenantId, LoginId: $LoginId, DantaiId: $DantaiId, Dantai: $Dantai, UserName: $UserName, KihonId: $KihonId)';
+    return 'Staff(access_token: $access_token, token_type: $token_type, TenantId: $TenantId, LoginId: $LoginId, DantaiId: $DantaiId, UserName: $UserName, KihonId: $KihonId)';
   }
 
   @override
@@ -239,7 +223,6 @@ class _$StaffImpl extends _Staff {
             (identical(other.LoginId, LoginId) || other.LoginId == LoginId) &&
             (identical(other.DantaiId, DantaiId) ||
                 other.DantaiId == DantaiId) &&
-            (identical(other.Dantai, Dantai) || other.Dantai == Dantai) &&
             (identical(other.UserName, UserName) ||
                 other.UserName == UserName) &&
             (identical(other.KihonId, KihonId) || other.KihonId == KihonId));
@@ -248,7 +231,7 @@ class _$StaffImpl extends _Staff {
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, access_token, token_type,
-      TenantId, LoginId, DantaiId, Dantai, UserName, KihonId);
+      TenantId, LoginId, DantaiId, UserName, KihonId);
 
   @JsonKey(ignore: true)
   @override
@@ -271,7 +254,6 @@ abstract class _Staff extends Staff {
       required final String TenantId,
       required final String LoginId,
       required final String DantaiId,
-      required final String Dantai,
       required final String UserName,
       required final String KihonId}) = _$StaffImpl;
   const _Staff._() : super._();
@@ -288,8 +270,6 @@ abstract class _Staff extends Staff {
   String get LoginId;
   @override
   String get DantaiId;
-  @override
-  String get Dantai;
   @override
   String get UserName;
   @override

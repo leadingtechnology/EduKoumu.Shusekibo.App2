@@ -73,6 +73,10 @@ class Gridview extends ConsumerWidget {
             builder: (context, Box<AttendanceMeiboModel> box, _) {
               final meibos = box.values.toList();
 
+              if (meibos.isEmpty) {
+                return const Center(child: Text('該当データありません'));
+              }
+
               return GridView.builder(
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 6,

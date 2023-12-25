@@ -11,10 +11,10 @@ import 'package:kyoumutechou/shared/http/app_exception.dart';
 
 
 class AwarenessSeatPage extends ConsumerWidget {
-  AwarenessSeatPage({ super.key});
+  AwarenessSeatPage(this._scaffoldKey, { super.key});
 
   // draw key
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+    final GlobalKey<ScaffoldState> _scaffoldKey;
 
 
   @override

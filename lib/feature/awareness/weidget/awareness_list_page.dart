@@ -17,14 +17,14 @@ import 'package:kyoumutechou/shared/http/app_exception.dart';
 import 'package:kyoumutechou/shared/util/date_util.dart';
 
 class AwarenessListPage extends ConsumerWidget {
-  AwarenessListPage({
+  AwarenessListPage(
+    this._scaffoldKey, {
     super.key,
     this.screenTitle = '',
   });
 
   // draw key
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-
+  final GlobalKey<ScaffoldState> _scaffoldKey;
 
   final String screenTitle;
   

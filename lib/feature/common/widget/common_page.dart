@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kyoumutechou/feature/attendance/widget/attendance_stamp_reason_widget.dart';
+import 'package:kyoumutechou/feature/common/provider/filter_provider.dart';
 import 'package:kyoumutechou/feature/common/widget/filter_widget.dart';
 import 'package:kyoumutechou/feature/common/widget/search_bar_widget.dart';
 import 'package:kyoumutechou/feature/health/widget/health_stamp_reason_widget.dart';
@@ -90,7 +91,7 @@ class CommonPage extends ConsumerWidget {
                       ),
                       MySpacing.width(12),
                       ElevatedButton(
-                        onPressed: setBlank,
+                        onPressed: ref.watch(hasData) ? setBlank : null,
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.white,
                           shape: RoundedRectangleBorder(

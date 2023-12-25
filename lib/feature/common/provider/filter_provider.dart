@@ -13,6 +13,8 @@ final endDateProvider = StateProvider<DateTime>((ref) => DateTime.now());
 final targetDateProvider = StateProvider<DateTime>((ref) => DateTime.now());
 final kouryuProvider = StateProvider<bool>((ref) => false);
 
+final hasData = StateProvider<bool>((ref) => false);
+
 final filterProvider = StateNotifierProvider<FilterNotifier, FilterModel>((ref){
   final dantai = ref.watch(dantaiProvider);
 
@@ -25,9 +27,7 @@ class FilterNotifier extends StateNotifier<FilterModel> {
       required this.ref,
       this.dantai = const DantaiModel(),
     }
-  ) : super(const FilterModel()){
-    init();
-  }
+  ) : super(const FilterModel());
   
   final Ref ref;
   final DantaiModel dantai;

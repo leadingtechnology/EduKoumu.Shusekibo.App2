@@ -25,7 +25,7 @@ class AwarenessDialogMiddleWidget extends ConsumerWidget {
         ),
         validator: (value) {
           if (value == null || value.isEmpty) {
-            return '必須項目';
+            return '';
           }
           return null;
         },

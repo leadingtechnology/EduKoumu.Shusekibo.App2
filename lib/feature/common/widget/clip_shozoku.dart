@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kyoumutechou/feature/boxes.dart';
 import 'package:kyoumutechou/feature/common/provider/dantais_provider.dart';
+import 'package:kyoumutechou/feature/common/provider/filter_provider.dart';
 import 'package:kyoumutechou/feature/common/provider/gakunens_provider.dart';
 import 'package:kyoumutechou/feature/common/provider/shozokus_provider.dart';
+import 'package:kyoumutechou/feature/common/provider/timeds_provider.dart';
 import 'package:kyoumutechou/helpers/theme/app_theme.dart';
+import 'package:kyoumutechou/shared/util/date_util.dart';
 
 
 class ClipShozoku extends ConsumerWidget {
@@ -14,6 +17,7 @@ class ClipShozoku extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(shozokusProvider);
     final shozoku = ref.watch(shozokuProvider);
+    final targetDate = ref.watch(targetDateProvider);
 
     return state.when(
       loading: () {return const SizedBox();},
@@ -51,6 +55,11 @@ class ClipShozoku extends ConsumerWidget {
               selected: isSelected,
               onSelected: (bool selected) {
                 ref.read(shozokuProvider.notifier).state = element!;
+                setTimedValue(
+                  ref as Ref<Object?>,
+                  shozokuId: element.id,
+                  strDate: DateUtil.getStringDate(targetDate),
+                );
               },
               side: BorderSide(
                 width: 0,

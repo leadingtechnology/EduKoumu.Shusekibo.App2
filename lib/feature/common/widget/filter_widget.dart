@@ -11,6 +11,7 @@ import 'package:kyoumutechou/helpers/widgets/my_spacing.dart';
 import 'package:kyoumutechou/helpers/widgets/my_text.dart';
 import 'package:kyoumutechou/shared/util/date_util.dart';
 
+// ignore: must_be_immutable
 class FilterWidget extends ConsumerWidget {
   FilterWidget({super.key});
 

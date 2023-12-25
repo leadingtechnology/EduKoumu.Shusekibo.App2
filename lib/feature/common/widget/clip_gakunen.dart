@@ -48,11 +48,11 @@ class ClipGakunen extends ConsumerWidget {
               selected: isSelected,
               onSelected: (bool selected) {
                 ref.read(gakunenProvider.notifier).state = gakunen!;
-                setShozokuValue(
+                final shozoku = setShozokuValue(
                   ref as Ref<Object?>,
-                  ref.read(dantaiProvider).id!,
-                  gakunen.code ?? '',
+                  gakunen,
                 );
+                ref.read(shozokuProvider.notifier).state = shozoku;
               },
               side: BorderSide(
                 width: 0,

@@ -6,7 +6,6 @@ import 'package:kyoumutechou/feature/awareness/model/awareness_kizuki_model.dart
 import 'package:kyoumutechou/feature/awareness/provider/tenpu_provider.dart';
 import 'package:kyoumutechou/feature/boxes.dart';
 import 'package:kyoumutechou/feature/common/model/tenpu_input_model.dart';
-import 'package:kyoumutechou/feature/common/model/tenpu_model.dart';
 import 'package:kyoumutechou/feature/common/provider/dantais_provider.dart';
 import 'package:kyoumutechou/feature/common/provider/filter_provider.dart';
 import 'package:kyoumutechou/feature/common/state/api_state.dart';
