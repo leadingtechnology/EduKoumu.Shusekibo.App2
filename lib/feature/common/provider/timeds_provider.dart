@@ -8,6 +8,9 @@ import 'package:kyoumutechou/feature/common/repository/timeds_repository.dart';
 import 'package:kyoumutechou/feature/common/state/api_state.dart';
 import 'package:kyoumutechou/shared/util/date_util.dart';
 
+
+final timedUpdateProvider = StateProvider<int>((ref) => 0);
+
 final timedProvider = StateProvider<TimedModel>(
   (ref) => const TimedModel(),
 );
@@ -44,7 +47,7 @@ class TimedsNotifier extends StateNotifier<ApiState> {
     final shozokuId = ref.read(shozokuProvider).id;
     
     // 最新情報の取得
-    final response = ref.read(timedsRepositoryProvider).fetch(
+    final response = await ref.read(timedsRepositoryProvider).fetch(
           shozoku.id ?? 0,
           strDate,
         );
@@ -53,14 +56,14 @@ class TimedsNotifier extends StateNotifier<ApiState> {
   }
 
   // 初期値を設定する
-  TimedModel setTimedValue() {
+  Future<TimedModel> setTimedValue() async{
     // 最新情報の取得条件
     final targetDate = ref.read(targetDateProvider);
     final strDate = DateUtil.getStringDate(targetDate);
     final shozoku = ref.read(shozokuProvider);
 
     // 最新情報の取得
-    final response = ref.read(timedsRepositoryProvider).fetch(
+    final response = await ref.read(timedsRepositoryProvider).fetch(
           shozoku.id ?? 0,
           strDate,
         );
@@ -79,9 +82,9 @@ class TimedsNotifier extends StateNotifier<ApiState> {
     if (keys.isNotEmpty) {
       try {
         final timedList = keys.map(box.get).toList();
-        timedList.sort((a, b) => a?.jigenIdx ?? 0.compareTo(b?.jigenIdx ?? 0));
+        timedList.sort((a, b) => a!.jigenIdx!.compareTo(b!.jigenIdx!));
 
-        final firstValue = timedList.last;
+        final firstValue = timedList.first;
         timed = firstValue ?? const TimedModel();
       } catch (e) {
         timed = const TimedModel();

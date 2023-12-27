@@ -4,6 +4,7 @@ import 'package:kyoumutechou/feature/boxes.dart';
 import 'package:kyoumutechou/feature/common/provider/dantais_provider.dart';
 import 'package:kyoumutechou/feature/common/provider/gakunens_provider.dart';
 import 'package:kyoumutechou/feature/common/provider/shozokus_provider.dart';
+import 'package:kyoumutechou/feature/common/provider/timeds_provider.dart';
 import 'package:kyoumutechou/helpers/theme/app_theme.dart';
 
 class ClipGakunen extends ConsumerWidget {
@@ -41,12 +42,21 @@ class ClipGakunen extends ConsumerWidget {
                 : theme.colorScheme.primary,
           ),
           selected: isSelected,
-          onSelected: (bool selected) {
+          onSelected: (bool selected) async{
             ref.read(gakunenProvider.notifier).state = gakunen!;
+
+            // 所属情報の初期値を設定する
             final shozoku = ref.read(shozokusProvider.notifier).setShozokuValue(
               gakunen,
             );
             ref.read(shozokuProvider.notifier).state = shozoku;
+
+            // 時限情報の初期値を設定する
+                        // 時限情報の初期値を設定する
+            final timed = await ref.read(timedsProvider.notifier).setTimedValue();
+            ref.read(timedProvider.notifier).state = timed;
+
+            ref.read(timedUpdateProvider.notifier).state ++ ;
           },
           side: BorderSide(
             width: 0,

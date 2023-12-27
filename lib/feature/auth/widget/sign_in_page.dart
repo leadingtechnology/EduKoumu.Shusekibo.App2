@@ -24,8 +24,8 @@ class SignInPageState extends ConsumerState<SignInPage> {
     theme = AppTheme.theme;
   }
 
-  final _emailController = TextEditingController(text: '');
-  final _passwordController = TextEditingController(text: '');
+  final _emailController = TextEditingController(text: 'login0001');
+  final _passwordController = TextEditingController(text: 'P@ssw0rd');
 
   @override
   Widget build(BuildContext context) {

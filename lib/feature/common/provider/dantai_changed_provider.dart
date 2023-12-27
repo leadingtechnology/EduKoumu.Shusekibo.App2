@@ -137,7 +137,7 @@ class DantaiChangedNotifier extends StateNotifier<ApiState> {
 
       // 時限初期値の設定
       final timed = 
-      ref.read(timedsProvider.notifier).setTimedValue();
+      await ref.read(timedsProvider.notifier).setTimedValue();
       ref.read(timedProvider.notifier).state = timed;
 
       ///

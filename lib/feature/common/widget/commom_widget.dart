@@ -62,7 +62,9 @@ Future<void> pickDate(BuildContext context, WidgetRef ref) async {
     ref.read(targetDateProvider.notifier).state = selected;
 
     // 時限情報の初期値を設定する
-    final timed = ref.read(timedsProvider.notifier).setTimedValue();
+    final timed = await ref.read(timedsProvider.notifier).setTimedValue();
     ref.read(timedProvider.notifier).state = timed;
+
+    ref.read(timedUpdateProvider.notifier).state++;
   }
 }

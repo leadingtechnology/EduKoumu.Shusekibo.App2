@@ -13,6 +13,7 @@ final dantaiProvider = StateProvider<DantaiModel>((ref) => const DantaiModel());
 
 final dantaisProvider =
     StateNotifierProvider.autoDispose<DantaiNotifier, ApiState>((ref) {
+
   return DantaiNotifier(ref: ref);
 });
 
@@ -32,7 +33,18 @@ class DantaiNotifier extends StateNotifier<ApiState> {
     await fetch();
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   Future<void> fetch() async {
+    // トークンがない場合は、ログイン画面に遷移する。
+    if (Boxes.getBox().get('token') == null || Boxes.getBox().get('token') == '')
+    {
+      return;
+    }
+
     try {
       // 100) （1回目）並列処理でデータを取得する。
       final responses1 = await Future.wait([
@@ -65,9 +77,11 @@ class DantaiNotifier extends StateNotifier<ApiState> {
       }
 
       if (isError || isLoading) {
-        state = const ApiState.error(
-          AppException.errorWithMessage('Error occurred'),
-        );
+        if (mounted) {
+          state = const ApiState.error(
+            AppException.errorWithMessage('Error occurred'),
+          );
+        }
       }
 
       // 健康観察スタンプの初期値を設定する。
@@ -81,9 +95,13 @@ class DantaiNotifier extends StateNotifier<ApiState> {
       // 団体初期値を設定する。
       setDantai();
 
-      state = const ApiState.loaded();
+      if (mounted) {
+        state = const ApiState.loaded();
+      }
     } catch (error) {
-      state = ApiState.error(AppException.errorWithMessage('$error'));
+      if (mounted) {
+        state = ApiState.error(AppException.errorWithMessage('$error'));
+      }
     }
   }
 

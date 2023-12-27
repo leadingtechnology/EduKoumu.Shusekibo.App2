@@ -49,12 +49,14 @@ class ClipShozoku extends ConsumerWidget {
                 : theme.colorScheme.primary,
           ),
           selected: isSelected,
-          onSelected: (bool selected) {
+          onSelected: (bool selected)  async{
             ref.read(shozokuProvider.notifier).state = element!;
 
             // 時限情報の初期値を設定する
-            final timed = ref.read(timedsProvider.notifier).setTimedValue();
+            final timed = await ref.read(timedsProvider.notifier).setTimedValue();
             ref.read(timedProvider.notifier).state = timed;
+
+            ref.read(timedUpdateProvider.notifier).state++;
           },
           side: BorderSide(
             width: 0,
