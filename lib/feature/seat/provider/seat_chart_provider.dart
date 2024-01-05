@@ -8,3 +8,5 @@ final seatChartPageTypeProvider = StateProvider<PageType>((ref) {
 // 座席表設定ID
 final seatSettingIdProvider = StateProvider<int>((ref) {return 0;});
 
+// 展開フラグ
+final isSeatExpandedProvider = StateProvider<bool>((ref) {return true;});

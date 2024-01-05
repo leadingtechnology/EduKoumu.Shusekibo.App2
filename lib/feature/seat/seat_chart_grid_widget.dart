@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:kyoumutechou/feature/common/provider/common_provider.dart';
 import 'package:kyoumutechou/feature/common/widget/search_bar_widget.dart';
+import 'package:kyoumutechou/feature/seat/provider/seat_chart_provider.dart';
+import 'package:kyoumutechou/feature/seat/widget/image_text_widget.dart';
 import 'package:kyoumutechou/helpers/widgets/my_spacing.dart';
-import 'package:pluto_grid/pluto_grid.dart';
+import 'package:kyoumutechou/helpers/widgets/my_text.dart';
 
-class SeatChartGridWidget extends StatefulWidget {
+class SeatChartGridWidget extends ConsumerStatefulWidget  {
   const SeatChartGridWidget({
     required this.scaffoldKey,
     super.key,
@@ -13,102 +17,83 @@ class SeatChartGridWidget extends StatefulWidget {
   final GlobalKey<ScaffoldState> scaffoldKey;
 
   @override
-  State<SeatChartGridWidget> createState() => _SeatChartGridWidgetState();
+  ConsumerState<SeatChartGridWidget> createState() => _SeatChartGridWidgetState();
 }
 
-class _SeatChartGridWidgetState extends State<SeatChartGridWidget> {
-  final List<PlutoColumn> columns = <PlutoColumn>[
-    // 1
-    PlutoColumn(
-      title: 'No.',
-      field: 'id',
-      type: PlutoColumnType.text(),
-      textAlign: PlutoColumnTextAlign.right,
-      titleTextAlign: PlutoColumnTextAlign.center,
-    ),
-    // 2
-    PlutoColumn(
-      title: 'パターン名',
-      field: 'parrtenName',
-      type: PlutoColumnType.text(),
-      textAlign: PlutoColumnTextAlign.left,
-      titleTextAlign: PlutoColumnTextAlign.center,
-    ),
-    // 3
-    PlutoColumn(
-      title: '行',
-      field: 'row',
-      type: PlutoColumnType.text(),
-      textAlign: PlutoColumnTextAlign.center,
-      titleTextAlign: PlutoColumnTextAlign.center,
-    ),
-    // 4
-    PlutoColumn(
-      title: '列',
-      field: 'num',
-      type: PlutoColumnType.text(),
-      textAlign: PlutoColumnTextAlign.center,
-      titleTextAlign: PlutoColumnTextAlign.center,
-    ),
-    // 5
-    PlutoColumn(
-      title: '座席配置順',
-      field: 'sortNo',
-      type: PlutoColumnType.text(),
-      textAlign: PlutoColumnTextAlign.left,
-      titleTextAlign: PlutoColumnTextAlign.center,
-    ),
-    // 6
-    PlutoColumn(
-      title: '設定開始日',
-      field: 'sortNo',
-      type: PlutoColumnType.text(),
-      textAlign: PlutoColumnTextAlign.left,
-      titleTextAlign: PlutoColumnTextAlign.center,
-    ),
-    // 7
-    PlutoColumn(
-      title: '設定終了日',
-      field: 'sortNo',
-      type: PlutoColumnType.text(),
-      textAlign: PlutoColumnTextAlign.left,
-      titleTextAlign: PlutoColumnTextAlign.center,
-    ),
-    // 8
-    PlutoColumn(
-      title: '　',
-      field: 'sortNo',
-      type: PlutoColumnType.text(),
-      textAlign: PlutoColumnTextAlign.center,
-      titleTextAlign: PlutoColumnTextAlign.center,
-    ),
-  ];
-
-  late final List<PlutoRow> rows = [];
-  late final PlutoGridStateManager stateManager;
+class _SeatChartGridWidgetState extends ConsumerState<SeatChartGridWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final isExp = ref.watch(isSeatExpandedProvider);
+
     return Column(
       children: [
+        // 検索バー
         SearchBarWidget(widget.scaffoldKey),
         MySpacing.height(8),
-        const Center(
-          child: Text('座席表Grid'),
+        Row(
+          children: [
+            ElevatedButton.icon(
+              onPressed: () {
+                ref.read(seatChartPageTypeProvider.notifier).state =
+                    PageType.list;
+              },
+              icon: const Icon(Icons.arrow_back),
+              label: const Text('前画面へ戻る'),
+            ),
+            MySpacing.width(8),
+            Expanded(child: Container()),
+            Row(
+              children: [
+                MyText('未設定人数:', fontSize: 16),
+                MySpacing.width(8),
+                MyText(' 0 / 36 ', fontSize: 16),
+                IconButton(
+                  icon: isExp
+                      ? const Icon(Icons.expand_more)
+                      : const Icon(Icons.expand_less),
+                  onPressed: () {
+                    ref.read(isSeatExpandedProvider.notifier).state = !isExp;
+                  },
+                ),
+              ],
+            ),
+          ],
         ),
-        PlutoGrid(
-          columns: columns,
-          rows: rows,
-          onLoaded: (PlutoGridOnLoadedEvent event) {
-            stateManager = event.stateManager;
-            stateManager.setShowColumnFilter(true);
-          },
-          onChanged: (PlutoGridOnChangedEvent event) {
-            print(event);
-          },
-          configuration: const PlutoGridConfiguration(),
+        MySpacing.height(8),
+        Container(
+          decoration: BoxDecoration(
+            border: Border.all(
+              color: Colors.grey, // 枠線の色を設定
+            ),
+          ),
+          child: Column(
+            children: [
+              if(isExp) ...[
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: List.generate(100, (index) {
+                      return const Padding(
+                        padding: EdgeInsets.all(8),
+                        child: ImageTextWidget(
+                          imagePath: 'assets/icons/seito.png',
+                          buttonText: '未設定',
+                          onPressed: null,
+                        ),
+                      );
+                    }),
+                  ),
+                ),
+                MySpacing.height(8),
+              ],
+
+              // グリッド
+            ],),  
         ),
       ],
     );
   }
+
+ 
 }
