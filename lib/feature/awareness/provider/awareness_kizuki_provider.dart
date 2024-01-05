@@ -46,7 +46,6 @@ class AwarenessKizukiListProvider extends StateNotifier<ApiState> {
   }
 
   Future<void> get(int kizukiId) async {
-    
     final response = await _repository.get(kizukiId);
     if (mounted) {
       state = response;

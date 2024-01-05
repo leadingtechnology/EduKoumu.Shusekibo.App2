@@ -6,7 +6,10 @@ enum Menu {
   attendance, 
   attendanceTimed, 
   awareness, 
-  setting, 
+  setting,
+  seatChart,
+  awarenessTemplate,
+  modoru,
 }
 final menuProvider = StateProvider<Menu>((ref) {return Menu.dashboard; });
 

@@ -21,14 +21,14 @@ class FilterWidget extends ConsumerWidget {
   int selectedTOD = 1;
   bool isKouryuGrade = false;
 
-  Future _pickDateRange(BuildContext context, WidgetRef ref) async {
+  Future<void> _pickDateRange(BuildContext context, WidgetRef ref) async {
     final initialDateRange =
         DateTimeRange(start: DateTime.now(), end: DateTime.now());
 
     final newDateRange = await showDateRangePicker(
         context: context,
         initialDateRange: initialDateRange,
-        firstDate: DateTime(2023, 4, 1),
+        firstDate: DateTime(2023, 4),
         lastDate: DateTime(2024, 3, 31),
         locale: const Locale('ja', 'JP'),
         builder: (context, child) {
@@ -134,22 +134,26 @@ class FilterWidget extends ConsumerWidget {
             ),
             MySpacing.height(16),
             // -- 3 --
-            if (menuId != Menu.awareness) ...[
-            MyText.bodyMedium('対象日'),
-            MySpacing.height(8),
-            Container(
-              padding: MySpacing.left(12),
-              child: InkWell(
-                onTap: () {
-                  pickDate(context, ref);
-                },
-                child: SingleIconChip(
-                  isSelected: true,
-                  text: DateUtil.getStringDate(targetDate),
-                  iconData: Icons.calendar_month_outlined,
+            if (
+              menuId == Menu.attendance ||
+              menuId == Menu.attendanceTimed ||
+              menuId == Menu.health
+            ) ...[
+              MyText.bodyMedium('対象日'),
+              MySpacing.height(8),
+              Container(
+                padding: MySpacing.left(12),
+                child: InkWell(
+                  onTap: () {
+                    pickDate(context, ref);
+                  },
+                  child: SingleIconChip(
+                    isSelected: true,
+                    text: DateUtil.getStringDate(targetDate),
+                    iconData: Icons.calendar_month_outlined,
+                  ),
                 ),
               ),
-            ),
             ],
             // -- 4 --
             if (menuId == Menu.attendanceTimed) ...[
@@ -167,7 +171,7 @@ class FilterWidget extends ConsumerWidget {
               MyText.bodyMedium('期間'),
               MySpacing.height(8),
               Padding(
-                padding: const EdgeInsets.only(left: 12),
+                padding: const EdgeInsets.only(left: 8),
                 child: InkWell(
                   onTap: () async {
                     await _pickDateRange(context, ref);

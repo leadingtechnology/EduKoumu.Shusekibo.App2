@@ -100,7 +100,11 @@ class SearchBarWidget extends ConsumerWidget {
                 ),
                 MySpacing.width(60),
 
-                if (menuId != Menu.awareness) ...[
+                if (
+                    menuId == Menu.attendance ||
+                    menuId == Menu.attendanceTimed ||
+                    menuId == Menu.health
+                ) ...[
                   // 1.3 対象日
                   Row(
                     children: [

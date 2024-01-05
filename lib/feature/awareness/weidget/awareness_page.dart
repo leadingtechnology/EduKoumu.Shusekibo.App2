@@ -78,53 +78,56 @@ class AwarenessPageState extends ConsumerState<AwarenessPage>
           ),
         ),
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: Container(
-              padding: MySpacing.all(12),
-              color: theme.colorScheme.background,
-              child: TabBarView(
-                controller: tabController,
-                children: <Widget>[
-                  AwarenessSeatPage(_scaffoldKey),
-                  AwarenessListPage(_scaffoldKey),
+      body: ColoredBox(
+        color: theme.colorScheme.surface,
+        child: Column(
+          children: [
+            Expanded(
+              child: Container(
+                padding: MySpacing.all(12),
+                color: theme.colorScheme.background,
+                child: TabBarView(
+                  controller: tabController,
+                  children: <Widget>[
+                    AwarenessSeatPage(_scaffoldKey),
+                    AwarenessListPage(_scaffoldKey),
+                  ],
+                ),
+              ),
+            ),
+        
+            // ここから下は、タブバーの下に表示するwidget
+            MySpacing.height(8),
+            if (currentIndex == 0 ) 
+            ColoredBox(
+              color: theme.colorScheme.surface,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(child: Container()),
+                  OutlinedButton.icon(
+                    onPressed: count <= 0
+                        ? null
+                        : () async {
+                            await _handlePressActionButton(context);
+                          },
+                    label: const Text(' 気づきの登録 '),
+                    icon: const Icon(Icons.add),
+                    style: OutlinedButton.styleFrom(
+                          foregroundColor: Colors.black,
+                          backgroundColor: Colors.white,
+                          fixedSize: const Size(180, 36),
+                          side: const BorderSide(
+                              color: Colors.black87,),
+                          shape: const StadiumBorder(),
+                          elevation: 8,),
+              
+                  ),
                 ],
               ),
             ),
-          ),
-
-          // ここから下は、タブバーの下に表示するwidget
-          MySpacing.height(8),
-          if (currentIndex == 0 ) 
-          ColoredBox(
-            color: theme.colorScheme.surface,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(child: Container()),
-                OutlinedButton.icon(
-                  onPressed: count <= 0
-                      ? null
-                      : () async {
-                          await _handlePressActionButton(context);
-                        },
-                  label: const Text(' 気づきの登録 '),
-                  icon: const Icon(Icons.add),
-                  style: OutlinedButton.styleFrom(
-                        foregroundColor: Colors.black,
-                        backgroundColor: Colors.white,
-                        fixedSize: const Size(180, 36),
-                        side: const BorderSide(
-                            color: Colors.black87,),
-                        shape: const StadiumBorder(),
-                        elevation: 8,),
-            
-                ),
-              ],
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

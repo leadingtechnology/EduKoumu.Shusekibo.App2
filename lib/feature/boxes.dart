@@ -19,6 +19,7 @@ import 'package:kyoumutechou/feature/common/model/tokobi_model.dart';
 import 'package:kyoumutechou/feature/health/model/health_meibo_model.dart';
 import 'package:kyoumutechou/feature/health/model/health_reason_model.dart';
 import 'package:kyoumutechou/feature/health/model/health_stamp_model.dart';
+import 'package:kyoumutechou/feature/seat/model/seat_setting_model.dart';
 
 class Boxes {
   static Box<String> getBox() => Hive.box<String>('shusekibo');
@@ -63,5 +64,8 @@ class Boxes {
   static Box<TenpuModel> getTenpuBox() => Hive.box<TenpuModel>('Tenpu');
   static Box<String> getImageUrl() => Hive.box<String>('ImageUrl');
   static Box<AwarenessCodeModel> getBunruiBox() =>  Hive.box<AwarenessCodeModel>('bunrui');
+
+  // setting
+  static Box<SeatSettingModel> getSeatSetting() =>  Hive.box<SeatSettingModel>('SeatSetting');
 
 }

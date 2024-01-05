@@ -17,6 +17,7 @@ import 'package:kyoumutechou/feature/attendance/model/attendance_timed_status_mo
 import 'package:kyoumutechou/feature/awareness/model/awareness_code_model.dart';
 import 'package:kyoumutechou/feature/awareness/model/awareness_kizuki_model.dart';
 import 'package:kyoumutechou/feature/awareness/model/awareness_meibo_model.dart';
+import 'package:kyoumutechou/feature/boxes.dart';
 import 'package:kyoumutechou/feature/common/model/dantai_model.dart';
 import 'package:kyoumutechou/feature/common/model/gakunen_model.dart';
 import 'package:kyoumutechou/feature/common/model/shozoku_model.dart';
@@ -28,6 +29,7 @@ import 'package:kyoumutechou/feature/health/model/health_meibo_model.dart';
 import 'package:kyoumutechou/feature/health/model/health_reason_model.dart';
 import 'package:kyoumutechou/feature/health/model/health_stamp_model.dart';
 import 'package:kyoumutechou/feature/health/model/health_status_model.dart';
+import 'package:kyoumutechou/feature/seat/model/seat_setting_model.dart';
 import 'package:kyoumutechou/shared/util/logger.dart';
 import 'package:kyoumutechou/shared/util/platform_type.dart';
 
@@ -141,7 +143,10 @@ Future<void> start() async {
   final urlBox = await Hive.openBox<String>('ImageUrl');
   await urlBox.clear();
 
-
+  // 設定
+  Hive.registerAdapter(SeatSettingModelAdapter());
+  final ssBox = await Hive.openBox<SeatSettingModel>('SeatSetting');  
+  await ssBox.clear();
 
   // Hive アダプター登録
 

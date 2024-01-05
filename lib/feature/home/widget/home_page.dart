@@ -13,6 +13,9 @@ import 'package:kyoumutechou/feature/common/widget/dantai_dropdown_widget.dart';
 import 'package:kyoumutechou/feature/dashboard/widget/dashboard_page.dart';
 import 'package:kyoumutechou/feature/health/widget/health_page.dart';
 import 'package:kyoumutechou/feature/home/provider/home_provider.dart';
+import 'package:kyoumutechou/feature/setting/setting_page.dart';
+import 'package:kyoumutechou/feature/setting/widget/awareness_template_page.dart';
+import 'package:kyoumutechou/feature/seat/seat_chart_page.dart';
 import 'package:kyoumutechou/helpers/theme/app_theme.dart';
 import 'package:kyoumutechou/helpers/widgets/my_text.dart';
 import 'package:kyoumutechou/shared/http/app_exception.dart';
@@ -78,14 +81,39 @@ class HomePageState extends ConsumerState<HomePage> {
       const Icon(Icons.lightbulb),
       const Icon(Icons.lightbulb_outlined),
     ),
-    // NavItem(
-    //   Menu.setting,
-    //   '設定',
-    //   Page2(),
-    //   const Icon(Icons.settings),
-    //   const Icon(Icons.settings_outlined),
-    // ),
+    NavItem(
+      Menu.setting,
+      '設定',
+      const SettingPage(),
+      const Icon(Icons.settings),
+      const Icon(Icons.settings_outlined),
+    ),
   ];
+
+  final List<NavItem> settingItems = [
+    NavItem(
+      Menu.modoru,
+      '戻る',
+      const DashboardPage(),
+      const Icon(Icons.arrow_back),
+      const Icon(Icons.arrow_back_outlined),
+    ),
+    NavItem(
+      Menu.seatChart,
+      '座席表設定',
+      SeatChartPage(),
+      const Icon(Icons.grid_4x4),
+      const Icon(Icons.grid_4x4_outlined),
+    ),
+    NavItem(
+      Menu.awarenessTemplate,
+      '気づきテンプレート',
+      AwarenessTemplatePage(),
+      const Icon(Icons.lightbulb),
+      const Icon(Icons.lightbulb_outlined),
+    ),
+  ];
+
 
   void handleLogout() {
     try {
@@ -119,6 +147,7 @@ class HomePageState extends ConsumerState<HomePage> {
 
   Widget switchToPage(BuildContext context) {
     final selectedIndex = ref.watch(menuProvider).index;
+
     return Scaffold(
       body: Row(
         children: [
@@ -146,7 +175,7 @@ class HomePageState extends ConsumerState<HomePage> {
                   // 左２）ナビゲーションバー
                   Expanded(
                     child: NavigationRail(
-                      selectedIndex: selectedIndex,
+                      selectedIndex: selectedIndex > 5 ? 5: selectedIndex,
                       onDestinationSelected: _onItemTapped,
                       labelType: NavigationRailLabelType.all,
                       destinations: navItems.map((NavItem navItem) {
@@ -248,7 +277,9 @@ class HomePageState extends ConsumerState<HomePage> {
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.all(8),
-                      child: navItems[selectedIndex].page,
+                      child: selectedIndex > 5 
+                      ? settingItems[selectedIndex -5].page 
+                      : navItems[selectedIndex].page,
                     ),
                   ),
                 ],
