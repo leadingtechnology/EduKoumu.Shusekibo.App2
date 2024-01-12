@@ -81,13 +81,13 @@ class HomePageState extends ConsumerState<HomePage> {
       const Icon(Icons.lightbulb),
       const Icon(Icons.lightbulb_outlined),
     ),
-    NavItem(
-      Menu.setting,
-      '設定',
-      const SettingPage(),
-      const Icon(Icons.settings),
-      const Icon(Icons.settings_outlined),
-    ),
+    // NavItem(
+    //   Menu.setting,
+    //   '設定',
+    //   const SettingPage(),
+    //   const Icon(Icons.settings),
+    //   const Icon(Icons.settings_outlined),
+    // ),
   ];
 
   final List<NavItem> settingItems = [

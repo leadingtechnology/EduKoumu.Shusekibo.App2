@@ -8,7 +8,7 @@ import 'package:kyoumutechou/shared/http/app_exception.dart';
 
 // ignore: one_member_abstracts
 abstract class HealthReasonRepositoryProtocol { 
-  Future<ApiState> fetch(String jokyoCd); 
+  Future<ApiState> fetch(String jokyoCd, String kubun); 
 }
 
 final healthReasonRepositoryProvider = Provider(HealthReasonRepository.new);
@@ -20,7 +20,7 @@ class HealthReasonRepository implements HealthReasonRepositoryProtocol {
   final Ref ref;
 
   @override
-  Future<ApiState> fetch(String jokyoCd) async {
+  Future<ApiState> fetch(String jokyoCd, String kubun) async {
 
     // if box had saved the data. then return ok.
     // if (Boxes.getHealthReason1().values.isNotEmpty) {
@@ -74,7 +74,7 @@ class HealthReasonRepository implements HealthReasonRepositoryProtocol {
         
         await Boxes.getHealthReason1().putAll(reason1Map);
 
-        if (jokyoCd == '430') {
+        if (kubun == '403') {
           final reason2List = 
             healthReasonListFromJson(
               value['Reason2List'][0]['ReasonList'] as List<dynamic>,

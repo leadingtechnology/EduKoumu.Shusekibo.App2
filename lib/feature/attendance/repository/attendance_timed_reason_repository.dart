@@ -8,7 +8,7 @@ import 'package:kyoumutechou/shared/http/api_provider.dart';
 import 'package:kyoumutechou/shared/http/api_response.dart';
 import 'package:kyoumutechou/shared/http/app_exception.dart';
 
-abstract class AttendanceTimedReasonRepositoryProtocol { Future<ApiState> fetchAttendanceTimedReason(); }
+abstract class AttendanceTimedReasonRepositoryProtocol { Future<ApiState> fetch(); }
 
 final attendanceTimedReasonRepositoryProvider = Provider((ref) => AttendanceTimedReasonRepository(ref));
 
@@ -19,7 +19,7 @@ class AttendanceTimedReasonRepository implements AttendanceTimedReasonRepository
   final Ref ref;
 
   @override
-  Future<ApiState> fetchAttendanceTimedReason() async {
+  Future<ApiState> fetch() async {
     final AttendanceTimedStampModel stamp = ref.read(attendanceTimedStampProvider);
 
     // if box had saved the data. then return ok.

@@ -10,7 +10,11 @@ final attendanceReasonListProvider =
   
   final stamp = ref.watch(attendanceStampProvider);
 
-  return AttendanceReasonListProvider(ref, stamp.shukketsuJokyoCd??'');
+  return AttendanceReasonListProvider(
+    ref, 
+    stamp.shukketsuJokyoCd??'',
+    stamp.shukketsuKbn??'',
+    );
 });
 
 final attendanceReason1Provider = StateProvider<AttendanceReasonModel>(
@@ -20,13 +24,14 @@ final attendanceReason2Provider = StateProvider<AttendanceReasonModel>(
 
 class AttendanceReasonListProvider extends StateNotifier<ApiState> {
   AttendanceReasonListProvider(
-    this.ref, this._jokyoCd,
+    this.ref, this._jokyoCd,this._shukketsuKbn,
   ) : super(const ApiState.loading()) {
     _init();
   }
 
   final Ref ref;
   final String _jokyoCd;
+  final String _shukketsuKbn;
   late final _repository = ref.read(attendanceReasonRepositoryProvider);
 
   Future<void> _init() async { await _fetch(); }
@@ -38,7 +43,7 @@ class AttendanceReasonListProvider extends StateNotifier<ApiState> {
       return;
     }
 
-    final response = await _repository.fetch(_jokyoCd);
+    final response = await _repository.fetch(_jokyoCd, _shukketsuKbn);
 
     var keys = Boxes.getAttendanceReason1().keys.toList().where(
       (element) => element.toString().startsWith(_jokyoCd),

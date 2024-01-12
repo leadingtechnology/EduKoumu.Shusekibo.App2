@@ -19,6 +19,7 @@ import 'package:kyoumutechou/feature/common/model/tokobi_model.dart';
 import 'package:kyoumutechou/feature/health/model/health_meibo_model.dart';
 import 'package:kyoumutechou/feature/health/model/health_reason_model.dart';
 import 'package:kyoumutechou/feature/health/model/health_stamp_model.dart';
+import 'package:kyoumutechou/feature/seat/model/seat_chart_model.dart';
 import 'package:kyoumutechou/feature/seat/model/seat_setting_model.dart';
 
 class Boxes {
@@ -67,5 +68,8 @@ class Boxes {
 
   // setting
   static Box<SeatSettingModel> getSeatSetting() =>  Hive.box<SeatSettingModel>('SeatSetting');
+
+  // seat chart
+  static Box<SeatChartModel> getSeatChart() =>  Hive.box<SeatChartModel>('SeatChart');
 
 }

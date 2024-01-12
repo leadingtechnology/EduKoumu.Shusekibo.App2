@@ -1,7 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kyoumutechou/feature/attendance/model/attendance_reason_model.dart';
-import 'package:kyoumutechou/feature/attendance/model/attendance_stamp_model.dart';
-import 'package:kyoumutechou/feature/attendance/provider/attendance_stamp_provider.dart';
 import 'package:kyoumutechou/feature/boxes.dart';
 import 'package:kyoumutechou/feature/common/state/api_state.dart';
 import 'package:kyoumutechou/shared/http/api_provider.dart';
@@ -9,7 +7,7 @@ import 'package:kyoumutechou/shared/http/api_response.dart';
 import 'package:kyoumutechou/shared/http/app_exception.dart';
 
 abstract class AttendanceReasonRepositoryProtocol { 
-  Future<ApiState> fetch(String jokyoCd); 
+  Future<ApiState> fetch(String jokyoCd, String shukketsuKbn); 
 }
 
 final attendanceReasonRepositoryProvider = Provider(AttendanceReasonRepository.new);
@@ -21,7 +19,7 @@ class AttendanceReasonRepository implements AttendanceReasonRepositoryProtocol {
   final Ref ref;
 
   @override
-  Future<ApiState> fetch(String jokyoCd) async {
+  Future<ApiState> fetch(String jokyoCd, String shukketsuKbn) async {
 
     // if box had saved the data. then return ok.
     // if (Boxes.getAttendanceReason1().values.isNotEmpty) {
@@ -70,7 +68,7 @@ class AttendanceReasonRepository implements AttendanceReasonRepositoryProtocol {
         
         await Boxes.getAttendanceReason1().putAll(_reasonMap);
         // Reason2
-        if (jokyoCd == '430') {
+        if (shukketsuKbn == '403') {
           await Boxes.getAttendanceReason2().putAll(_reasonMap);
         }
 

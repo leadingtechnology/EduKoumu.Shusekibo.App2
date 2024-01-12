@@ -10,7 +10,11 @@ final healthReasonListProvider =
     
   final stamp = ref.watch(healthStampProvider);
   
-  return HealthReasonListProvider(ref, stamp.jokyoCd??'');
+  return HealthReasonListProvider(
+    ref, 
+    stamp.jokyoCd??'',
+    stamp.kubun??'',
+  );
 });
 
 final healthReason1Provider = StateProvider<HealthReasonModel>(
@@ -21,20 +25,21 @@ final healthReason2Provider = StateProvider<HealthReasonModel>(
 );
 
 class HealthReasonListProvider extends StateNotifier<ApiState> {
-  HealthReasonListProvider(this.ref, this._jokyoCd) : 
+  HealthReasonListProvider(this.ref, this._jokyoCd, this._kubun,) : 
   super(const ApiState.loading()) {
     _init();
   }
 
   final Ref ref;
   final String _jokyoCd;
+  final String _kubun;
   late final _repository = ref.read(healthReasonRepositoryProvider);
 
   Future<void> _init() async { await _fetch(); }
 
   Future<void> _fetch() async {
 
-    final response = await _repository.fetch(_jokyoCd); // _jokyoCd
+    final response = await _repository.fetch(_jokyoCd, _kubun); // _jokyoCd
 
     var keys = Boxes.getHealthReason1().keys.toList().where(
       (element) => element.toString().startsWith(_jokyoCd),

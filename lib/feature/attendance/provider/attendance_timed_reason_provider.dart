@@ -27,7 +27,7 @@ class AttendanceTimedReasonListProvider extends StateNotifier<ApiState> {
   Future<void> _init() async { _fetchAttendanceTimedReasonList(); }
 
   Future<void> _fetchAttendanceTimedReasonList() async {
-    final response = await _repository.fetchAttendanceTimedReason();
+    final response = await _repository.fetch();
 
     List keys = Boxes.getAttendanceTimedReason1().keys.toList().where(
       (element) => element.toString().startsWith('${_shukketsuJokyoCd}'),

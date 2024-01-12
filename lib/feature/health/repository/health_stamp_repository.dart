@@ -21,11 +21,11 @@ class HealthStampRepository implements HealthStampRepositoryProtocol {
   Future<ApiState> fetch() async {
 
     // box にデータがあれば、それを返す
-    final registStampBox = Boxes.getRegistHealthStamp();
-    final unregistStampBox = Boxes.getUnregistHealthStamp();
-    if (registStampBox.isNotEmpty && unregistStampBox.isNotEmpty) {
-      return const ApiState.loaded();
-    }
+    // final registStampBox = Boxes.getRegistHealthStamp();
+    // final unregistStampBox = Boxes.getUnregistHealthStamp();
+    // if (registStampBox.isNotEmpty && unregistStampBox.isNotEmpty) {
+    //   return const ApiState.loaded();
+    // }
 
     final response = await _api.get('api/KenkouKansatsubo/stamps');
 

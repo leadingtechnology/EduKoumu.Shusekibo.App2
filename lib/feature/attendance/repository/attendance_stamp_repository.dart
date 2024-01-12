@@ -25,11 +25,11 @@ class AttendanceStampRepository implements AttendanceStampRepositoryProtocol {
   Future<ApiState> fetch() async {
 
     // box にデータがあれば、それを返す
-    final registStampBox = Boxes.getRegistAttendanceStamp();
-    final unregistStampBox = Boxes.getUnregistAttendanceStamp();
-    if (registStampBox.isNotEmpty && unregistStampBox.isNotEmpty) {
-      return const ApiState.loaded();
-    }
+    // final registStampBox = Boxes.getRegistAttendanceStamp();
+    // final unregistStampBox = Boxes.getUnregistAttendanceStamp();
+    // if (registStampBox.isNotEmpty && unregistStampBox.isNotEmpty) {
+    //   return const ApiState.loaded();
+    // }
 
     final response = await _api.get('api/ShukketsuShussekibo/stamps');
 
