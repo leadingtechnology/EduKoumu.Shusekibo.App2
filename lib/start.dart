@@ -139,6 +139,7 @@ Future<void> start() async {
   final akBox = await Hive.openBox<AwarenessKizukiModel>('AwarenessKizuki');
   await akBox.clear();
 
+  // 画像添付
   final tenpuBox = await Hive.openBox<TenpuModel>('Tenpu');
   await tenpuBox.clear();
 

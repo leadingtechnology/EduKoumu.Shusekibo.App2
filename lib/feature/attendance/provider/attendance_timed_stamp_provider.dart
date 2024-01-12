@@ -4,31 +4,31 @@ import 'package:kyoumutechou/feature/attendance/model/attendance_timed_stamp_mod
 import 'package:kyoumutechou/feature/attendance/repository/attendance_timed_stamp_repository.dart';
 import 'package:kyoumutechou/feature/common/state/api_state.dart';
 
-final attendanceTimedStampListProvider = StateNotifierProvider<AttendanceTimedStampListProvider, ApiState>((ref) {
-  //final shozoku = ref.watch(attendanceTimedShozokuListProvider);
+// final attendanceTimedStampListProvider = StateNotifierProvider<AttendanceTimedStampListProvider, ApiState>((ref) {
+//   //final shozoku = ref.watch(attendanceTimedShozokuListProvider);
 
-  return AttendanceTimedStampListProvider(ref);
-});
+//   return AttendanceTimedStampListProvider(ref);
+// });
 
-final attendanceTimedStampProvider = StateProvider<AttendanceTimedStampModel>((ref) => AttendanceTimedStampModel());
-final attendanceTimedUnregistShowProvider = StateProvider<bool>((ref) => false);
+//final attendanceTimedStampProvider = StateProvider<AttendanceTimedStampModel>((ref) => AttendanceTimedStampModel());
+//final attendanceTimedUnregistShowProvider = StateProvider<bool>((ref) => false);
 
-class AttendanceTimedStampListProvider extends StateNotifier<ApiState> {
-  AttendanceTimedStampListProvider(this.ref)
-      : super(const ApiState.loading()) {
-    _init();
-  }
+// class AttendanceTimedStampListProvider extends StateNotifier<ApiState> {
+//   AttendanceTimedStampListProvider(this.ref)
+//       : super(const ApiState.loading()) {
+//     _init();
+//   }
 
-  final Ref ref;
+//   final Ref ref;
 
-  late final AttendanceTimedStampRepository _repository = ref.read(attendanceTimedStampRepositoryProvider);
+//   late final AttendanceTimedStampRepository _repository = ref.read(attendanceTimedStampRepositoryProvider);
 
-  Future<void> _init() async { _fetchAttendanceTimedStampList(); }
+//   Future<void> _init() async { _fetchAttendanceTimedStampList(); }
 
-  Future<void> _fetchAttendanceTimedStampList() async {
-    final response = await _repository.fetchAttendanceTimedStamp();
-    if (mounted) {
-      state = response;
-    }
-  }
-}
+//   Future<void> _fetchAttendanceTimedStampList() async {
+//     final response = await _repository.fetchAttendanceTimedStamp();
+//     if (mounted) {
+//       state = response;
+//     }
+//   }
+// }

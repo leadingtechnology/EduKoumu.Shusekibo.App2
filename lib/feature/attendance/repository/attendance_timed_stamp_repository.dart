@@ -7,77 +7,77 @@ import 'package:kyoumutechou/shared/http/api_provider.dart';
 import 'package:kyoumutechou/shared/http/api_response.dart';
 import 'package:kyoumutechou/shared/http/app_exception.dart';
 
-abstract class AttendanceTimedStampRepositoryProtocol { Future<ApiState> fetchAttendanceTimedStamp(); }
+// abstract class AttendanceTimedStampRepositoryProtocol { Future<ApiState> fetchAttendanceTimedStamp(); }
 
-final attendanceTimedStampRepositoryProvider = Provider((ref) => AttendanceTimedStampRepository(ref));
+// final attendanceTimedStampRepositoryProvider = Provider((ref) => AttendanceTimedStampRepository(ref));
 
-class AttendanceTimedStampRepository implements AttendanceTimedStampRepositoryProtocol {
-  AttendanceTimedStampRepository(this.ref);
+// class AttendanceTimedStampRepository implements AttendanceTimedStampRepositoryProtocol {
+//   AttendanceTimedStampRepository(this.ref);
 
-  late final ApiProvider _api = ref.read(apiProvider);
-  final Ref ref;
+//   late final ApiProvider _api = ref.read(apiProvider);
+//   final Ref ref;
 
-  @override
-  Future<ApiState> fetchAttendanceTimedStamp() async {
-    //final ShozokuModel shozoku = _watch(attendanceTimedShozokuProvider);
+//   @override
+//   Future<ApiState> fetchAttendanceTimedStamp() async {
+//     //final ShozokuModel shozoku = _watch(attendanceTimedShozokuProvider);
     
-    final response = await _api.get('api/ShukketsuShussekibo/stamps');
+//     final response = await _api.get('api/ShukketsuShussekibo/stamps');
 
-    response.when(
-        success: (success) {},
-        error: (error) {return ApiState.error(error);}
-    );
+//     response.when(
+//         success: (success) {},
+//         error: (error) {return ApiState.error(error);}
+//     );
 
-    if (response is APISuccess) {
-      final value = response.value;
-      try {
-        // 1) Regist Stamp // value['RegistStampList']
-        final registStampList = attendanceTimedStampListFromJson(value as List<dynamic>);
+//     if (response is APISuccess) {
+//       final value = response.value;
+//       try {
+//         // 1) Regist Stamp // value['RegistStampList']
+//         final registStampList = attendanceTimedStampListFromJson(value as List<dynamic>);
         
-        // Add 2 stamps
-        const handStamp = AttendanceTimedStampModel(
-          shukketsuJokyoCd: '001', 
-          shukketsuJokyoNmRyaku: '(未選択)', 
-          shukketsuJokyoKey: '',
-        );
+//         // Add 2 stamps
+//         const handStamp = AttendanceTimedStampModel(
+//           shukketsuJokyoCd: '001', 
+//           shukketsuJokyoNmRyaku: '(未選択)', 
+//           shukketsuJokyoKey: '',
+//         );
 
-        const delStamp = AttendanceTimedStampModel(
-          shukketsuJokyoCd: '999', 
-          shukketsuJokyoNmRyaku: 'クリア', 
-          shukketsuJokyoKey: 'Delete',
-        );
+//         const delStamp = AttendanceTimedStampModel(
+//           shukketsuJokyoCd: '999', 
+//           shukketsuJokyoNmRyaku: 'クリア', 
+//           shukketsuJokyoKey: 'Delete',
+//         );
 
-        registStampList..insert(0, handStamp)
-        ..add(delStamp);
+//         registStampList..insert(0, handStamp)
+//         ..add(delStamp);
 
-        final registStampMap = Map.fromIterables(
-          registStampList.map((e) => e.shukketsuJokyoCd).toList(),
-          registStampList.map((e) => e).toList(),
-        );
+//         final registStampMap = Map.fromIterables(
+//           registStampList.map((e) => e.shukketsuJokyoCd).toList(),
+//           registStampList.map((e) => e).toList(),
+//         );
 
-        await Boxes.getRegistAttendanceTimedStampBox().putAll(registStampMap);
-        ref.read(attendanceTimedStampProvider.notifier).state 
-        = registStampList.first;
+//         await Boxes.getRegistAttendanceTimedStampBox().putAll(registStampMap);
+//         ref.read(attendanceTimedStampProvider.notifier).state 
+//         = registStampList.first;
 
-        // 2) Unregist Stamp // value['UnregistStampList']
-        final unregistStampList = attendanceTimedStampListFromJson(value); 
-        final unregistStampMap = Map.fromIterables(
-          unregistStampList.map((e) => e.shukketsuJokyoCd).toList(),
-          unregistStampList.map((e) => e).toList(),
-        );
-        await Boxes.getUnregistAttendanceTimedStampBox().putAll(
-          unregistStampMap,
-        );
+//         // 2) Unregist Stamp // value['UnregistStampList']
+//         final unregistStampList = attendanceTimedStampListFromJson(value); 
+//         final unregistStampMap = Map.fromIterables(
+//           unregistStampList.map((e) => e.shukketsuJokyoCd).toList(),
+//           unregistStampList.map((e) => e).toList(),
+//         );
+//         await Boxes.getUnregistAttendanceTimedStampBox().putAll(
+//           unregistStampMap,
+//         );
 
-        return const ApiState.loaded();
-      } catch (e) {
-        return ApiState.error(
-            AppException.errorWithMessage(e.toString()),);
-      }
-    } else if (response is APIError) {
-      return ApiState.error(response.exception);
-    } else {
-      return const ApiState.loading();
-    }
-  }
-}
+//         return const ApiState.loaded();
+//       } catch (e) {
+//         return ApiState.error(
+//             AppException.errorWithMessage(e.toString()),);
+//       }
+//     } else if (response is APIError) {
+//       return ApiState.error(response.exception);
+//     } else {
+//       return const ApiState.loading();
+//     }
+//   }
+// }

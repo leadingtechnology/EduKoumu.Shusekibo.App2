@@ -11,6 +11,7 @@ import 'package:kyoumutechou/feature/awareness/provider/awareness_photo_provider
 import 'package:kyoumutechou/feature/awareness/weidget/dialog/awareness_regist_dialog.dart';
 import 'package:kyoumutechou/feature/boxes.dart';
 import 'package:kyoumutechou/feature/common/widget/dialog_util.dart';
+import 'package:kyoumutechou/feature/common/widget/no_data_widget.dart';
 import 'package:kyoumutechou/feature/common/widget/search_bar_widget.dart';
 import 'package:kyoumutechou/helpers/widgets/my_spacing.dart';
 import 'package:kyoumutechou/shared/http/app_exception.dart';
@@ -94,6 +95,10 @@ class AwarenessListView extends ConsumerWidget {
             builder: (context, Box<AwarenessKizukiModel> box, _) {
               final kizuki = Boxes.getAwarenessKizukiModelBox().values.toList();
               
+              if (kizuki.isEmpty) {
+                return const NoDataWidget(message: '該当する期間に気づきは登録されていません。');
+              }
+
               kizuki.sort(
                 (a, b) => a.studentId ?? 0.compareTo(b.studentId ?? 0),
               );

@@ -5,6 +5,7 @@ import 'package:kyoumutechou/feature/boxes.dart';
 import 'package:kyoumutechou/feature/common/provider/common_provider.dart';
 import 'package:kyoumutechou/feature/common/provider/tokobis_provider.dart';
 import 'package:kyoumutechou/feature/common/widget/common_page.dart';
+import 'package:kyoumutechou/feature/common/widget/no_data_widget.dart';
 import 'package:kyoumutechou/feature/common/widget/save_button_widget.dart';
 import 'package:kyoumutechou/feature/common/widget/toast_helper.dart';
 import 'package:kyoumutechou/feature/health/model/health_meibo_model.dart';
@@ -80,7 +81,7 @@ class SeatWidget extends ConsumerWidget {
             final meibos = box.values.toList();
 
             if (meibos.isEmpty) {
-              return const Center(child: Text('該当データありません'));
+              return const NoDataWidget();
             }
 
             return GridView.builder(

@@ -62,7 +62,13 @@ class AttendanceTimedMeiboListProvider extends StateNotifier<ApiState> {
 
     // set all.
     if (stamp.shukketsuBunrui == '50' || stamp.shukketsuBunrui == '60') {
-      final meibos = Boxes.getAttendanceTimedMeiboModelBox().values.toList();
+      var meibos = Boxes.getAttendanceTimedMeiboModelBox().values.toList();
+
+      // 学年毎
+      if (meibos.isNotEmpty) {
+        meibos = meibos.where((e) => e.gakunen == meibo.gakunen).toList();
+      } 
+
 
       for (final m in meibos) {
         await updateBox(m, stamp, filter, reason1, reason2);
@@ -75,12 +81,17 @@ class AttendanceTimedMeiboListProvider extends StateNotifier<ApiState> {
         meibo.jokyoList![0].shukketsuBunrui == '60'
     ) {
 
-      final meibos = Boxes.getAttendanceTimedMeiboModelBox().values.toList();
+      var meibos = Boxes.getAttendanceTimedMeiboModelBox().values.toList();
       const s = AttendanceStampModel(
         shukketsuJokyoCd: '999', 
         shukketsuBunrui: '', 
         shukketsuKbn: '',
       );
+
+      // 学年毎
+      if (meibos.isNotEmpty) {
+        meibos = meibos.where((e) => e.gakunen == meibo.gakunen).toList();
+      } 
 
       for (final m in meibos) {
         if (m.studentKihonId == meibo.studentKihonId) {

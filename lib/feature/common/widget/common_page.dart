@@ -43,14 +43,16 @@ class CommonPage extends ConsumerWidget {
             SearchBarWidget(scaffoldKey),
 
             // 健康観察スタンプバー
-            MySpacing.height(8),
-            if(menuId == Menu.health) 
+            if(menuId == Menu.health) ...[
+              MySpacing.height(8),
               const HealthStampReasonWidget(),
-
+            ],
+              
             // スタンプバー
-            MySpacing.height(8),
-            if (menuId == Menu.attendance || menuId == Menu.attendanceTimed)
+            if (menuId == Menu.attendance || menuId == Menu.attendanceTimed) ...[
+              MySpacing.height(8),
               const AttendanceStampReasonWidget(),
+            ],
 
             // コンテンツ表示
             MySpacing.height(8),

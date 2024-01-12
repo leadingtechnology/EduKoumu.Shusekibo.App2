@@ -12,6 +12,7 @@ import 'package:kyoumutechou/feature/boxes.dart';
 import 'package:kyoumutechou/feature/common/model/filter_model.dart';
 import 'package:kyoumutechou/feature/common/provider/filter_provider.dart';
 import 'package:kyoumutechou/feature/common/provider/tokobis_provider.dart';
+import 'package:kyoumutechou/feature/common/widget/no_data_widget.dart';
 import 'package:kyoumutechou/shared/util/date_util.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
@@ -135,6 +136,8 @@ class _AttendanceListWidgetState extends ConsumerState<AttendanceListWidget> {
     
     // set all.
     if (stamp.shukketsuBunrui == '50' || stamp.shukketsuBunrui == '60') {
+
+      
       for (final r in stateManager.rows) {
         r.cells['mark']!.value = stamp.shukketsuJokyoNmRyaku;
         r.cells['reason1']!.value = reason1.shukketsuJiyuNmSeishiki ?? '';
@@ -193,6 +196,11 @@ class _AttendanceListWidgetState extends ConsumerState<AttendanceListWidget> {
   @override
   Widget build(BuildContext context) {
     final isEditable = ref.watch(isTokobiProvider);
+
+    final list = Boxes.getAttendanceMeibo().values.toList();
+    if (list.isEmpty) {
+      return const NoDataWidget();
+    }
     
     return PlutoGrid(
       columns: columns,

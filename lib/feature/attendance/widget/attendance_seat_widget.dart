@@ -27,7 +27,7 @@ class AttendanceSeatWidget extends ConsumerWidget {
     final stamp = ref.watch(attendanceStampProvider);
     final reason1 = ref.watch(attendanceReason1Provider);
     final reason2 = ref.watch(attendanceReason2Provider);
-    final isEditable = ref.watch(isTokobiProvider);
+    var isEditable = ref.watch(isTokobiProvider);
 
     Color color;
     final url = '$_baseUrl${meibo.photoUrl}';
@@ -37,6 +37,11 @@ class AttendanceSeatWidget extends ConsumerWidget {
 
     if (meibo.jokyoList != null && meibo.jokyoList!.isNotEmpty) {
       jokyo = meibo.jokyoList?.first ?? const AttendanceStatusModel();
+      
+      // 保護される場合、編集不可にする
+      if (jokyo.isEditable == false){
+        isEditable = false;
+      }
     } else {
       jokyo = const AttendanceStatusModel();
     }

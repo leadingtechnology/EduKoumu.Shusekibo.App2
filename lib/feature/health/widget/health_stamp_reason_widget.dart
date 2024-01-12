@@ -38,10 +38,13 @@ class HealthStampReasonState extends ConsumerState<HealthStampReasonWidget> {
                 Icons.approval_outlined,
               ),
             ),
-            Container(
-              padding: MySpacing.x(4),
-              alignment: Alignment.topRight,
-              child: const Text('健康観察\n状況', textAlign: TextAlign.center),
+            SizedBox(
+              width: 70,
+              child: Container(
+                padding: MySpacing.x(4),
+                alignment: Alignment.topRight,
+                child: const Text('健康観察\n状況', textAlign: TextAlign.center),
+              ),
             ),
             MySpacing.width(12),
             const HealthStampRegistWidget(),
@@ -66,7 +69,7 @@ class HealthStampReasonState extends ConsumerState<HealthStampReasonWidget> {
           const Row(
             children: [
               SizedBox(
-                width: 121,
+                width: 126,
               ),
               HealthStampUnregistWidget(),
             ],

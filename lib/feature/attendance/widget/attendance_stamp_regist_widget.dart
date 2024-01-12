@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:kyoumutechou/feature/attendance/model/attendance_reason_model.dart';
+import 'package:kyoumutechou/feature/attendance/provider/attendance_reason_provider.dart';
 import 'package:kyoumutechou/feature/attendance/provider/attendance_stamp_provider.dart';
 import 'package:kyoumutechou/feature/boxes.dart';
 import 'package:kyoumutechou/helpers/theme/app_theme.dart';
@@ -23,7 +25,18 @@ class AttendanceStampRegistWidget extends ConsumerWidget {
           constraints: const BoxConstraints.expand(width: 50),
           fillColor: Theme.of(context).colorScheme.secondaryContainer,
           onPressed: (int index) {
+            if (stamps[index].shukketsuJokyoCd == selectedStamp.shukketsuJokyoCd) {
+              return;
+            }
+
             ref.read(attendanceStampProvider.notifier).state = stamps[index];
+            
+            ref.read(attendanceReason1Provider.notifier).state =
+                const AttendanceReasonModel();
+
+            ref.read(attendanceReason2Provider.notifier).state =
+                const AttendanceReasonModel();
+
           },
           borderColor: theme.colorScheme.outlineVariant,
           selectedBorderColor: theme.colorScheme.primary,

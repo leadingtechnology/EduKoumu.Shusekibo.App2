@@ -29,7 +29,7 @@ class AttendanceTimedSeatWidget extends ConsumerWidget {
     final reason1 = ref.watch(attendanceReason1Provider);
     final reason2 = ref.watch(attendanceReason2Provider);
     final filter = ref.watch(filterProvider);
-    final isEditable = ref.watch(isTokobiProvider);
+    var isEditable = ref.watch(isTokobiProvider);
 
     Color color;
     final url = '$_baseUrl${meibo.photoUrl}';
@@ -43,6 +43,11 @@ class AttendanceTimedSeatWidget extends ConsumerWidget {
             .where((e) => e.jigenIdx == filter.jigenIdx)
             .toList()
             .first;
+        
+        // 保護される場合、編集不可にする
+        if (jokyo.isEditable == false) {
+          isEditable = false;
+        }            
       } catch (ex) {
         jokyo = const AttendanceTimedStatusModel();
       }

@@ -6,6 +6,7 @@ import 'package:kyoumutechou/feature/boxes.dart';
 import 'package:kyoumutechou/feature/common/model/filter_model.dart';
 import 'package:kyoumutechou/feature/common/provider/filter_provider.dart';
 import 'package:kyoumutechou/feature/common/provider/tokobis_provider.dart';
+import 'package:kyoumutechou/feature/common/widget/no_data_widget.dart';
 import 'package:kyoumutechou/feature/health/model/health_meibo_model.dart';
 import 'package:kyoumutechou/feature/health/model/health_status_model.dart';
 import 'package:kyoumutechou/feature/health/provider/health_meibo_provider.dart';
@@ -148,7 +149,7 @@ class _HealthListWidgetState extends ConsumerState<HealthListWidget> {
       for (final r in stateManager.rows) {
         if (r.sortIdx == row.sortIdx) {
           r.cells['mark']!.value = stamp.jokyoCd =='999'
-              ? '' : stamp.jokyoNmRyaku;
+              ? '' : '${stamp.jokyoNmRyaku}${reason1.jiyuNmRyaku}';
           r.cells['reason1']!.value = reason1.jiyuNmSeishiki ?? '';
           r.cells['reason2']!.value = reason2.jiyuNmSeishiki ?? '';
         }else{
@@ -162,7 +163,7 @@ class _HealthListWidgetState extends ConsumerState<HealthListWidget> {
     }
 
     row.cells['mark']!.value = stamp.jokyoCd =='999'
-        ? '' : stamp.jokyoNmRyaku;
+        ? '' : '${stamp.jokyoNmRyaku}${reason1.jiyuNmRyaku}';
     row.cells['reason1']!.value = reason1.jiyuNmSeishiki ?? '';
     row.cells['reason2']!.value = reason2.jiyuNmSeishiki ?? '';
     stateManager.notifyListeners();
@@ -190,6 +191,11 @@ class _HealthListWidgetState extends ConsumerState<HealthListWidget> {
   @override
   Widget build(BuildContext context) {
     final isEditable = ref.watch(isTokobiProvider);
+
+    final list = Boxes.getHealthMeiboBox().values.toList();
+    if (list.isEmpty) {
+      return const NoDataWidget();
+    }    
 
     return PlutoGrid(
       columns: columns,

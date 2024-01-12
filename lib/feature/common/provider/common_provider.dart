@@ -1,4 +1,2 @@
 
 enum PageType { seat, list }
-
-

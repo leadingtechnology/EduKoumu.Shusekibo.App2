@@ -41,10 +41,13 @@ class AttendanceStampReasonState
                 Icons.approval_outlined,
               ),
             ),
-            Container(
-              padding: MySpacing.x(4),
-              alignment: Alignment.topRight,
-              child: const Text('出欠\n状況', textAlign: TextAlign.center),
+            SizedBox(
+              width: 70,
+              child: Container(
+                padding: MySpacing.x(4),
+                alignment: Alignment.topRight,
+                child: const Text('出欠\n状況', textAlign: TextAlign.center),
+              ),
             ),
             MySpacing.width(12),
             const AttendanceStampRegistWidget(),
@@ -70,7 +73,7 @@ class AttendanceStampReasonState
           const Row(
             children: [
               SizedBox(
-                width: 93,
+                width: 126,
               ),
               AttendanceStampUnregistWidget(),
             ],

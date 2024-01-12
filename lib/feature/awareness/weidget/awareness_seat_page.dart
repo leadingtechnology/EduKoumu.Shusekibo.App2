@@ -5,6 +5,7 @@ import 'package:kyoumutechou/feature/awareness/model/awareness_meibo_model.dart'
 import 'package:kyoumutechou/feature/awareness/provider/awareness_meibo_provider.dart';
 import 'package:kyoumutechou/feature/awareness/weidget/awareness_seat_widget.dart';
 import 'package:kyoumutechou/feature/boxes.dart';
+import 'package:kyoumutechou/feature/common/widget/no_data_widget.dart';
 import 'package:kyoumutechou/feature/common/widget/search_bar_widget.dart';
 import 'package:kyoumutechou/helpers/widgets/my_spacing.dart';
 import 'package:kyoumutechou/shared/http/app_exception.dart';
@@ -57,6 +58,10 @@ class AwarenessSeats extends ConsumerWidget {
           valueListenable: Boxes.getAwarenessMeiboBox().listenable(), 
           builder: (context, Box<AwarenessMeiboModel> box, _){
             final meibos = box.values.toList();
+
+            if (meibos.isEmpty) {
+              return const NoDataWidget();
+            } 
             
             return GridView.builder(
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(

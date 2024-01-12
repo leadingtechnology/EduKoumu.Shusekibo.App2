@@ -3,7 +3,6 @@ import 'package:kyoumutechou/feature/boxes.dart';
 import 'package:kyoumutechou/feature/common/model/filter_model.dart';
 import 'package:kyoumutechou/feature/common/provider/filter_provider.dart';
 import 'package:kyoumutechou/feature/common/state/api_state.dart';
-import 'package:kyoumutechou/feature/dashboard/repository/home_health_repository.dart';
 import 'package:kyoumutechou/feature/health/model/health_meibo_model.dart';
 import 'package:kyoumutechou/feature/health/model/health_reason_model.dart';
 import 'package:kyoumutechou/feature/health/model/health_stamp_model.dart';
@@ -64,7 +63,12 @@ class HealthMeiboListProvider extends StateNotifier<ApiState> {
 
     // set all.
     if (stamp.bunrui == '50') {
-      final meibos = Boxes.getHealthMeiboBox().values.toList();
+      var meibos = Boxes.getHealthMeiboBox().values.toList();
+
+      // 学年毎
+      if (meibos.isNotEmpty) {
+        meibos = meibos.where((e) => e.gakunen == meibo.gakunen).toList();
+      } 
 
       for (final m in meibos) {
         await updateBox(m, stamp, reason1, reason2);
@@ -75,12 +79,17 @@ class HealthMeiboListProvider extends StateNotifier<ApiState> {
     //clear all and set one
     if (meibo.jokyoList![0].jokyoCode!.startsWith('5')) {
 
-      final meibos = Boxes.getHealthMeiboBox().values.toList();
+      var meibos = Boxes.getHealthMeiboBox().values.toList();
       const s = HealthStampModel(
         jokyoCd: '999', 
         jokyoNmRyaku: '', 
         jokyoKey: '',
       );
+
+      // 学年毎設定
+      if (meibos.isNotEmpty) {
+        meibos = meibos.where((e) => e.gakunen == meibo.gakunen).toList();
+      }       
 
       for (final m in meibos) {
         if (m.studentKihonId == meibo.studentKihonId) {
@@ -140,7 +149,7 @@ class HealthMeiboListProvider extends StateNotifier<ApiState> {
         : HealthStatusModel(
             kokyoDate: DateTime.now(),
             jokyoCode: stamp.jokyoCd,
-            ryaku: stamp.jokyoNmRyaku,
+            ryaku: '${stamp.jokyoNmRyaku}${reason1.jiyuNmRyaku}' ,
             jiyu1Code: reason1.jiyuCd,
             jiyu1: reason1.jiyuNmSeishiki ?? '',
             jiyu2: reason2.jiyuNmSeishiki ?? '',
