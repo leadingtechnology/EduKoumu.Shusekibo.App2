@@ -37,7 +37,7 @@ class TokobiNotifier extends StateNotifier<ApiState> {
   final bool isKoryu;
 
   final box = Boxes.getTokobis();
-  late final TokobisRepository _rep = ref.watch(tokobisRepositoryProvider);
+  late final _rep = ref.watch(tokobisRepositoryProvider);
 
   Future<void> _fetch(Ref ref) async {
     // 所属IDが空の場合、空のリストを返す
@@ -47,6 +47,19 @@ class TokobiNotifier extends StateNotifier<ApiState> {
     }
     final response = await _rep.fetch(shozokuId, targetDate, isKoryu);
 
+    // 初期値を設定する
+    await setTokobiValue(shozokuId, targetDate);
+
+    if (mounted) {
+      state = response;
+    }
+  }
+
+  Future<void> setTokobiValue(
+    int shozokuId, 
+    DateTime targetDate,
+  ) async{
+    
     final strDate = DateUtil.getStringDate(targetDate);
     final key = box.keys.toList().where(
           (element) => element.toString().startsWith('$shozokuId-$strDate'),
@@ -64,8 +77,5 @@ class TokobiNotifier extends StateNotifier<ApiState> {
 
     ref.read(isTokobiProvider.notifier).state = isEditable;
 
-    if (mounted) {
-      state = response;
-    }
   }
 }

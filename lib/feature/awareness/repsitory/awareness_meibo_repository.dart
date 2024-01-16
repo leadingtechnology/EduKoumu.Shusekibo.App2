@@ -30,6 +30,7 @@ class AwarenessMeiboRepository implements AwarenessMeiboRepositoryProtocol {
       return const ApiState.loading();
     }
 
+    await Boxes.getAwarenessMeiboBox().clear();
     final response = await _api.get('api/shozoku/${filter.classId}/kizuki');
 
     response.when(
@@ -48,7 +49,6 @@ class AwarenessMeiboRepository implements AwarenessMeiboRepositoryProtocol {
 
 
         // 3) save to hive with key
-        await Boxes.getAwarenessMeiboBox().clear();
         await Boxes.getAwarenessMeiboBox().putAll(meiboMap);
 
         return const ApiState.loaded();

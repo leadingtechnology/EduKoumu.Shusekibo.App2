@@ -30,14 +30,26 @@ class AttendanceTimedSeatWidget extends ConsumerWidget {
     final reason2 = ref.watch(attendanceReason2Provider);
     final filter = ref.watch(filterProvider);
     var isEditable = ref.watch(isTokobiProvider);
+    final kyokouDate = meibo.tenshutsuDateKyokouDate;
 
-    Color color;
+    Color bkColor, textColor;
     final url = '$_baseUrl${meibo.photoUrl}';
     final accessToken = Hive.box<String>('shusekibo').get('token').toString();
 
     late AttendanceTimedStatusModel jokyo;
 
     if (meibo.jokyoList != null && meibo.jokyoList!.isNotEmpty) {
+      // 保護される場合、編集不可にする
+      try {
+        jokyo = meibo.jokyoList![0];
+        
+        if (jokyo.isEditable == false) {
+          isEditable = false;
+        }
+      } catch (ex) {
+        jokyo = const AttendanceTimedStatusModel();
+      }
+
       try {
         jokyo = meibo.jokyoList!
             .where((e) => e.jigenIdx == filter.jigenIdx)
@@ -58,14 +70,23 @@ class AttendanceTimedSeatWidget extends ConsumerWidget {
     // 登校日の判定
     if (isEditable){
       if (jokyo.shukketsuKbn == '' || jokyo.shukketsuKbn == null) {
-        color = Theme.of(context).colorScheme.errorContainer;
+        bkColor = Theme.of(context).colorScheme.errorContainer;
       } else if (jokyo.shukketsuKbn != '101') {
-        color = Theme.of(context).colorScheme.primaryContainer;
+        bkColor = Theme.of(context).colorScheme.primaryContainer;
       } else {
-        color = Colors.grey.withAlpha(50);
+        bkColor = Colors.grey.withAlpha(50);
       }
     }else{
-      color = const Color(0xFFDDDDDD);
+      bkColor = const Color(0xFFDDDDDD);
+    }
+
+    // 文字色の設定
+    textColor = Colors.black;
+    if (meibo.tenshutsuYoteiFlg! == true) {
+      textColor = Colors.blue;
+    }
+    if (meibo.tenshutsuSumiFlg! == true) {
+      textColor = Colors.grey;
     }
 
     return GestureDetector(
@@ -116,7 +137,10 @@ class AttendanceTimedSeatWidget extends ConsumerWidget {
                         ),
                         Text(
                           '${meibo.name}', 
-                          style: const TextStyle(fontSize: 14),
+                          style: TextStyle(
+                            color: textColor,
+                            fontSize: 14,
+                          ),
                         ),
                       ],
                     ),),
@@ -129,7 +153,7 @@ class AttendanceTimedSeatWidget extends ConsumerWidget {
               Container(
                   height: 30,
                   decoration: BoxDecoration(
-                    color: color,
+                    color: bkColor,
                     borderRadius: const BorderRadius.only(
                       bottomLeft: Radius.circular(6),
                       bottomRight: Radius.circular(6),

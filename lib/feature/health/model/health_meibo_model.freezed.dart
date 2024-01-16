@@ -47,8 +47,14 @@ mixin _$HealthMeiboModel {
   @JsonKey(name: 'PhotoUrl', disallowNullValue: false)
   @HiveField(8)
   String? get photoUrl => throw _privateConstructorUsedError;
-  @JsonKey(name: 'JokyoList', disallowNullValue: false)
+  @JsonKey(name: 'TenshutsuYoteiFlg', disallowNullValue: false)
   @HiveField(9)
+  bool? get tenshutsuYoteiFlg => throw _privateConstructorUsedError;
+  @JsonKey(name: 'TenshutsuSumiFlg', disallowNullValue: false)
+  @HiveField(10)
+  bool? get tenshutsuSumiFlg => throw _privateConstructorUsedError;
+  @JsonKey(name: 'JokyoList', disallowNullValue: false)
+  @HiveField(11)
   List<HealthStatusModel>? get jokyoList => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -91,8 +97,14 @@ abstract class $HealthMeiboModelCopyWith<$Res> {
       @JsonKey(name: 'PhotoUrl', disallowNullValue: false)
       @HiveField(8)
       String? photoUrl,
-      @JsonKey(name: 'JokyoList', disallowNullValue: false)
+      @JsonKey(name: 'TenshutsuYoteiFlg', disallowNullValue: false)
       @HiveField(9)
+      bool? tenshutsuYoteiFlg,
+      @JsonKey(name: 'TenshutsuSumiFlg', disallowNullValue: false)
+      @HiveField(10)
+      bool? tenshutsuSumiFlg,
+      @JsonKey(name: 'JokyoList', disallowNullValue: false)
+      @HiveField(11)
       List<HealthStatusModel>? jokyoList});
 }
 
@@ -118,6 +130,8 @@ class _$HealthMeiboModelCopyWithImpl<$Res, $Val extends HealthMeiboModel>
     Object? name = freezed,
     Object? genderCode = freezed,
     Object? photoUrl = freezed,
+    Object? tenshutsuYoteiFlg = freezed,
+    Object? tenshutsuSumiFlg = freezed,
     Object? jokyoList = freezed,
   }) {
     return _then(_value.copyWith(
@@ -157,6 +171,14 @@ class _$HealthMeiboModelCopyWithImpl<$Res, $Val extends HealthMeiboModel>
           ? _value.photoUrl
           : photoUrl // ignore: cast_nullable_to_non_nullable
               as String?,
+      tenshutsuYoteiFlg: freezed == tenshutsuYoteiFlg
+          ? _value.tenshutsuYoteiFlg
+          : tenshutsuYoteiFlg // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      tenshutsuSumiFlg: freezed == tenshutsuSumiFlg
+          ? _value.tenshutsuSumiFlg
+          : tenshutsuSumiFlg // ignore: cast_nullable_to_non_nullable
+              as bool?,
       jokyoList: freezed == jokyoList
           ? _value.jokyoList
           : jokyoList // ignore: cast_nullable_to_non_nullable
@@ -201,8 +223,14 @@ abstract class _$$HealthMeiboModelImplCopyWith<$Res>
       @JsonKey(name: 'PhotoUrl', disallowNullValue: false)
       @HiveField(8)
       String? photoUrl,
-      @JsonKey(name: 'JokyoList', disallowNullValue: false)
+      @JsonKey(name: 'TenshutsuYoteiFlg', disallowNullValue: false)
       @HiveField(9)
+      bool? tenshutsuYoteiFlg,
+      @JsonKey(name: 'TenshutsuSumiFlg', disallowNullValue: false)
+      @HiveField(10)
+      bool? tenshutsuSumiFlg,
+      @JsonKey(name: 'JokyoList', disallowNullValue: false)
+      @HiveField(11)
       List<HealthStatusModel>? jokyoList});
 }
 
@@ -226,6 +254,8 @@ class __$$HealthMeiboModelImplCopyWithImpl<$Res>
     Object? name = freezed,
     Object? genderCode = freezed,
     Object? photoUrl = freezed,
+    Object? tenshutsuYoteiFlg = freezed,
+    Object? tenshutsuSumiFlg = freezed,
     Object? jokyoList = freezed,
   }) {
     return _then(_$HealthMeiboModelImpl(
@@ -265,6 +295,14 @@ class __$$HealthMeiboModelImplCopyWithImpl<$Res>
           ? _value.photoUrl
           : photoUrl // ignore: cast_nullable_to_non_nullable
               as String?,
+      tenshutsuYoteiFlg: freezed == tenshutsuYoteiFlg
+          ? _value.tenshutsuYoteiFlg
+          : tenshutsuYoteiFlg // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      tenshutsuSumiFlg: freezed == tenshutsuSumiFlg
+          ? _value.tenshutsuSumiFlg
+          : tenshutsuSumiFlg // ignore: cast_nullable_to_non_nullable
+              as bool?,
       jokyoList: freezed == jokyoList
           ? _value._jokyoList
           : jokyoList // ignore: cast_nullable_to_non_nullable
@@ -303,8 +341,14 @@ class _$HealthMeiboModelImpl implements _HealthMeiboModel {
       @JsonKey(name: 'PhotoUrl', disallowNullValue: false)
       @HiveField(8)
       this.photoUrl,
-      @JsonKey(name: 'JokyoList', disallowNullValue: false)
+      @JsonKey(name: 'TenshutsuYoteiFlg', disallowNullValue: false)
       @HiveField(9)
+      this.tenshutsuYoteiFlg,
+      @JsonKey(name: 'TenshutsuSumiFlg', disallowNullValue: false)
+      @HiveField(10)
+      this.tenshutsuSumiFlg,
+      @JsonKey(name: 'JokyoList', disallowNullValue: false)
+      @HiveField(11)
       final List<HealthStatusModel>? jokyoList})
       : _jokyoList = jokyoList;
 
@@ -347,10 +391,18 @@ class _$HealthMeiboModelImpl implements _HealthMeiboModel {
   @JsonKey(name: 'PhotoUrl', disallowNullValue: false)
   @HiveField(8)
   final String? photoUrl;
+  @override
+  @JsonKey(name: 'TenshutsuYoteiFlg', disallowNullValue: false)
+  @HiveField(9)
+  final bool? tenshutsuYoteiFlg;
+  @override
+  @JsonKey(name: 'TenshutsuSumiFlg', disallowNullValue: false)
+  @HiveField(10)
+  final bool? tenshutsuSumiFlg;
   final List<HealthStatusModel>? _jokyoList;
   @override
   @JsonKey(name: 'JokyoList', disallowNullValue: false)
-  @HiveField(9)
+  @HiveField(11)
   List<HealthStatusModel>? get jokyoList {
     final value = _jokyoList;
     if (value == null) return null;
@@ -380,6 +432,10 @@ class _$HealthMeiboModelImpl implements _HealthMeiboModel {
                 other.genderCode == genderCode) &&
             (identical(other.photoUrl, photoUrl) ||
                 other.photoUrl == photoUrl) &&
+            (identical(other.tenshutsuYoteiFlg, tenshutsuYoteiFlg) ||
+                other.tenshutsuYoteiFlg == tenshutsuYoteiFlg) &&
+            (identical(other.tenshutsuSumiFlg, tenshutsuSumiFlg) ||
+                other.tenshutsuSumiFlg == tenshutsuSumiFlg) &&
             const DeepCollectionEquality()
                 .equals(other._jokyoList, _jokyoList));
   }
@@ -397,6 +453,8 @@ class _$HealthMeiboModelImpl implements _HealthMeiboModel {
       name,
       genderCode,
       photoUrl,
+      tenshutsuYoteiFlg,
+      tenshutsuSumiFlg,
       const DeepCollectionEquality().hash(_jokyoList));
 
   @JsonKey(ignore: true)
@@ -443,8 +501,14 @@ abstract class _HealthMeiboModel implements HealthMeiboModel {
       @JsonKey(name: 'PhotoUrl', disallowNullValue: false)
       @HiveField(8)
       final String? photoUrl,
-      @JsonKey(name: 'JokyoList', disallowNullValue: false)
+      @JsonKey(name: 'TenshutsuYoteiFlg', disallowNullValue: false)
       @HiveField(9)
+      final bool? tenshutsuYoteiFlg,
+      @JsonKey(name: 'TenshutsuSumiFlg', disallowNullValue: false)
+      @HiveField(10)
+      final bool? tenshutsuSumiFlg,
+      @JsonKey(name: 'JokyoList', disallowNullValue: false)
+      @HiveField(11)
       final List<HealthStatusModel>? jokyoList}) = _$HealthMeiboModelImpl;
 
   factory _HealthMeiboModel.fromJson(Map<String, dynamic> json) =
@@ -487,8 +551,16 @@ abstract class _HealthMeiboModel implements HealthMeiboModel {
   @HiveField(8)
   String? get photoUrl;
   @override
-  @JsonKey(name: 'JokyoList', disallowNullValue: false)
+  @JsonKey(name: 'TenshutsuYoteiFlg', disallowNullValue: false)
   @HiveField(9)
+  bool? get tenshutsuYoteiFlg;
+  @override
+  @JsonKey(name: 'TenshutsuSumiFlg', disallowNullValue: false)
+  @HiveField(10)
+  bool? get tenshutsuSumiFlg;
+  @override
+  @JsonKey(name: 'JokyoList', disallowNullValue: false)
+  @HiveField(11)
   List<HealthStatusModel>? get jokyoList;
   @override
   @JsonKey(ignore: true)

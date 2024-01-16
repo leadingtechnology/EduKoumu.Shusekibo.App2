@@ -117,13 +117,32 @@ class HealthMeiboListProvider extends StateNotifier<ApiState> {
     if (meibos.isEmpty) return;
 
     final stamp = Boxes.getRegistHealthStamp().get('100');
+    
+    var keys = Boxes.getHealthReason1()
+        .keys
+        .toList()
+        .where(
+          (element) => element.toString().startsWith('${stamp?.jokyoCd}'),
+        )
+        .toList();
+    
+    final reasonList = keys.map(Boxes.getHealthReason1().get).toList();
+    final reason1 = reasonList
+        .where((e) => '${e?.jiyuCd}'.trim().isNotEmpty)
+        .toList().first;  
 
     for (final m in meibos) {
-      if (m.jokyoList![0].jokyoCode!.isEmpty) {
+      final jokyo = m.jokyoList?[0];
+
+      if (
+          (jokyo == null || 
+          jokyo.jokyoCode!.isEmpty ) && 
+          jokyo?.isEditable == true
+      ) {
         await updateBox(
           m, 
           stamp!, 
-          const HealthReasonModel(jiyuNmSeishiki: '健康'),
+          reason1 ?? const HealthReasonModel() ,
           const HealthReasonModel(),
         );
       }
@@ -149,7 +168,7 @@ class HealthMeiboListProvider extends StateNotifier<ApiState> {
         : HealthStatusModel(
             kokyoDate: DateTime.now(),
             jokyoCode: stamp.jokyoCd,
-            ryaku: '${stamp.jokyoNmRyaku}${reason1.jiyuNmRyaku}' ,
+            ryaku: '${stamp.jokyoNmRyaku}${reason1.jiyuNmRyaku??''}' ,
             jiyu1Code: reason1.jiyuCd,
             jiyu1: reason1.jiyuNmSeishiki ?? '',
             jiyu2: reason2.jiyuNmSeishiki ?? '',
@@ -166,6 +185,8 @@ class HealthMeiboListProvider extends StateNotifier<ApiState> {
         name: meibo.name,
         genderCode: meibo.genderCode,
         photoUrl: meibo.photoUrl,
+        tenshutsuYoteiFlg: meibo.tenshutsuYoteiFlg,
+        tenshutsuSumiFlg: meibo.tenshutsuSumiFlg,
         jokyoList: [status],
       );
 

@@ -27,14 +27,17 @@ class AttendanceTimedMeiboModelAdapter
       name: fields[6] as String?,
       genderCode: fields[7] as String?,
       photoUrl: fields[8] as String?,
-      jokyoList: (fields[9] as List?)?.cast<AttendanceTimedStatusModel>(),
+      tenshutsuDateKyokouDate: fields[9] as DateTime?,
+      tenshutsuYoteiFlg: fields[10] as bool?,
+      tenshutsuSumiFlg: fields[11] as bool?,
+      jokyoList: (fields[12] as List?)?.cast<AttendanceTimedStatusModel>(),
     );
   }
 
   @override
   void write(BinaryWriter writer, _$AttendanceTimedMeiboModelImpl obj) {
     writer
-      ..writeByte(10)
+      ..writeByte(13)
       ..writeByte(0)
       ..write(obj.studentKihonId)
       ..writeByte(1)
@@ -54,6 +57,12 @@ class AttendanceTimedMeiboModelAdapter
       ..writeByte(8)
       ..write(obj.photoUrl)
       ..writeByte(9)
+      ..write(obj.tenshutsuDateKyokouDate)
+      ..writeByte(10)
+      ..write(obj.tenshutsuYoteiFlg)
+      ..writeByte(11)
+      ..write(obj.tenshutsuSumiFlg)
+      ..writeByte(12)
       ..write(obj.jokyoList);
   }
 
@@ -84,6 +93,11 @@ _$AttendanceTimedMeiboModelImpl _$$AttendanceTimedMeiboModelImplFromJson(
       name: json['Name'] as String?,
       genderCode: json['GenderCode'] as String?,
       photoUrl: json['PhotoUrl'] as String?,
+      tenshutsuDateKyokouDate: json['TenshutsuDateKyokouDate'] == null
+          ? null
+          : DateTime.parse(json['TenshutsuDateKyokouDate'] as String),
+      tenshutsuYoteiFlg: json['TenshutsuYoteiFlg'] as bool?,
+      tenshutsuSumiFlg: json['TenshutsuSumiFlg'] as bool?,
       jokyoList: (json['JokyoList'] as List<dynamic>?)
           ?.map((e) =>
               AttendanceTimedStatusModel.fromJson(e as Map<String, dynamic>))
@@ -102,5 +116,9 @@ Map<String, dynamic> _$$AttendanceTimedMeiboModelImplToJson(
       'Name': instance.name,
       'GenderCode': instance.genderCode,
       'PhotoUrl': instance.photoUrl,
+      'TenshutsuDateKyokouDate':
+          instance.tenshutsuDateKyokouDate?.toIso8601String(),
+      'TenshutsuYoteiFlg': instance.tenshutsuYoteiFlg,
+      'TenshutsuSumiFlg': instance.tenshutsuSumiFlg,
       'JokyoList': instance.jokyoList,
     };

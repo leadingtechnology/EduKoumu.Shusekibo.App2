@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kyoumutechou/feature/attendance/widget/attendance_stamp_reason_widget.dart';
+import 'package:kyoumutechou/feature/common/provider/common_provider.dart';
+import 'package:kyoumutechou/feature/common/provider/tokobis_provider.dart';
 import 'package:kyoumutechou/feature/common/widget/filter_widget.dart';
 import 'package:kyoumutechou/feature/common/widget/search_bar_widget.dart';
 import 'package:kyoumutechou/feature/health/widget/health_stamp_reason_widget.dart';
@@ -31,6 +33,7 @@ class CommonPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final menuId = ref.watch(menuProvider);
+    final isTokobi = ref.watch(isTokobiProvider);
 
     return Scaffold(
       key: scaffoldKey,
@@ -92,7 +95,7 @@ class CommonPage extends ConsumerWidget {
                       ),
                       MySpacing.width(12),
                       ElevatedButton(
-                        onPressed: setBlank,
+                        onPressed: !isTokobi || ref.watch(buttonEnableProvider)? setBlank : null,
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.white,
                           shape: RoundedRectangleBorder(

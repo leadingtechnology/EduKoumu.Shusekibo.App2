@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kyoumutechou/feature/attendance/model/attendance_timed_meibo_model.dart';
 import 'package:kyoumutechou/feature/boxes.dart';
 import 'package:kyoumutechou/feature/common/model/filter_model.dart';
+import 'package:kyoumutechou/feature/common/provider/common_provider.dart';
 import 'package:kyoumutechou/feature/common/state/api_state.dart';
 import 'package:kyoumutechou/shared/http/api_provider.dart';
 import 'package:kyoumutechou/shared/http/api_response.dart';
@@ -28,9 +29,15 @@ class TimedMeiboRepository implements TimedRepositoryProtocol {
   @override
   Future<ApiState> fetch(FilterModel filter) async {
 
+    final box = Boxes.getAttendanceTimedMeibo();
+    await box.clear();
+    
     final strDate = DateUtil.getStringDate(filter.targetDate ?? DateTime.now());
 
-    if (filter.classId == null || filter.classId == 0) {
+    if (filter.classId == null || 
+        filter.classId == 0 || 
+        filter.jigenIdx == null
+    ) {
       return const ApiState.loaded();
     }
     
@@ -51,17 +58,23 @@ class TimedMeiboRepository implements TimedRepositoryProtocol {
           value as List<dynamic>,
         );
 
+        // set save button enable
+        if (timedMeibo.isNotEmpty) {
+          ref.read(buttonEnableProvider.notifier).state = true;
+        } else {
+          ref.read(buttonEnableProvider.notifier).state = false;
+        }        
+
         // 2) change list to map
         final timedMeiboMap = timedMeibo.asMap();
 
         // 3) save to hive with key
-        await Boxes.getAttendanceTimedMeiboModelBox().clear();
-        await Boxes.getAttendanceTimedMeiboModelBox().putAll(timedMeiboMap);
+        await box.putAll(timedMeiboMap);
 
         return const ApiState.loaded();
       } catch (e) {
         return ApiState.error(
-            AppException.errorWithMessage(e.toString()));
+            AppException.errorWithMessage(e.toString()),);
       }
     } else if (response is APIError) {
       return ApiState.error(response.exception);
@@ -75,7 +88,7 @@ class TimedMeiboRepository implements TimedRepositoryProtocol {
 
     final strDate = DateUtil.getStringDate(filter.targetDate ?? DateTime.now());
 
-    final meibos = Boxes.getAttendanceTimedMeiboModelBox().values.toList();
+    final meibos = Boxes.getAttendanceTimedMeibo().values.toList();
     final json = jsonEncode(
       meibos.map((v) => v.toNewJson()).toList(),
     ); //jsonEncode(meibos.map((i) => i.toJson()).toList()).toString();

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class DeleteButtonWidget extends StatefulWidget {
+class Save2ButtonWidget extends ConsumerStatefulWidget  {
 
-  const DeleteButtonWidget({
+  const Save2ButtonWidget({
     required this.label, 
     this.onPressed, 
     this.debounceDuration = const Duration(seconds: 2),
@@ -14,18 +15,19 @@ class DeleteButtonWidget extends StatefulWidget {
   final Duration debounceDuration;
 
   @override
-  State<DeleteButtonWidget> createState() => _DeleteButtonWidgetState();
+  ConsumerState<Save2ButtonWidget> createState() => _Save2ButtonWidgetState();
 }
 
-class _DeleteButtonWidgetState extends State<DeleteButtonWidget> {
+class _Save2ButtonWidgetState extends ConsumerState<Save2ButtonWidget> {
   bool _isButtonDisabled = false;
   
   @override
   Widget build(BuildContext context) {
+
     return SizedBox(
       width: 130,
       child: ElevatedButton.icon(
-        onPressed: _isButtonDisabled
+        onPressed: _isButtonDisabled 
             ? null
             : () async {
                 setState(() => _isButtonDisabled = true);
@@ -39,10 +41,10 @@ class _DeleteButtonWidgetState extends State<DeleteButtonWidget> {
                   setState(() => _isButtonDisabled = false);
                 }
               },
-        icon: const Icon(Icons.save_alt_outlined), 
+        icon: const Icon(Icons.save_alt_outlined), // 这里假设图标是固定的
         label: Text(widget.label),
         style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.red[400],
+          backgroundColor: const Color(0xFF0056d2),
           foregroundColor: Colors.white,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8),

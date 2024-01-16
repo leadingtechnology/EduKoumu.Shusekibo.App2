@@ -22,7 +22,8 @@ class HomeAttendanceNotifier extends _$HomeAttendanceNotifier {
     if (dantaiId == 0) {
       return;
     }
-    final targetDate = ref.watch(homeTargetDateProvider);
+    //final targetDate = ref.watch(homeTargetDateProvider);
+    final targetDate = DateTime.now();
 
     final response = await _repository.fetch(dantaiId, targetDate);
     state = response;

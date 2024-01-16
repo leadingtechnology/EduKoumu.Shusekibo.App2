@@ -21,7 +21,6 @@ final attendanceTimedMeiboListProvider =
 final attendanceTimedMeiboProvider = StateProvider<AttendanceTimedMeiboModel>(
   (ref) => const AttendanceTimedMeiboModel(),
 );
-final attendanceTimedShiftProvider = StateProvider<bool>((ref) => false);
 
 // 出欠（時）
 class AttendanceTimedMeiboListProvider extends StateNotifier<ApiState> {
@@ -62,7 +61,7 @@ class AttendanceTimedMeiboListProvider extends StateNotifier<ApiState> {
 
     // set all.
     if (stamp.shukketsuBunrui == '50' || stamp.shukketsuBunrui == '60') {
-      var meibos = Boxes.getAttendanceTimedMeiboModelBox().values.toList();
+      var meibos = Boxes.getAttendanceTimedMeibo().values.toList();
 
       // 学年毎
       if (meibos.isNotEmpty) {
@@ -81,7 +80,7 @@ class AttendanceTimedMeiboListProvider extends StateNotifier<ApiState> {
         meibo.jokyoList![0].shukketsuBunrui == '60'
     ) {
 
-      var meibos = Boxes.getAttendanceTimedMeiboModelBox().values.toList();
+      var meibos = Boxes.getAttendanceTimedMeibo().values.toList();
       const s = AttendanceStampModel(
         shukketsuJokyoCd: '999', 
         shukketsuBunrui: '', 
@@ -116,14 +115,30 @@ class AttendanceTimedMeiboListProvider extends StateNotifier<ApiState> {
   // 未設定の場合、すべての生徒を健康にする
   Future<void> updateByBlank() async {
     final filter = ref.read(filterProvider);
-    final meibos = Boxes.getAttendanceTimedMeiboModelBox().values.toList();
+    final meibos = Boxes.getAttendanceTimedMeibo().values.toList();
 
     if (meibos.isEmpty) return;
 
     final stamp = Boxes.getRegistAttendanceStamp().get('100');
 
     for (final m in meibos) {
-      if (m.jokyoList![0].shukketsuBunrui!.isEmpty) {
+      
+      // 編集可否フラグの取得
+      var jokyo = m.jokyoList![0];
+      try {
+        jokyo = m.jokyoList!
+            .where(
+              (e) => e.jigenIdx == filter.jigenIdx,
+            )
+            .toList()
+            .first;
+      } catch (ex) {
+        //
+      }
+
+      // 保護されない場合、編集可能
+      final isEditable = jokyo.isEditable == true ? true : false;
+      if (isEditable && jokyo.shukketsuBunrui!.isEmpty) {
         await updateBox(
             m, 
             stamp!, 
@@ -150,6 +165,7 @@ class AttendanceTimedMeiboListProvider extends StateNotifier<ApiState> {
             ryaku: '',
             jiyu1: '',
             jiyu2: '',
+            isEditable: true,
           )
         : AttendanceTimedStatusModel(
             jigenIdx: filter.jigenIdx,
@@ -158,6 +174,7 @@ class AttendanceTimedMeiboListProvider extends StateNotifier<ApiState> {
             ryaku: stamp.shukketsuJokyoNmRyaku,
             jiyu1: reason1.shukketsuJiyuNmSeishiki ?? '',
             jiyu2: reason2.shukketsuJiyuNmSeishiki ?? '',
+            isEditable: true,
           );
 
     final newMeibo = AttendanceTimedMeiboModel(
@@ -170,10 +187,12 @@ class AttendanceTimedMeiboListProvider extends StateNotifier<ApiState> {
       name: meibo.name,
       genderCode: meibo.genderCode,
       photoUrl: meibo.photoUrl,
+      tenshutsuYoteiFlg: meibo.tenshutsuYoteiFlg,
+      tenshutsuSumiFlg: meibo.tenshutsuSumiFlg,
       jokyoList: [status],
     );
 
-    final box = Boxes.getAttendanceTimedMeiboModelBox();
+    final box = Boxes.getAttendanceTimedMeibo();
     final index = box.keys.firstWhere(
         (k) => box.getAt(k as int)?.studentKihonId == newMeibo.studentKihonId,
       );

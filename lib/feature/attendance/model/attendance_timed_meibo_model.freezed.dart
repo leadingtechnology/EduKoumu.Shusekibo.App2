@@ -48,8 +48,17 @@ mixin _$AttendanceTimedMeiboModel {
   @JsonKey(name: 'PhotoUrl', disallowNullValue: false)
   @HiveField(8)
   String? get photoUrl => throw _privateConstructorUsedError;
-  @JsonKey(name: 'JokyoList', disallowNullValue: false)
+  @JsonKey(name: 'TenshutsuDateKyokouDate', disallowNullValue: false)
   @HiveField(9)
+  DateTime? get tenshutsuDateKyokouDate => throw _privateConstructorUsedError;
+  @JsonKey(name: 'TenshutsuYoteiFlg', disallowNullValue: false)
+  @HiveField(10)
+  bool? get tenshutsuYoteiFlg => throw _privateConstructorUsedError;
+  @JsonKey(name: 'TenshutsuSumiFlg', disallowNullValue: false)
+  @HiveField(11)
+  bool? get tenshutsuSumiFlg => throw _privateConstructorUsedError;
+  @JsonKey(name: 'JokyoList', disallowNullValue: false)
+  @HiveField(12)
   List<AttendanceTimedStatusModel>? get jokyoList =>
       throw _privateConstructorUsedError;
 
@@ -93,8 +102,17 @@ abstract class $AttendanceTimedMeiboModelCopyWith<$Res> {
       @JsonKey(name: 'PhotoUrl', disallowNullValue: false)
       @HiveField(8)
       String? photoUrl,
-      @JsonKey(name: 'JokyoList', disallowNullValue: false)
+      @JsonKey(name: 'TenshutsuDateKyokouDate', disallowNullValue: false)
       @HiveField(9)
+      DateTime? tenshutsuDateKyokouDate,
+      @JsonKey(name: 'TenshutsuYoteiFlg', disallowNullValue: false)
+      @HiveField(10)
+      bool? tenshutsuYoteiFlg,
+      @JsonKey(name: 'TenshutsuSumiFlg', disallowNullValue: false)
+      @HiveField(11)
+      bool? tenshutsuSumiFlg,
+      @JsonKey(name: 'JokyoList', disallowNullValue: false)
+      @HiveField(12)
       List<AttendanceTimedStatusModel>? jokyoList});
 }
 
@@ -121,6 +139,9 @@ class _$AttendanceTimedMeiboModelCopyWithImpl<$Res,
     Object? name = freezed,
     Object? genderCode = freezed,
     Object? photoUrl = freezed,
+    Object? tenshutsuDateKyokouDate = freezed,
+    Object? tenshutsuYoteiFlg = freezed,
+    Object? tenshutsuSumiFlg = freezed,
     Object? jokyoList = freezed,
   }) {
     return _then(_value.copyWith(
@@ -160,6 +181,18 @@ class _$AttendanceTimedMeiboModelCopyWithImpl<$Res,
           ? _value.photoUrl
           : photoUrl // ignore: cast_nullable_to_non_nullable
               as String?,
+      tenshutsuDateKyokouDate: freezed == tenshutsuDateKyokouDate
+          ? _value.tenshutsuDateKyokouDate
+          : tenshutsuDateKyokouDate // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      tenshutsuYoteiFlg: freezed == tenshutsuYoteiFlg
+          ? _value.tenshutsuYoteiFlg
+          : tenshutsuYoteiFlg // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      tenshutsuSumiFlg: freezed == tenshutsuSumiFlg
+          ? _value.tenshutsuSumiFlg
+          : tenshutsuSumiFlg // ignore: cast_nullable_to_non_nullable
+              as bool?,
       jokyoList: freezed == jokyoList
           ? _value.jokyoList
           : jokyoList // ignore: cast_nullable_to_non_nullable
@@ -205,8 +238,17 @@ abstract class _$$AttendanceTimedMeiboModelImplCopyWith<$Res>
       @JsonKey(name: 'PhotoUrl', disallowNullValue: false)
       @HiveField(8)
       String? photoUrl,
-      @JsonKey(name: 'JokyoList', disallowNullValue: false)
+      @JsonKey(name: 'TenshutsuDateKyokouDate', disallowNullValue: false)
       @HiveField(9)
+      DateTime? tenshutsuDateKyokouDate,
+      @JsonKey(name: 'TenshutsuYoteiFlg', disallowNullValue: false)
+      @HiveField(10)
+      bool? tenshutsuYoteiFlg,
+      @JsonKey(name: 'TenshutsuSumiFlg', disallowNullValue: false)
+      @HiveField(11)
+      bool? tenshutsuSumiFlg,
+      @JsonKey(name: 'JokyoList', disallowNullValue: false)
+      @HiveField(12)
       List<AttendanceTimedStatusModel>? jokyoList});
 }
 
@@ -232,6 +274,9 @@ class __$$AttendanceTimedMeiboModelImplCopyWithImpl<$Res>
     Object? name = freezed,
     Object? genderCode = freezed,
     Object? photoUrl = freezed,
+    Object? tenshutsuDateKyokouDate = freezed,
+    Object? tenshutsuYoteiFlg = freezed,
+    Object? tenshutsuSumiFlg = freezed,
     Object? jokyoList = freezed,
   }) {
     return _then(_$AttendanceTimedMeiboModelImpl(
@@ -271,6 +316,18 @@ class __$$AttendanceTimedMeiboModelImplCopyWithImpl<$Res>
           ? _value.photoUrl
           : photoUrl // ignore: cast_nullable_to_non_nullable
               as String?,
+      tenshutsuDateKyokouDate: freezed == tenshutsuDateKyokouDate
+          ? _value.tenshutsuDateKyokouDate
+          : tenshutsuDateKyokouDate // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      tenshutsuYoteiFlg: freezed == tenshutsuYoteiFlg
+          ? _value.tenshutsuYoteiFlg
+          : tenshutsuYoteiFlg // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      tenshutsuSumiFlg: freezed == tenshutsuSumiFlg
+          ? _value.tenshutsuSumiFlg
+          : tenshutsuSumiFlg // ignore: cast_nullable_to_non_nullable
+              as bool?,
       jokyoList: freezed == jokyoList
           ? _value._jokyoList
           : jokyoList // ignore: cast_nullable_to_non_nullable
@@ -309,8 +366,17 @@ class _$AttendanceTimedMeiboModelImpl implements _AttendanceTimedMeiboModel {
       @JsonKey(name: 'PhotoUrl', disallowNullValue: false)
       @HiveField(8)
       this.photoUrl,
-      @JsonKey(name: 'JokyoList', disallowNullValue: false)
+      @JsonKey(name: 'TenshutsuDateKyokouDate', disallowNullValue: false)
       @HiveField(9)
+      this.tenshutsuDateKyokouDate,
+      @JsonKey(name: 'TenshutsuYoteiFlg', disallowNullValue: false)
+      @HiveField(10)
+      this.tenshutsuYoteiFlg,
+      @JsonKey(name: 'TenshutsuSumiFlg', disallowNullValue: false)
+      @HiveField(11)
+      this.tenshutsuSumiFlg,
+      @JsonKey(name: 'JokyoList', disallowNullValue: false)
+      @HiveField(12)
       final List<AttendanceTimedStatusModel>? jokyoList})
       : _jokyoList = jokyoList;
 
@@ -353,10 +419,22 @@ class _$AttendanceTimedMeiboModelImpl implements _AttendanceTimedMeiboModel {
   @JsonKey(name: 'PhotoUrl', disallowNullValue: false)
   @HiveField(8)
   final String? photoUrl;
+  @override
+  @JsonKey(name: 'TenshutsuDateKyokouDate', disallowNullValue: false)
+  @HiveField(9)
+  final DateTime? tenshutsuDateKyokouDate;
+  @override
+  @JsonKey(name: 'TenshutsuYoteiFlg', disallowNullValue: false)
+  @HiveField(10)
+  final bool? tenshutsuYoteiFlg;
+  @override
+  @JsonKey(name: 'TenshutsuSumiFlg', disallowNullValue: false)
+  @HiveField(11)
+  final bool? tenshutsuSumiFlg;
   final List<AttendanceTimedStatusModel>? _jokyoList;
   @override
   @JsonKey(name: 'JokyoList', disallowNullValue: false)
-  @HiveField(9)
+  @HiveField(12)
   List<AttendanceTimedStatusModel>? get jokyoList {
     final value = _jokyoList;
     if (value == null) return null;
@@ -386,6 +464,13 @@ class _$AttendanceTimedMeiboModelImpl implements _AttendanceTimedMeiboModel {
                 other.genderCode == genderCode) &&
             (identical(other.photoUrl, photoUrl) ||
                 other.photoUrl == photoUrl) &&
+            (identical(
+                    other.tenshutsuDateKyokouDate, tenshutsuDateKyokouDate) ||
+                other.tenshutsuDateKyokouDate == tenshutsuDateKyokouDate) &&
+            (identical(other.tenshutsuYoteiFlg, tenshutsuYoteiFlg) ||
+                other.tenshutsuYoteiFlg == tenshutsuYoteiFlg) &&
+            (identical(other.tenshutsuSumiFlg, tenshutsuSumiFlg) ||
+                other.tenshutsuSumiFlg == tenshutsuSumiFlg) &&
             const DeepCollectionEquality()
                 .equals(other._jokyoList, _jokyoList));
   }
@@ -403,6 +488,9 @@ class _$AttendanceTimedMeiboModelImpl implements _AttendanceTimedMeiboModel {
       name,
       genderCode,
       photoUrl,
+      tenshutsuDateKyokouDate,
+      tenshutsuYoteiFlg,
+      tenshutsuSumiFlg,
       const DeepCollectionEquality().hash(_jokyoList));
 
   @JsonKey(ignore: true)
@@ -449,8 +537,17 @@ abstract class _AttendanceTimedMeiboModel implements AttendanceTimedMeiboModel {
           @JsonKey(name: 'PhotoUrl', disallowNullValue: false)
           @HiveField(8)
           final String? photoUrl,
-          @JsonKey(name: 'JokyoList', disallowNullValue: false)
+          @JsonKey(name: 'TenshutsuDateKyokouDate', disallowNullValue: false)
           @HiveField(9)
+          final DateTime? tenshutsuDateKyokouDate,
+          @JsonKey(name: 'TenshutsuYoteiFlg', disallowNullValue: false)
+          @HiveField(10)
+          final bool? tenshutsuYoteiFlg,
+          @JsonKey(name: 'TenshutsuSumiFlg', disallowNullValue: false)
+          @HiveField(11)
+          final bool? tenshutsuSumiFlg,
+          @JsonKey(name: 'JokyoList', disallowNullValue: false)
+          @HiveField(12)
           final List<AttendanceTimedStatusModel>? jokyoList}) =
       _$AttendanceTimedMeiboModelImpl;
 
@@ -494,8 +591,20 @@ abstract class _AttendanceTimedMeiboModel implements AttendanceTimedMeiboModel {
   @HiveField(8)
   String? get photoUrl;
   @override
-  @JsonKey(name: 'JokyoList', disallowNullValue: false)
+  @JsonKey(name: 'TenshutsuDateKyokouDate', disallowNullValue: false)
   @HiveField(9)
+  DateTime? get tenshutsuDateKyokouDate;
+  @override
+  @JsonKey(name: 'TenshutsuYoteiFlg', disallowNullValue: false)
+  @HiveField(10)
+  bool? get tenshutsuYoteiFlg;
+  @override
+  @JsonKey(name: 'TenshutsuSumiFlg', disallowNullValue: false)
+  @HiveField(11)
+  bool? get tenshutsuSumiFlg;
+  @override
+  @JsonKey(name: 'JokyoList', disallowNullValue: false)
+  @HiveField(12)
   List<AttendanceTimedStatusModel>? get jokyoList;
   @override
   @JsonKey(ignore: true)

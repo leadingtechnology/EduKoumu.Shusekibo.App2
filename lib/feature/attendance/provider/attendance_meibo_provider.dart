@@ -21,7 +21,6 @@ final attendanceMeiboListProvider =
 final attendanceMeiboProvider = StateProvider<AttendanceMeiboModel>(
   (ref) => const AttendanceMeiboModel(),
 );
-final attendanceShiftProvider = StateProvider<bool>((ref) => false);
 
 // 出欠（日）
 class AttendanceMeiboListProvider extends StateNotifier<ApiState> {
@@ -118,7 +117,12 @@ class AttendanceMeiboListProvider extends StateNotifier<ApiState> {
     final stamp = Boxes.getRegistAttendanceStamp().get('100');
 
     for (final m in meibos) {
-      if (m.jokyoList![0].shukketsuBunrui!.isEmpty) {
+      final jokyo = m.jokyoList?[0]; 
+
+      if ((jokyo == null || 
+          jokyo.shukketsuBunrui!.isEmpty) &&
+          jokyo?.isEditable == true
+      ) {
         await updateBox(
           m, 
           stamp!, 
@@ -142,6 +146,7 @@ class AttendanceMeiboListProvider extends StateNotifier<ApiState> {
             ryaku: '',
             jiyu1: '',
             jiyu2: '',
+            isEditable: true,
           )
         : AttendanceStatusModel(
             shukketsuBunrui: stamp.shukketsuBunrui,
@@ -149,6 +154,7 @@ class AttendanceMeiboListProvider extends StateNotifier<ApiState> {
             ryaku: stamp.shukketsuJokyoNmRyaku,
             jiyu1: reason1.shukketsuJiyuNmSeishiki ?? '',
             jiyu2: reason2.shukketsuJiyuNmSeishiki ?? '',
+            isEditable: true,
           );
     final newMeibo = AttendanceMeiboModel(
       studentKihonId: meibo.studentKihonId,
@@ -160,6 +166,8 @@ class AttendanceMeiboListProvider extends StateNotifier<ApiState> {
       name: meibo.name,
       genderCode: meibo.genderCode,
       photoUrl: meibo.photoUrl,
+      tenshutsuYoteiFlg: meibo.tenshutsuYoteiFlg,
+      tenshutsuSumiFlg: meibo.tenshutsuSumiFlg,
       jokyoList: [status],
     );
 

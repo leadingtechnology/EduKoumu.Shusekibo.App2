@@ -41,7 +41,6 @@ class ClipTimed extends ConsumerWidget {
 
     final timedList = keys.map(box.get).toList();
     timedList.sort((a, b) => a!.jigenIdx!.compareTo(b!.jigenIdx!));
-    //ref.read(timedProvider.notifier).state = timedList.first!;
 
     return Wrap(
       spacing: 10,
@@ -60,7 +59,7 @@ class ClipTimed extends ConsumerWidget {
           selected: isSelected,
           onSelected: (bool selected) {
             ref.read(timedProvider.notifier).state = timed!;
-            timedUpdate ++ ;
+            ref.read(timedUpdateProvider.notifier).state ++;
           },
           side: BorderSide(
             width: 0,

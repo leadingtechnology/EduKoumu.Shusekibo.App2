@@ -21,7 +21,9 @@ class AwarenessBunrui extends ConsumerWidget {
             Radio<String>(
               value: value,
               groupValue: ref.watch(awarenessBunruiProvider),
-              onChanged: (String? newValue) {},
+              onChanged: (String? newValue) {
+                ref.read(awarenessBunruiProvider.notifier).state = newValue!;
+              },
             ),
             Text(name),
           ],
@@ -45,7 +47,7 @@ class AwarenessBunrui extends ConsumerWidget {
     }
 
     final codeList = keys.map(box.get).toList(); 
-    codeList.sort((a, b) => a?.id??0.compareTo(b?.id??0 ),);
+    codeList.sort((a, b) => '${a?.code}'.compareTo('${b?.code}'),);
 
 
     return codeList.isEmpty

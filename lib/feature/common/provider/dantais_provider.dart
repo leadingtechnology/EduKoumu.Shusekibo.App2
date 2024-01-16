@@ -1,14 +1,9 @@
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kyoumutechou/feature/attendance/model/attendance_reason_model.dart';
-import 'package:kyoumutechou/feature/attendance/model/attendance_stamp_model.dart';
-import 'package:kyoumutechou/feature/attendance/model/attendance_timed_reason_model.dart';
-import 'package:kyoumutechou/feature/attendance/model/attendance_timed_stamp_model.dart';
 import 'package:kyoumutechou/feature/attendance/provider/attendance_provider.dart';
 import 'package:kyoumutechou/feature/attendance/provider/attendance_reason_provider.dart';
 import 'package:kyoumutechou/feature/attendance/provider/attendance_stamp_provider.dart';
-import 'package:kyoumutechou/feature/attendance/provider/attendance_timed_reason_provider.dart';
-import 'package:kyoumutechou/feature/attendance/provider/attendance_timed_stamp_provider.dart';
 import 'package:kyoumutechou/feature/attendance/repository/attendance_stamp_repository.dart';
 import 'package:kyoumutechou/feature/boxes.dart';
 import 'package:kyoumutechou/feature/common/model/dantai_model.dart';
@@ -16,7 +11,6 @@ import 'package:kyoumutechou/feature/common/provider/common_provider.dart';
 import 'package:kyoumutechou/feature/common/repository/dantais_repository.dart';
 import 'package:kyoumutechou/feature/common/state/api_state.dart';
 import 'package:kyoumutechou/feature/health/model/health_reason_model.dart';
-import 'package:kyoumutechou/feature/health/model/health_stamp_model.dart';
 import 'package:kyoumutechou/feature/health/provider/health_provider.dart';
 import 'package:kyoumutechou/feature/health/provider/health_reason_provider.dart';
 import 'package:kyoumutechou/feature/health/provider/health_stamp_provider.dart';
@@ -185,6 +179,8 @@ class DantaiNotifier extends StateNotifier<ApiState> {
     ref.read(attendanceReason2Provider.notifier).state =
         const AttendanceReasonModel();
     
+    ref.read(buttonEnableProvider.notifier).state = false;
+
     // //出欠時限画面の初期値を設定する
     // ref.read(attendanceTimedStampProvider.notifier).state =
     //     const AttendanceTimedStampModel();

@@ -24,7 +24,8 @@ class HomeHealthNotifier extends _$HomeHealthNotifier {
     if (dantaiId == 0) {
       return;
     }
-    final targetDate = ref.watch(homeTargetDateProvider);
+    //final targetDate = ref.watch(homeTargetDateProvider);
+    final targetDate = DateTime.now();
 
     final response = await _repository.fetch(dantaiId, targetDate);
     state = response;

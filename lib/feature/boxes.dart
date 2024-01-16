@@ -52,7 +52,7 @@ class Boxes {
   static Box<AttendanceStatusModel> getAttendanceStatus() => Hive.box<AttendanceStatusModel>('AttendanceStatusModel');
   static Box<AttendanceMeiboModel> getAttendanceMeibo() => Hive.box<AttendanceMeiboModel>('AttendanceMeibo');
   static Box<TimedModel> getTimeds() => Hive.box<TimedModel>('Timed');
-  static Box<AttendanceTimedMeiboModel> getAttendanceTimedMeiboModelBox() => Hive.box<AttendanceTimedMeiboModel>('AttendanceTimedMeibo');
+  static Box<AttendanceTimedMeiboModel> getAttendanceTimedMeibo() => Hive.box<AttendanceTimedMeiboModel>('AttendanceTimedMeibo');
 
   static Box<AttendanceTimedStampModel> getRegistAttendanceTimedStampBox() => Hive.box<AttendanceTimedStampModel>('RegistAttendanceTimedStamp');
   static Box<AttendanceTimedStampModel> getUnregistAttendanceTimedStampBox() => Hive.box<AttendanceTimedStampModel>('UnregistAttendanceTimedStamp');

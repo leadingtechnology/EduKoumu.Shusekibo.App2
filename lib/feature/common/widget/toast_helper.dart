@@ -13,7 +13,7 @@ class ToastHelper {
             color: Colors.black54,//.withOpacity(0.5),
             borderRadius: BorderRadius.circular(10),
           ),
-         
+          
           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
           child: Text(text, style: style,),
         ),

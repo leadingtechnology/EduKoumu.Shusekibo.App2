@@ -9,10 +9,12 @@ import 'package:kyoumutechou/feature/common/provider/filter_provider.dart';
 import 'package:kyoumutechou/feature/common/provider/gakunens_provider.dart';
 import 'package:kyoumutechou/feature/common/provider/shozokus_provider.dart';
 import 'package:kyoumutechou/feature/common/provider/timeds_provider.dart';
+import 'package:kyoumutechou/feature/common/provider/tokobis_provider.dart';
 import 'package:kyoumutechou/feature/common/repository/gakunens_repository.dart';
 import 'package:kyoumutechou/feature/common/repository/shozokus_repository.dart';
 import 'package:kyoumutechou/feature/common/repository/tannin_repository.dart';
 import 'package:kyoumutechou/feature/common/repository/timeds_repository.dart';
+import 'package:kyoumutechou/feature/common/repository/tokobis_repository.dart';
 import 'package:kyoumutechou/feature/common/state/api_state.dart';
 import 'package:kyoumutechou/shared/http/app_exception.dart';
 import 'package:kyoumutechou/shared/util/date_util.dart';
@@ -38,6 +40,7 @@ class DantaiChangedNotifier extends StateNotifier<ApiState> {
   late final _shozoku = ref.read(shozokusRepositoryProvider);
   late final _burun = ref.read(awarenessCodeRepositoryProvider);
 
+  late final _tokobi = ref.watch(tokobisRepositoryProvider);
   late final _timed = ref.read(timedsRepositoryProvider);
 
   Future<void> fetch(DantaiModel dantai) async {
@@ -129,16 +132,53 @@ class DantaiChangedNotifier extends StateNotifier<ApiState> {
       );
       ref.read(awarenessCodeProvider.notifier).state = awarenessCode;
 
-      // 時限情報の取得
-      await _timed.fetch(
-        shozoku.id ?? 0,
-        strDate,
-      );
+
+      final responses2 = await Future.wait([
+        // 時限情報の取得
+        _timed.fetch(
+          shozoku.id ?? 0,
+          strDate,
+        ),
+
+        // 登校日情報の取得
+        _tokobi.fetch(
+          shozoku.id ?? 0,
+          DateTime.now(),
+          false,
+        ),
+      ]);
+
+      isError = false;
+      isLoading = false;
+      errorMessage = '';
+      for (final response in responses2) {
+        response.when(
+          error: (e) {
+            isError = true;
+            errorMessage = '$errorMessage {e};';
+          },
+          loading: () {
+            isLoading = true;
+          },
+          loaded: () {},
+        );
+      }
+
+      if (isError || isLoading) {
+        state = const ApiState.error(
+          AppException.errorWithMessage('Error occurred'),
+        );
+      }
 
       // 時限初期値の設定
-      final timed = 
-      await ref.read(timedsProvider.notifier).setTimedValue();
+      final timed = await ref.read(timedsProvider.notifier).setTimedValue();
       ref.read(timedProvider.notifier).state = timed;
+
+      // 登校日初期値の設定
+      final tokobi = await ref.read(tokobisProvider.notifier).setTokobiValue(
+        shozoku.id ?? 0,
+        DateTime.now(),
+      );
 
       ///
       ///検索条件の初期化

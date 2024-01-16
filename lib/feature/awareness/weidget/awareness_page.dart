@@ -36,6 +36,15 @@ class AwarenessPageState extends ConsumerState<AwarenessPage>
 
     theme = AppTheme.theme;
     tabController = TabController(length: 2, vsync: this);
+
+    tabController?.addListener(() { 
+      if (tabController!.indexIsChanging) {
+        setState(() {
+          currentIndex = tabController!.index;
+        });
+        ref.read(awarenessTabIndexProvider.notifier).state = currentIndex;  
+      }
+    });
   }
 
   @override
@@ -50,7 +59,7 @@ class AwarenessPageState extends ConsumerState<AwarenessPage>
 
     return Scaffold(
       key: _scaffoldKey,
-      endDrawer: FilterWidget(isPeriod: true,),
+      endDrawer: FilterWidget(isPeriod: true),
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(50),
         child: AppBar(

@@ -25,6 +25,12 @@ class ClipGakunen extends ConsumerWidget {
 
     final gakunenList = keys.map(box.get).toList();
     //ref.read(gakunenProvider.notifier).state = gakunenList.first!;
+    
+    //　ソートする
+    gakunenList.sort(
+      (a, b) => '${a?.kateiKbn}-${a?.gakunenCode}'
+          .compareTo('${b?.kateiKbn}-${b?.gakunenCode}'),
+    );
 
     return Wrap(
       spacing: 10,

@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:kyoumutechou/feature/boxes.dart';
 import 'package:kyoumutechou/feature/common/provider/common_provider.dart';
-import 'package:kyoumutechou/feature/common/provider/tokobis_provider.dart';
 import 'package:kyoumutechou/feature/common/widget/common_page.dart';
 import 'package:kyoumutechou/feature/common/widget/no_data_widget.dart';
 import 'package:kyoumutechou/feature/common/widget/save_button_widget.dart';
@@ -20,15 +19,16 @@ class HealthPage extends ConsumerWidget {
   HealthPage({super.key});
 
   // draw key
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> _healthKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final pageType = ref.watch(healthPageTypeProvider);
-    final isEditable = ref.watch(isTokobiProvider);
+    //final isEditable = ref.watch(isTokobiProvider);
+    final buttonEnable = ref.watch(buttonEnableProvider);
 
     return CommonPage(
-      scaffoldKey: _scaffoldKey,
+      scaffoldKey: _healthKey,
       contentWidget: pageType == PageType.seat
           ? const SeatWidget() // 座位图组件
           : const ListWidget(), // 列表组件, // 列表组件
@@ -38,22 +38,18 @@ class HealthPage extends ConsumerWidget {
                 ? PageType.list
                 : PageType.seat;
       },
-      setBlank: !isEditable ? null :  () {
-        ref.read(healthMeiboListProvider.notifier).updateByBlank();
+      setBlank: () async {
+        await ref.read(healthMeiboListProvider.notifier).updateByBlank();
         helthGlobalKey.currentState?.setBlank();
       },
-      saveWidget: ValueListenableBuilder(
-        valueListenable: Boxes.getHealthMeiboBox().listenable(),
-        builder: (context, Box<HealthMeiboModel> box, _) {
-
-          return SaveButtonWidget(
-            label: '保存',
-            onPressed: !isEditable ? null :(){
-              ref.read(healthMeiboListProvider.notifier).save();
-              ToastHelper.showToast(context, '　保存しました　');
-            },
-          );
-        },
+      saveWidget: SaveButtonWidget(
+        label: '保存',
+        onPressed: !buttonEnable
+            ? null
+            : () {
+                ref.read(healthMeiboListProvider.notifier).save();
+                ToastHelper.showToast(context, '　保存しました　');
+              },
       ),
       buttomName: pageType == PageType.seat ? '一覧' : 'テーブル',
       buttonIcon: pageType == PageType.seat ? Icons.list : Icons.grid_view,
@@ -96,7 +92,7 @@ class SeatWidget extends ConsumerWidget {
                     itemBuilder: (BuildContext context, int index) {
                       return HealthSeatWidget(
                         index: index, 
-                        healthMeibo: meibos[index],
+                        meibo: meibos[index],
                       );
                     },
             );

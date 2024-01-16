@@ -29,7 +29,7 @@ class AttendanceSeatWidget extends ConsumerWidget {
     final reason2 = ref.watch(attendanceReason2Provider);
     var isEditable = ref.watch(isTokobiProvider);
 
-    Color color;
+    Color bkColor, textColor;
     final url = '$_baseUrl${meibo.photoUrl}';
     final accessToken = Hive.box<String>('shusekibo').get('token').toString();
 
@@ -49,15 +49,25 @@ class AttendanceSeatWidget extends ConsumerWidget {
     // 登校日の判定
     if (isEditable){
       if (jokyo.shukketsuKbn == '' || jokyo.shukketsuKbn == null) {
-        color = Theme.of(context).colorScheme.errorContainer;
+        bkColor = Theme.of(context).colorScheme.errorContainer;
       } else if (jokyo.shukketsuKbn != '101') {
-        color = Theme.of(context).colorScheme.primaryContainer;
+        bkColor = Theme.of(context).colorScheme.primaryContainer;
       } else {
-        color = Colors.grey.withAlpha(50);
+        bkColor = Colors.grey.withAlpha(50);
       }
     }else{
-      color = const Color(0xFFDDDDDD);
+      bkColor = const Color(0xFFDDDDDD);
     }
+
+    // 文字色の設定
+    textColor = Colors.black;
+    if(meibo.tenshutsuYoteiFlg! == true){
+      textColor = Colors.blue;
+    }
+    if (meibo.tenshutsuSumiFlg! == true) {
+      textColor = Colors.grey;
+    }
+
 
     return GestureDetector(
       onTap: !isEditable ? null : () async {
@@ -106,7 +116,10 @@ class AttendanceSeatWidget extends ConsumerWidget {
                         ),
                         Text(
                           '${meibo.name}', 
-                          style: const TextStyle(fontSize: 14),
+                          style: TextStyle(
+                            color: textColor,
+                            fontSize: 14,
+                          ),
                         ),
                       ],
                     ),),
@@ -119,7 +132,7 @@ class AttendanceSeatWidget extends ConsumerWidget {
               Container(
                   height: 30,
                   decoration: BoxDecoration(
-                    color: color,
+                    color: bkColor,
                     borderRadius: const BorderRadius.only(
                       bottomLeft: Radius.circular(6),
                       bottomRight: Radius.circular(6),

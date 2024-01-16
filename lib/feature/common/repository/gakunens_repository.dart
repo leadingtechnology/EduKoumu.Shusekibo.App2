@@ -68,7 +68,7 @@ class GakunensRepository implements GakunensRepositoryProtocol {
             gakunenCode: '0',
             gakunenName: '学年なし',
             gakunenRyakusho: '学年なし',
-            kateiKbn: l.kateiKbn ?? '0',
+            kateiKbn: '99',
             code: '999',
             name: '学年なし',);
         gakunens.add(nashi);

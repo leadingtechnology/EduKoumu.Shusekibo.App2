@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:kyoumutechou/feature/awareness/provider/awareness_kizuki_provider.dart';
 import 'package:kyoumutechou/feature/common/provider/filter_provider.dart';
 import 'package:kyoumutechou/feature/common/widget/clip_gakunen.dart';
 import 'package:kyoumutechou/feature/common/widget/clip_shozoku.dart';
@@ -166,7 +167,10 @@ class FilterWidget extends ConsumerWidget {
               ),
             ],
 
-            if (isPeriod == true)...[
+            if (isPeriod == true
+                && menuId == Menu.awareness
+                && ref.read(awarenessTabIndexProvider) != 0
+            )...[
               MySpacing.height(16),
               MyText.bodyMedium('期間'),
               MySpacing.height(8),

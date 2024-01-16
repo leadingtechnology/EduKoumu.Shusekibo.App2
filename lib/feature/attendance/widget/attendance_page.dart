@@ -20,34 +20,35 @@ class AttendancePage extends ConsumerWidget {
   AttendancePage({super.key});
 
 // draw key
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> _attendanceKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final pageType = ref.watch(attendancePageTypeProvider);
-    final isEditable = ref.watch(isTokobiProvider);
+    //final isEditable = ref.watch(isTokobiProvider);
+    final buttonEnable = ref.watch(buttonEnableProvider);
 
     return CommonPage(
-      scaffoldKey: _scaffoldKey,
+      scaffoldKey: _attendanceKey,
       contentWidget: pageType == PageType.seat
-          ? const Gridview() // 座位图组件
-          : const ListView(), // 列表组件
+          ? const Gridview() 
+          : const ListView(), 
       onShift: () {
         ref.read(attendancePageTypeProvider.notifier).state =
-            pageType == PageType.seat
-                ? PageType.list
-                : PageType.seat;
+            pageType == PageType.seat ? PageType.list : PageType.seat;
       },
-      setBlank: !isEditable ? null :  () {
-        ref.read(attendanceMeiboListProvider.notifier).updateByBlank();
+      setBlank: () async {
+        await ref.read(attendanceMeiboListProvider.notifier).updateByBlank();
         attendanceGlobalKey.currentState?.setBlank();
       },
       saveWidget: SaveButtonWidget(
         label: '保存',
-        onPressed: !isEditable ? null : () {
-          ref.read(attendanceMeiboListProvider.notifier).save();
-          ToastHelper.showToast(context, '　保存しました　');
-        },
+        onPressed: !buttonEnable
+            ? null
+            : () {
+                ref.read(attendanceMeiboListProvider.notifier).save();
+                ToastHelper.showToast(context, '　保存しました　');
+              },
       ),
       buttomName: pageType == PageType.seat ? '一覧' : 'テーブル',
       buttonIcon: pageType == PageType.seat ? Icons.list : Icons.grid_view,

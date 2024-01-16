@@ -17,7 +17,7 @@ class NoDataWidget extends StatelessWidget {
           borderRadius: BorderRadius.circular(10), 
         ),
         child: Text(
-          message ?? '該当データありません',
+          message ?? '該当データがありません',
           style: const TextStyle(
             fontSize: 16,
             color: Colors.white,

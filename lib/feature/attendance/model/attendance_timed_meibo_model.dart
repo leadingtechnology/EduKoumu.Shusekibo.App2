@@ -28,12 +28,15 @@ abstract class AttendanceTimedMeiboModel with _$AttendanceTimedMeiboModel {
     @JsonKey(name: 'Name', disallowNullValue: false) @HiveField(6) String? name,
     @JsonKey(name: 'GenderCode', disallowNullValue: false) @HiveField(7) String? genderCode,
     @JsonKey(name: 'PhotoUrl', disallowNullValue: false) @HiveField(8) String? photoUrl,
-    @JsonKey(name: 'JokyoList', disallowNullValue: false) @HiveField(9) List<AttendanceTimedStatusModel>? jokyoList,
+    @JsonKey(name: 'TenshutsuDateKyokouDate', disallowNullValue: false) @HiveField(9) DateTime? tenshutsuDateKyokouDate,
+    @JsonKey(name: 'TenshutsuYoteiFlg', disallowNullValue: false) @HiveField(10) bool? tenshutsuYoteiFlg,
+    @JsonKey(name: 'TenshutsuSumiFlg',  disallowNullValue: false) @HiveField(11) bool? tenshutsuSumiFlg,
+    @JsonKey(name: 'JokyoList', disallowNullValue: false) @HiveField(12) List<AttendanceTimedStatusModel>? jokyoList,
   }) = _AttendanceTimedMeiboModel;
 
   @override
   String toString() {
-    return 'AttendanceTimedMeiboModel($studentKihonId, $studentSeq, $gakunen, $className, $studentNumber, $photoImageFlg, $name, $genderCode, $photoUrl, $jokyoList)';
+    return 'AttendanceTimedMeiboModel($studentKihonId, $studentSeq, $gakunen, $className, $studentNumber, $photoImageFlg, $name, $genderCode, $photoUrl, $tenshutsuDateKyokouDate, $tenshutsuYoteiFlg, $tenshutsuSumiFlg, $jokyoList)';
   }
   factory AttendanceTimedMeiboModel.fromJson(Map<String, dynamic> json) => _$AttendanceTimedMeiboModelFromJson(json);
 }

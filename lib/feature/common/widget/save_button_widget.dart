@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:kyoumutechou/feature/common/provider/common_provider.dart';
+import 'package:kyoumutechou/feature/common/provider/tokobis_provider.dart';
 
-class SaveButtonWidget extends StatefulWidget {
+class SaveButtonWidget extends ConsumerStatefulWidget  {
 
   const SaveButtonWidget({
     required this.label, 
@@ -14,18 +17,21 @@ class SaveButtonWidget extends StatefulWidget {
   final Duration debounceDuration;
 
   @override
-  State<SaveButtonWidget> createState() => _SaveButtonWidgetState();
+  ConsumerState<SaveButtonWidget> createState() => _SaveButtonWidgetState();
 }
 
-class _SaveButtonWidgetState extends State<SaveButtonWidget> {
+class _SaveButtonWidgetState extends ConsumerState<SaveButtonWidget> {
   bool _isButtonDisabled = false;
   
   @override
   Widget build(BuildContext context) {
+    final buttonEnable = ref.watch(buttonEnableProvider);
+    final isTokobi = ref.watch(isTokobiProvider);
+
     return SizedBox(
       width: 130,
       child: ElevatedButton.icon(
-        onPressed: _isButtonDisabled
+        onPressed: _isButtonDisabled || !buttonEnable || !isTokobi
             ? null
             : () async {
                 setState(() => _isButtonDisabled = true);

@@ -28,11 +28,19 @@ class ClipShozoku extends ConsumerWidget {
     
     // 団体リストの取得
     final shozokuList = keys.map(box.get).toList();
-    shozokuList.sort((a, b) => a!.hyojijun!.compareTo(b!.hyojijun!));
-
     if (keys.isEmpty || shozokuList.isEmpty) {
       return const SizedBox();
     }
+
+    shozokuList.sort((a, b) {
+      final nameCompare = '${a?.classCode}'.compareTo('${b?.classCode}');
+      if (nameCompare != 0) return nameCompare;
+
+      final hyojijunSort = a?.hyojijun ?? 0.compareTo(b?.hyojijun ?? 0);
+      if (hyojijunSort != 0) return hyojijunSort;
+
+      return a?.id ?? 0.compareTo(b?.id ?? 0);
+    });
 
     return Wrap(
       spacing: 10,

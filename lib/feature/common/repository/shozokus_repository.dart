@@ -52,7 +52,10 @@ class ShozokusRepository implements ShozokusRepositoryProtocol {
         // 1) get the list
         final shozokus = shozokuListFromJson(value as List<dynamic>);
         // ignore: cascade_invocations
-        shozokus.sort((a, b) => a.id??0.compareTo(b.id??0));
+        //shozokus.sort((a, b) => a.id??0.compareTo(b.id??0));
+
+        // 学びクラスを除く
+        shozokus.removeWhere((e) => e.classKbn == '40');
 
         // 2) change to map and save the box
         final shozokuMap = Map.fromIterables(

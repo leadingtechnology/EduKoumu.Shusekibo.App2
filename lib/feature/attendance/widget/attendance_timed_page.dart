@@ -8,7 +8,6 @@ import 'package:kyoumutechou/feature/attendance/widget/attendance_timed_list_wid
 import 'package:kyoumutechou/feature/attendance/widget/attendance_timeed_seat_widget.dart';
 import 'package:kyoumutechou/feature/boxes.dart';
 import 'package:kyoumutechou/feature/common/provider/common_provider.dart';
-import 'package:kyoumutechou/feature/common/provider/tokobis_provider.dart';
 import 'package:kyoumutechou/feature/common/widget/common_page.dart';
 import 'package:kyoumutechou/feature/common/widget/no_data_widget.dart';
 import 'package:kyoumutechou/feature/common/widget/save_button_widget.dart';
@@ -19,39 +18,37 @@ import 'package:kyoumutechou/shared/http/app_exception.dart';
 class AttendanceTimedPage extends ConsumerWidget {
   AttendanceTimedPage({super.key});
 
-// draw key
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  // draw key
+  final GlobalKey<ScaffoldState> _timedKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final pageType = ref.watch(attendanceTimedPageTypeProvider);
-    final isEditable = ref.watch(isTokobiProvider);
+    final buttonEnable = ref.watch(buttonEnableProvider);
+    
 
     return CommonPage(
-      scaffoldKey: _scaffoldKey,
+      scaffoldKey: _timedKey,
       contentWidget: pageType == PageType.seat
           ? const SeatsWidget() // 座位图组件
-          : const AttendanceTimedListWidget(), // 列表组件
+          : const ListView(), // 列表组件
       onShift: () {
         ref.read(attendanceTimedPageTypeProvider.notifier).state =
             pageType == PageType.seat ? PageType.list : PageType.seat;
       },
-      setBlank: !isEditable ? null :  () {
-        ref.read(attendanceTimedMeiboListProvider.notifier).updateByBlank();
+      setBlank: () async {
+        await ref.read(attendanceTimedMeiboListProvider.notifier).updateByBlank();
         attendanceTimedGlobalKey.currentState?.setBlank();
       },
-      saveWidget: !isEditable ? 
-          const SaveButtonWidget(
-            label: '保存',
-          ) : 
-          SaveButtonWidget(
-            label: '保存',
-            onPressed: !isEditable ? null : (){
-              ref.read(attendanceTimedMeiboListProvider.notifier).save();
-              ToastHelper.showToast(context, '　保存しました　');
-            },
-          )
-          ,
+      saveWidget: SaveButtonWidget(
+        label: '保存',
+        onPressed: !buttonEnable
+            ? null
+            : () {
+                ref.read(attendanceTimedMeiboListProvider.notifier).save();
+                ToastHelper.showToast(context, '　保存しました　');
+              },
+      ),
       buttomName: pageType == PageType.seat ? '一覧' : 'テーブル',
       buttonIcon: pageType == PageType.seat ? Icons.list : Icons.grid_view,
     );
@@ -73,7 +70,7 @@ class SeatsWidget extends ConsumerWidget {
       error: (AppException e) {return Text(e.toString());},
       loaded: () {
         return ValueListenableBuilder(
-            valueListenable:Boxes.getAttendanceTimedMeiboModelBox().listenable(),
+            valueListenable:Boxes.getAttendanceTimedMeibo().listenable(),
             builder: (context, Box<AttendanceTimedMeiboModel> box, _) {
               final meibos = box.values.toList();
 
@@ -102,8 +99,8 @@ class SeatsWidget extends ConsumerWidget {
   }
 }
 
-class AttendanceTimedListView extends ConsumerWidget {
-  const AttendanceTimedListView({super.key});
+class ListView extends ConsumerWidget {
+  const ListView({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

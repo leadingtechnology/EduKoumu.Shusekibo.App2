@@ -10,17 +10,21 @@ final shozokuProvider = StateProvider<ShozokuModel>(
   (ref) => const ShozokuModel(),
 );
 
-final shozokusProvider = 
-StateNotifierProvider<ShozokuNotifier, ApiState>((ref) {
+final shozokusProvider =
+    StateNotifierProvider<ShozokuNotifier, ApiState>((ref) {
   //final gakunen = ref.watch(gakunenProvider);
-  
+
   //return ShozokuNotifier(ref: ref, gakunenCode: gakunen.code??'',);
-  return ShozokuNotifier(ref: ref, gakunenCode: '',);
+  return ShozokuNotifier(
+    ref: ref,
+    gakunenCode: '',
+  );
 });
 
 class ShozokuNotifier extends StateNotifier<ApiState> {
   ShozokuNotifier({
-    required this.gakunenCode, required this.ref,
+    required this.gakunenCode,
+    required this.ref,
   }) : super(const ApiState.loading()) {
     _fetch(gakunenCode);
   }
@@ -36,7 +40,7 @@ class ShozokuNotifier extends StateNotifier<ApiState> {
   Future<void> _fetch(String gakunenCode) async {
     // final gakunen = ref.read(gakunenProvider);
     // final shozoku = setShozokuValue(ref, gakunen);
-    // ref.read(shozokuProvider.notifier).state = shozoku; 
+    // ref.read(shozokuProvider.notifier).state = shozoku;
 
     state = const ApiState.loaded();
   }
@@ -63,11 +67,23 @@ class ShozokuNotifier extends StateNotifier<ApiState> {
           .where((e) => e.toString().startsWith('$dantaiId-$gakunenCode-'))
           .toList();
 
-      // ignore: cascade_invocations
-      keys.sort((a, b) => a.toString().compareTo(b.toString()));
-
       // 取得したKeysにより、shozokuListを取得する
       final shozokuList = keys.map(box.get).toList();
+
+      if (keys.isEmpty || shozokuList.isEmpty) {
+        return const ShozokuModel();
+      }
+
+      shozokuList.sort((a, b) {
+        final nameCompare = '${a?.classCode}'.compareTo('${b?.classCode}');
+        if (nameCompare != 0) return nameCompare;
+
+        final hyojijunSort = a?.hyojijun ?? 0.compareTo(b?.hyojijun ?? 0);
+        if (hyojijunSort != 0) return hyojijunSort;
+
+        return a?.id ?? 0.compareTo(b?.id ?? 0);
+      });
+      
 
       try {
         if (shozokuId != null && shozokuId > 0) {
@@ -86,6 +102,4 @@ class ShozokuNotifier extends StateNotifier<ApiState> {
 
     return shozoku;
   }
-
 }
-

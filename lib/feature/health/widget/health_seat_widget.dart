@@ -15,12 +15,12 @@ import 'package:kyoumutechou/helpers/widgets/my_spacing.dart';
 class HealthSeatWidget extends ConsumerWidget {
   HealthSeatWidget({
     required this.index, 
-    required this.healthMeibo, 
+    required this.meibo, 
     super.key,
   });
 
   final int index;
-  final HealthMeiboModel healthMeibo;
+  final HealthMeiboModel meibo;
   final String _baseUrl = dotenv.env['BASE_URL']!;
 
   @override
@@ -28,36 +28,52 @@ class HealthSeatWidget extends ConsumerWidget {
     final stamp = ref.watch(healthStampProvider);
     final reason1 = ref.watch(healthReason1Provider);
     final reason2 = ref.watch(healthReason2Provider);
-    final isEditable = ref.watch(isTokobiProvider);
+    var isEditable = ref.watch(isTokobiProvider);
 
-    Color color;
-    final url = '$_baseUrl${healthMeibo.photoUrl}';
+    Color bkColor, textColor;
+    final url = '$_baseUrl${meibo.photoUrl}';
     final accessToken = Hive.box<String>('shusekibo').get('token').toString();
 
     late HealthStatusModel jokyo;
     
-    if (healthMeibo.jokyoList != null && healthMeibo.jokyoList!.isNotEmpty){
-      jokyo = healthMeibo.jokyoList?.first ?? const HealthStatusModel();
+    if (meibo.jokyoList != null && meibo.jokyoList!.isNotEmpty){
+      jokyo = meibo.jokyoList?.first ?? const HealthStatusModel();
+      
+      // 保護される場合、編集不可にする
+      if (jokyo.isEditable == false) {
+        isEditable = false;
+      }
+
     }else{
       jokyo = const HealthStatusModel();
     }
     
+    // 登校日の判定
     if (isEditable){
       if (jokyo.jokyoCode == '' || jokyo.jokyoCode == null) {
-        color = Theme.of(context).colorScheme.errorContainer;
+        bkColor = Theme.of(context).colorScheme.errorContainer;
       } else if (jokyo.jokyoCode != '100') {
-        color = Theme.of(context).colorScheme.primaryContainer;
+        bkColor = Theme.of(context).colorScheme.primaryContainer;
       } else {
-        color = Colors.grey.withAlpha(50);
+        bkColor = Colors.grey.withAlpha(50);
       }
     }else{
-      color = const Color(0xFFDDDDDD);
+      bkColor = const Color(0xFFDDDDDD);
+    }
+
+    // 文字色の設定
+    textColor = Colors.black;
+    if (meibo.tenshutsuYoteiFlg! == true) {
+      textColor = Colors.blue;
+    }
+    if (meibo.tenshutsuSumiFlg! == true) {
+      textColor = Colors.grey;
     }
 
     return GestureDetector(
       onTap: !isEditable ? null : () async{
         await ref.read(healthMeiboListProvider.notifier).updateById(
-          healthMeibo, 
+          meibo, 
           stamp,
           reason1,
           reason2,
@@ -96,12 +112,15 @@ class HealthSeatWidget extends ConsumerWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         Text(
-                          healthMeibo.studentNumber ?? '',
+                          meibo.studentNumber ?? '',
                           style: const TextStyle(fontSize: 12),
                         ),
                         Text(
-                          '${healthMeibo.name}',
-                          style: const TextStyle(fontSize: 14),
+                          '${meibo.name}',
+                          style: TextStyle(
+                            color: textColor,
+                            fontSize: 14,
+                          ),
                         ),
                       ],
                     ),),
@@ -114,7 +133,7 @@ class HealthSeatWidget extends ConsumerWidget {
               Container(
                   height: 30,
                   decoration: BoxDecoration(
-                    color: color,
+                    color: bkColor,
                     borderRadius: const BorderRadius.only(
                       bottomLeft: Radius.circular(6),
                       bottomRight: Radius.circular(6),

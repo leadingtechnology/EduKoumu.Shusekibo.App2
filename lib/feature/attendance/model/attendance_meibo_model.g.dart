@@ -27,14 +27,16 @@ class AttendanceMeiboModelAdapter
       name: fields[6] as String?,
       genderCode: fields[7] as String?,
       photoUrl: fields[8] as String?,
-      jokyoList: (fields[9] as List?)?.cast<AttendanceStatusModel>(),
+      tenshutsuYoteiFlg: fields[9] as bool?,
+      tenshutsuSumiFlg: fields[10] as bool?,
+      jokyoList: (fields[11] as List?)?.cast<AttendanceStatusModel>(),
     );
   }
 
   @override
   void write(BinaryWriter writer, _$AttendanceMeiboModelImpl obj) {
     writer
-      ..writeByte(10)
+      ..writeByte(12)
       ..writeByte(0)
       ..write(obj.studentKihonId)
       ..writeByte(1)
@@ -54,6 +56,10 @@ class AttendanceMeiboModelAdapter
       ..writeByte(8)
       ..write(obj.photoUrl)
       ..writeByte(9)
+      ..write(obj.tenshutsuYoteiFlg)
+      ..writeByte(10)
+      ..write(obj.tenshutsuSumiFlg)
+      ..writeByte(11)
       ..write(obj.jokyoList);
   }
 
@@ -84,6 +90,8 @@ _$AttendanceMeiboModelImpl _$$AttendanceMeiboModelImplFromJson(
       name: json['Name'] as String?,
       genderCode: json['GenderCode'] as String?,
       photoUrl: json['PhotoUrl'] as String?,
+      tenshutsuYoteiFlg: json['TenshutsuYoteiFlg'] as bool?,
+      tenshutsuSumiFlg: json['TenshutsuSumiFlg'] as bool?,
       jokyoList: (json['JokyoList'] as List<dynamic>?)
           ?.map(
               (e) => AttendanceStatusModel.fromJson(e as Map<String, dynamic>))
@@ -102,5 +110,7 @@ Map<String, dynamic> _$$AttendanceMeiboModelImplToJson(
       'Name': instance.name,
       'GenderCode': instance.genderCode,
       'PhotoUrl': instance.photoUrl,
+      'TenshutsuYoteiFlg': instance.tenshutsuYoteiFlg,
+      'TenshutsuSumiFlg': instance.tenshutsuSumiFlg,
       'JokyoList': instance.jokyoList,
     };

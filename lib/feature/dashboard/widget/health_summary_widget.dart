@@ -24,12 +24,13 @@ class HealthSummary extends ConsumerWidget {
             String inputStates;
             Color? inputColor = Colors.pink[100];
 
-            if (e.doneKenkoKansatsuFlg ?? false) {
-              inputStates = '　済　';
-              inputColor = Colors.greenAccent[100];
-            } else {
-              inputStates = '　未　';
-              inputColor = Colors.pink[100];
+            inputStates = '　未　';
+            inputColor = Colors.pink[100];
+            if (e.doneKenkoKansatsuFlg ?? false  ) {
+              if (e.zaiseki! > 0){
+                  inputStates = '　済　';
+                  inputColor = Colors.greenAccent[100];
+              }
             }
 
             return Column(

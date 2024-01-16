@@ -23,12 +23,13 @@ class AttendanceSummaryWidget extends ConsumerWidget {
             String inputStates;
             var inputColor = Colors.pink[100];
 
-            if (e.doneAttendanceFlg ?? false) {
-              inputStates = '　済　';
-              inputColor = Colors.greenAccent[100];
-            } else {
               inputStates = '　未　';
               inputColor = Colors.pink[100];
+            if (e.doneAttendanceFlg ?? false) {
+              if(e.zaiseki! > 0){
+                  inputStates = '　済　';
+                  inputColor = Colors.greenAccent[100];
+              }
             }
 
             return Column(

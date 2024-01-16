@@ -61,13 +61,13 @@ class GakunenNotifier extends StateNotifier<ApiState> {
           )
           .toList();
 
-      // ignore: cascade_invocations
-      keys.sort(
-        (a, b) => a.toString().compareTo(b.toString()),
-      );
-
       // 取得したKeysにより、gakunenListを取得する
       final gakunenList = keys.map(box.get).toList();
+
+      //　ソートする
+      gakunenList.sort(
+        (a, b) => '${a?.kateiKbn}-${a?.gakunenCode}'.compareTo('${b?.kateiKbn}-${b?.gakunenCode}'),
+      );
 
       try {
         if (gakunenCode != null && gakunenCode.isNotEmpty) {

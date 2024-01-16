@@ -4,6 +4,8 @@ import 'package:kyoumutechou/feature/dashboard/widget/attendance_summary_widget.
 import 'package:kyoumutechou/feature/dashboard/widget/health_summary_widget.dart';
 import 'package:kyoumutechou/helpers/theme/app_theme.dart';
 import 'package:kyoumutechou/helpers/widgets/my_card.dart';
+import 'package:kyoumutechou/helpers/widgets/my_spacing.dart';
+import 'package:kyoumutechou/shared/util/date_util.dart';
 
 // ダッシュボードwidget
 class DashboardPage extends ConsumerStatefulWidget {
@@ -43,8 +45,20 @@ class DashboardPageState extends ConsumerState<DashboardPage>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(50),
+        preferredSize: const Size.fromHeight(80),
         child: AppBar(
+          title: Column(
+            children: [
+              MySpacing.height(10),
+              Text(
+                '${DateUtil.getJpMonthDayWeek(DateTime.now())}の出欠人数等（クラス別）',
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold, 
+                  fontSize: 16,
+                ),
+              ),
+            ],
+          ),
           bottom: TabBar(
             controller: tabController,
             isScrollable: true,

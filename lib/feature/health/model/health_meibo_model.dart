@@ -30,12 +30,14 @@ abstract class HealthMeiboModel with _$HealthMeiboModel {
     @JsonKey(name: 'Name', disallowNullValue: false) @HiveField(6) String? name,
     @JsonKey(name: 'GenderCode', disallowNullValue: false) @HiveField(7) String? genderCode,
     @JsonKey(name: 'PhotoUrl', disallowNullValue: false) @HiveField(8) String? photoUrl,
-    @JsonKey(name: 'JokyoList', disallowNullValue: false) @HiveField(9) List<HealthStatusModel>? jokyoList,
+    @JsonKey(name: 'TenshutsuYoteiFlg', disallowNullValue: false) @HiveField(9) bool? tenshutsuYoteiFlg,
+    @JsonKey(name: 'TenshutsuSumiFlg',  disallowNullValue: false) @HiveField(10) bool? tenshutsuSumiFlg,
+    @JsonKey(name: 'JokyoList', disallowNullValue: false) @HiveField(11) List<HealthStatusModel>? jokyoList,
   }) = _HealthMeiboModel;
 
   @override
   String toString() {
-    return 'HealthMeiboModel($studentKihonId, $studentSeq, $gakunen, $className, $studentNumber, $photoImageFlg, $name, $genderCode, $photoUrl, $jokyoList)';
+    return 'HealthMeiboModel($studentKihonId, $studentSeq, $gakunen, $className, $studentNumber, $photoImageFlg, $name, $genderCode, $photoUrl, $tenshutsuYoteiFlg, $tenshutsuSumiFlg, $jokyoList)';
   }
   factory HealthMeiboModel.fromJson(Map<String, dynamic> json) => _$HealthMeiboModelFromJson(json);
 }

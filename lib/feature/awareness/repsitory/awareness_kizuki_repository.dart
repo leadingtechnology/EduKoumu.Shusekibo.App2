@@ -53,6 +53,7 @@ class AwarenessKizukiRepository implements AwarenessKizukiRepositoryProtocol {
 }
    ''';
 
+    await Boxes.getAwarenessKizukiModelBox().clear();
     final response = await _api.post2('api/kizuki/search', json);
 
     response.when(
@@ -67,9 +68,14 @@ class AwarenessKizukiRepository implements AwarenessKizukiRepositoryProtocol {
       try {
         // 1) change response to list
         final kizukiValue = value['Value'];
-        final kizukiList = awarenessKizukiListFromJson(
+        var kizukiList = awarenessKizukiListFromJson(
           kizukiValue as List<dynamic>,
         );
+
+        // 所属IDのデータのみを抽出する
+        kizukiList = kizukiList
+            .where((e) => e.shozokuId == filter.classId)
+            .toList();
 
         // 2) save to hive with key
         final _kizukiMap = Map.fromIterables(

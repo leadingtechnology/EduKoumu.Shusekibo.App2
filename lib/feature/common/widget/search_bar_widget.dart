@@ -44,8 +44,9 @@ class SearchBarWidget extends ConsumerWidget {
                         _scaffoldKey.currentState?.openEndDrawer();
                       },
                       child: Container(
-                        constraints: const BoxConstraints(minWidth: 60),
+                        constraints: const BoxConstraints(minWidth: 50),
                         padding: MySpacing.x(4),
+                        alignment: Alignment.center,
                         decoration: BoxDecoration(
                           border: Border.all(),
                           borderRadius: BorderRadius.circular(3),
@@ -60,7 +61,7 @@ class SearchBarWidget extends ConsumerWidget {
                   ],
                 ),
                 //
-                MySpacing.width(60), // 间隔
+                MySpacing.width(30), // 间隔
                 // 1.2 クラスとクラスの表示、チェックボックス
                 Row(
                   children: [
@@ -74,8 +75,9 @@ class SearchBarWidget extends ConsumerWidget {
                         _scaffoldKey.currentState?.openEndDrawer();
                       },
                       child: Container(
-                        constraints: const BoxConstraints(minWidth: 60),
+                        constraints: const BoxConstraints(minWidth: 50),
                         padding: MySpacing.x(4),
+                        alignment: Alignment.center,
                         decoration: BoxDecoration(
                           border: Border.all(),
                           borderRadius: BorderRadius.circular(3),
@@ -98,7 +100,7 @@ class SearchBarWidget extends ConsumerWidget {
                     ),
                   ],
                 ),
-                MySpacing.width(60),
+                MySpacing.width(30),
 
                 if (
                     menuId == Menu.attendance ||
@@ -118,8 +120,9 @@ class SearchBarWidget extends ConsumerWidget {
                           _scaffoldKey.currentState?.openEndDrawer();
                         },
                         child: Container(
-                          constraints: const BoxConstraints(minWidth: 60),
+                          constraints: const BoxConstraints(minWidth: 100),
                           padding: MySpacing.x(4),
+                          alignment: Alignment.center,
                           decoration: BoxDecoration(
                             border: Border.all(),
                             borderRadius: BorderRadius.circular(3),
@@ -136,7 +139,7 @@ class SearchBarWidget extends ConsumerWidget {
                   ),
 
                   if (menuId == Menu.attendanceTimed)...[
-                    MySpacing.width(60),
+                    MySpacing.width(30),
                     // 1.5 時限
                     Row(
                       children:[
@@ -152,6 +155,7 @@ class SearchBarWidget extends ConsumerWidget {
                           child: Container(
                             width: 45,
                             padding: MySpacing.x(4),
+                            alignment: Alignment.center,
                             decoration: BoxDecoration(
                               border: Border.all(),
                               borderRadius: BorderRadius.circular(3),

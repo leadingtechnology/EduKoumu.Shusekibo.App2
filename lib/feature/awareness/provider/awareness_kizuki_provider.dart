@@ -24,6 +24,7 @@ final awarenessKizukiProvider = StateProvider<AwarenessKizukiModel>(
 
 final awarenessCountProvider = StateProvider<int>((ref) => 0);
 final awarenessListSearchProvider = StateProvider<int>((ref) => 0);
+final awarenessTabIndexProvider = StateProvider<int>((ref) => 0);
 
 class AwarenessKizukiListProvider extends StateNotifier<ApiState> {
   AwarenessKizukiListProvider(this.ref,) : super(const ApiState.loading()) {

@@ -13,7 +13,7 @@ import 'package:kyoumutechou/feature/awareness/weidget/dialog/awareness_template
 import 'package:kyoumutechou/feature/awareness/weidget/dialog/photo_widget.dart';
 import 'package:kyoumutechou/feature/awareness/weidget/dialog/seito_widget.dart';
 import 'package:kyoumutechou/feature/boxes.dart';
-import 'package:kyoumutechou/feature/common/widget/save_button_widget.dart';
+import 'package:kyoumutechou/feature/common/widget/save2_button_widget.dart';
 import 'package:kyoumutechou/feature/common/widget/toast_helper.dart';
 import 'package:kyoumutechou/helpers/theme/app_theme.dart';
 import 'package:kyoumutechou/helpers/widgets/my_spacing.dart';
@@ -165,7 +165,7 @@ class AwarenessRegistDialog extends ConsumerWidget {
                       },
                     ),
                     Expanded(child: Container()),
-                    SaveButtonWidget(
+                    Save2ButtonWidget(
                       label: '保存',
                       onPressed: () async {
                         if (_formKey.currentState!.validate() == false) {

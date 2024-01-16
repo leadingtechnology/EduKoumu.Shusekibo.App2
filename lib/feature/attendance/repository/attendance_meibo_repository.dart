@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kyoumutechou/feature/attendance/model/attendance_meibo_model.dart';
 import 'package:kyoumutechou/feature/boxes.dart';
 import 'package:kyoumutechou/feature/common/model/filter_model.dart';
+import 'package:kyoumutechou/feature/common/provider/common_provider.dart';
 import 'package:kyoumutechou/feature/common/state/api_state.dart';
 import 'package:kyoumutechou/shared/http/api_provider.dart';
 import 'package:kyoumutechou/shared/http/api_response.dart';
@@ -27,6 +28,9 @@ class AttendanceMeiboRepository implements AttendanceRepositoryProtocol {
 
   @override
   Future<ApiState> fetch(FilterModel filter) async {
+
+    final box = Boxes.getAttendanceMeibo();
+    await box.clear();
 
     final strDate = DateUtil.getStringDate(filter.targetDate ?? DateTime.now());
 
@@ -52,12 +56,19 @@ class AttendanceMeiboRepository implements AttendanceRepositoryProtocol {
           value as List<dynamic>,
         );
 
+        // set save button enable
+        if (attendanceMeiboList.isNotEmpty) {
+          ref.read(buttonEnableProvider.notifier).state = true;
+        } else {
+          ref.read(buttonEnableProvider.notifier).state = false;
+        }
+
+
         // 2) change list to map
         final attendanceMeiboMap = attendanceMeiboList.asMap();
 
         // 3) save to hive with key
-        await Boxes.getAttendanceMeibo().clear();
-        await Boxes.getAttendanceMeibo().putAll(attendanceMeiboMap);
+        await box.putAll(attendanceMeiboMap);
 
         return const ApiState.loaded();
       } catch (e) {

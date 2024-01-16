@@ -120,7 +120,7 @@ class AwarenessListView extends ConsumerWidget {
                     mainAxisAlignment: MainAxisAlignment.end,
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      Text('${kizuki[index].tourokusyaName}'),
+                      Text('${kizuki[index].tourokusyaId == 0 ? 'システム管理者' :  kizuki[index].tourokusyaName}'),
                       MySpacing.width(10),
                       const SizedBox(
                         width: 10,
