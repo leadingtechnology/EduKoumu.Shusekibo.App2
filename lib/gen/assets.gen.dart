@@ -41,6 +41,10 @@ class $AssetsIconsGen {
   /// File path: assets/icons/koumu6.png
   AssetGenImage get koumu6 => const AssetGenImage('assets/icons/koumu6.png');
 
+  /// File path: assets/icons/notfound.png
+  AssetGenImage get notfound =>
+      const AssetGenImage('assets/icons/notfound.png');
+
   /// File path: assets/icons/seito.png
   AssetGenImage get seito => const AssetGenImage('assets/icons/seito.png');
 
@@ -54,8 +58,17 @@ class $AssetsIconsGen {
   AssetGenImage get seito3 => const AssetGenImage('assets/icons/seito3.png');
 
   /// List of all assets
-  List<AssetGenImage> get values =>
-      [defaultPkgIcon, koumu, koumu5, koumu6, seito, seito1, seito2, seito3];
+  List<AssetGenImage> get values => [
+        defaultPkgIcon,
+        koumu,
+        koumu5,
+        koumu6,
+        notfound,
+        seito,
+        seito1,
+        seito2,
+        seito3
+      ];
 }
 
 class $AssetsImagesGen {

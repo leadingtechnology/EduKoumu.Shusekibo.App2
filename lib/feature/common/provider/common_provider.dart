@@ -6,3 +6,5 @@ enum PageType { seat, list }
 final buttonEnableProvider = StateProvider<bool>((ref) {
   return false; 
 });
+
+final isGenderProvider = StateProvider<bool>((ref) {return false;});

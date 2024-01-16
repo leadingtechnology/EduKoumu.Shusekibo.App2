@@ -9,7 +9,7 @@ import 'package:kyoumutechou/feature/awareness/provider/awareness_meibo_provider
 import 'package:kyoumutechou/feature/awareness/weidget/dialog/awareness_bunrui.dart';
 import 'package:kyoumutechou/feature/awareness/weidget/dialog/awareness_dialog_left_widget.dart';
 import 'package:kyoumutechou/feature/awareness/weidget/dialog/awareness_dialog_middle_widget.dart';
-import 'package:kyoumutechou/feature/awareness/weidget/dialog/awareness_template_search_student%20copy.dart';
+import 'package:kyoumutechou/feature/awareness/weidget/dialog/awareness_template_search_student.dart';
 import 'package:kyoumutechou/feature/awareness/weidget/dialog/photo_widget.dart';
 import 'package:kyoumutechou/feature/awareness/weidget/dialog/seito_widget.dart';
 import 'package:kyoumutechou/feature/boxes.dart';
@@ -64,14 +64,15 @@ class AwarenessRegistDialog extends ConsumerWidget {
               fontSize: 20,
             ),),
       
-            // 2.1 student name
+            // 2. body
             const Divider(color: Colors.grey),
             Container(
               padding: MySpacing.all(12),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // 2.1 student list
+
+                  // 2.1 生徒情報
                   Row(
                     children: [
                       Container(
@@ -92,6 +93,7 @@ class AwarenessRegistDialog extends ConsumerWidget {
                                         meibos.map((e) => SeitoWidget(
                                               studentName: e.studentName ?? '',
                                               studentId: e.studentId??0,
+                                              photoUrl: e.photoUrl ?? '',
                                             ),)
                                         .toList(),),
                               ),),),
@@ -101,6 +103,7 @@ class AwarenessRegistDialog extends ConsumerWidget {
                           child: SeitoWidget(
                             studentName: kizuki.studentName??'',
                             studentId: kizuki.studentId ?? 0,
+                            photoUrl: kizuki.photoUrl ?? '',
                           ),
                         ),),
                       
@@ -112,7 +115,7 @@ class AwarenessRegistDialog extends ConsumerWidget {
                     ],
                   ),
       
-                  // 2.2 student list
+                  // 2.2 分類 
                   Row(children: [
                     Container(
                       width: 88,
@@ -154,8 +157,9 @@ class AwarenessRegistDialog extends ConsumerWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    OutlinedButton(
-                      child: const Text(
+                    ElevatedButton.icon(
+                      icon: const Icon(Icons.close),
+                      label: const Text(
                         '閉じる',
                         style: TextStyle(color: Colors.black),
                       ),
@@ -163,6 +167,13 @@ class AwarenessRegistDialog extends ConsumerWidget {
                         ref.read(awarenessStudentAddProvider.notifier).state=[];
                         Navigator.of(context).pop();
                       },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          //side: const BorderSide(),
+                        ),
+                      ),
                     ),
                     Expanded(child: Container()),
                     Save2ButtonWidget(

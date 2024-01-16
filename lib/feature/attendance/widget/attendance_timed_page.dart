@@ -9,7 +9,6 @@ import 'package:kyoumutechou/feature/attendance/widget/attendance_timeed_seat_wi
 import 'package:kyoumutechou/feature/boxes.dart';
 import 'package:kyoumutechou/feature/common/provider/common_provider.dart';
 import 'package:kyoumutechou/feature/common/widget/common_page.dart';
-import 'package:kyoumutechou/feature/common/widget/no_data_widget.dart';
 import 'package:kyoumutechou/feature/common/widget/save_button_widget.dart';
 import 'package:kyoumutechou/feature/common/widget/toast_helper.dart';
 import 'package:kyoumutechou/shared/http/app_exception.dart';
@@ -56,11 +55,50 @@ class AttendanceTimedPage extends ConsumerWidget {
 }
 
 // 出欠（時限）テーブル
-class SeatsWidget extends ConsumerWidget {
+class SeatsWidget extends ConsumerStatefulWidget {
   const SeatsWidget({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<SeatsWidget> createState() => _SeatsWidgetState();
+}
+
+class _SeatsWidgetState extends ConsumerState<SeatsWidget> {
+
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final list = Boxes.getAttendanceTimedMeibo().values.toList();
+      if (list.isEmpty) {
+        ToastHelper.showToast(context, '　該当データがありません　');
+      }
+      final isHogo = list.where((e) {
+        try {
+          final jokyo = e.jokyoList!.first;
+          if (jokyo.isEditable == false) {
+            return true;
+          } else {
+            return false;
+          }
+        } catch (ex) {
+          return false;
+        }
+      }).toList();
+
+      if (isHogo.isNotEmpty && isHogo.length == list.length) {
+        ToastHelper.showToast(context, '　既に保護されているため、編集・保存することができません。　');
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final state = ref.watch(attendanceTimedMeiboListProvider);
 
     return state.when(
@@ -75,7 +113,7 @@ class SeatsWidget extends ConsumerWidget {
               final meibos = box.values.toList();
 
               if (meibos.isEmpty) {
-                return const NoDataWidget();
+                return Container();
               }
 
               return GridView.builder(

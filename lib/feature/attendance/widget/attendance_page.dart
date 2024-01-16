@@ -8,9 +8,7 @@ import 'package:kyoumutechou/feature/attendance/widget/attendance_list_widget.da
 import 'package:kyoumutechou/feature/attendance/widget/attendance_seat_widget.dart';
 import 'package:kyoumutechou/feature/boxes.dart';
 import 'package:kyoumutechou/feature/common/provider/common_provider.dart';
-import 'package:kyoumutechou/feature/common/provider/tokobis_provider.dart';
 import 'package:kyoumutechou/feature/common/widget/common_page.dart';
-import 'package:kyoumutechou/feature/common/widget/no_data_widget.dart';
 import 'package:kyoumutechou/feature/common/widget/save_button_widget.dart';
 import 'package:kyoumutechou/feature/common/widget/toast_helper.dart';
 import 'package:kyoumutechou/shared/http/app_exception.dart';
@@ -57,11 +55,50 @@ class AttendancePage extends ConsumerWidget {
 }
 
 // 出欠（日）テーブル
-class Gridview extends ConsumerWidget {
+class Gridview extends ConsumerStatefulWidget  {
   const Gridview({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<Gridview> createState() => _GridviewState();
+}
+
+class _GridviewState extends ConsumerState<Gridview> {
+
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final list = Boxes.getAttendanceMeibo().values.toList();
+      if (list.isEmpty) {
+        ToastHelper.showToast(context, '　該当データがありません　');
+      }
+      final isHogo = list.where((e) {
+        try {
+          final jokyo = e.jokyoList!.first;
+          if (jokyo.isEditable == false) {
+            return true;
+          } else {
+            return false;
+          }
+        } catch (ex) {
+          return false;
+        }
+      }).toList();
+
+      if (isHogo.isNotEmpty && isHogo.length == list.length) {
+        ToastHelper.showToast(context, '　既に保護されているため、編集・保存することができません。　');
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final state = ref.watch(attendanceMeiboListProvider);
 
     return state.when(
@@ -76,7 +113,7 @@ class Gridview extends ConsumerWidget {
               final meibos = box.values.toList();
 
               if (meibos.isEmpty) {
-                return const NoDataWidget();
+                return Container();
               }
 
               return GridView.builder(

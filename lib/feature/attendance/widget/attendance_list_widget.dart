@@ -10,7 +10,7 @@ import 'package:kyoumutechou/feature/attendance/provider/attendance_stamp_provid
 import 'package:kyoumutechou/feature/boxes.dart';
 import 'package:kyoumutechou/feature/common/provider/filter_provider.dart';
 import 'package:kyoumutechou/feature/common/provider/tokobis_provider.dart';
-import 'package:kyoumutechou/feature/common/widget/no_data_widget.dart';
+import 'package:kyoumutechou/feature/common/widget/toast_helper.dart';
 import 'package:kyoumutechou/shared/http/app_exception.dart';
 import 'package:kyoumutechou/shared/util/date_util.dart';
 import 'package:pluto_grid/pluto_grid.dart';
@@ -278,6 +278,30 @@ class _AttendanceListWidgetState extends ConsumerState<AttendanceListWidget> {
   @override
   void initState() {
     super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final list = Boxes.getAttendanceMeibo().values.toList();
+      if (list.isEmpty) {
+        ToastHelper.showToast(context, '　該当データがありません　');
+      }
+      final isHogo = list.where((e) {
+        try {
+          final jokyo = e.jokyoList!.first;
+          if (jokyo.isEditable == false) {
+            return true;
+          } else {
+            return false;
+          }
+        } catch (ex) {
+          return false;
+        }
+      }).toList();
+
+      if (isHogo.isNotEmpty && isHogo.length == list.length) {
+        ToastHelper.showToast(context, '　既に保護されているため、編集・保存することができません。　');
+      }
+    });
+
   }
 
   Future<void> setReason(PlutoRow row) async {
@@ -415,7 +439,7 @@ class _AttendanceListWidgetState extends ConsumerState<AttendanceListWidget> {
 
     final list = Boxes.getAttendanceMeibo().values.toList();
     if (list.isEmpty) {
-      return const NoDataWidget();
+      return Container();
     }
 
     return PlutoGrid(

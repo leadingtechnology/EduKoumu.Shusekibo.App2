@@ -11,7 +11,7 @@ import 'package:kyoumutechou/helpers/widgets/my_spacing.dart';
 import 'package:kyoumutechou/shared/http/app_exception.dart';
 
 class AwarenessTemplateSearchStudent extends ConsumerWidget {
-  AwarenessTemplateSearchStudent({Key? key}) : super(key: key);
+  AwarenessTemplateSearchStudent({super.key});
 
   final _multiKey = GlobalKey<DropdownSearchState<AwarenessMeiboModel>>();
   
@@ -21,20 +21,19 @@ class AwarenessTemplateSearchStudent extends ConsumerWidget {
 
     return state.when(
       loading: () { return Container(); },
-      error: (AppException e){ return Container(child: Text('${e.toString()}'),); },
+      error: (AppException e){ return Text(e.toString()); },
       loaded: (){
         return ValueListenableBuilder(
           valueListenable: Boxes.getAwarenessMeiboBox().listenable(), 
           builder: (context, Box<AwarenessMeiboModel> box, _){
-            final List<AwarenessMeiboModel> meibos = box.values.toList();
+            final meibos = box.values.toList();
 
             return SizedBox(
               width: 300,  
               child: DropdownSearch<AwarenessMeiboModel>.multiSelection(
                 key: _multiKey,
                 onChanged:(List<AwarenessMeiboModel> meibos) async{
-                  List<int> ids = meibos.map((e) => e.studentId??0).toList();
-                  print('$ids');
+                  final ids = meibos.map((e) => e.studentId??0).toList();
                   ref.read(awarenessStudentAddProvider.notifier).state = ids;
                 },
                 autoValidateMode: AutovalidateMode.always,
@@ -51,9 +50,10 @@ class AwarenessTemplateSearchStudent extends ConsumerWidget {
                           SeitoWidget(
                             studentName: item.studentName??'',
                             studentId: item.studentId??0,
+                            photoUrl: item.photoUrl ?? '',
                           ),
                         ],),
-                        new Divider(color: Colors.black12,),
+                        const Divider(color: Colors.black12,),
                     ],);
                   },
                   
@@ -80,26 +80,26 @@ class AwarenessTemplateSearchStudent extends ConsumerWidget {
                             SeitoWidget(
                               studentName: '${m.studentName}',
                               studentId: m.studentId??0,
+                              photoUrl: m.photoUrl ?? '',
                             ),
                             MaterialButton(
                               height: 20,
                               shape: const CircleBorder(),
-                              padding: EdgeInsets.all(0),
                               color: Colors.red[200],
                               minWidth: 20,
                               onPressed: () {
                                 _multiKey.currentState?.removeItem( m);
                               },
-                              child: Icon(
+                              child: const Icon(
                                 Icons.close_outlined,
                                 size: 18,
                               ),
-                            )
+                            ),
                           ],
                         ),
                       );
                   return Wrap(
-                    children: selectedItems.map((e) => item(e)).toList(),
+                    children: selectedItems.map(item).toList(),
                   );
                 },
                 
@@ -110,10 +110,9 @@ class AwarenessTemplateSearchStudent extends ConsumerWidget {
                 compareFn: (item, selectedItem) {return item.studentId == selectedItem.studentId;} ,
               ),
             );
-          }
-          
+          },
         );
-      }
+      },
     );
     
     // return DropdownSearch<String>(

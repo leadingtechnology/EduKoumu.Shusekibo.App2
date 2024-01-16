@@ -14,6 +14,7 @@ import 'package:kyoumutechou/feature/health/model/health_reason_model.dart';
 import 'package:kyoumutechou/feature/health/provider/health_provider.dart';
 import 'package:kyoumutechou/feature/health/provider/health_reason_provider.dart';
 import 'package:kyoumutechou/feature/health/provider/health_stamp_provider.dart';
+import 'package:kyoumutechou/feature/health/repository/health_reason_repository.dart';
 import 'package:kyoumutechou/feature/health/repository/health_stamp_repository.dart';
 import 'package:kyoumutechou/shared/http/app_exception.dart';
 
@@ -34,6 +35,7 @@ class DantaiNotifier extends StateNotifier<ApiState> {
   late final _dantai = ref.read(dantaisRepositoryProvider);
   late final _healthStamp = ref.read(healthStampRepositoryProvider);
   late final _attendStamp = ref.read(attendanceStampRepositoryProvider);
+  late final _healthReason = ref.read(healthReasonRepositoryProvider);
 
 
   Future<void> init() async {
@@ -64,6 +66,8 @@ class DantaiNotifier extends StateNotifier<ApiState> {
 
         // 出欠スタンプの取得
         _attendStamp.fetch(),
+
+        _healthReason.fetch('100', '101'),
 
       ]);
 
@@ -157,6 +161,11 @@ class DantaiNotifier extends StateNotifier<ApiState> {
     // 保護者初期表示可否設定
     final isCa = dotenv.env['IS_Contact_Allowed'];
 
+    // 性別初期表示可否設定
+    final strGender = dotenv.env['Display_Gender'];
+    final isGender = strGender == '1' ? true : false;
+    
+    ref.read(isGenderProvider.notifier).state = isGender;
   }
 
   void setProviderInitValue(){

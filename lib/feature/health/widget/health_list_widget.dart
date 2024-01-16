@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:kyoumutechou/feature/boxes.dart';
 import 'package:kyoumutechou/feature/common/provider/filter_provider.dart';
 import 'package:kyoumutechou/feature/common/provider/tokobis_provider.dart';
 import 'package:kyoumutechou/feature/common/widget/no_data_widget.dart';
+import 'package:kyoumutechou/feature/common/widget/toast_helper.dart';
 import 'package:kyoumutechou/feature/health/model/health_meibo_model.dart';
 import 'package:kyoumutechou/feature/health/model/health_status_model.dart';
 import 'package:kyoumutechou/feature/health/provider/health_meibo_provider.dart';
@@ -267,6 +269,13 @@ class _HealthListWidgetState extends ConsumerState<HealthListWidget> {
   @override
   void initState() {
     super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final list = Boxes.getHealthMeiboBox().values.toList();
+      if (list.isEmpty) {
+        ToastHelper.showToast(context, '　該当データがありません　');
+      }
+    });
   }
 
   @override
@@ -400,7 +409,7 @@ class _HealthListWidgetState extends ConsumerState<HealthListWidget> {
   Widget _build(BuildContext context) {
     final list = Boxes.getHealthMeiboBox().values.toList();
     if (list.isEmpty) {
-      return const NoDataWidget();
+      return Container();
     }
 
     return PlutoGrid(

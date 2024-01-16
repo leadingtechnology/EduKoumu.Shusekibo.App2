@@ -5,8 +5,8 @@ import 'package:kyoumutechou/feature/awareness/model/awareness_meibo_model.dart'
 import 'package:kyoumutechou/feature/awareness/provider/awareness_meibo_provider.dart';
 import 'package:kyoumutechou/feature/awareness/weidget/awareness_seat_widget.dart';
 import 'package:kyoumutechou/feature/boxes.dart';
-import 'package:kyoumutechou/feature/common/widget/no_data_widget.dart';
 import 'package:kyoumutechou/feature/common/widget/search_bar_widget.dart';
+import 'package:kyoumutechou/feature/common/widget/toast_helper.dart';
 import 'package:kyoumutechou/helpers/widgets/my_spacing.dart';
 import 'package:kyoumutechou/shared/http/app_exception.dart';
 
@@ -43,11 +43,28 @@ class AwarenessSeatPage extends ConsumerWidget {
   }
 }
 
-class AwarenessSeats extends ConsumerWidget {
+class AwarenessSeats extends ConsumerStatefulWidget {
   const AwarenessSeats({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<AwarenessSeats> createState() => _AwarenessSeatsState();
+}
+
+class _AwarenessSeatsState extends ConsumerState<AwarenessSeats> {
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final list = Boxes.getAwarenessMeiboBox().values.toList();
+      if (list.isEmpty) {
+        ToastHelper.showToast(context, '　該当データがありません　');
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final state = ref.watch(awarenessMeiboListProvider);
 
     return state.when(
@@ -60,7 +77,7 @@ class AwarenessSeats extends ConsumerWidget {
             final meibos = box.values.toList();
 
             if (meibos.isEmpty) {
-              return const NoDataWidget();
+              return Container();
             } 
             
             return GridView.builder(

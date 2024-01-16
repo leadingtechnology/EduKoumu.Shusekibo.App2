@@ -22,9 +22,19 @@ class FilterWidget extends ConsumerWidget {
   int selectedTOD = 1;
   bool isKouryuGrade = false;
 
-  Future<void> _pickDateRange(BuildContext context, WidgetRef ref) async {
+  Future<void> _pickDateRange(
+    BuildContext context, 
+    WidgetRef ref,
+    {
+      DateTime? startDate,
+      DateTime? endDate,
+    }
+  ) async {
+    startDate ??= DateTime.now();
+    endDate ??= DateTime.now();
+
     final initialDateRange =
-        DateTimeRange(start: DateTime.now(), end: DateTime.now());
+        DateTimeRange(start: startDate, end: endDate);
 
     final newDateRange = await showDateRangePicker(
         context: context,
@@ -146,7 +156,11 @@ class FilterWidget extends ConsumerWidget {
                 padding: MySpacing.left(12),
                 child: InkWell(
                   onTap: () {
-                    pickDate(context, ref);
+                    pickDate(
+                      context, 
+                      ref, 
+                      iniDate: targetDate,
+                    );
                   },
                   child: SingleIconChip(
                     isSelected: true,
@@ -178,7 +192,12 @@ class FilterWidget extends ConsumerWidget {
                 padding: const EdgeInsets.only(left: 8),
                 child: InkWell(
                   onTap: () async {
-                    await _pickDateRange(context, ref);
+                    await _pickDateRange(
+                      context, 
+                      ref,
+                      startDate: beginDate,
+                      endDate: endDate,
+                    );
                   },
                   child: SingleIconChip(
                     isSelected: true,

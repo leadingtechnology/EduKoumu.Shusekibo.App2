@@ -4,7 +4,6 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:kyoumutechou/feature/boxes.dart';
 import 'package:kyoumutechou/feature/common/provider/common_provider.dart';
 import 'package:kyoumutechou/feature/common/widget/common_page.dart';
-import 'package:kyoumutechou/feature/common/widget/no_data_widget.dart';
 import 'package:kyoumutechou/feature/common/widget/save_button_widget.dart';
 import 'package:kyoumutechou/feature/common/widget/toast_helper.dart';
 import 'package:kyoumutechou/feature/health/model/health_meibo_model.dart';
@@ -58,11 +57,28 @@ class HealthPage extends ConsumerWidget {
 }
 
 // 健康観察テーブル
-class SeatWidget extends ConsumerWidget {
+class SeatWidget extends ConsumerStatefulWidget {
   const SeatWidget({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<SeatWidget> createState() => _SeatWidgetState();
+}
+
+class _SeatWidgetState extends ConsumerState<SeatWidget> {
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final list = Boxes.getHealthMeiboBox().values.toList();
+      if (list.isEmpty) {
+        ToastHelper.showToast(context, '　該当データがありません　');
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final state = ref.watch(healthMeiboListProvider);
 
     return state.when(
@@ -77,7 +93,7 @@ class SeatWidget extends ConsumerWidget {
             final meibos = box.values.toList();
 
             if (meibos.isEmpty) {
-              return const NoDataWidget();
+              return Container();
             }
 
             return GridView.builder(

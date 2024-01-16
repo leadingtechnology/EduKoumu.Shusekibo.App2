@@ -49,10 +49,16 @@ Widget SingleIconChip({
   );
 }
 
-Future<void> pickDate(BuildContext context, WidgetRef ref) async {
+Future<void> pickDate(
+  BuildContext context, 
+  WidgetRef ref, 
+  {DateTime? iniDate,
+}) async {
+  iniDate ??= DateTime.now();
+
   final selected = await showDatePicker(
     context: context,
-    initialDate: DateTime.now(),
+    initialDate: iniDate,
     firstDate: DateTime(2023, 4),
     lastDate: DateTime.now(),
     initialEntryMode: DatePickerEntryMode.calendarOnly,

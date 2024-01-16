@@ -30,9 +30,9 @@ class AttendanceTimedSeatWidget extends ConsumerWidget {
     final reason2 = ref.watch(attendanceReason2Provider);
     final filter = ref.watch(filterProvider);
     var isEditable = ref.watch(isTokobiProvider);
-    final kyokouDate = meibo.tenshutsuDateKyokouDate;
 
-    Color bkColor, textColor;
+    Color bkColor;
+    Color textColor;
     final url = '$_baseUrl${meibo.photoUrl}';
     final accessToken = Hive.box<String>('shusekibo').get('token').toString();
 
