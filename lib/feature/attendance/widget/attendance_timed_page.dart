@@ -89,7 +89,7 @@ class _SeatsWidgetState extends ConsumerState<SeatsWidget> {
       if (isHogo.isNotEmpty && isHogo.length == list.length) {
         ToastHelper.showToast(context, '　既に保護されているため、編集・保存することができません。　');
       }
-    });
+    });    
   }
 
   @override
@@ -107,6 +107,7 @@ class _SeatsWidgetState extends ConsumerState<SeatsWidget> {
       },
       error: (AppException e) {return Text(e.toString());},
       loaded: () {
+        setState(() {});
         return ValueListenableBuilder(
             valueListenable:Boxes.getAttendanceTimedMeibo().listenable(),
             builder: (context, Box<AttendanceTimedMeiboModel> box, _) {

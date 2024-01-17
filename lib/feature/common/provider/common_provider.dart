@@ -8,3 +8,10 @@ final buttonEnableProvider = StateProvider<bool>((ref) {
 });
 
 final isGenderProvider = StateProvider<bool>((ref) {return false;});
+
+final sysBeginDate = StateProvider<DateTime>((ref) {
+  return DateTime.now();
+});
+final sysEndDate = StateProvider<DateTime>((ref) {
+  return DateTime.now();
+});

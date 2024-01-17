@@ -3,6 +3,7 @@ import 'package:kyoumutechou/feature/awareness/provider/awareness_code_provider.
 import 'package:kyoumutechou/feature/awareness/repsitory/awareness_code_repository.dart';
 import 'package:kyoumutechou/feature/boxes.dart';
 import 'package:kyoumutechou/feature/common/model/dantai_model.dart';
+import 'package:kyoumutechou/feature/common/model/shozoku_model.dart';
 import 'package:kyoumutechou/feature/common/model/tannin_model.dart';
 import 'package:kyoumutechou/feature/common/provider/dantais_provider.dart';
 import 'package:kyoumutechou/feature/common/provider/filter_provider.dart';
@@ -146,6 +147,10 @@ class DantaiChangedNotifier extends StateNotifier<ApiState> {
           DateTime.now(),
           false,
         ),
+
+        // 登校日2情報の取得
+        getTokobi(shozoku),
+
       ]);
 
       isError = false;
@@ -191,5 +196,19 @@ class DantaiChangedNotifier extends StateNotifier<ApiState> {
       // ignore: avoid_print
       print('その他エラー情報：$e');
     }
+  }
+
+  Future<ApiState> getTokobi(ShozokuModel shozoku) async {
+    final date = DateUtil.getLastDayOfPriorMonth(DateTime.now());
+    if (date == null) {
+      return const ApiState.loaded();
+    }
+
+    // 登校日情報の取得
+    return _tokobi.fetch(
+      shozoku.id ?? 0,
+      DateTime.now(),
+      false,
+    );
   }
 }

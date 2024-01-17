@@ -90,6 +90,7 @@ class _GridviewState extends ConsumerState<Gridview> {
         ToastHelper.showToast(context, '　既に保護されているため、編集・保存することができません。　');
       }
     });
+
   }
 
   @override
@@ -107,6 +108,7 @@ class _GridviewState extends ConsumerState<Gridview> {
       },
       error: (AppException e) {return Text(e.toString());},
       loaded: () {
+        setState(() {});
         return ValueListenableBuilder(
             valueListenable: Boxes.getAttendanceMeibo().listenable(),
             builder: (context, Box<AttendanceMeiboModel> box, _) {

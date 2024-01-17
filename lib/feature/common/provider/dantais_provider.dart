@@ -17,6 +17,7 @@ import 'package:kyoumutechou/feature/health/provider/health_stamp_provider.dart'
 import 'package:kyoumutechou/feature/health/repository/health_reason_repository.dart';
 import 'package:kyoumutechou/feature/health/repository/health_stamp_repository.dart';
 import 'package:kyoumutechou/shared/http/app_exception.dart';
+import 'package:kyoumutechou/shared/util/date_util.dart';
 
 final dantaiProvider = StateProvider<DantaiModel>((ref) => const DantaiModel());
 
@@ -190,6 +191,10 @@ class DantaiNotifier extends StateNotifier<ApiState> {
     
     ref.read(buttonEnableProvider.notifier).state = false;
 
+    final fiscalYear = DateUtil.calculateFiscalYear(DateTime.now());
+    ref.read(sysBeginDate.notifier).state = fiscalYear.item1;
+    ref.read(sysEndDate.notifier).state = fiscalYear.item2;
+
     // //出欠時限画面の初期値を設定する
     // ref.read(attendanceTimedStampProvider.notifier).state =
     //     const AttendanceTimedStampModel();
@@ -199,5 +204,4 @@ class DantaiNotifier extends StateNotifier<ApiState> {
     //     const AttendanceTimedReasonModel();
 
   }
-
 }

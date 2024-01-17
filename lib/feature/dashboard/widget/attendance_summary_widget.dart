@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:kyoumutechou/feature/dashboard/provider/home_attendance_provider.dart';
+import 'package:kyoumutechou/feature/common/provider/tokobis_provider.dart';
+import 'package:kyoumutechou/feature/dashboard/model/home_attendance_model.dart';
+import 'package:kyoumutechou/feature/dashboard/provider/home_attendance_list_provider.dart';
 import 'package:kyoumutechou/helpers/widgets/my_spacing.dart';
 import 'package:kyoumutechou/shared/http/app_exception.dart';
 
@@ -10,15 +12,26 @@ class AttendanceSummaryWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(homeAttendanceNotifierProvider);
+    final tokobi = ref.watch(tokobiProvider);
+    if (tokobi == null) {
+      return Container();
+    }
 
+    final state = ref.watch(homeAttendanceListNotifierProvider);
     return state.when(loading: () {
       return const Center(child: CircularProgressIndicator());
     }, error: (AppException e) {
       return Text(e.toString());
-    }, loaded: (attendanceList) {
-      return SingleChildScrollView(
-        child: Column(
+    }, loaded: (attendanceLists) {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children:attendanceLists.map(daySummry).toList(),  
+            );
+    },);
+  }
+
+  Column daySummry(List<HomeAttendanceModel> attendanceList){
+    return Column(
           children: attendanceList.map((e) {
             String inputStates;
             var inputColor = Colors.pink[100];
@@ -39,7 +52,7 @@ class AttendanceSummaryWidget extends ConsumerWidget {
                 MySpacing.height(4),
                 SizedBox(
                   height: 94,
-                  width: 520,
+                  width: 330,
                   child: Container(
                       decoration: BoxDecoration(
                         color: Colors.yellow[100],
@@ -151,8 +164,6 @@ class AttendanceSummaryWidget extends ConsumerWidget {
               ],
             );
           }).toList(),
-        ),
-      );
-    },);
+        );
   }
 }

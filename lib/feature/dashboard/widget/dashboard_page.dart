@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:kyoumutechou/feature/common/provider/tokobis_provider.dart';
 import 'package:kyoumutechou/feature/dashboard/widget/attendance_summary_widget.dart';
 import 'package:kyoumutechou/feature/dashboard/widget/health_summary_widget.dart';
 import 'package:kyoumutechou/helpers/theme/app_theme.dart';
@@ -43,6 +44,8 @@ class DashboardPageState extends ConsumerState<DashboardPage>
 
   @override
   Widget build(BuildContext context) {
+    final tokobi = ref.watch(tokobiProvider);
+
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(80),
@@ -50,12 +53,17 @@ class DashboardPageState extends ConsumerState<DashboardPage>
           title: Column(
             children: [
               MySpacing.height(10),
-              Text(
-                '${DateUtil.getJpMonthDayWeek(DateTime.now())}の出欠人数等（クラス別）',
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold, 
-                  fontSize: 16,
-                ),
+              Row(
+                children: [
+                  Text(
+                    '${DateUtil.getJpMonthDayWeek(DateTime.now())}の出欠人数等（クラス別）',
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold, 
+                      fontSize: 16,
+                    ),
+                  ),
+                  Text('${tokobi.tokobi}'),
+                ],
               ),
             ],
           ),
@@ -79,10 +87,10 @@ class DashboardPageState extends ConsumerState<DashboardPage>
                   style: TextStyle(fontFamily: 'NotoSansJP'),
                 ),
               ),
-              // Tab(child:Text(
-              //   '欠席者一覧',
-              //   style: TextStyle(fontFamily: 'NotoSansJP'),
-              // ),),
+              Tab(child:Text(
+                '欠席者一覧',
+                style: TextStyle(fontFamily: 'NotoSansJP'),
+              ),),
             ],
           ),
         ),
@@ -92,7 +100,7 @@ class DashboardPageState extends ConsumerState<DashboardPage>
         child: TabBarView(
           controller: tabController,
           children: const <Widget>[
-            HealthSummary(),
+            HealthSummaryWidget(),
             AttendanceSummaryWidget(),
             MyCard(
               child: Column(

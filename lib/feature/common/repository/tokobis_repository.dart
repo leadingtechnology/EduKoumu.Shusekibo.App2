@@ -39,7 +39,7 @@ class TokobisRepository implements TokobisRepositoryProtocol {
     // 所属Id,　対象日付の登校日データが存在する場合、正常終了とする
     if (box.isNotEmpty) {
       final keys = box.keys.toList().where(
-        (element) => element.toString().startsWith('$shozokuId-$year-$month-'),
+        (e) => e.toString().startsWith('$shozokuId-${DateUtil.getStringDate(targetDate)}'),
       );
       
       // keysの値が存在した場合、正常終了とする

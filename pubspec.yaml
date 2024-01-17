@@ -52,6 +52,9 @@ dependencies:
   intl: ^0.18.1
   freezed_annotation: ^2.4.1
 
+  ## 計算
+  tuple: ^2.0.2
+
 
 dev_dependencies:
   #flutter_test:
