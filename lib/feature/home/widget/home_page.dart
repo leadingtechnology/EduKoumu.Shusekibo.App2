@@ -14,6 +14,7 @@ import 'package:kyoumutechou/feature/dashboard/widget/dashboard_page.dart';
 import 'package:kyoumutechou/feature/health/widget/health_page.dart';
 import 'package:kyoumutechou/feature/home/provider/home_provider.dart';
 import 'package:kyoumutechou/feature/seat/seat_chart_page.dart';
+import 'package:kyoumutechou/feature/setting/setting_page.dart';
 import 'package:kyoumutechou/feature/setting/widget/awareness_template_page.dart';
 import 'package:kyoumutechou/helpers/theme/app_theme.dart';
 import 'package:kyoumutechou/helpers/widgets/my_text.dart';
@@ -45,6 +46,7 @@ class HomePageState extends ConsumerState<HomePage> {
 
   // ナビゲーションバーのアイテム
   final List<NavItem> navItems = [
+    // 0
     NavItem(
       Menu.dashboard,
       'ホーム',
@@ -52,13 +54,19 @@ class HomePageState extends ConsumerState<HomePage> {
       const Icon(Icons.home),
       const Icon(Icons.home_outlined),
     ),
+    // 1
     NavItem(
       Menu.health,
       '健康観察',
       HealthPage(),
-      const FaIcon(FontAwesomeIcons.stethoscope,),
-      const FaIcon(FontAwesomeIcons.stethoscope,),
+      const FaIcon(
+        FontAwesomeIcons.stethoscope,
+      ),
+      const FaIcon(
+        FontAwesomeIcons.stethoscope,
+      ),
     ),
+    // 2
     NavItem(
       Menu.attendance,
       '出欠(日)',
@@ -66,6 +74,7 @@ class HomePageState extends ConsumerState<HomePage> {
       const Icon(Icons.content_paste),
       const Icon(Icons.content_paste_outlined),
     ),
+    // 3
     NavItem(
       Menu.attendanceTimed,
       '出欠(時限)',
@@ -73,6 +82,7 @@ class HomePageState extends ConsumerState<HomePage> {
       const Icon(Icons.content_paste),
       const Icon(Icons.content_paste_outlined),
     ),
+    // 4
     NavItem(
       Menu.awareness,
       '気づき',
@@ -80,13 +90,14 @@ class HomePageState extends ConsumerState<HomePage> {
       const Icon(Icons.lightbulb),
       const Icon(Icons.lightbulb_outlined),
     ),
-    // NavItem(
-    //   Menu.setting,
-    //   '設定',
-    //   const SettingPage(),
-    //   const Icon(Icons.settings),
-    //   const Icon(Icons.settings_outlined),
-    // ),
+    // 5
+    NavItem(
+      Menu.setting,
+      '設定',
+      const SettingPage(),
+      const Icon(Icons.settings),
+      const Icon(Icons.settings_outlined),
+    ),
   ];
 
   final List<NavItem> settingItems = [
@@ -107,12 +118,11 @@ class HomePageState extends ConsumerState<HomePage> {
     NavItem(
       Menu.awarenessTemplate,
       '気づきテンプレート',
-      AwarenessTemplatePage(),
+      const AwarenessTemplatePage(),
       const Icon(Icons.lightbulb),
       const Icon(Icons.lightbulb_outlined),
     ),
   ];
-
 
   void handleLogout() {
     try {
@@ -174,19 +184,37 @@ class HomePageState extends ConsumerState<HomePage> {
                   // 左２）ナビゲーションバー
                   Expanded(
                     child: NavigationRail(
-                      selectedIndex: selectedIndex > 5 ? 5: selectedIndex,
+                      selectedIndex: selectedIndex > 5 ? 5 : selectedIndex,
                       onDestinationSelected: _onItemTapped,
                       labelType: NavigationRailLabelType.all,
-                      destinations: navItems.map((NavItem navItem) {
-                        return NavigationRailDestination(
-                          icon: navItem.icon,
-                          selectedIcon: navItem.selectedIcon,
-                          label: Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
-                            child: Text(navItem.title),
+                      destinations: [
+                        for (int i = 0; i < navItems.length; i++)
+                          NavigationRailDestination(
+                            icon: navItems[i].icon,
+                            selectedIcon: navItems[i].selectedIcon,
+                            label: Padding(
+                              padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
+                              child: Text(navItems[i].title),
+                            ),
                           ),
-                        );
-                      }).toList(),
+                      ],
+                      // navItems.map((NavItem navItem) {
+                      //   return NavigationRailDestination(
+                      //     icon: navItem.icon,
+                      //     selectedIcon: navItem.selectedIcon,
+                      //     label: Padding(
+                      //       padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
+                      //       child: Text(navItem.title),
+                      //     ),
+                      //   );
+                      // }).toList(),
+                    ),
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.fromLTRB(8, 0, 8, 0),
+                    child: Divider(
+                      thickness: 1,
+                      height: 1,
                     ),
                   ),
 
@@ -276,9 +304,9 @@ class HomePageState extends ConsumerState<HomePage> {
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.all(8),
-                      child: selectedIndex > 5 
-                      ? settingItems[selectedIndex -5].page 
-                      : navItems[selectedIndex].page,
+                      child: selectedIndex > 5
+                          ? settingItems[selectedIndex - 5].page
+                          : navItems[selectedIndex].page,
                     ),
                   ),
                 ],
@@ -293,7 +321,13 @@ class HomePageState extends ConsumerState<HomePage> {
 
 // 定义一个表示导航项的类
 class NavItem {
-  NavItem(this.menuId, this.title, this.page, this.icon, this.selectedIcon,);
+  NavItem(
+    this.menuId,
+    this.title,
+    this.page,
+    this.icon,
+    this.selectedIcon,
+  );
   final Menu menuId;
   final String title;
   final Widget page;

@@ -17,7 +17,8 @@ import 'package:pluto_grid/pluto_grid.dart';
 
 class SeatChartListWidget extends ConsumerWidget {
   SeatChartListWidget({
-    required this.scaffoldKey, super.key,
+    required this.scaffoldKey, 
+    super.key,
   });
 
   // draw key
@@ -129,8 +130,8 @@ class SeatChartListWidget extends ConsumerWidget {
         enableDropToResize: false,
         enableSorting: false,
         renderer: (rendererContext) {
-          final seatOrder = rendererContext.row.cells['SeatOrder']!.value as int;
-          return Text('${seatConfigurations[seatOrder].name}');
+          final seatOrder=rendererContext.row.cells['SeatOrder']!.value as int;
+          return Text('${seatConfigurations[seatOrder].name ?? ''}');
         }
       ),
       // 6
@@ -184,6 +185,9 @@ class SeatChartListWidget extends ConsumerWidget {
                 id = 0;
               }
 
+              ref.read(scMeiboListProvider.notifier).state = 
+              Boxes.getAttendanceMeibo().values.toList();
+              
               ref.read(seatSettingIdProvider.notifier).state = id;
               ref.read(seatChartPageTypeProvider.notifier).state =
                   PageType.seat;
@@ -191,6 +195,9 @@ class SeatChartListWidget extends ConsumerWidget {
             icon: const Icon(Icons.edit),
             label: const Text('座席表編集'),
             style: ElevatedButton.styleFrom(
+              side: BorderSide(
+                color: Colors.green.shade200, // 枠線の色
+              ),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8), // 自定义按钮的弧度
               ),
@@ -216,6 +223,7 @@ class SeatChartListWidget extends ConsumerWidget {
           builder: (context, Box<SeatSettingModel> box, _) {
             final settings = box.values.toList().cast<SeatSettingModel>();
             
+            // ソートする
             settings.sort(
               (a, b) => '${a.crtDateTime}'.compareTo('${a.crtDateTime}'),
             );
@@ -239,6 +247,7 @@ class SeatChartListWidget extends ConsumerWidget {
               );
             }).toList();
 
+            // 
             return showList(context);
           },
         );

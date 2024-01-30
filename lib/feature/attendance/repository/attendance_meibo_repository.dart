@@ -6,6 +6,7 @@ import 'package:kyoumutechou/feature/boxes.dart';
 import 'package:kyoumutechou/feature/common/model/filter_model.dart';
 import 'package:kyoumutechou/feature/common/provider/common_provider.dart';
 import 'package:kyoumutechou/feature/common/state/api_state.dart';
+import 'package:kyoumutechou/feature/seat/provider/seat_chart_provider.dart';
 import 'package:kyoumutechou/shared/http/api_provider.dart';
 import 'package:kyoumutechou/shared/http/api_response.dart';
 import 'package:kyoumutechou/shared/http/app_exception.dart';
@@ -24,12 +25,14 @@ class AttendanceMeiboRepository implements AttendanceRepositoryProtocol {
   AttendanceMeiboRepository(this.ref);
 
   final Ref ref;
+  
   late final ApiProvider _api = ref.read(apiProvider);
+  final box = Boxes.getAttendanceMeibo();
 
   @override
   Future<ApiState> fetch(FilterModel filter) async {
 
-    final box = Boxes.getAttendanceMeibo();
+    
     await box.clear();
 
     final strDate = DateUtil.getStringDate(filter.targetDate ?? DateTime.now());
@@ -69,6 +72,9 @@ class AttendanceMeiboRepository implements AttendanceRepositoryProtocol {
 
         // 3) save to hive with key
         await box.putAll(attendanceMeiboMap);
+
+        // 4) set to seat provider
+        ref.read(scMeiboListProvider.notifier).state = attendanceMeiboList;
 
         return const ApiState.loaded();
       } catch (e) {

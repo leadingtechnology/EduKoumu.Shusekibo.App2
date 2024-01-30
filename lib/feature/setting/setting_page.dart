@@ -21,7 +21,7 @@ class SettingPage extends ConsumerWidget{
                 context,
                 Menu.seatChart,
                 '座席表設定',
-                Icons.view_comfy_outlined,
+                Icons.app_registration_outlined,
                 ref,
               ),
               _menuButton(
@@ -62,6 +62,9 @@ class SettingPage extends ConsumerWidget{
           ref.read(menuProvider.notifier).state = menuId;
         },
         style: ElevatedButton.styleFrom(
+          side: BorderSide(
+            color: Colors.green.shade200, // 枠線の色
+          ),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10), // 自定义按钮形状
           ),
@@ -69,7 +72,7 @@ class SettingPage extends ConsumerWidget{
         child: Column(
           children: [
             const SizedBox(height: 20, width: 120),
-            Icon(icon),
+            Icon(icon, size: 35,),
             const SizedBox(height: 20, width: 120),
             Text(title),
             const SizedBox(height: 20, width: 120),

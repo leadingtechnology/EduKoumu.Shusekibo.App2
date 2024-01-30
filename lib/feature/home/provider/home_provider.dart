@@ -11,7 +11,7 @@ enum Menu {
   awarenessTemplate,
   modoru,
 }
-final menuProvider = StateProvider<Menu>((ref) {return Menu.dashboard; });
+final menuProvider = StateProvider<Menu>((ref) {return Menu.setting; });
 
 enum DashboardTab {health, attendance,absentee,}
 final dashboardTabProvider = StateProvider<DashboardTab>((ref) {

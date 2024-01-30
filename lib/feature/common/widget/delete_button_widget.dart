@@ -39,7 +39,7 @@ class _DeleteButtonWidgetState extends State<DeleteButtonWidget> {
                   setState(() => _isButtonDisabled = false);
                 }
               },
-        icon: const Icon(Icons.save_alt_outlined), 
+        icon: const Icon(Icons.delete_outline), 
         label: Text(widget.label),
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.red[400],

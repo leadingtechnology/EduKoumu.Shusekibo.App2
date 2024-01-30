@@ -34,6 +34,10 @@ class SeatChartRepository implements SeatChartRepositoryProtocol {
     if (response is APISuccess) {
       final value = response.value;
       try {
+        if (value == null) {
+          return const ApiState.loaded();
+        } 
+
         final seatChart = seatChartListFromJson(value as List<dynamic>);
 
         // 2) save to hive with key

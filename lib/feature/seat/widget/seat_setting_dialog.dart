@@ -6,10 +6,9 @@ import 'package:kyoumutechou/feature/boxes.dart';
 import 'package:kyoumutechou/feature/common/provider/filter_provider.dart';
 import 'package:kyoumutechou/feature/common/widget/commom_widget.dart';
 import 'package:kyoumutechou/feature/common/widget/delete_button_widget.dart';
-import 'package:kyoumutechou/feature/common/widget/save_button_widget.dart';
+import 'package:kyoumutechou/feature/common/widget/save2_button_widget.dart';
 import 'package:kyoumutechou/feature/common/widget/toast_helper.dart';
 import 'package:kyoumutechou/feature/seat/model/seat_setting_model.dart';
-import 'package:kyoumutechou/feature/seat/provider/seat_chart_provider.dart';
 import 'package:kyoumutechou/feature/seat/provider/seat_setting_provider.dart';
 import 'package:kyoumutechou/feature/seat/widget/seat_configration.dart';
 import 'package:kyoumutechou/helpers/theme/app_theme.dart';
@@ -17,9 +16,9 @@ import 'package:kyoumutechou/helpers/widgets/my_spacing.dart';
 import 'package:kyoumutechou/shared/util/date_util.dart';
 
 class SeatSettingDialog extends ConsumerStatefulWidget {
-  SeatSettingDialog({required this.id, super.key});
+  const SeatSettingDialog({required this.id, super.key});
 
-  int id;
+  final int id;
 
   @override
   SeatSettingState createState() => SeatSettingState();
@@ -47,10 +46,18 @@ class SeatSettingState extends ConsumerState<SeatSettingDialog> {
   DateTime endDate = DateTime.now();
 
   final box = Boxes.getSeatSetting();
+  late final SeatSettingModel seatsSetting;
 
   @override
   void initState() {
     super.initState();
+
+    if (widget.id != 0) {
+      model = Boxes.getSeatSetting().values.toList().firstWhere(
+            (element) => element.id == widget.id,
+          );
+      _patternNameController.text = model.seatPatternName!;
+    }
   }
 
   @override
@@ -95,9 +102,6 @@ class SeatSettingState extends ConsumerState<SeatSettingDialog> {
   @override
   Widget build(BuildContext context) {
     if (widget.id > 0) {
-      final m = Boxes.getSeatSetting().get(widget.id)!;
-      if (m != null) model = m;
-      
       selectedRow = model.row!;
       selectedColumn = model.column!;
       selectedSeatOrder = model.seatOrder!;
@@ -352,12 +356,12 @@ class SeatSettingState extends ConsumerState<SeatSettingDialog> {
                   },
                 ),
                 MySpacing.width(12),
-                SaveButtonWidget(
+                Save2ButtonWidget(
                   label: '保存',
                   onPressed: () async {
 
                     if (_formKey.currentState!.validate() == false) {
-                      ToastHelper.showToast(context, '　必須項目を入力してください　');
+                      //ToastHelper.showToast(context, '　必須項目を入力してください　');
                       return;
                     }
 

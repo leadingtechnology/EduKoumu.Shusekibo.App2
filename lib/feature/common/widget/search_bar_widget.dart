@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:kyoumutechou/feature/common/provider/common_provider.dart';
 import 'package:kyoumutechou/feature/common/provider/filter_provider.dart';
 import 'package:kyoumutechou/feature/common/widget/control_tokobi.dart';
 import 'package:kyoumutechou/feature/common/widget/control_tokobi2.dart';
 import 'package:kyoumutechou/feature/home/provider/home_provider.dart';
+import 'package:kyoumutechou/feature/seat/provider/seat_chart_provider.dart';
 import 'package:kyoumutechou/helpers/widgets/my_spacing.dart';
 import 'package:kyoumutechou/helpers/widgets/my_text.dart';
 import 'package:kyoumutechou/shared/util/date_util.dart';
@@ -227,12 +229,15 @@ class SearchBarWidget extends ConsumerWidget {
                 },
               ),
               MySpacing.width(15),
-              IconButton(
-                icon: const Icon(Icons.tune),
-                onPressed: () {
-                  _scaffoldKey.currentState?.openEndDrawer();
-                },
-              ),
+              if (menuId != Menu.setting &&
+                  ref.watch(seatChartPageTypeProvider) != PageType.seat)
+                IconButton(
+                  icon: const Icon(Icons.tune),
+                  onPressed: () {
+                    _scaffoldKey.currentState?.openEndDrawer();
+                  },
+                ),
+
               MySpacing.width(10),
             ],
           ),
