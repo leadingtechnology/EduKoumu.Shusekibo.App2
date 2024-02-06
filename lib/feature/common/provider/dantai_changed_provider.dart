@@ -3,7 +3,6 @@ import 'package:kyoumutechou/feature/awareness/provider/awareness_code_provider.
 import 'package:kyoumutechou/feature/awareness/repsitory/awareness_code_repository.dart';
 import 'package:kyoumutechou/feature/boxes.dart';
 import 'package:kyoumutechou/feature/common/model/dantai_model.dart';
-import 'package:kyoumutechou/feature/common/model/shozoku_model.dart';
 import 'package:kyoumutechou/feature/common/model/tannin_model.dart';
 import 'package:kyoumutechou/feature/common/provider/dantais_provider.dart';
 import 'package:kyoumutechou/feature/common/provider/filter_provider.dart';
@@ -12,6 +11,7 @@ import 'package:kyoumutechou/feature/common/provider/shozokus_provider.dart';
 import 'package:kyoumutechou/feature/common/provider/timeds_provider.dart';
 import 'package:kyoumutechou/feature/common/provider/tokobis_provider.dart';
 import 'package:kyoumutechou/feature/common/repository/gakunens_repository.dart';
+import 'package:kyoumutechou/feature/common/repository/last_tokobis_repository.dart';
 import 'package:kyoumutechou/feature/common/repository/shozokus_repository.dart';
 import 'package:kyoumutechou/feature/common/repository/tannin_repository.dart';
 import 'package:kyoumutechou/feature/common/repository/timeds_repository.dart';
@@ -36,12 +36,15 @@ class DantaiChangedNotifier extends StateNotifier<ApiState> {
   final Ref ref;
   final DantaiModel dantai;
 
+  final today = DateTime.now();
+
   late final _tannin = ref.read(tanninRepositoryProvider);
   late final _gakunen = ref.read(gakunensRepositoryProvider);
   late final _shozoku = ref.read(shozokusRepositoryProvider);
   late final _burun = ref.read(awarenessCodeRepositoryProvider);
 
   late final _tokobi = ref.watch(tokobisRepositoryProvider);
+  late final _lastTokobi = ref.watch(lastTokobisRepositoryProvider);
   late final _timed = ref.read(timedsRepositoryProvider);
 
   Future<void> fetch(DantaiModel dantai) async {
@@ -58,12 +61,12 @@ class DantaiChangedNotifier extends StateNotifier<ApiState> {
       // 200) （２回目）並列処理でデータを取得する。（学年、担任情報）
       final responses = await Future.wait([
         // 担任情報を取得する。
-        _tannin.fetch(dantaiId, DateUtil.getStringDate(DateTime.now())),
+        _tannin.fetch(dantaiId, DateUtil.getStringDate(today)),
 
         // 学年情報を取得する。
         _gakunen.fetch('${dantai.organizationKbn}'),
 
-        //　所属情報を取得す情報
+        // 所属情報を取得す情報
         _shozoku.fetch(dantaiId),
 
         // 分類コード情報を取得する。
@@ -93,10 +96,10 @@ class DantaiChangedNotifier extends StateNotifier<ApiState> {
       }
 
       // 対象日付のリセット
-      ref.read(targetDateProvider.notifier).state = DateTime.now();
+      ref.read(targetDateProvider.notifier).state = today;
 
       // 担任情報の取得
-      final strDate = DateUtil.getStringDate(DateTime.now());
+      final strDate = DateUtil.getStringDate(today);
       final key = Boxes.getTannin().keys.toList().where(
             (element) => element.toString().startsWith('$dantaiId-$strDate'),
           );
@@ -133,6 +136,8 @@ class DantaiChangedNotifier extends StateNotifier<ApiState> {
       );
       ref.read(awarenessCodeProvider.notifier).state = awarenessCode;
 
+      final fiscalYear = DateUtil.calculateFiscalYear(DateTime.now());
+      final beginDate = fiscalYear.item1;
 
       final responses2 = await Future.wait([
         // 時限情報の取得
@@ -141,15 +146,38 @@ class DantaiChangedNotifier extends StateNotifier<ApiState> {
           strDate,
         ),
 
-        // 登校日情報の取得
+        // 登校日情報(当月)の取得
         _tokobi.fetch(
           shozoku.id ?? 0,
-          DateTime.now(),
+          today,
           false,
         ),
 
-        // 登校日2情報の取得
-        getTokobi(shozoku),
+        // 登校日情報(前月)の取得
+        if (DateTime(today.year, today.month - 1).isAfter(beginDate))
+        _tokobi.fetch(
+          shozoku.id ?? 0,
+          DateTime(today.year, today.month - 1),
+          false,
+        ),
+
+        // 登校日情報(前前月)の取得
+        if (DateTime(today.year, today.month - 2).isAfter(beginDate))
+        _tokobi.fetch(
+          shozoku.id ?? 0,
+          DateTime(today.year, today.month - 2),
+          false,
+        ),
+
+        // ラスト登校日情報の取得
+        _lastTokobi.fetch(
+          shozoku.id ?? 0,
+          today,
+        ),
+
+        // // 登校日2情報の取得
+        // getTokobi(shozoku),
+
 
       ]);
 
@@ -180,9 +208,9 @@ class DantaiChangedNotifier extends StateNotifier<ApiState> {
       ref.read(timedProvider.notifier).state = timed;
 
       // 登校日初期値の設定
-      final tokobi = await ref.read(tokobisProvider.notifier).setTokobiValue(
+      await ref.read(tokobisProvider.notifier).setTokobiValue(
         shozoku.id ?? 0,
-        DateTime.now(),
+        today,
       );
 
       ///
@@ -198,17 +226,17 @@ class DantaiChangedNotifier extends StateNotifier<ApiState> {
     }
   }
 
-  Future<ApiState> getTokobi(ShozokuModel shozoku) async {
-    final date = DateUtil.getLastDayOfPriorMonth(DateTime.now());
-    if (date == null) {
-      return const ApiState.loaded();
-    }
+  // Future<ApiState> getTokobi(ShozokuModel shozoku) async {
+  //   final lastDate = DateUtil.getLastDayOfPriorMonth(DateTime.now());
+  //   if (lastDate == null) {
+  //     return const ApiState.loaded();
+  //   }
 
-    // 登校日情報の取得
-    return _tokobi.fetch(
-      shozoku.id ?? 0,
-      DateTime.now(),
-      false,
-    );
-  }
+  //   // 登校日情報の取得
+  //   return _tokobi.fetch(
+  //     shozoku.id ?? 0,
+  //     lastDate,
+  //     false,
+  //   );
+  // }
 }

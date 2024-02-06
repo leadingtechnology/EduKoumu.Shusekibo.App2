@@ -112,6 +112,10 @@ Future<void> start() async {
   //
   final hmBox = await Hive.openBox<HealthMeiboModel>('HealthMeibo');
   await hmBox.clear();
+  final hmBox1 = await Hive.openBox<HealthMeiboModel>('HealthMeibo1');
+  await hmBox1.clear();
+  final hmBox2 = await Hive.openBox<HealthMeiboModel>('HealthMeibo2');
+  await hmBox2.clear();
   
 
   // 出欠スタンプ
@@ -125,12 +129,20 @@ Future<void> start() async {
   // 出欠名簿(日)
   final amBox = await Hive.openBox<AttendanceMeiboModel>('AttendanceMeibo');
   await amBox.clear();
+  final amBox1 = await Hive.openBox<AttendanceMeiboModel>('AttendanceMeibo1');
+  await amBox1.clear();
+  final amBox2 = await Hive.openBox<AttendanceMeiboModel>('AttendanceMeibo2');
+  await amBox2.clear();
 
   
   // 出欠名簿(時限)
   
   final atmBox = await Hive.openBox<AttendanceTimedMeiboModel>('AttendanceTimedMeibo');
   await atmBox.clear();
+  final atmBox1 = await Hive.openBox<AttendanceTimedMeiboModel>('AttendanceTimedMeibo1');
+  await atmBox1.clear();
+  final atmBox2 = await Hive.openBox<AttendanceTimedMeiboModel>('AttendanceTimedMeibo2');
+  await atmBox2.clear();
 
   // 気づき
   final awBox = await Hive.openBox<AwarenessMeiboModel>('AwarenessMeibo');

@@ -6,14 +6,13 @@ import 'package:kyoumutechou/feature/boxes.dart';
 import 'package:kyoumutechou/feature/common/model/filter_model.dart';
 import 'package:kyoumutechou/feature/common/provider/common_provider.dart';
 import 'package:kyoumutechou/feature/common/state/api_state.dart';
-import 'package:kyoumutechou/feature/seat/provider/seat_chart_provider.dart';
 import 'package:kyoumutechou/shared/http/api_provider.dart';
 import 'package:kyoumutechou/shared/http/api_response.dart';
 import 'package:kyoumutechou/shared/http/app_exception.dart';
 import 'package:kyoumutechou/shared/util/date_util.dart';
 
 abstract class AttendanceRepositoryProtocol {
-  Future<ApiState> fetch(FilterModel filter);
+  Future<ApiState> fetch(FilterModel filter, int days, DateTime targetDate);
   Future<ApiState> save(FilterModel filter);
 }
 
@@ -27,15 +26,21 @@ class AttendanceMeiboRepository implements AttendanceRepositoryProtocol {
   final Ref ref;
   
   late final ApiProvider _api = ref.read(apiProvider);
-  final box = Boxes.getAttendanceMeibo();
+  final box0 = Boxes.getAttendanceMeibo();
+  final box1 = Boxes.getAttendanceMeibo1();
+  final box2 = Boxes.getAttendanceMeibo2();
 
   @override
-  Future<ApiState> fetch(FilterModel filter) async {
+  Future<ApiState> fetch(
+    FilterModel filter,
+    int days,
+    DateTime targetDate,
+  ) async {
 
-    
-    await box.clear();
-
-    final strDate = DateUtil.getStringDate(filter.targetDate ?? DateTime.now());
+    await box0.clear();
+    await box1.clear();
+    await box2.clear();
+    final strDate = DateUtil.getStringDate(targetDate);
 
     if (filter.classId == null || filter.classId == 0) {
       return const ApiState.loaded();
@@ -59,22 +64,29 @@ class AttendanceMeiboRepository implements AttendanceRepositoryProtocol {
           value as List<dynamic>,
         );
 
-        // set save button enable
-        if (attendanceMeiboList.isNotEmpty) {
-          ref.read(buttonEnableProvider.notifier).state = true;
-        } else {
-          ref.read(buttonEnableProvider.notifier).state = false;
-        }
-
-
         // 2) change list to map
-        final attendanceMeiboMap = attendanceMeiboList.asMap();
+        final meiboMap = attendanceMeiboList.asMap();
 
-        // 3) save to hive with key
-        await box.putAll(attendanceMeiboMap);
+        switch (days) {
+          case 0:
+            // set save button enable
+            if (attendanceMeiboList.isNotEmpty) {
+              ref.read(buttonEnableProvider.notifier).state = true;
+            } else {
+              ref.read(buttonEnableProvider.notifier).state = false;
+            }
 
-        // 4) set to seat provider
-        ref.read(scMeiboListProvider.notifier).state = attendanceMeiboList;
+            // 3) save to hive with key
+            await box0.putAll(meiboMap);
+
+            break;
+          case 1:
+            await box1.putAll(meiboMap);
+            break;
+          case 2:
+            await box2.putAll(meiboMap);
+            break;
+        }
 
         return const ApiState.loaded();
       } catch (e) {

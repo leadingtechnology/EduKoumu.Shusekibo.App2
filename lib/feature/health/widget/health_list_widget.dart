@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:kyoumutechou/feature/boxes.dart';
 import 'package:kyoumutechou/feature/common/provider/filter_provider.dart';
 import 'package:kyoumutechou/feature/common/provider/tokobis_provider.dart';
-import 'package:kyoumutechou/feature/common/widget/no_data_widget.dart';
 import 'package:kyoumutechou/feature/common/widget/toast_helper.dart';
 import 'package:kyoumutechou/feature/health/model/health_meibo_model.dart';
 import 'package:kyoumutechou/feature/health/model/health_status_model.dart';
@@ -34,43 +32,166 @@ class _HealthListWidgetState extends ConsumerState<HealthListWidget> {
   final _baseUrl = dotenv.env['BASE_URL']!;
   String accessToken = Hive.box<String>('shusekibo').get('token').toString();
 
+  // 登校日
+  late final List<DateTime> tokobis;
+
   // 行の設定
   List<PlutoRow> getRows() {
-    final meibos = Boxes.getHealthMeiboBox().values.toList();
-    return meibos.map(setPlutRow).toList();
+    final meibos0 = Boxes.getHealthMeiboBox().values.toList();
+    final meibos1 = Boxes.getHealthMeiboBox1().values.toList();
+    final meibos2 = Boxes.getHealthMeiboBox2().values.toList();
+
+    final rows = <PlutoRow>[];
+    for (final e0 in meibos0) {
+      final e1 = meibos1
+          .where((e) => e.studentNumber == e0.studentNumber)
+          .toList()
+          .first;
+      final e2 = meibos2
+          .where((e) => e.studentNumber == e0.studentNumber)
+          .toList()
+          .first;
+      rows.add(setPlutRow(e0, e1, e2));
+    }
+    return rows;
   }
-  PlutoRow setPlutRow(HealthMeiboModel e) {
+
+  PlutoRow setPlutRow(
+    HealthMeiboModel e0, 
+    HealthMeiboModel e1, 
+    HealthMeiboModel e2,
+  ) {
+
     final isTokobi = ref.read(isTokobiProvider);
-    
-    HealthStatusModel jokyo;
-    if (e.jokyoList != null && e.jokyoList!.isNotEmpty) {
+
+    HealthStatusModel jokyo0;
+    if (e0.jokyoList != null && e0.jokyoList!.isNotEmpty) {
       try {
-        jokyo = e.jokyoList!.first;
+        jokyo0 = e0.jokyoList!.first;
       } catch (ex) {
-        jokyo = const HealthStatusModel();
+        jokyo0 = const HealthStatusModel();
       }
     } else {
-      jokyo = const HealthStatusModel();
+      jokyo0 = const HealthStatusModel();
     }
 
-    return PlutoRow(
-      cells: {
-        //'classNo': PlutoCell(value: e.className),
-        'shusekiNo': PlutoCell(value: e.studentNumber ?? ''),
-        'photoPath': PlutoCell(value: e.photoUrl),
-        'fullName': PlutoCell(value: e.name),
-        'sex': PlutoCell(value: e.genderCode == '1' ? '男' : '女'),
-        'mark': PlutoCell(value: jokyo.ryaku ?? ''),
-        'reason1': PlutoCell(value: jokyo.jiyu1 ?? ''),
-        'reason2': PlutoCell(value: jokyo.jiyu2 ?? ''),
-        'isEditable': PlutoCell(value: jokyo.isEditable == true && isTokobi == true ? 1 : 0),
-        'tenshutsuYoteiFlg':
-            PlutoCell(value: e.tenshutsuYoteiFlg == true ? 1 : 0),
-        'tenshutsuSumiFlg':
-            PlutoCell(value: e.tenshutsuSumiFlg == true ? 1 : 0),
-        'gakunen': PlutoCell(value: e.gakunen),
-      },
-    );
+    HealthStatusModel jokyo1;
+    if (e1 != null && e1.jokyoList != null && e1.jokyoList!.isNotEmpty) {
+      try {
+        jokyo1 = e1.jokyoList!.first;
+      } catch (ex) {
+        jokyo1 = const HealthStatusModel();
+      }
+    } else {
+      jokyo1 = const HealthStatusModel();
+    }
+
+    HealthStatusModel jokyo2;
+    if (e2 != null && e2.jokyoList != null && e2.jokyoList!.isNotEmpty) {
+      try {
+        jokyo2 = e2.jokyoList!.first;
+      } catch (ex) {
+        jokyo2 = const HealthStatusModel();
+      }
+    } else {
+      jokyo2 = const HealthStatusModel();
+    }
+
+    PlutoRow row;
+
+    switch (tokobis.length-1) {
+      case 1: 
+        row = PlutoRow(
+          cells: {
+            'shusekiNo': PlutoCell(value: e0.studentNumber ?? ''),
+            'photoPath': PlutoCell(value: e0.photoUrl),
+            'fullName': PlutoCell(value: e0.name),
+            'sex': PlutoCell(value: e0.genderCode == '1' ? '男' : '女'),
+            'mark': PlutoCell(value: jokyo0.ryaku ?? ''),
+            'reason1': PlutoCell(value: jokyo0.jiyu1 ?? ''),
+            'reason2': PlutoCell(value: jokyo0.jiyu2 ?? ''),
+            'mark1' : PlutoCell(value: jokyo1.ryaku ?? ''),
+            'reason11': PlutoCell(value: jokyo1.jiyu1 ?? ''),
+            'reason12': PlutoCell(value: jokyo1.jiyu2 ?? ''),
+            'isEditable': PlutoCell(
+                value: jokyo0.isEditable == true && isTokobi == true ? 1 : 0),
+            'tenshutsuYoteiFlg':
+                PlutoCell(value: e0.tenshutsuYoteiFlg == true ? 1 : 0),
+            'tenshutsuSumiFlg':
+                PlutoCell(value: e0.tenshutsuSumiFlg == true ? 1 : 0),
+            'gakunen': PlutoCell(value: e0.gakunen),
+          },
+        );
+        break;
+      case 2:
+        row = PlutoRow(
+          cells: {
+            'shusekiNo': PlutoCell(value: e0.studentNumber ?? ''),
+            'photoPath': PlutoCell(value: e0.photoUrl),
+            'fullName': PlutoCell(value: e0.name),
+            'sex': PlutoCell(value: e0.genderCode == '1' ? '男' : '女'),
+            'mark': PlutoCell(value: jokyo0.ryaku ?? ''),
+            'reason1': PlutoCell(value: jokyo0.jiyu1 ?? ''),
+            'reason2': PlutoCell(value: jokyo0.jiyu2 ?? ''),
+            'mark1': PlutoCell(value: jokyo1.ryaku ?? ''),
+            'reason11': PlutoCell(value: jokyo1.jiyu1 ?? ''),
+            'reason12': PlutoCell(value: jokyo1.jiyu2 ?? ''),
+            'mark2': PlutoCell(value: jokyo2.ryaku ?? ''),
+            'reason21': PlutoCell(value: jokyo2.jiyu1 ?? ''),
+            'reason22': PlutoCell(value: jokyo2.jiyu2 ?? ''),
+            'isEditable': PlutoCell(
+                value: jokyo0.isEditable == true && isTokobi == true ? 1 : 0),
+            'tenshutsuYoteiFlg':
+                PlutoCell(value: e0.tenshutsuYoteiFlg == true ? 1 : 0),
+            'tenshutsuSumiFlg':
+                PlutoCell(value: e0.tenshutsuSumiFlg == true ? 1 : 0),
+            'gakunen': PlutoCell(value: e0.gakunen),
+          },
+        );
+        break;
+      default:
+        row = PlutoRow(
+          cells: {
+            'shusekiNo': PlutoCell(value: e0.studentNumber ?? ''),
+            'photoPath': PlutoCell(value: e0.photoUrl),
+            'fullName': PlutoCell(value: e0.name),
+            'sex': PlutoCell(value: e0.genderCode == '1' ? '男' : '女'),
+            'mark': PlutoCell(value: jokyo0.ryaku ?? ''),
+            'reason1': PlutoCell(value: jokyo0.jiyu1 ?? ''),
+            'reason2': PlutoCell(value: jokyo0.jiyu2 ?? ''),
+            'isEditable': PlutoCell(
+                value: jokyo0.isEditable == true && isTokobi == true ? 1 : 0),
+            'tenshutsuYoteiFlg':
+                PlutoCell(value: e0.tenshutsuYoteiFlg == true ? 1 : 0),
+            'tenshutsuSumiFlg':
+                PlutoCell(value: e0.tenshutsuSumiFlg == true ? 1 : 0),
+            'gakunen': PlutoCell(value: e0.gakunen),
+          },
+        );
+        break;
+    } 
+
+    // return PlutoRow(
+    //   cells: {
+    //     //'classNo': PlutoCell(value: e.className),
+    //     'shusekiNo': PlutoCell(value: e0.studentNumber ?? ''),
+    //     'photoPath': PlutoCell(value: e0.photoUrl),
+    //     'fullName': PlutoCell(value: e0.name),
+    //     'sex': PlutoCell(value: e0.genderCode == '1' ? '男' : '女'),
+    //     'mark': PlutoCell(value: jokyo0.ryaku ?? ''),
+    //     'reason1': PlutoCell(value: jokyo0.jiyu1 ?? ''),
+    //     'reason2': PlutoCell(value: jokyo0.jiyu2 ?? ''),
+    //     'isEditable': PlutoCell(
+    //         value: jokyo0.isEditable == true && isTokobi == true ? 1 : 0),
+    //     'tenshutsuYoteiFlg':
+    //         PlutoCell(value: e0.tenshutsuYoteiFlg == true ? 1 : 0),
+    //     'tenshutsuSumiFlg':
+    //         PlutoCell(value: e0.tenshutsuSumiFlg == true ? 1 : 0),
+    //     'gakunen': PlutoCell(value: e0.gakunen),
+    //   },
+    // );
+
+    return row;
   }
 
   // カラムの設定
@@ -90,6 +211,7 @@ class _HealthListWidgetState extends ConsumerState<HealthListWidget> {
         enableContextMenu: false,
         textAlign: PlutoColumnTextAlign.right,
         titleTextAlign: PlutoColumnTextAlign.center,
+        frozen: PlutoColumnFrozen.start,
       ),
       PlutoColumn(
         title: '写真',
@@ -97,6 +219,7 @@ class _HealthListWidgetState extends ConsumerState<HealthListWidget> {
         readOnly: true,
         enableSorting: false,
         type: PlutoColumnType.text(),
+        width: 60,
         enableDropToResize: false,
         enableContextMenu: false,
         textAlign: PlutoColumnTextAlign.center,
@@ -114,38 +237,42 @@ class _HealthListWidgetState extends ConsumerState<HealthListWidget> {
             ),
           );
         },
-        width: 80,
+        frozen: PlutoColumnFrozen.start,
       ),
       PlutoColumn(
-          title: '氏名',
-          field: 'fullName',
-          readOnly: true,
-          enableSorting: false,
-          type: PlutoColumnType.text(),
-          width: 160,
-          enableDropToResize: false,
-          enableContextMenu: false,
-          textAlign: PlutoColumnTextAlign.left,
-          titleTextAlign: PlutoColumnTextAlign.center),
+        title: '氏名',
+        field: 'fullName',
+        readOnly: true,
+        enableSorting: false,
+        type: PlutoColumnType.text(),
+        width: 160,
+        enableDropToResize: false,
+        enableContextMenu: false,
+        textAlign: PlutoColumnTextAlign.left,
+        titleTextAlign: PlutoColumnTextAlign.center,
+        frozen: PlutoColumnFrozen.start,
+      ),
       PlutoColumn(
-          title: '性別',
-          field: 'sex',
-          readOnly: true,
-          type: PlutoColumnType.text(),
-          width: 55,
-          enableDropToResize: false,
-          enableContextMenu: false,
-          textAlign: PlutoColumnTextAlign.center,
-          titleTextAlign: PlutoColumnTextAlign.center),
+        title: '性別',
+        field: 'sex',
+        readOnly: true,
+        type: PlutoColumnType.text(),
+        width: 55,
+        enableDropToResize: false,
+        enableContextMenu: false,
+        textAlign: PlutoColumnTextAlign.center,
+        titleTextAlign: PlutoColumnTextAlign.center,
+        frozen: PlutoColumnFrozen.start,
+      ),
 
       // mark
       PlutoColumn(
-        title: '${DateUtil.getWeekDate(filter.targetDate ?? DateTime.now())}',
+        title: DateUtil.getWeekDate(tokobis[0]),
         field: 'mark',
         readOnly: true,
         enableSorting: false,
         type: PlutoColumnType.text(),
-        width: 100,
+        width: 110,
         cellPadding: const EdgeInsets.fromLTRB(0, 0, 1, 0),
         enableDropToResize: false,
         enableContextMenu: false,
@@ -179,7 +306,7 @@ class _HealthListWidgetState extends ConsumerState<HealthListWidget> {
         readOnly: true,
         enableSorting: false,
         type: PlutoColumnType.text(),
-        width: 216,
+        width: 110,
         cellPadding: const EdgeInsets.fromLTRB(0, 0, 1, 0),
         enableDropToResize: false,
         enableContextMenu: false,
@@ -212,7 +339,7 @@ class _HealthListWidgetState extends ConsumerState<HealthListWidget> {
         readOnly: true,
         enableSorting: false,
         type: PlutoColumnType.text(),
-        width: 216,
+        width: 110,
         cellPadding: const EdgeInsets.fromLTRB(0, 0, 1, 0),
         enableDropToResize: false,
         enableContextMenu: false,
@@ -237,7 +364,208 @@ class _HealthListWidgetState extends ConsumerState<HealthListWidget> {
                 );
         },
       ),
+      if (tokobis != null && tokobis.length > 1) ...[
+        // mark
+        PlutoColumn(
+          title: DateUtil.getWeekDate(tokobis[1]),
+          field: 'mark1',
+          readOnly: true,
+          enableSorting: false,
+          type: PlutoColumnType.text(),
+          width: 110,
+          cellPadding: const EdgeInsets.fromLTRB(0, 0, 1, 0),
+          enableDropToResize: false,
+          enableContextMenu: false,
+          textAlign: PlutoColumnTextAlign.left,
+          titleTextAlign: PlutoColumnTextAlign.center,
+          renderer: (rendererContext) {
+            final isEditable =
+                rendererContext.row.cells['isEditable']!.value == 1;
 
+            return isEditable
+                ? Center(
+                    child: Text(
+                    '${rendererContext.cell.value}',
+                  ))
+                : Container(
+                    padding: EdgeInsets.zero,
+                    color: Colors.grey.withAlpha(50),
+                    child: Center(
+                      child: Text(
+                        '${rendererContext.cell.value}',
+                      ),
+                    ),
+                  );
+          },
+        ),
+
+        // 理由1
+        PlutoColumn(
+          title: '理由1',
+          field: 'reason11',
+          readOnly: true,
+          enableSorting: false,
+          type: PlutoColumnType.text(),
+          width: 110,
+          cellPadding: const EdgeInsets.fromLTRB(0, 0, 1, 0),
+          enableDropToResize: false,
+          enableContextMenu: false,
+          textAlign: PlutoColumnTextAlign.left,
+          titleTextAlign: PlutoColumnTextAlign.center,
+          renderer: (rendererContext) {
+            final isEditable =
+                rendererContext.row.cells['isEditable']!.value == 1;
+
+            return isEditable
+                ? Text(
+                    '${rendererContext.cell.value}',
+                  )
+                : Container(
+                    padding: EdgeInsets.zero,
+                    color: Colors.grey.withAlpha(50),
+                    child: Center(
+                      child: Text(
+                        '${rendererContext.cell.value}',
+                      ),
+                    ),
+                  );
+          },
+        ),
+
+        // 理由2
+        PlutoColumn(
+          title: '理由2',
+          field: 'reason12',
+          readOnly: true,
+          enableSorting: false,
+          type: PlutoColumnType.text(),
+          width: 110,
+          cellPadding: const EdgeInsets.fromLTRB(0, 0, 1, 0),
+          enableDropToResize: false,
+          enableContextMenu: false,
+          textAlign: PlutoColumnTextAlign.left,
+          titleTextAlign: PlutoColumnTextAlign.center,
+          renderer: (rendererContext) {
+            final isEditable =
+                rendererContext.row.cells['isEditable']!.value == 1;
+
+            return isEditable
+                ? Text(
+                    '${rendererContext.cell.value}',
+                  )
+                : Container(
+                    padding: EdgeInsets.zero,
+                    color: Colors.grey.withAlpha(50),
+                    child: Center(
+                      child: Text(
+                        '${rendererContext.cell.value}',
+                      ),
+                    ),
+                  );
+          },
+        ),
+      ],
+      if (tokobis != null &&  tokobis.length > 2) ...[
+        // mark
+        PlutoColumn(
+          title: DateUtil.getWeekDate(tokobis[2]),
+          field: 'mark2',
+          readOnly: true,
+          enableSorting: false,
+          type: PlutoColumnType.text(),
+          width: 110,
+          cellPadding: const EdgeInsets.fromLTRB(0, 0, 1, 0),
+          enableDropToResize: false,
+          enableContextMenu: false,
+          textAlign: PlutoColumnTextAlign.left,
+          titleTextAlign: PlutoColumnTextAlign.center,
+          renderer: (rendererContext) {
+            final isEditable =
+                rendererContext.row.cells['isEditable']!.value == 1;
+
+            return isEditable
+                ? Center(
+                    child: Text(
+                    '${rendererContext.cell.value}',
+                  ))
+                : Container(
+                    padding: EdgeInsets.zero,
+                    color: Colors.grey.withAlpha(50),
+                    child: Center(
+                      child: Text(
+                        '${rendererContext.cell.value}',
+                      ),
+                    ),
+                  );
+          },
+        ),
+
+        // 理由1
+        PlutoColumn(
+          title: '理由1',
+          field: 'reason21',
+          readOnly: true,
+          enableSorting: false,
+          type: PlutoColumnType.text(),
+          width: 110,
+          cellPadding: const EdgeInsets.fromLTRB(0, 0, 1, 0),
+          enableDropToResize: false,
+          enableContextMenu: false,
+          textAlign: PlutoColumnTextAlign.left,
+          titleTextAlign: PlutoColumnTextAlign.center,
+          renderer: (rendererContext) {
+            final isEditable =
+                rendererContext.row.cells['isEditable']!.value == 1;
+
+            return isEditable
+                ? Text(
+                    '${rendererContext.cell.value}',
+                  )
+                : Container(
+                    padding: EdgeInsets.zero,
+                    color: Colors.grey.withAlpha(50),
+                    child: Center(
+                      child: Text(
+                        '${rendererContext.cell.value}',
+                      ),
+                    ),
+                  );
+          },
+        ),
+
+        // 理由2
+        PlutoColumn(
+          title: '理由2',
+          field: 'reason22',
+          readOnly: true,
+          enableSorting: false,
+          type: PlutoColumnType.text(),
+          width: 110,
+          cellPadding: const EdgeInsets.fromLTRB(0, 0, 1, 0),
+          enableDropToResize: false,
+          enableContextMenu: false,
+          textAlign: PlutoColumnTextAlign.left,
+          titleTextAlign: PlutoColumnTextAlign.center,
+          renderer: (rendererContext) {
+            final isEditable =
+                rendererContext.row.cells['isEditable']!.value == 1;
+
+            return isEditable
+                ? Text(
+                    '${rendererContext.cell.value}',
+                  )
+                : Container(
+                    padding: EdgeInsets.zero,
+                    color: Colors.grey.withAlpha(50),
+                    child: Center(
+                      child: Text(
+                        '${rendererContext.cell.value}',
+                      ),
+                    ),
+                  );
+          },
+        ),
+      ],
       PlutoColumn(
         title: '',
         field: 'isEditable',
@@ -263,7 +591,6 @@ class _HealthListWidgetState extends ConsumerState<HealthListWidget> {
         type: PlutoColumnType.text(),
       ),
     ];
-
   }
 
   @override
@@ -319,8 +646,7 @@ class _HealthListWidgetState extends ConsumerState<HealthListWidget> {
     if (stamp.bunrui == '50') {
       for (final r in stateManager.rows) {
         if (r.cells['gakunen']!.value.toString() == gakunen &&
-            r.cells['isEditable']!.value == 1
-        ) {
+            r.cells['isEditable']!.value == 1) {
           r.cells['mark']!.value = stamp.jokyoNmRyaku;
           r.cells['reason1']!.value = reason1.jiyuNmSeishiki ?? '';
           r.cells['reason2']!.value = reason2.jiyuNmSeishiki ?? '';
@@ -332,14 +658,12 @@ class _HealthListWidgetState extends ConsumerState<HealthListWidget> {
 
     //clear all and set one
     if (row.cells['mark']!.value.toString().startsWith('臨')) {
-
       for (final r in stateManager.rows) {
         if (r.sortIdx == row.sortIdx) {
-          r.cells['mark']!.value = 
-              stamp.jokyoCd == '999'
+          r.cells['mark']!.value = stamp.jokyoCd == '999'
               ? ''
-              : '${stamp.jokyoNmRyaku}${reason1.jiyuNmRyaku??''}';
-          
+              : '${stamp.jokyoNmRyaku}${reason1.jiyuNmRyaku ?? ''}';
+
           r.cells['reason1']!.value = reason1.jiyuNmSeishiki ?? '';
           r.cells['reason2']!.value = reason2.jiyuNmSeishiki ?? '';
         } else {
@@ -352,11 +676,10 @@ class _HealthListWidgetState extends ConsumerState<HealthListWidget> {
       return;
     }
 
-    row.cells['mark']!.value = 
-        stamp.jokyoCd == '999'
+    row.cells['mark']!.value = stamp.jokyoCd == '999'
         ? ''
         : '${stamp.jokyoNmRyaku}${reason1.jiyuNmRyaku ?? ''}';
-    
+
     row.cells['reason1']!.value = reason1.jiyuNmSeishiki ?? '';
     row.cells['reason2']!.value = reason2.jiyuNmSeishiki ?? '';
 
@@ -368,9 +691,8 @@ class _HealthListWidgetState extends ConsumerState<HealthListWidget> {
     if (isTokobi == false) return;
 
     for (final row in stateManager.rows) {
-      if (row.cells['mark']!.value.toString().isEmpty && 
-          row.cells['isEditable']!.value == 1
-      ) {
+      if (row.cells['mark']!.value.toString().isEmpty &&
+          row.cells['isEditable']!.value == 1) {
         row.cells['mark']!.value = '・.';
         row.cells['reason1']!.value = '健康';
         row.cells['reason2']!.value = '';
@@ -410,6 +732,10 @@ class _HealthListWidgetState extends ConsumerState<HealthListWidget> {
     final list = Boxes.getHealthMeiboBox().values.toList();
     if (list.isEmpty) {
       return Container();
+    } else {
+      tokobis = getFilteredTokobiDates(
+        ref.read(filterProvider).targetDate ?? DateTime.now(),
+      );
     }
 
     return PlutoGrid(
@@ -420,9 +746,7 @@ class _HealthListWidgetState extends ConsumerState<HealthListWidget> {
         stateManager.setSelectingMode(PlutoGridSelectingMode.cell);
       },
       onSelected: (PlutoGridOnSelectedEvent event) async {
-        if (event.row != null && 
-            event.row!.cells['isEditable']!.value == 1
-        ) {
+        if (event.row != null && event.row!.cells['isEditable']!.value == 1) {
           await setReason(event.row!);
         }
       },

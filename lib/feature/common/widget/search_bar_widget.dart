@@ -88,18 +88,23 @@ class SearchBarWidget extends ConsumerWidget {
                       ),
                     ),
                     if (menuId != Menu.awareness)
-                      Row(
-                      children: [
-                        Checkbox(
-                          value: filter.kouryuGakkyu ?? false,
-                          onChanged: null,
-                        ),
-                        MyText.bodyLarge(
-                          '交流学級で表示',
-                          fontWeight: 700,
-                        ),
-                      ],
-                    ),
+                      InkWell(
+                        onTap: () {
+                          _scaffoldKey.currentState?.openEndDrawer();
+                        },
+                        child: Row(
+                        children: [
+                          Checkbox(
+                            value: filter.kouryuGakkyu ?? false,
+                            onChanged: null,
+                          ),
+                          MyText.bodyLarge(
+                            '交流学級で表示',
+                            fontWeight: 700,
+                          ),
+                        ],
+                                            ),
+                      ),
                   ],
                 ),
                 MySpacing.width(30),

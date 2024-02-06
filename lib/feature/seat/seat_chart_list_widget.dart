@@ -131,7 +131,7 @@ class SeatChartListWidget extends ConsumerWidget {
         enableSorting: false,
         renderer: (rendererContext) {
           final seatOrder=rendererContext.row.cells['SeatOrder']!.value as int;
-          return Text('${seatConfigurations[seatOrder].name ?? ''}');
+          return Text(seatConfigurations[seatOrder].name);
         }
       ),
       // 6
@@ -185,12 +185,12 @@ class SeatChartListWidget extends ConsumerWidget {
                 id = 0;
               }
 
+              // 生徒リストを取得
               ref.read(scMeiboListProvider.notifier).state = 
               Boxes.getAttendanceMeibo().values.toList();
               
               ref.read(seatSettingIdProvider.notifier).state = id;
-              ref.read(seatChartPageTypeProvider.notifier).state =
-                  PageType.seat;
+              ref.read(seatChartPageTypeProvider.notifier).state =PageType.seat;
             },
             icon: const Icon(Icons.edit),
             label: const Text('座席表編集'),

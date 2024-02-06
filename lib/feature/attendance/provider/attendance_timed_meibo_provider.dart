@@ -8,6 +8,8 @@ import 'package:kyoumutechou/feature/boxes.dart';
 import 'package:kyoumutechou/feature/common/model/filter_model.dart';
 import 'package:kyoumutechou/feature/common/provider/filter_provider.dart';
 import 'package:kyoumutechou/feature/common/state/api_state.dart';
+import 'package:kyoumutechou/shared/http/api_response.dart';
+import 'package:kyoumutechou/shared/http/app_exception.dart';
 
 final attendanceTimedMeiboListProvider = 
     StateNotifierProvider<AttendanceTimedMeiboListProvider, ApiState>((ref) {
@@ -38,10 +40,69 @@ class AttendanceTimedMeiboListProvider extends StateNotifier<ApiState> {
   }
 
   Future<void> _fetch() async {
-    final response = await _repository.fetch(filter);
-    if (mounted) {
-      state = response;
+
+    // 初期化完成しない場合、終了する
+    if (filter.classId == null ||
+        filter.classId == 0 ||
+        filter.jigenIdx == null ||
+        filter.targetDate == null) {
+      state = const ApiState.loaded();
+      return;
     }
+
+    // 最大３日間の登校日を取得する。
+    final tokobis = getFilteredTokobiDates(
+      filter.targetDate ?? DateTime.now(),
+    );
+
+    // 非同期処理で最大３日間の生徒情報を取得する。
+    final responses = await Future.wait(
+      List.generate(tokobis.length, (index) {
+        try {
+          return _repository.fetch(filter, index, tokobis[index]);
+        } catch (e) {
+          return Future.value(
+            APIError<String>(
+              AppException.errorWithMessage(e.toString()),
+            ),
+          );
+        }
+      }),
+    );
+
+
+
+    // エラー、ローディングの場合、エラーを表示する。
+    var isError = false;
+    var isLoading = false;
+    var errorMessage = '';
+    for (final response in responses) {
+      if (response is ApiState) {
+        response.when(
+          error: (e) {
+            isError = true;
+            errorMessage = '$errorMessage {e};';
+          },
+          loading: () {
+            isLoading = true;
+          },
+          loaded: () {},
+        );
+      }
+    }
+
+    if (isError || isLoading) {
+      state = const ApiState.error(
+        AppException.errorWithMessage('Error occurred'),
+      );
+      return;
+    }
+
+    // 正常終了
+    if (mounted) {
+      state = const ApiState.loaded();
+    }
+
   }
 
   Future<void> save() async {

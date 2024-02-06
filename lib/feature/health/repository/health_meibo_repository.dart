@@ -13,7 +13,11 @@ import 'package:kyoumutechou/shared/util/date_util.dart';
 
 // ignore: one_member_abstracts
 abstract class HealthRepositoryProtocol {
-  Future<ApiState> fetch(FilterModel filter);
+  Future<ApiState> fetch(
+    FilterModel filter,
+    int days,
+    DateTime targetDate,
+  );
   Future<ApiState> save(FilterModel filter);
 }
 
@@ -26,16 +30,29 @@ class HealthMeiboRepository implements HealthRepositoryProtocol {
 
   final Ref ref;
   late final ApiProvider _api = ref.read(apiProvider);
+  final box0 = Boxes.getHealthMeiboBox();
+  final box1 = Boxes.getHealthMeiboBox1();
+  final box2 = Boxes.getHealthMeiboBox2();  
 
   @override
-  Future<ApiState> fetch(FilterModel filter) async {
+  Future<ApiState> fetch(
+    FilterModel filter,
+    int days,
+    DateTime targetDate,
+  ) async {
     
-    await Boxes.getHealthMeiboBox().clear();
-    final strDate = DateUtil.getStringDate(filter.targetDate?? DateTime.now());
+    await box0.clear();
+    await box1.clear();
+    await box2.clear();
+    final strDate = DateUtil.getStringDate(targetDate);
 
     if (filter.classId == null || filter.classId == 0) {
       return const ApiState.loaded();
     }
+
+    final tokobis = getFilteredTokobiDates(
+      filter.targetDate ?? DateTime.now(),
+    );
 
     var url = 'api/shozoku/${filter.classId}/KenkouKansatsubo';
     url =  '$url?date=$strDate&kouryuGakkyu=${filter.kouryuGakkyu}';
@@ -58,15 +75,21 @@ class HealthMeiboRepository implements HealthRepositoryProtocol {
         // 2) change list to map
         final meiboMap = meiboList.asMap();
 
-        // set save button enable
-        if (meiboMap.isNotEmpty){
-          ref.read(buttonEnableProvider.notifier).state = true;
-        }else{
-          ref.read(buttonEnableProvider.notifier).state = false;
+        switch (days) {
+          case 0:
+            // set save button enable
+            if (meiboMap.isNotEmpty) {
+              ref.read(buttonEnableProvider.notifier).state = true;
+            } else {
+              ref.read(buttonEnableProvider.notifier).state = false;
+            }
+            // 3) save to hive with key
+            await box0.putAll(meiboMap);
+          case 1:
+            await box1.putAll(meiboMap);
+          case 2:
+            await box2.putAll(meiboMap);
         }
-
-        // 3) save to hive with key
-        await Boxes.getHealthMeiboBox().putAll(meiboMap);
 
         return const ApiState.loaded();
       } catch (e) {
@@ -84,7 +107,7 @@ class HealthMeiboRepository implements HealthRepositoryProtocol {
     
     final strDate = DateUtil.getStringDate(filter.targetDate ?? DateTime.now());
 
-    final meibos = Boxes.getHealthMeiboBox().values.toList();
+    final meibos = box0.values.toList();
     final json = jsonEncode(meibos.map((v) => v.toNewJson()).toList()); 
 
     final url = 'api/shozoku/${filter.classId}/KenkouKansatsubo?date=$strDate';

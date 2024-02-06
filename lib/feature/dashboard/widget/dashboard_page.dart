@@ -62,7 +62,7 @@ class DashboardPageState extends ConsumerState<DashboardPage>
                       fontSize: 16,
                     ),
                   ),
-                  Text('${tokobi.tokobi}'),
+                  //Text('${tokobi.tokobi}'),
                 ],
               ),
             ],

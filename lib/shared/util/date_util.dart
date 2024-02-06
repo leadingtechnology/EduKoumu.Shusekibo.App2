@@ -64,32 +64,58 @@ class DateUtil {
     return '$year.$month.$day';
   }
 
+  static List<DateTime> getTokobis(){
+    final now = DateTime.now();
+    final year = now.year;
+    final month = now.month;
+    final day = now.day;
+    final daysInMonth = DateTime(year, month + 1, 0).day;
+    final firstDay = DateTime(year, month, 1);
+    final lastDay = DateTime(year, month, daysInMonth);
+    final firstDayOfWeek = firstDay.weekday;
+    final lastDayOfWeek = lastDay.weekday;
+    final firstMonday = firstDay.subtract(Duration(days: firstDayOfWeek - 1));
+    final lastSunday = lastDay.add(Duration(days: DateTime.daysPerWeek - lastDayOfWeek));
+
+    final days = lastSunday.difference(firstMonday).inDays + 1;
+    final weeks = (days / DateTime.daysPerWeek).ceil();
+
+    final List<DateTime> dates = [];
+    for (var i = 0; i < weeks; i++) {
+      for (var j = 0; j < DateTime.daysPerWeek; j++) {
+        dates.add(firstMonday.add(Duration(days: j + i * DateTime.daysPerWeek)));
+      }
+    }
+
+    return dates;
+  } 
+
   // last day of prior month.
-  static DateTime? getLastDayOfPriorMonth(DateTime date) {
+  // static DateTime? getLastDayOfPriorMonth(DateTime date) {
     
-    // 当月１日からdateまで出勤日数の算出
-    final firstDayOfMonth = DateTime(date.year, date.month);
-    var workingDays = 0;
-    for (DateTime i = firstDayOfMonth;
-        i.isBefore(date);
-        i = i.add(Duration(days: 1))) {
-      // 月から金までの出勤日数をカウント
-      if (i.weekday != DateTime.saturday && i.weekday != DateTime.sunday) {
-        workingDays++;
-      }
-    }
+  //   // 当月１日からdateまで出勤日数の算出
+  //   final firstDayOfMonth = DateTime(date.year, date.month);
+  //   var workingDays = 0;
+  //   for (DateTime i = firstDayOfMonth;
+  //       i.isBefore(date);
+  //       i = i.add(Duration(days: 1))) {
+  //     // 月から金までの出勤日数をカウント
+  //     if (i.weekday != DateTime.saturday && i.weekday != DateTime.sunday) {
+  //       workingDays++;
+  //     }
+  //   }
 
-    if (workingDays < 3 ) {
-      if (date.month == 4) {
-        return null;
-      }
+  //   if (workingDays < 3 ) {
+  //     if (date.month == 4) {
+  //       return null;
+  //     }
 
-      DateTime previousMonth = DateTime(date.year, date.month - 1, 1);
-      return previousMonth;
-    }
+  //     final previousMonth = DateTime(date.year, date.month - 1);
+  //     return previousMonth;
+  //   }
 
-    return null;
-  }
+  //   return null;
+  // }
 
   // begindate , enddate (4/1~3/31)
   static Tuple2<DateTime, DateTime> calculateFiscalYear(DateTime date) {
