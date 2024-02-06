@@ -55,6 +55,7 @@ class HealthMeiboListProvider extends StateNotifier<ApiState> {
     // 最大３日間の登校日を取得する。
     final tokobis = getFilteredTokobiDates(
       filter.targetDate ?? DateTime.now(),
+      ref.read(filterProvider).classId ?? 0, 
     );
 
     // 非同期処理で最大３日間の生徒情報を取得する。

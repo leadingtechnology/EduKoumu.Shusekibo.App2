@@ -21,6 +21,7 @@ import 'package:kyoumutechou/feature/health/model/health_reason_model.dart';
 import 'package:kyoumutechou/feature/health/model/health_stamp_model.dart';
 import 'package:kyoumutechou/feature/seat/model/seat_chart_model.dart';
 import 'package:kyoumutechou/feature/seat/model/seat_setting_model.dart';
+import 'package:kyoumutechou/shared/util/date_util.dart';
 
 class Boxes {
   static Box<String> getBox() => Hive.box<String>('shusekibo');
@@ -108,25 +109,47 @@ class Boxes {
 }
 
 
-List<DateTime> getFilteredTokobiDates(DateTime targetDate) {
+List<DateTime> getFilteredTokobiDates(DateTime targetDate, int shozokuId) {
   final box = Boxes.getTokobis();
 
   final inputDate = DateTime(targetDate.year, targetDate.month, targetDate.day);
 
-  // 対象日付より前の登校日データを取得する
-  final filteredList = box.values
-      .where((e) =>
-          e.isEditable! == true && e.tokobi!.isBefore(inputDate),) 
-      .toList(); 
+  final firstDay = DateUtil.calculateFiscalYear(targetDate).item1
+      .subtract(const Duration(days: 1));
+  
+  // key が　shozokuId　からのデータを取得する
+  final keys = box.keys
+      .where((e) => e.toString().startsWith('$shozokuId-'))
+      .toList();
+  
+  // keysの値を全部取得する
+  var filteredList = keys.map(box.get).toList();
+  try{
+    filteredList = box.values
+        .where(
+          (e) =>
+              e.isEditable! == true &&
+              e.tokobi!.isBefore(inputDate) &&
+              e.tokobi!.isAfter(firstDay),
+        )
+        .toList();
 
-  // 登校日データを降順に並び替える
-  filteredList.sort((a, b) => b.tokobi!.compareTo(a.tokobi!));
+    // 登校日データを降順に並び替える
+    filteredList.sort((a, b) => b?.tokobi?.compareTo(a?.tokobi ?? DateTime(0)) ?? 0);
+  }catch(e){
+    //print(e);
+  }
 
   
   final result = <DateTime>[inputDate];
   for (var i = 0; i < 2; i++) {
-    if (filteredList[i].tokobi != null){
-      result.add(filteredList[i].tokobi!);
+    try{
+      if (filteredList[i]?.tokobi != null) {
+        result.add(filteredList[i]!.tokobi!);
+      }
+    }
+    catch(e){
+      continue;
     }
   }
 

@@ -12,7 +12,7 @@ import 'package:kyoumutechou/shared/http/app_exception.dart';
 import 'package:kyoumutechou/shared/util/date_util.dart';
 
 abstract class TimedRepositoryProtocol { 
-  Future<ApiState> fetch(FilterModel filter, int days, DateTime targetDate);
+  Future<ApiState> fetch(FilterModel filter, DateTime targetDate);
   Future<ApiState> save(FilterModel filter);
 }
 
@@ -26,19 +26,14 @@ class TimedMeiboRepository implements TimedRepositoryProtocol {
   final Ref ref;
   late final ApiProvider _api = ref.read(apiProvider);
   final box0 = Boxes.getAttendanceTimedMeibo();
-  final box1 = Boxes.getAttendanceTimedMeibo1();
-  final box2 = Boxes.getAttendanceTimedMeibo2();
 
   @override
   Future<ApiState> fetch(
     FilterModel filter,
-    int days,
     DateTime targetDate,
   ) async {
 
     await box0.clear();
-    await box1.clear();
-    await box2.clear();
     final strDate = DateUtil.getStringDate(targetDate);
 
     if (filter.classId == null || 
@@ -68,29 +63,16 @@ class TimedMeiboRepository implements TimedRepositoryProtocol {
         // 2) change list to map
         final timedMeiboMap = timedMeibo.asMap();
 
-        switch (days) {
-          case 0:
-            // set save button enable
-            if (timedMeibo.isNotEmpty) {
-              ref.read(buttonEnableProvider.notifier).state = true;
-            } else {
-              ref.read(buttonEnableProvider.notifier).state = false;
-            }        
-
-            // 3) save to hive with key
-            await box0.putAll(timedMeiboMap);
-            break;
-          case 1:
-            await box1.putAll(timedMeibo.asMap());
-            break;
-          case 2:
-            await box2.putAll(timedMeibo.asMap());
-            break;
-          default:
-            await box0.putAll(timedMeibo.asMap());
-            break;
+           // set save button enable
+        if (timedMeibo.isNotEmpty) {
+          ref.read(buttonEnableProvider.notifier).state = true;
+        } else {
+          ref.read(buttonEnableProvider.notifier).state = false;
         }
 
+        // 3) save to hive with key
+        await box0.putAll(timedMeiboMap);
+        
         return const ApiState.loaded();
       } catch (e) {
         return ApiState.error(

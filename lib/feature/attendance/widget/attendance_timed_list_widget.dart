@@ -41,28 +41,16 @@ class _AttendanceTimedListWidgetState
   // 行の設定
   List<PlutoRow> getRows() {
     final meibos0 = Boxes.getAttendanceTimedMeibo().values.toList();
-    final meibos1 = Boxes.getAttendanceTimedMeibo1().values.toList();
-    final meibos2 = Boxes.getAttendanceTimedMeibo2().values.toList();
 
     final rows = <PlutoRow>[];
     for (final e0 in meibos0) {
-      final e1 = meibos1
-          .where((e) => e.studentNumber == e0.studentNumber)
-          .toList()
-          .first;
-      final e2 = meibos2
-          .where((e) => e.studentNumber == e0.studentNumber)
-          .toList()
-          .first;
-      rows.add(setPlutRow(e0, e1, e2));
+      rows.add(setPlutRow(e0));
     }
     return rows;
   }
 
   PlutoRow setPlutRow(
     AttendanceTimedMeiboModel e0,
-    AttendanceTimedMeiboModel e1,
-    AttendanceTimedMeiboModel e2,
   ) {
     final filter = ref.read(filterProvider);
 
@@ -91,157 +79,32 @@ class _AttendanceTimedListWidgetState
       }
     }
 
-    var jokyo1 = AttendanceTimedStatusModel(
-      jokyoDate: filter.targetDate ?? DateTime.now(),
-      jigenIdx: jigenIdx,
-      ryaku: '',
-      jiyu1: '',
-      jiyu2: '',
-      isEditable: e1.jokyoList?[0].isEditable,
+    final row= PlutoRow(
+      cells: {
+        //'classNo': PlutoCell(value: e.className),
+        'shusekiNo': PlutoCell(value: e0.studentNumber ?? ''),
+        'photoPath': PlutoCell(value: e0.photoUrl),
+        'fullName': PlutoCell(value: e0.name),
+        'sex': PlutoCell(value: e0.genderCode == '1' ? '男' : '女'),
+        'mark': PlutoCell(value: jokyo0.ryaku ?? ''),
+        'reason1': PlutoCell(value: jokyo0.jiyu1 ?? ''),
+        'reason2': PlutoCell(value: jokyo0.jiyu2 ?? ''),
+        'isEditable': PlutoCell(
+            value: jokyo0.isEditable == true && isTokobi == true ? 1 : 0),
+        'tenshutsuYoteiFlg':
+            PlutoCell(value: e0.tenshutsuYoteiFlg == true ? 1 : 0),
+        'tenshutsuSumiFlg':
+            PlutoCell(value: e0.tenshutsuSumiFlg == true ? 1 : 0),
+        'gakunen': PlutoCell(value: e0.gakunen),
+      },
     );
-
-    if (e1.jokyoList != null && e1.jokyoList!.isNotEmpty) {
-      try {
-        jokyo1 = e1.jokyoList!
-            .where(
-              (e) => e.jigenIdx == jigenIdx,
-            )
-            .toList()
-            .first;
-      } catch (ex) {
-        //print('$ex');
-      }
-    }
-
-    var jokyo2 = AttendanceTimedStatusModel(
-      jokyoDate: filter.targetDate ?? DateTime.now(),
-      jigenIdx: jigenIdx,
-      ryaku: '',
-      jiyu1: '',
-      jiyu2: '',
-      isEditable: e2.jokyoList?[0].isEditable,
-    );
-
-    if (e2.jokyoList != null && e2.jokyoList!.isNotEmpty) {
-      try {
-        jokyo2 = e2.jokyoList!
-            .where(
-              (e) => e.jigenIdx == jigenIdx,
-            )
-            .toList()
-            .first;
-      } catch (ex) {
-        //print('$ex');
-      }
-    }
-
-    PlutoRow row;
-    switch (tokobis.length - 1) {
-      case 1:
-        row = PlutoRow(
-          cells: {
-            //'classNo': PlutoCell(value: e.className),
-            'shusekiNo': PlutoCell(value: e0.studentNumber ?? ''),
-            'photoPath': PlutoCell(value: e0.photoUrl),
-            'fullName': PlutoCell(value: e0.name),
-            'sex': PlutoCell(value: e0.genderCode == '1' ? '男' : '女'),
-            'mark': PlutoCell(value: jokyo0.ryaku ?? ''),
-            'reason1': PlutoCell(value: jokyo0.jiyu1 ?? ''),
-            'reason2': PlutoCell(value: jokyo0.jiyu2 ?? ''),
-            
-            'mark1': PlutoCell(value: jokyo1.ryaku ?? ''),
-            'reason11': PlutoCell(value: jokyo1.jiyu1 ?? ''),
-            'reason12': PlutoCell(value: jokyo1.jiyu2 ?? ''),
-
-            'isEditable': PlutoCell(
-                value: jokyo0.isEditable == true && isTokobi == true ? 1 : 0),
-            'tenshutsuYoteiFlg':
-                PlutoCell(value: e0.tenshutsuYoteiFlg == true ? 1 : 0),
-            'tenshutsuSumiFlg':
-                PlutoCell(value: e0.tenshutsuSumiFlg == true ? 1 : 0),
-            'gakunen': PlutoCell(value: e0.gakunen),
-          },
-        );
-        break;
-      case 2:
-        row = PlutoRow(
-          cells: {
-            //'classNo': PlutoCell(value: e.className),
-            'shusekiNo': PlutoCell(value: e0.studentNumber ?? ''),
-            'photoPath': PlutoCell(value: e0.photoUrl),
-            'fullName': PlutoCell(value: e0.name),
-            'sex': PlutoCell(value: e0.genderCode == '1' ? '男' : '女'),
-            'mark': PlutoCell(value: jokyo0.ryaku ?? ''),
-            'reason1': PlutoCell(value: jokyo0.jiyu1 ?? ''),
-            'reason2': PlutoCell(value: jokyo0.jiyu2 ?? ''),
-            
-            'mark1': PlutoCell(value: jokyo1.ryaku ?? ''),
-            'reason11': PlutoCell(value: jokyo1.jiyu1 ?? ''),
-            'reason12': PlutoCell(value: jokyo1.jiyu2 ?? ''),
-
-            'mark2': PlutoCell(value: jokyo2.ryaku ?? ''),
-            'reason21': PlutoCell(value: jokyo2.jiyu1 ?? ''),
-            'reason22': PlutoCell(value: jokyo2.jiyu2 ?? ''),
-
-            'isEditable': PlutoCell(
-                value: jokyo0.isEditable == true && isTokobi == true ? 1 : 0),
-            'tenshutsuYoteiFlg':
-                PlutoCell(value: e0.tenshutsuYoteiFlg == true ? 1 : 0),
-            'tenshutsuSumiFlg':
-                PlutoCell(value: e0.tenshutsuSumiFlg == true ? 1 : 0),
-            'gakunen': PlutoCell(value: e0.gakunen),
-          },
-        );
-        break;
-      default:
-        row = PlutoRow(
-          cells: {
-            //'classNo': PlutoCell(value: e.className),
-            'shusekiNo': PlutoCell(value: e0.studentNumber ?? ''),
-            'photoPath': PlutoCell(value: e0.photoUrl),
-            'fullName': PlutoCell(value: e0.name),
-            'sex': PlutoCell(value: e0.genderCode == '1' ? '男' : '女'),
-            'mark': PlutoCell(value: jokyo0.ryaku ?? ''),
-            'reason1': PlutoCell(value: jokyo0.jiyu1 ?? ''),
-            'reason2': PlutoCell(value: jokyo0.jiyu2 ?? ''),
-            'isEditable': PlutoCell(
-                value: jokyo0.isEditable == true && isTokobi == true ? 1 : 0),
-            'tenshutsuYoteiFlg':
-                PlutoCell(value: e0.tenshutsuYoteiFlg == true ? 1 : 0),
-            'tenshutsuSumiFlg':
-                PlutoCell(value: e0.tenshutsuSumiFlg == true ? 1 : 0),
-            'gakunen': PlutoCell(value: e0.gakunen),
-          },
-        );
-        break;
-    }
 
     return row;
 
-    // return PlutoRow(
-    //   cells: {
-    //     //'classNo': PlutoCell(value: e.className),
-    //     'shusekiNo': PlutoCell(value: e0.studentNumber ?? ''),
-    //     'photoPath': PlutoCell(value: e0.photoUrl),
-    //     'fullName': PlutoCell(value: e0.name),
-    //     'sex': PlutoCell(value: e0.genderCode == '1' ? '男' : '女'),
-    //     'mark': PlutoCell(value: jokyo0.ryaku ?? ''),
-    //     'reason1': PlutoCell(value: jokyo0.jiyu1 ?? ''),
-    //     'reason2': PlutoCell(value: jokyo0.jiyu2 ?? ''),
-    //     'isEditable': PlutoCell(
-    //         value: jokyo0.isEditable == true && isTokobi == true ? 1 : 0),
-    //     'tenshutsuYoteiFlg':
-    //         PlutoCell(value: e0.tenshutsuYoteiFlg == true ? 1 : 0),
-    //     'tenshutsuSumiFlg':
-    //         PlutoCell(value: e0.tenshutsuSumiFlg == true ? 1 : 0),
-    //     'gakunen': PlutoCell(value: e0.gakunen),
-    //   },
-    // );
   }
 
   // カラムの設定
   List<PlutoColumn> getColumns() {
-    final filter = ref.read(filterProvider);
     return [
       //PlutoColumn(title: 'クラス',  field: 'classNo',   readOnly: true, type: PlutoColumnType.text(),               width: 90, enableContextMenu: false, textAlign: PlutoColumnTextAlign.left, titleTextAlign: PlutoColumnTextAlign.center),
 
@@ -333,7 +196,7 @@ class _AttendanceTimedListWidgetState
               ? Center(
                   child: Text(
                   '${rc.cell.value}',
-                ))
+                ),)
               : Container(
                   padding: EdgeInsets.zero,
                   color: Colors.grey.withAlpha(50),
@@ -409,203 +272,6 @@ class _AttendanceTimedListWidgetState
                 );
         },
       ),
-      if (tokobis.length > 1) ...[
-        // mark
-        PlutoColumn(
-          title: DateUtil.getWeekDate(tokobis[1]),
-          field: 'mark1',
-          readOnly: true,
-          enableSorting: false,
-          type: PlutoColumnType.text(),
-          width: 110,
-          cellPadding: const EdgeInsets.fromLTRB(0, 0, 1, 0),
-          enableDropToResize: false,
-          enableContextMenu: false,
-          textAlign: PlutoColumnTextAlign.left,
-          titleTextAlign: PlutoColumnTextAlign.center,
-          renderer: (rc) {
-            final isEditable = rc.row.cells['isEditable']!.value == 1;
-
-            return isEditable
-                ? Center(
-                    child: Text(
-                    '${rc.cell.value}',
-                  ))
-                : Container(
-                    padding: EdgeInsets.zero,
-                    color: Colors.grey.withAlpha(50),
-                    child: Center(
-                      child: Text(
-                        '${rc.cell.value}',
-                      ),
-                    ),
-                  );
-          },
-        ),
-
-        // 理由１
-        PlutoColumn(
-          title: '理由1',
-          field: 'reason11',
-          readOnly: true,
-          enableSorting: false,
-          type: PlutoColumnType.text(),
-          width: 110,
-          cellPadding: const EdgeInsets.fromLTRB(0, 0, 1, 0),
-          enableDropToResize: false,
-          enableContextMenu: false,
-          textAlign: PlutoColumnTextAlign.left,
-          titleTextAlign: PlutoColumnTextAlign.center,
-          renderer: (rc) {
-            final isEditable = rc.row.cells['isEditable']!.value == 1;
-
-            return isEditable
-                ? Text(
-                    '${rc.cell.value}',
-                  )
-                : Container(
-                    padding: EdgeInsets.zero,
-                    color: Colors.grey.withAlpha(50),
-                    child: Center(
-                      child: Text(
-                        '${rc.cell.value}',
-                      ),
-                    ),
-                  );
-          },
-        ),
-
-        // 理由２
-        PlutoColumn(
-          title: '理由2',
-          field: 'reason12',
-          readOnly: true,
-          enableSorting: false,
-          type: PlutoColumnType.text(),
-          width: 110,
-          cellPadding: const EdgeInsets.fromLTRB(0, 0, 1, 0),
-          enableDropToResize: false,
-          enableContextMenu: false,
-          textAlign: PlutoColumnTextAlign.left,
-          titleTextAlign: PlutoColumnTextAlign.center,
-          renderer: (rc) {
-            final isEditable = rc.row.cells['isEditable']!.value == 1;
-
-            return isEditable
-                ? Text(
-                    '${rc.cell.value}',
-                  )
-                : Container(
-                    padding: EdgeInsets.zero,
-                    color: Colors.grey.withAlpha(50),
-                    child: Center(
-                      child: Text(
-                        '${rc.cell.value}',
-                      ),
-                    ),
-                  );
-          },
-        ),
-      ],
-      if (tokobis.length > 2) ...[
-        // mark
-        PlutoColumn(
-          title: DateUtil.getWeekDate(tokobis[2]),
-          field: 'mark2',
-          readOnly: true,
-          enableSorting: false,
-          type: PlutoColumnType.text(),
-          width: 110,
-          cellPadding: const EdgeInsets.fromLTRB(0, 0, 1, 0),
-          enableDropToResize: false,
-          enableContextMenu: false,
-          textAlign: PlutoColumnTextAlign.left,
-          titleTextAlign: PlutoColumnTextAlign.center,
-          renderer: (rc) {
-            final isEditable = rc.row.cells['isEditable']!.value == 1;
-
-            return isEditable
-                ? Center(
-                    child: Text(
-                    '${rc.cell.value}',
-                  ))
-                : Container(
-                    padding: EdgeInsets.zero,
-                    color: Colors.grey.withAlpha(50),
-                    child: Center(
-                      child: Text(
-                        '${rc.cell.value}',
-                      ),
-                    ),
-                  );
-          },
-        ),
-
-        // 理由１
-        PlutoColumn(
-          title: '理由1',
-          field: 'reason21',
-          readOnly: true,
-          enableSorting: false,
-          type: PlutoColumnType.text(),
-          width: 110,
-          cellPadding: const EdgeInsets.fromLTRB(0, 0, 1, 0),
-          enableDropToResize: false,
-          enableContextMenu: false,
-          textAlign: PlutoColumnTextAlign.left,
-          titleTextAlign: PlutoColumnTextAlign.center,
-          renderer: (rc) {
-            final isEditable = rc.row.cells['isEditable']!.value == 1;
-
-            return isEditable
-                ? Text(
-                    '${rc.cell.value}',
-                  )
-                : Container(
-                    padding: EdgeInsets.zero,
-                    color: Colors.grey.withAlpha(50),
-                    child: Center(
-                      child: Text(
-                        '${rc.cell.value}',
-                      ),
-                    ),
-                  );
-          },
-        ),
-
-        // 理由２
-        PlutoColumn(
-          title: '理由2',
-          field: 'reason22',
-          readOnly: true,
-          enableSorting: false,
-          type: PlutoColumnType.text(),
-          width: 110,
-          cellPadding: const EdgeInsets.fromLTRB(0, 0, 1, 0),
-          enableDropToResize: false,
-          enableContextMenu: false,
-          textAlign: PlutoColumnTextAlign.left,
-          titleTextAlign: PlutoColumnTextAlign.center,
-          renderer: (rc) {
-            final isEditable = rc.row.cells['isEditable']!.value == 1;
-
-            return isEditable
-                ? Text(
-                    '${rc.cell.value}',
-                  )
-                : Container(
-                    padding: EdgeInsets.zero,
-                    color: Colors.grey.withAlpha(50),
-                    child: Center(
-                      child: Text(
-                        '${rc.cell.value}',
-                      ),
-                    ),
-                  );
-          },
-        ),
-      ],
-
       PlutoColumn(
         title: '',
         field: 'isEditable',
@@ -795,6 +461,7 @@ class _AttendanceTimedListWidgetState
     } else {
       tokobis = getFilteredTokobiDates(
         ref.read(filterProvider).targetDate ?? DateTime.now(),
+        ref.read(filterProvider).classId ?? 0, 
       );
     }
 

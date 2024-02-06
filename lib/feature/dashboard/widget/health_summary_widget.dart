@@ -6,6 +6,7 @@ import 'package:kyoumutechou/feature/dashboard/model/home_health_model.dart';
 import 'package:kyoumutechou/feature/dashboard/provider/home_health_list_provider.dart';
 import 'package:kyoumutechou/helpers/widgets/my_spacing.dart';
 import 'package:kyoumutechou/shared/http/app_exception.dart';
+import 'package:kyoumutechou/shared/util/date_util.dart';
 
 class HealthSummaryWidget extends ConsumerWidget {
   const HealthSummaryWidget({super.key});
@@ -26,17 +27,38 @@ class HealthSummaryWidget extends ConsumerWidget {
         return Text(e.toString());
       },
       loaded: (healthListList) {
+        final tokobis = ref.watch(lastTokobisProvider);
+
         return Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: healthListList.map(daySummry).toList(),
+          children: List.generate(tokobis.length, (index) {
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start, 
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(0,10,0,10),
+                  child: Text(
+                    '${DateUtil.getJpMonthDayWeek(tokobis[index])} ',
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: daySummry(healthListList[index]),
+                ),
+              ],
+            );
+          }),
         );
       },
     );
   }
 
   Widget daySummry(List<HomeHealthModel> healthList) {
-    return Expanded(
-      child: ListView(
+    return SingleChildScrollView(
+      child: Column(
         children: healthList.map((e) {
           String inputStates;
           Color? inputColor = Colors.pink[100];

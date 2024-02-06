@@ -50,10 +50,6 @@ class HealthMeiboRepository implements HealthRepositoryProtocol {
       return const ApiState.loaded();
     }
 
-    final tokobis = getFilteredTokobiDates(
-      filter.targetDate ?? DateTime.now(),
-    );
-
     var url = 'api/shozoku/${filter.classId}/KenkouKansatsubo';
     url =  '$url?date=$strDate&kouryuGakkyu=${filter.kouryuGakkyu}';
     final response = await _api.get(url);

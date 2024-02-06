@@ -33,7 +33,7 @@ class AttendanceTimedMeiboListProvider extends StateNotifier<ApiState> {
 
   final Ref ref;
   final FilterModel filter;
-  late final _repository = ref.read(timedMeiboRepositoryProvider);
+  late final _rep = ref.read(timedMeiboRepositoryProvider);
 
   Future<void> _init() async { 
     await _fetch(); 
@@ -50,63 +50,20 @@ class AttendanceTimedMeiboListProvider extends StateNotifier<ApiState> {
       return;
     }
 
-    // 最大３日間の登校日を取得する。
-    final tokobis = getFilteredTokobiDates(
+    final response = await _rep.fetch(
+      filter, 
       filter.targetDate ?? DateTime.now(),
     );
 
-    // 非同期処理で最大３日間の生徒情報を取得する。
-    final responses = await Future.wait(
-      List.generate(tokobis.length, (index) {
-        try {
-          return _repository.fetch(filter, index, tokobis[index]);
-        } catch (e) {
-          return Future.value(
-            APIError<String>(
-              AppException.errorWithMessage(e.toString()),
-            ),
-          );
-        }
-      }),
-    );
-
-
-
-    // エラー、ローディングの場合、エラーを表示する。
-    var isError = false;
-    var isLoading = false;
-    var errorMessage = '';
-    for (final response in responses) {
-      if (response is ApiState) {
-        response.when(
-          error: (e) {
-            isError = true;
-            errorMessage = '$errorMessage {e};';
-          },
-          loading: () {
-            isLoading = true;
-          },
-          loaded: () {},
-        );
-      }
-    }
-
-    if (isError || isLoading) {
-      state = const ApiState.error(
-        AppException.errorWithMessage('Error occurred'),
-      );
-      return;
-    }
-
     // 正常終了
     if (mounted) {
-      state = const ApiState.loaded();
+      state = response;
     }
 
   }
 
   Future<void> save() async {
-    state = await _repository.save(filter);
+    state = await _rep.save(filter);
   }
 
   // set stamp by Id

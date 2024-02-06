@@ -32,9 +32,6 @@ class _HealthListWidgetState extends ConsumerState<HealthListWidget> {
   final _baseUrl = dotenv.env['BASE_URL']!;
   String accessToken = Hive.box<String>('shusekibo').get('token').toString();
 
-  // 登校日
-  late final List<DateTime> tokobis;
-
   // 行の設定
   List<PlutoRow> getRows() {
     final meibos0 = Boxes.getHealthMeiboBox().values.toList();
@@ -43,14 +40,26 @@ class _HealthListWidgetState extends ConsumerState<HealthListWidget> {
 
     final rows = <PlutoRow>[];
     for (final e0 in meibos0) {
-      final e1 = meibos1
+      HealthMeiboModel e1;
+      try{
+        e1 = meibos1
           .where((e) => e.studentNumber == e0.studentNumber)
           .toList()
           .first;
-      final e2 = meibos2
-          .where((e) => e.studentNumber == e0.studentNumber)
-          .toList()
-          .first;
+      }catch(e){
+        e1 = const HealthMeiboModel();
+      }
+
+      HealthMeiboModel e2;
+      try {
+        e2 = meibos2
+            .where((e) => e.studentNumber == e0.studentNumber)
+            .toList()
+            .first;
+      } catch (e) {
+        e2 = const HealthMeiboModel();
+      }
+  
       rows.add(setPlutRow(e0, e1, e2));
     }
     return rows;
@@ -58,9 +67,13 @@ class _HealthListWidgetState extends ConsumerState<HealthListWidget> {
 
   PlutoRow setPlutRow(
     HealthMeiboModel e0, 
-    HealthMeiboModel e1, 
-    HealthMeiboModel e2,
+    HealthMeiboModel? e1, 
+    HealthMeiboModel? e2,
   ) {
+    final tokobis = getFilteredTokobiDates(
+      ref.read(filterProvider).targetDate ?? DateTime.now(),
+      ref.read(filterProvider).classId ?? 0,
+    );    
 
     final isTokobi = ref.read(isTokobiProvider);
 
@@ -196,10 +209,12 @@ class _HealthListWidgetState extends ConsumerState<HealthListWidget> {
 
   // カラムの設定
   List<PlutoColumn> getColumns() {
-    final filter = ref.read(filterProvider);
+    final tokobis = getFilteredTokobiDates(
+      ref.read(filterProvider).targetDate ?? DateTime.now(),
+      ref.read(filterProvider).classId ?? 0,
+    );
 
     return [
-      //PlutoColumn(title: 'クラス',  field: 'classNo',   readOnly: true, type: PlutoColumnType.text(),               width: 90, enableContextMenu: false, textAlign: PlutoColumnTextAlign.left, titleTextAlign: PlutoColumnTextAlign.center),
       PlutoColumn(
         title: '出席番号',
         field: 'shusekiNo',
@@ -286,7 +301,7 @@ class _HealthListWidgetState extends ConsumerState<HealthListWidget> {
               ? Center(
                   child: Text(
                   '${rendererContext.cell.value}',
-                ))
+                ),)
               : Container(
                   padding: EdgeInsets.zero,
                   color: Colors.grey.withAlpha(50),
@@ -364,7 +379,7 @@ class _HealthListWidgetState extends ConsumerState<HealthListWidget> {
                 );
         },
       ),
-      if (tokobis != null && tokobis.length > 1) ...[
+      if (tokobis.length > 1) ...[
         // mark
         PlutoColumn(
           title: DateUtil.getWeekDate(tokobis[1]),
@@ -379,15 +394,8 @@ class _HealthListWidgetState extends ConsumerState<HealthListWidget> {
           textAlign: PlutoColumnTextAlign.left,
           titleTextAlign: PlutoColumnTextAlign.center,
           renderer: (rendererContext) {
-            final isEditable =
-                rendererContext.row.cells['isEditable']!.value == 1;
 
-            return isEditable
-                ? Center(
-                    child: Text(
-                    '${rendererContext.cell.value}',
-                  ))
-                : Container(
+            return Container(
                     padding: EdgeInsets.zero,
                     color: Colors.grey.withAlpha(50),
                     child: Center(
@@ -413,14 +421,8 @@ class _HealthListWidgetState extends ConsumerState<HealthListWidget> {
           textAlign: PlutoColumnTextAlign.left,
           titleTextAlign: PlutoColumnTextAlign.center,
           renderer: (rendererContext) {
-            final isEditable =
-                rendererContext.row.cells['isEditable']!.value == 1;
 
-            return isEditable
-                ? Text(
-                    '${rendererContext.cell.value}',
-                  )
-                : Container(
+            return Container(
                     padding: EdgeInsets.zero,
                     color: Colors.grey.withAlpha(50),
                     child: Center(
@@ -446,14 +448,8 @@ class _HealthListWidgetState extends ConsumerState<HealthListWidget> {
           textAlign: PlutoColumnTextAlign.left,
           titleTextAlign: PlutoColumnTextAlign.center,
           renderer: (rendererContext) {
-            final isEditable =
-                rendererContext.row.cells['isEditable']!.value == 1;
 
-            return isEditable
-                ? Text(
-                    '${rendererContext.cell.value}',
-                  )
-                : Container(
+            return Container(
                     padding: EdgeInsets.zero,
                     color: Colors.grey.withAlpha(50),
                     child: Center(
@@ -465,7 +461,7 @@ class _HealthListWidgetState extends ConsumerState<HealthListWidget> {
           },
         ),
       ],
-      if (tokobis != null &&  tokobis.length > 2) ...[
+      if (tokobis.length > 2) ...[
         // mark
         PlutoColumn(
           title: DateUtil.getWeekDate(tokobis[2]),
@@ -480,15 +476,7 @@ class _HealthListWidgetState extends ConsumerState<HealthListWidget> {
           textAlign: PlutoColumnTextAlign.left,
           titleTextAlign: PlutoColumnTextAlign.center,
           renderer: (rendererContext) {
-            final isEditable =
-                rendererContext.row.cells['isEditable']!.value == 1;
-
-            return isEditable
-                ? Center(
-                    child: Text(
-                    '${rendererContext.cell.value}',
-                  ))
-                : Container(
+            return Container(
                     padding: EdgeInsets.zero,
                     color: Colors.grey.withAlpha(50),
                     child: Center(
@@ -514,14 +502,8 @@ class _HealthListWidgetState extends ConsumerState<HealthListWidget> {
           textAlign: PlutoColumnTextAlign.left,
           titleTextAlign: PlutoColumnTextAlign.center,
           renderer: (rendererContext) {
-            final isEditable =
-                rendererContext.row.cells['isEditable']!.value == 1;
 
-            return isEditable
-                ? Text(
-                    '${rendererContext.cell.value}',
-                  )
-                : Container(
+            return Container(
                     padding: EdgeInsets.zero,
                     color: Colors.grey.withAlpha(50),
                     child: Center(
@@ -547,14 +529,8 @@ class _HealthListWidgetState extends ConsumerState<HealthListWidget> {
           textAlign: PlutoColumnTextAlign.left,
           titleTextAlign: PlutoColumnTextAlign.center,
           renderer: (rendererContext) {
-            final isEditable =
-                rendererContext.row.cells['isEditable']!.value == 1;
 
-            return isEditable
-                ? Text(
-                    '${rendererContext.cell.value}',
-                  )
-                : Container(
+            return Container(
                     padding: EdgeInsets.zero,
                     color: Colors.grey.withAlpha(50),
                     child: Center(
@@ -630,6 +606,7 @@ class _HealthListWidgetState extends ConsumerState<HealthListWidget> {
           .toList()
           .first;
     } catch (e) {
+      // ignore: avoid_print
       print('HealthList PlutoGrid get meibo error. $e');
       return;
     }
@@ -732,12 +709,8 @@ class _HealthListWidgetState extends ConsumerState<HealthListWidget> {
     final list = Boxes.getHealthMeiboBox().values.toList();
     if (list.isEmpty) {
       return Container();
-    } else {
-      tokobis = getFilteredTokobiDates(
-        ref.read(filterProvider).targetDate ?? DateTime.now(),
-      );
-    }
-
+    } 
+    
     return PlutoGrid(
       columns: getColumns(),
       rows: getRows(),

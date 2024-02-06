@@ -33,9 +33,6 @@ class _AttendanceListWidgetState extends ConsumerState<AttendanceListWidget> {
   final _baseUrl = dotenv.env['BASE_URL']!;
   String accessToken = Hive.box<String>('shusekibo').get('token').toString();
 
-  // 登校日
-  late final List<DateTime> tokobis;
-
   // 行の設定
   List<PlutoRow> getRows() {
     final meibos0 = Boxes.getAttendanceMeibo().values.toList();
@@ -44,14 +41,26 @@ class _AttendanceListWidgetState extends ConsumerState<AttendanceListWidget> {
 
     final rows = <PlutoRow>[];
     for (final e0 in meibos0) {
-      final e1 = meibos1
+      AttendanceMeiboModel e1;
+      try {
+        e1 = meibos1
           .where((e) => e.studentNumber == e0.studentNumber)
           .toList()
           .first;
-      final e2 = meibos2
+      } catch (ex) {
+        e1 = const AttendanceMeiboModel();
+      }
+      
+      AttendanceMeiboModel e2;
+      try {
+        e2 = meibos2
           .where((e) => e.studentNumber == e0.studentNumber)
           .toList()
           .first;
+      } catch (ex) {
+        e2 = const AttendanceMeiboModel();
+      }
+
       rows.add(setPlutRow(e0, e1, e2));
     }
     return rows;
@@ -64,6 +73,10 @@ class _AttendanceListWidgetState extends ConsumerState<AttendanceListWidget> {
   ) {
 
     final isTokobi = ref.read(isTokobiProvider);
+    final tokobis = getFilteredTokobiDates(
+      ref.read(filterProvider).targetDate ?? DateTime.now(),
+      ref.read(filterProvider).classId ?? 0,
+    );    
 
     AttendanceStatusModel jokyo0;
     if (e0.jokyoList != null && e0.jokyoList!.isNotEmpty) {
@@ -204,10 +217,12 @@ class _AttendanceListWidgetState extends ConsumerState<AttendanceListWidget> {
 
   // カラムの設定
   List<PlutoColumn> getColumns() {
-    final filter = ref.read(filterProvider);
+    final tokobis = getFilteredTokobiDates(
+      ref.read(filterProvider).targetDate ?? DateTime.now(),
+      ref.read(filterProvider).classId ?? 0,
+    );
 
     return [
-      //PlutoColumn(title: 'クラス',  field: 'classNo',   readOnly: true, type: PlutoColumnType.text(), width: 90, enableContextMenu: false, textAlign: PlutoColumnTextAlign.left, titleTextAlign: PlutoColumnTextAlign.center),
       // 出席番号
       PlutoColumn(
         title: '出席番号',
@@ -234,7 +249,7 @@ class _AttendanceListWidgetState extends ConsumerState<AttendanceListWidget> {
         textAlign: PlutoColumnTextAlign.center,
         titleTextAlign: PlutoColumnTextAlign.center,
         renderer: (rendererContext) {
-          var photoUrl =
+          final photoUrl =
               '${rendererContext.row.cells['photoPath']!.value.toString()}'
                   .trim();
           final url = '$_baseUrl$photoUrl';
@@ -242,7 +257,7 @@ class _AttendanceListWidgetState extends ConsumerState<AttendanceListWidget> {
           return ClipOval(
             child: Image.network(
               url,
-              headers: {"Authorization": "Bearer " + accessToken},
+              headers: {'Authorization': 'Bearer $accessToken'},
             ),
           );
         },
@@ -284,7 +299,8 @@ class _AttendanceListWidgetState extends ConsumerState<AttendanceListWidget> {
           enableContextMenu: false,
           textAlign: PlutoColumnTextAlign.center,
           titleTextAlign: PlutoColumnTextAlign.center,
-          frozen: PlutoColumnFrozen.start),
+          frozen: PlutoColumnFrozen.start,
+      ),
       // mark
       PlutoColumn(
         title: DateUtil.getWeekDate(tokobis[0]),
@@ -305,7 +321,7 @@ class _AttendanceListWidgetState extends ConsumerState<AttendanceListWidget> {
               ? Center(
                   child: Text(
                   '${rc.cell.value}',
-                ))
+                ),)
               : Container(
                   padding: EdgeInsets.zero,
                   color: Colors.grey.withAlpha(50),
@@ -381,7 +397,7 @@ class _AttendanceListWidgetState extends ConsumerState<AttendanceListWidget> {
                 );
         },
       ),
-      if (tokobis != null && tokobis.length > 1) ...[
+      if (tokobis.length > 1) ...[
         // mark
         PlutoColumn(
           title: DateUtil.getWeekDate(tokobis[1]),
@@ -396,14 +412,8 @@ class _AttendanceListWidgetState extends ConsumerState<AttendanceListWidget> {
           textAlign: PlutoColumnTextAlign.left,
           titleTextAlign: PlutoColumnTextAlign.center,
           renderer: (rc) {
-            final isEditable = rc.row.cells['isEditable']!.value == 1;
 
-            return isEditable
-                ? Center(
-                    child: Text(
-                    '${rc.cell.value}',
-                  ))
-                : Container(
+            return Container(
                     padding: EdgeInsets.zero,
                     color: Colors.grey.withAlpha(50),
                     child: Center(
@@ -429,13 +439,8 @@ class _AttendanceListWidgetState extends ConsumerState<AttendanceListWidget> {
           textAlign: PlutoColumnTextAlign.left,
           titleTextAlign: PlutoColumnTextAlign.center,
           renderer: (rc) {
-            final isEditable = rc.row.cells['isEditable']!.value == 1;
 
-            return isEditable
-                ? Text(
-                    '${rc.cell.value}',
-                  )
-                : Container(
+            return Container(
                     padding: EdgeInsets.zero,
                     color: Colors.grey.withAlpha(50),
                     child: Center(
@@ -461,13 +466,8 @@ class _AttendanceListWidgetState extends ConsumerState<AttendanceListWidget> {
           textAlign: PlutoColumnTextAlign.left,
           titleTextAlign: PlutoColumnTextAlign.center,
           renderer: (rc) {
-            final isEditable = rc.row.cells['isEditable']!.value == 1;
 
-            return isEditable
-                ? Text(
-                    '${rc.cell.value}',
-                  )
-                : Container(
+            return Container(
                     padding: EdgeInsets.zero,
                     color: Colors.grey.withAlpha(50),
                     child: Center(
@@ -479,7 +479,7 @@ class _AttendanceListWidgetState extends ConsumerState<AttendanceListWidget> {
           },
         ),
       ],
-      if (tokobis != null && tokobis.length > 2) ...[
+      if (tokobis.length > 2) ...[
         // mark
         PlutoColumn(
           title: DateUtil.getWeekDate(tokobis[2]),
@@ -494,14 +494,8 @@ class _AttendanceListWidgetState extends ConsumerState<AttendanceListWidget> {
           textAlign: PlutoColumnTextAlign.left,
           titleTextAlign: PlutoColumnTextAlign.center,
           renderer: (rc) {
-            final isEditable = rc.row.cells['isEditable']!.value == 1;
 
-            return isEditable
-                ? Center(
-                    child: Text(
-                    '${rc.cell.value}',
-                  ))
-                : Container(
+            return Container(
                     padding: EdgeInsets.zero,
                     color: Colors.grey.withAlpha(50),
                     child: Center(
@@ -527,13 +521,8 @@ class _AttendanceListWidgetState extends ConsumerState<AttendanceListWidget> {
           textAlign: PlutoColumnTextAlign.left,
           titleTextAlign: PlutoColumnTextAlign.center,
           renderer: (rc) {
-            final isEditable = rc.row.cells['isEditable']!.value == 1;
 
-            return isEditable
-                ? Text(
-                    '${rc.cell.value}',
-                  )
-                : Container(
+            return Container(
                     padding: EdgeInsets.zero,
                     color: Colors.grey.withAlpha(50),
                     child: Center(
@@ -559,13 +548,8 @@ class _AttendanceListWidgetState extends ConsumerState<AttendanceListWidget> {
           textAlign: PlutoColumnTextAlign.left,
           titleTextAlign: PlutoColumnTextAlign.center,
           renderer: (rc) {
-            final isEditable = rc.row.cells['isEditable']!.value == 1;
 
-            return isEditable
-                ? Text(
-                    '${rc.cell.value}',
-                  )
-                : Container(
+            return Container(
                     padding: EdgeInsets.zero,
                     color: Colors.grey.withAlpha(50),
                     child: Center(
@@ -758,11 +742,7 @@ class _AttendanceListWidgetState extends ConsumerState<AttendanceListWidget> {
     final list = Boxes.getAttendanceMeibo().values.toList();
     if (list.isEmpty) {
       return Container();
-    } else {
-      tokobis = getFilteredTokobiDates(
-        ref.read(filterProvider).targetDate ?? DateTime.now(),
-      );
-    }
+    } 
 
     return PlutoGrid(
       columns: getColumns(),

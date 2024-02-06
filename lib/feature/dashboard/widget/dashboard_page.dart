@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kyoumutechou/feature/common/provider/tokobis_provider.dart';
+import 'package:kyoumutechou/feature/dashboard/widget/absence_summary_widget.dart';
 import 'package:kyoumutechou/feature/dashboard/widget/attendance_summary_widget.dart';
 import 'package:kyoumutechou/feature/dashboard/widget/health_summary_widget.dart';
 import 'package:kyoumutechou/helpers/theme/app_theme.dart';
-import 'package:kyoumutechou/helpers/widgets/my_card.dart';
 import 'package:kyoumutechou/helpers/widgets/my_spacing.dart';
 import 'package:kyoumutechou/shared/util/date_util.dart';
 
@@ -102,17 +102,7 @@ class DashboardPageState extends ConsumerState<DashboardPage>
           children: const <Widget>[
             HealthSummaryWidget(),
             AttendanceSummaryWidget(),
-            MyCard(
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      Text('欠席者一覧'),
-                    ],
-                  ),
-                ],
-              ),
-            ),
+            AbsenceSummaryWidget(),
           ],
         ),
       ),

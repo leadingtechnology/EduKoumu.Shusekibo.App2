@@ -15,7 +15,7 @@ class DateUtil {
   static String getJpMonthDayWeek(DateTime date) {
     String week, month, day;
     month = date.month.toString();
-    day = NumberFormat('00').format(date.day);
+    day = date.day.toString();
     week = DateFormat.E('ja').format(date).toString();
     return '$month月$day日（$week）';
   }
@@ -64,31 +64,31 @@ class DateUtil {
     return '$year.$month.$day';
   }
 
-  static List<DateTime> getTokobis(){
-    final now = DateTime.now();
-    final year = now.year;
-    final month = now.month;
-    final day = now.day;
-    final daysInMonth = DateTime(year, month + 1, 0).day;
-    final firstDay = DateTime(year, month, 1);
-    final lastDay = DateTime(year, month, daysInMonth);
-    final firstDayOfWeek = firstDay.weekday;
-    final lastDayOfWeek = lastDay.weekday;
-    final firstMonday = firstDay.subtract(Duration(days: firstDayOfWeek - 1));
-    final lastSunday = lastDay.add(Duration(days: DateTime.daysPerWeek - lastDayOfWeek));
-
-    final days = lastSunday.difference(firstMonday).inDays + 1;
-    final weeks = (days / DateTime.daysPerWeek).ceil();
-
-    final List<DateTime> dates = [];
-    for (var i = 0; i < weeks; i++) {
-      for (var j = 0; j < DateTime.daysPerWeek; j++) {
-        dates.add(firstMonday.add(Duration(days: j + i * DateTime.daysPerWeek)));
-      }
-    }
-
-    return dates;
-  } 
+//  static List<DateTime> getTokobis(){
+//    final now = DateTime.now();
+//    final year = now.year;
+//    final month = now.month;
+//    final day = now.day;
+//    final daysInMonth = DateTime(year, month + 1, 0).day;
+//    final firstDay = DateTime(year, month, 1);
+//    final lastDay = DateTime(year, month, daysInMonth);
+//    final firstDayOfWeek = firstDay.weekday;
+//    final lastDayOfWeek = lastDay.weekday;
+//    final firstMonday = firstDay.subtract(Duration(days: firstDayOfWeek - 1));
+//    final lastSunday = lastDay.add(Duration(days: DateTime.daysPerWeek - lastDayOfWeek));
+//
+//    final days = lastSunday.difference(firstMonday).inDays + 1;
+//    final weeks = (days / DateTime.daysPerWeek).ceil();
+//
+//    final List<DateTime> dates = [];
+//    for (var i = 0; i < weeks; i++) {
+//      for (var j = 0; j < DateTime.daysPerWeek; j++) {
+//        dates.add(firstMonday.add(Duration(days: j + i * DateTime.daysPerWeek)));
+//      }
+//    }
+//
+//    return dates;
+//  } 
 
   // last day of prior month.
   // static DateTime? getLastDayOfPriorMonth(DateTime date) {

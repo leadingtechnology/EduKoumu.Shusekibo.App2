@@ -6,6 +6,7 @@ import 'package:kyoumutechou/feature/dashboard/model/home_attendance_model.dart'
 import 'package:kyoumutechou/feature/dashboard/provider/home_attendance_list_provider.dart';
 import 'package:kyoumutechou/helpers/widgets/my_spacing.dart';
 import 'package:kyoumutechou/shared/http/app_exception.dart';
+import 'package:kyoumutechou/shared/util/date_util.dart';
 
 class AttendanceSummaryWidget extends ConsumerWidget {
   const AttendanceSummaryWidget({super.key});
@@ -23,10 +24,31 @@ class AttendanceSummaryWidget extends ConsumerWidget {
     }, error: (AppException e) {
       return Text(e.toString());
     }, loaded: (attendanceLists) {
+      final tokobis = ref.watch(lastTokobisProvider);
+
       return Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children:attendanceLists.map(daySummry).toList(),  
-            );
+        children:List.generate(tokobis.length, (index) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start, 
+            children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                  child: Text(
+                    '${DateUtil.getJpMonthDayWeek(tokobis[index])} ',
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+              Expanded(
+                child: daySummry(attendanceLists[index]),
+              ),
+            ],
+          );
+        }),
+      );
     },);
   }
 
