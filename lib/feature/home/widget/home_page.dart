@@ -266,13 +266,16 @@ class HomePageState extends ConsumerState<HomePage> {
                             child: MyText.bodyLarge('', fontWeight: 800),
                           ),
                         ),
-                        // Padding(
-                        //   padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-                        //   child: IconButton(
-                        //     icon: const Icon(Icons.campaign_outlined),
-                        //     onPressed: () {},
-                        //   ),
-                        // ),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+                          child: IconButton(
+                            icon: const Icon(Icons.campaign_outlined),
+                            iconSize: 30,
+                            onPressed: () {
+                              showCustomDialog(context);
+                            },
+                          ),
+                        ),
                         Column(
                           mainAxisAlignment: MainAxisAlignment.end,
                           crossAxisAlignment: CrossAxisAlignment.end,
@@ -284,7 +287,7 @@ class HomePageState extends ConsumerState<HomePage> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
-                                const Icon(Icons.person_outlined, size: 16),
+                                const Icon(Icons.person_outlined, size: 24),
                                 const SizedBox(
                                   width: 10,
                                 ),
@@ -333,4 +336,38 @@ class NavItem {
   final Widget page;
   final Widget icon;
   final Widget selectedIcon;
+}
+
+void showCustomDialog(BuildContext context) {
+  showGeneralDialog(
+    context: context,
+    barrierDismissible: true, 
+    barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
+    transitionDuration: const Duration(milliseconds: 200),
+    pageBuilder: (BuildContext buildContext, Animation animation,
+        Animation secondaryAnimation) {
+      return SafeArea(
+        child: Align(
+          alignment: Alignment.topRight, 
+          child: Container(
+            margin: const EdgeInsets.only(top: 56, right: 16), 
+            width: 200, 
+            height: 100, 
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(4),
+            ),
+            child: const Material(
+              child: Column(
+                children: <Widget>[
+                  Text('タイトル', style: TextStyle(fontSize: 24)),
+                  Text('コンテンツ'),
+                ],
+              ),
+            ),
+          ),
+        ),
+      );
+    },
+  );
 }

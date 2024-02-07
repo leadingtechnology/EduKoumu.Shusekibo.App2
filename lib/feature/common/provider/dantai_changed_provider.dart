@@ -171,7 +171,7 @@ class DantaiChangedNotifier extends StateNotifier<ApiState> {
 
         // ラスト登校日情報の取得
         _lastTokobi.fetch(
-          shozoku.id ?? 0,
+          dantaiId,
           today,
         ),
 
