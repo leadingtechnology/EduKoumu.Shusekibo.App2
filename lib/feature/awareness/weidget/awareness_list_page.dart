@@ -13,6 +13,9 @@ import 'package:kyoumutechou/feature/boxes.dart';
 import 'package:kyoumutechou/feature/common/widget/dialog_util.dart';
 import 'package:kyoumutechou/feature/common/widget/search_bar_widget.dart';
 import 'package:kyoumutechou/feature/common/widget/toast_helper.dart';
+import 'package:kyoumutechou/feature/home/provider/home_provider.dart';
+import 'package:kyoumutechou/feature/kizuki/model/kizuki_template_model.dart';
+import 'package:kyoumutechou/feature/kizuki/widget/kizuki_template_dialog.dart';
 import 'package:kyoumutechou/helpers/widgets/my_spacing.dart';
 import 'package:kyoumutechou/shared/http/app_exception.dart';
 import 'package:kyoumutechou/shared/util/date_util.dart';
@@ -248,34 +251,41 @@ class PopUpMenu extends ConsumerWidget {
             ],
           ),
         ),
-        //const PopupMenuDivider(),
-        // PopupMenuItem<AwarenessOperationItem>(
-        //   value: AwarenessOperationItem.favorite,
-        //   child: Row(
-        //     children: [
-        //       SizedBox(
-        //           width: 24,
-        //           child: Center(
-        //               child: FaIcon(FontAwesomeIcons.star, size: 18))),
-        //       Spacing.width(8),
-        //       Text('${S.of(context).awareness_menu_favorite}', style: style),
-        //     ],
-        //   ),
-        // ),
-        // const PopupMenuDivider(),
-        // PopupMenuItem<AwarenessOperationItem>(
-        //   value: AwarenessOperationItem.template,
-        //   child: Row(
-        //     children: [
-        //       SizedBox(
-        //           width: 24,
-        //           child: Center(
-        //               child: FaIcon(FontAwesomeIcons.fileLines, size: 18))),
-        //       Spacing.width(8),
-        //       Text('${S.of(context).awareness_menu_template}', style: TextStyle(fontSize: 13)),
-        //     ],
-        //   ),
-        // ),
+        const PopupMenuDivider(),
+        PopupMenuItem<AwarenessOperationItem>(
+          value: AwarenessOperationItem.favorite,
+          child: Row(
+            children: [
+              const SizedBox(
+                width: 24,
+                child: Center(
+                  child: FaIcon(FontAwesomeIcons.star, size: 18),
+                ),
+              ),
+              MySpacing.width(8),
+              Text('「テンプレート文（個人）」登録', style: style),
+            ],
+          ),
+        ),
+        const PopupMenuDivider(),
+        PopupMenuItem<AwarenessOperationItem>(
+          value: AwarenessOperationItem.template,
+          child: Row(
+            children: [
+              const SizedBox(
+                width: 24,
+                child: Center(
+                  child: FaIcon(FontAwesomeIcons.fileLines, size: 18),
+                ),
+              ),
+              MySpacing.width(8),
+              const Text(
+                '「テンプレート文（学校共通）」登録', 
+                style: TextStyle(fontSize: 13),
+              ),
+            ],
+          ),
+        ),
       ],
     );
   }
@@ -309,8 +319,28 @@ Future<void> _handlePressActionButton(
     return;
   }
 
-  if (opt == AwarenessOperationItem.favorite) return;
-  if (opt == AwarenessOperationItem.template) return;
+  if (opt == AwarenessOperationItem.favorite ||
+      opt == AwarenessOperationItem.template) 
+  {
+    final commonFlg = opt == AwarenessOperationItem.template ? true : false;
+
+    final model = KizukiTemplateModel(
+      karuteBunruiCode: kizuki.bunruiCode,
+      commonFlg: commonFlg,
+      title: '',
+      kizukiTemplate: kizuki.naiyou,
+    );
+
+    await DialogUtil.show(
+      context: context,
+      builder: (context) {
+        return KizukiTemplateDialog(
+          model: model,
+          action: ScreenAction.copy,
+        );
+      },
+    );
+  }
 
   return;
 }

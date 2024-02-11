@@ -13,9 +13,9 @@ import 'package:kyoumutechou/feature/common/widget/dantai_dropdown_widget.dart';
 import 'package:kyoumutechou/feature/dashboard/widget/dashboard_page.dart';
 import 'package:kyoumutechou/feature/health/widget/health_page.dart';
 import 'package:kyoumutechou/feature/home/provider/home_provider.dart';
+import 'package:kyoumutechou/feature/kizuki/widget/kizuki_template_page.dart';
 import 'package:kyoumutechou/feature/seat/seat_chart_page.dart';
 import 'package:kyoumutechou/feature/setting/setting_page.dart';
-import 'package:kyoumutechou/feature/setting/widget/awareness_template_page.dart';
 import 'package:kyoumutechou/helpers/theme/app_theme.dart';
 import 'package:kyoumutechou/helpers/widgets/my_text.dart';
 import 'package:kyoumutechou/shared/http/app_exception.dart';
@@ -118,7 +118,7 @@ class HomePageState extends ConsumerState<HomePage> {
     NavItem(
       Menu.awarenessTemplate,
       '気づきテンプレート',
-      const AwarenessTemplatePage(),
+      const KizukiTemplatePage(),
       const Icon(Icons.lightbulb),
       const Icon(Icons.lightbulb_outlined),
     ),

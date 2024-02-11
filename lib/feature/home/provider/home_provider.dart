@@ -11,7 +11,16 @@ enum Menu {
   awarenessTemplate,
   modoru,
 }
-final menuProvider = StateProvider<Menu>((ref) {return Menu.dashboard;});
+
+enum ScreenAction {
+  add, // 追加
+  edit, // 編集
+  copy, // 複製
+  delete, // 削除
+  detail, // 詳細
+}
+
+final menuProvider = StateProvider<Menu>((ref) {return Menu.setting;});
 
 enum DashboardTab {health, attendance,absentee,}
 final dashboardTabProvider = StateProvider<DashboardTab>((ref) {
