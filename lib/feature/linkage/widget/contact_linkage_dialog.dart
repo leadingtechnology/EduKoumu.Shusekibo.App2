@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kyoumutechou/feature/linkage/model/contact_linkage_model.dart';
 import 'package:kyoumutechou/feature/linkage/provider/contact_linkage_provider.dart';
 import 'package:kyoumutechou/feature/linkage/widget/contact_confirm_button.dart';
+import 'package:kyoumutechou/feature/linkage/widget/contact_list_Item.dart';
 import 'package:kyoumutechou/helpers/theme/app_theme.dart';
 import 'package:kyoumutechou/helpers/widgets/my_spacing.dart';
 import 'package:kyoumutechou/helpers/widgets/my_text.dart';
@@ -44,7 +45,7 @@ class ContactLinkageDialog extends  ConsumerWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          MySpacing.height(8),
+          MySpacing.height(16),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -81,35 +82,15 @@ class ContactLinkageDialog extends  ConsumerWidget {
               itemCount: list.length,
               itemBuilder: (context, index) {
                 final item = list[index];
-                return ListTile(
-                  title: Text('${item.biko}'),
-                  subtitle: Row(
-                    children: [
-                      Text(
-                        DateUtil.getStringDateWithTime(item.registDateTime),
-                      ),
-                      const SizedBox(width: 8),
-                      IconButton(
-                        onPressed: (){}, 
-                        icon: const Icon(Icons.expand_more), // expand_less
-                      ),
-                    ],
-                  ),
-                  trailing: ContactConfirmButton(
-                    id: item.id ?? 0, 
-                    processStatus: '${item.processStatus ?? 0}',
-                  ),
-                );
+                return ContactListItem(item: item);
               },
             ),
           ),
         ],
       ),
     );
-
   }
 }
-
 
 enum TextPosition { before, after }
 class IconTextButton extends StatelessWidget {
