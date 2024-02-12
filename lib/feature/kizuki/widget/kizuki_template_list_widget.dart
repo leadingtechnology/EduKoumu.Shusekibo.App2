@@ -4,7 +4,6 @@ import 'package:hive/hive.dart';
 import 'package:kyoumutechou/feature/awareness/model/awareness_code_model.dart';
 import 'package:kyoumutechou/feature/boxes.dart';
 import 'package:kyoumutechou/feature/common/provider/filter_provider.dart';
-import 'package:kyoumutechou/feature/common/widget/dialog_util.dart';
 import 'package:kyoumutechou/feature/home/provider/home_provider.dart';
 import 'package:kyoumutechou/feature/kizuki/model/kizuki_template_model.dart';
 import 'package:kyoumutechou/feature/kizuki/provider/kizuki_template_provider.dart';

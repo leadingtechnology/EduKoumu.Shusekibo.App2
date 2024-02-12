@@ -14,6 +14,7 @@ import 'package:kyoumutechou/feature/dashboard/widget/dashboard_page.dart';
 import 'package:kyoumutechou/feature/health/widget/health_page.dart';
 import 'package:kyoumutechou/feature/home/provider/home_provider.dart';
 import 'package:kyoumutechou/feature/kizuki/widget/kizuki_template_page.dart';
+import 'package:kyoumutechou/feature/linkage/widget/contact_linkage_dialog.dart';
 import 'package:kyoumutechou/feature/seat/seat_chart_page.dart';
 import 'package:kyoumutechou/feature/setting/setting_page.dart';
 import 'package:kyoumutechou/helpers/theme/app_theme.dart';
@@ -128,7 +129,7 @@ class HomePageState extends ConsumerState<HomePage> {
     try {
       ref.read(authNotifierProvider.notifier).logout();
     } catch (error) {
-      print(error);
+      //print(error);
     }
   }
 
@@ -271,8 +272,22 @@ class HomePageState extends ConsumerState<HomePage> {
                           child: IconButton(
                             icon: const Icon(Icons.campaign_outlined),
                             iconSize: 30,
-                            onPressed: () {
-                              showCustomDialog(context);
+                            onPressed: () async{
+                              await showDialog<void>(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return Align(
+                                    alignment: Alignment.topRight,
+                                    child: Container(
+                                      width: 600,
+                                      margin: EdgeInsets.only(
+                                        top: MediaQuery.of(context).padding.top,
+                                      ),
+                                      child: const ContactLinkageDialog(),
+                                    ),
+                                  );
+                                },
+                              );
                             },
                           ),
                         ),
@@ -322,7 +337,7 @@ class HomePageState extends ConsumerState<HomePage> {
   }
 }
 
-// 定义一个表示导航项的类
+// ナビゲーションバーのアイテム
 class NavItem {
   NavItem(
     this.menuId,
@@ -338,36 +353,63 @@ class NavItem {
   final Widget selectedIcon;
 }
 
-void showCustomDialog(BuildContext context) {
-  showGeneralDialog(
-    context: context,
-    barrierDismissible: true, 
-    barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
-    transitionDuration: const Duration(milliseconds: 200),
-    pageBuilder: (BuildContext buildContext, Animation animation,
-        Animation secondaryAnimation) {
-      return SafeArea(
-        child: Align(
-          alignment: Alignment.topRight, 
-          child: Container(
-            margin: const EdgeInsets.only(top: 56, right: 16), 
-            width: 200, 
-            height: 100, 
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(4),
-            ),
-            child: const Material(
-              child: Column(
-                children: <Widget>[
-                  Text('タイトル', style: TextStyle(fontSize: 24)),
-                  Text('コンテンツ'),
-                ],
-              ),
-            ),
-          ),
-        ),
-      );
-    },
-  );
-}
+// Future<void> showCustomDialog(
+//   BuildContext context, 
+//   WidgetRef ref,
+// ) async{
+
+//   await showGeneralDialog(
+//     context: context,
+//     barrierDismissible: true, 
+//     barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
+//     transitionDuration: const Duration(milliseconds: 200),
+//     pageBuilder: (
+//       BuildContext buildContext, 
+//       Animation animation,
+//       Animation secondaryAnimation,
+//     ) {
+
+//       return ContactLinkageDialog();
+
+
+//       // return SafeArea(
+//       //   child: Align(
+//       //     alignment: Alignment.topRight, 
+//       //     child: Container(
+//       //       margin: const EdgeInsets.only(top: 56, right: 16), 
+//       //       width: 200, 
+//       //       height: 100, 
+//       //       decoration: BoxDecoration(
+//       //         color: Colors.white,
+//       //         borderRadius: BorderRadius.circular(4),
+//       //       ),
+//       //       child: const Material(
+//       //         child: Column(
+//       //           children: <Widget>[
+//       //             Text('タイトル', style: TextStyle(fontSize: 24)),
+//       //             Text('コンテンツ'),
+//       //           ],
+//       //         ),
+//       //       ),
+//       //     ),
+//       //   ),
+//       // );
+//     },
+//   );
+// }
+
+// Future<Object?> showDialog111(BuildContext context, WidgetRef ref) async {
+//   final state = ref.watch(contactLinkageNotifierProvider);
+
+//   return state.when(
+//     loading: () {
+//       return const Center(child: CircularProgressIndicator());
+//     },
+//     error: (AppException e) {
+//       return Text(e.toString());
+//     },
+//     loaded: (list) {
+//       showCustomDialog(context, ref);
+//     },
+//   );
+// }

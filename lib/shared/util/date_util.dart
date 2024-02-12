@@ -64,6 +64,12 @@ class DateUtil {
     return '$year.$month.$day';
   }
 
+  // 05.01 08:00
+  static String getStringDateWithTime(DateTime? date) {
+    final targetDate = date ?? DateTime.now();
+    return DateFormat('MM.dd HH:mm').format(targetDate);
+  }
+
 //  static List<DateTime> getTokobis(){
 //    final now = DateTime.now();
 //    final year = now.year;
@@ -88,11 +94,11 @@ class DateUtil {
 //    }
 //
 //    return dates;
-//  } 
+//  }
 
   // last day of prior month.
   // static DateTime? getLastDayOfPriorMonth(DateTime date) {
-    
+
   //   // 当月１日からdateまで出勤日数の算出
   //   final firstDayOfMonth = DateTime(date.year, date.month);
   //   var workingDays = 0;

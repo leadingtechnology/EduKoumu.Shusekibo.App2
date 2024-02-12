@@ -9,6 +9,7 @@ import 'package:kyoumutechou/feature/awareness/provider/awareness_meibo_provider
 import 'package:kyoumutechou/feature/awareness/weidget/dialog/awareness_bunrui.dart';
 import 'package:kyoumutechou/feature/awareness/weidget/dialog/awareness_dialog_left_widget.dart';
 import 'package:kyoumutechou/feature/awareness/weidget/dialog/awareness_dialog_middle_widget.dart';
+import 'package:kyoumutechou/feature/awareness/weidget/dialog/awareness_dialog_right_widget.dart';
 import 'package:kyoumutechou/feature/awareness/weidget/dialog/awareness_template_search_student.dart';
 import 'package:kyoumutechou/feature/awareness/weidget/dialog/photo_widget.dart';
 import 'package:kyoumutechou/feature/awareness/weidget/dialog/seito_widget.dart';
@@ -141,6 +142,9 @@ class AwarenessRegistDialog extends ConsumerWidget {
                       controller: kizukiController,
                     ),
                     MySpacing.width(12),
+                    AwarenessDialogRightWidget(
+                      kizukiController: kizukiController,
+                    ),
                   ],),
 
                   // 2.4 写真

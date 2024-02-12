@@ -1,5 +1,4 @@
 
-import 'package:kyoumutechou/feature/kizuki/model/kizuki_template_model.dart';
 import 'package:kyoumutechou/feature/kizuki/repository/kizuki_template_repository.dart';
 import 'package:kyoumutechou/feature/kizuki/state/kizuki_template_state.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';

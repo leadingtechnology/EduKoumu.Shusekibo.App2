@@ -175,7 +175,7 @@ class AwarenessKizukiRepository implements AwarenessKizukiRepositoryProtocol {
 
   Future<ApiState> delete(AwarenessKizukiModel kizuki, String dt) async {
     final response = await _api.delete(
-        'api/kizuki/${kizuki.id}?timestamp=${kizuki.timeStamp}', '');
+        'api/kizuki/${kizuki.id}?timestamp=${kizuki.timeStamp}', '',);
 
     if (response is APISuccess) {
       try {
