@@ -23,13 +23,13 @@ abstract class HomeAttendanceModel with _$HomeAttendanceModel {
     @JsonKey(name: 'Tikoku', disallowNullValue: false) @HiveField(3) int? tikoku,
     @JsonKey(name: 'Sotai', disallowNullValue: false) @HiveField(4) int? sotai,
     @JsonKey(name: 'KessekiShuttei', disallowNullValue: false) @HiveField(5) int? kessekiShuttei,
-    @JsonKey(name: 'Influenza', disallowNullValue: false) @HiveField(6) int? influenza,
+    @JsonKey(name: 'Shuttei', disallowNullValue: false) @HiveField(6) int? shuttei,
     @JsonKey(name: 'DoneAttendanceFlg', disallowNullValue: false) @HiveField(7) bool? doneAttendanceFlg,
   }) = _HomeAttendanceModel;
 
   @override
   String toString() {
-    return 'HomeAttendanceModel($className, $zaiseki, $shusseki, $tikoku, $sotai, $kessekiShuttei, $influenza, $doneAttendanceFlg)';
+    return 'HomeAttendanceModel($className, $zaiseki, $shusseki, $tikoku, $sotai, $kessekiShuttei, $shuttei, $doneAttendanceFlg)';
   }
   factory HomeAttendanceModel.fromJson(Map<String, dynamic> json) => _$HomeAttendanceModelFromJson(json);
 }

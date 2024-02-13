@@ -70,6 +70,12 @@ class DateUtil {
     return DateFormat('MM.dd HH:mm').format(targetDate);
   }
 
+  // 8月29日
+  static String getMonthDay(DateTime? date) {
+    final targetDate = date ?? DateTime.now();
+    return DateFormat('M月d日').format(targetDate);
+  }  
+
 //  static List<DateTime> getTokobis(){
 //    final now = DateTime.now();
 //    final year = now.year;

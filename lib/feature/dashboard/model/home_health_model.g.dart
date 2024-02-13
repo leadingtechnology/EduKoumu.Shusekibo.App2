@@ -23,15 +23,16 @@ class HomeHealthModelAdapter extends TypeAdapter<_$HomeHealthModelImpl> {
       tikoku: fields[3] as int?,
       sotai: fields[4] as int?,
       kessekiShuttei: fields[5] as int?,
-      influenza: fields[6] as int?,
-      doneKenkoKansatsuFlg: fields[7] as bool?,
+      shuttei: fields[6] as int?,
+      influenza: fields[7] as int?,
+      doneKenkoKansatsuFlg: fields[8] as bool?,
     );
   }
 
   @override
   void write(BinaryWriter writer, _$HomeHealthModelImpl obj) {
     writer
-      ..writeByte(8)
+      ..writeByte(9)
       ..writeByte(0)
       ..write(obj.className)
       ..writeByte(1)
@@ -45,8 +46,10 @@ class HomeHealthModelAdapter extends TypeAdapter<_$HomeHealthModelImpl> {
       ..writeByte(5)
       ..write(obj.kessekiShuttei)
       ..writeByte(6)
-      ..write(obj.influenza)
+      ..write(obj.shuttei)
       ..writeByte(7)
+      ..write(obj.influenza)
+      ..writeByte(8)
       ..write(obj.doneKenkoKansatsuFlg);
   }
 
@@ -74,6 +77,7 @@ _$HomeHealthModelImpl _$$HomeHealthModelImplFromJson(
       tikoku: json['Tikoku'] as int?,
       sotai: json['Sotai'] as int?,
       kessekiShuttei: json['KessekiShuttei'] as int?,
+      shuttei: json['Shuttei'] as int?,
       influenza: json['Influenza'] as int?,
       doneKenkoKansatsuFlg: json['DoneKenkoKansatsuFlg'] as bool?,
     );
@@ -87,6 +91,7 @@ Map<String, dynamic> _$$HomeHealthModelImplToJson(
       'Tikoku': instance.tikoku,
       'Sotai': instance.sotai,
       'KessekiShuttei': instance.kessekiShuttei,
+      'Shuttei': instance.shuttei,
       'Influenza': instance.influenza,
       'DoneKenkoKansatsuFlg': instance.doneKenkoKansatsuFlg,
     };

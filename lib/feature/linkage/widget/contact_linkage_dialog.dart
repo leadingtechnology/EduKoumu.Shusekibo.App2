@@ -1,17 +1,14 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kyoumutechou/feature/linkage/model/contact_linkage_model.dart';
 import 'package:kyoumutechou/feature/linkage/provider/contact_linkage_provider.dart';
-import 'package:kyoumutechou/feature/linkage/widget/contact_confirm_button.dart';
-import 'package:kyoumutechou/feature/linkage/widget/contact_list_Item.dart';
+import 'package:kyoumutechou/feature/linkage/widget/contact_list_item.dart';
 import 'package:kyoumutechou/helpers/theme/app_theme.dart';
 import 'package:kyoumutechou/helpers/widgets/my_spacing.dart';
-import 'package:kyoumutechou/helpers/widgets/my_text.dart';
 import 'package:kyoumutechou/shared/http/app_exception.dart';
 import 'package:kyoumutechou/shared/util/date_util.dart';
 
-class ContactLinkageDialog extends  ConsumerWidget {
+class ContactLinkageDialog extends ConsumerWidget {
   const ContactLinkageDialog({super.key});
 
   @override
@@ -29,15 +26,13 @@ class ContactLinkageDialog extends  ConsumerWidget {
         return _build(context, ref, list);
       },
     );
-
   }
 
   Widget _build(
-    BuildContext context, 
-    WidgetRef ref, 
+    BuildContext context,
+    WidgetRef ref,
     List<ContactLinkageModel> list,
   ) {
-    
     final selectedDate = ref.watch(contactDateProvider);
 
     return Dialog(
@@ -49,11 +44,7 @@ class ContactLinkageDialog extends  ConsumerWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              MySpacing.width(8),
-              MyText.bodyLarge(
-                '${DateUtil.getJpMonthDayWeek(selectedDate)}の保護者からの連絡',
-              ),
-              Expanded(child: Container()),
+              MySpacing.width(4),
               IconTextButton(
                 icon: Icons.arrow_back,
                 text: '前の日',
@@ -63,7 +54,13 @@ class ContactLinkageDialog extends  ConsumerWidget {
                       selectedDate.subtract(const Duration(days: 1));
                 },
               ),
-              MySpacing.width(4),
+              Text(
+                '${DateUtil.getJpMonthDayWeek(selectedDate)}の保護者からの連絡',
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                ),
+              ),
               IconTextButton(
                 icon: Icons.arrow_forward,
                 text: '次の日',
@@ -93,16 +90,16 @@ class ContactLinkageDialog extends  ConsumerWidget {
 }
 
 enum TextPosition { before, after }
-class IconTextButton extends StatelessWidget {
 
+class IconTextButton extends StatelessWidget {
   const IconTextButton({
-    required this.icon, 
-    required this.text, 
-    required this.textPosition, 
-    required this.onPressed, 
+    required this.icon,
+    required this.text,
+    required this.textPosition,
+    required this.onPressed,
     super.key,
   });
-  
+
   final IconData icon;
   final String text;
   final TextPosition textPosition;
@@ -112,7 +109,7 @@ class IconTextButton extends StatelessWidget {
   Widget build(BuildContext context) {
     var children = <Widget>[
       Icon(icon),
-      const SizedBox(width: 8), 
+      const SizedBox(width: 8),
       Text(text),
     ];
 
@@ -124,12 +121,12 @@ class IconTextButton extends StatelessWidget {
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10), // 设置角的弧度为20
+          borderRadius: BorderRadius.circular(10), 
         ),
         backgroundColor: theme.colorScheme.surface,
       ),
       child: Row(
-        mainAxisSize: MainAxisSize.min, 
+        mainAxisSize: MainAxisSize.min,
         children: children,
       ),
     );

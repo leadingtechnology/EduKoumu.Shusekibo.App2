@@ -161,10 +161,10 @@ class HealthSummaryWidget extends ConsumerWidget {
                               child: VerticalDivider(width: 1)),
                           Column(
                             children: [
-                              Text('欠席・出停等'),
+                              Text('欠席等(出停)'),
                               MySpacing.height(4),
                               Text(
-                                '${e.kessekiShuttei}',
+                                '${e.kessekiShuttei}(${e.shuttei})',
                                 style: const TextStyle(
                                   fontWeight: FontWeight.bold,
                                 ),

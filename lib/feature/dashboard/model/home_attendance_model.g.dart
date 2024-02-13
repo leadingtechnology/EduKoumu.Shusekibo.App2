@@ -24,7 +24,7 @@ class HomeAttendanceModelAdapter
       tikoku: fields[3] as int?,
       sotai: fields[4] as int?,
       kessekiShuttei: fields[5] as int?,
-      influenza: fields[6] as int?,
+      shuttei: fields[6] as int?,
       doneAttendanceFlg: fields[7] as bool?,
     );
   }
@@ -46,7 +46,7 @@ class HomeAttendanceModelAdapter
       ..writeByte(5)
       ..write(obj.kessekiShuttei)
       ..writeByte(6)
-      ..write(obj.influenza)
+      ..write(obj.shuttei)
       ..writeByte(7)
       ..write(obj.doneAttendanceFlg);
   }
@@ -75,7 +75,7 @@ _$HomeAttendanceModelImpl _$$HomeAttendanceModelImplFromJson(
       tikoku: json['Tikoku'] as int?,
       sotai: json['Sotai'] as int?,
       kessekiShuttei: json['KessekiShuttei'] as int?,
-      influenza: json['Influenza'] as int?,
+      shuttei: json['Shuttei'] as int?,
       doneAttendanceFlg: json['DoneAttendanceFlg'] as bool?,
     );
 
@@ -88,6 +88,6 @@ Map<String, dynamic> _$$HomeAttendanceModelImplToJson(
       'Tikoku': instance.tikoku,
       'Sotai': instance.sotai,
       'KessekiShuttei': instance.kessekiShuttei,
-      'Influenza': instance.influenza,
+      'Shuttei': instance.shuttei,
       'DoneAttendanceFlg': instance.doneAttendanceFlg,
     };

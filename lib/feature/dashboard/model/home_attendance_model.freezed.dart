@@ -38,9 +38,9 @@ mixin _$HomeAttendanceModel {
   @JsonKey(name: 'KessekiShuttei', disallowNullValue: false)
   @HiveField(5)
   int? get kessekiShuttei => throw _privateConstructorUsedError;
-  @JsonKey(name: 'Influenza', disallowNullValue: false)
+  @JsonKey(name: 'Shuttei', disallowNullValue: false)
   @HiveField(6)
-  int? get influenza => throw _privateConstructorUsedError;
+  int? get shuttei => throw _privateConstructorUsedError;
   @JsonKey(name: 'DoneAttendanceFlg', disallowNullValue: false)
   @HiveField(7)
   bool? get doneAttendanceFlg => throw _privateConstructorUsedError;
@@ -76,9 +76,9 @@ abstract class $HomeAttendanceModelCopyWith<$Res> {
       @JsonKey(name: 'KessekiShuttei', disallowNullValue: false)
       @HiveField(5)
       int? kessekiShuttei,
-      @JsonKey(name: 'Influenza', disallowNullValue: false)
+      @JsonKey(name: 'Shuttei', disallowNullValue: false)
       @HiveField(6)
-      int? influenza,
+      int? shuttei,
       @JsonKey(name: 'DoneAttendanceFlg', disallowNullValue: false)
       @HiveField(7)
       bool? doneAttendanceFlg});
@@ -103,7 +103,7 @@ class _$HomeAttendanceModelCopyWithImpl<$Res, $Val extends HomeAttendanceModel>
     Object? tikoku = freezed,
     Object? sotai = freezed,
     Object? kessekiShuttei = freezed,
-    Object? influenza = freezed,
+    Object? shuttei = freezed,
     Object? doneAttendanceFlg = freezed,
   }) {
     return _then(_value.copyWith(
@@ -131,9 +131,9 @@ class _$HomeAttendanceModelCopyWithImpl<$Res, $Val extends HomeAttendanceModel>
           ? _value.kessekiShuttei
           : kessekiShuttei // ignore: cast_nullable_to_non_nullable
               as int?,
-      influenza: freezed == influenza
-          ? _value.influenza
-          : influenza // ignore: cast_nullable_to_non_nullable
+      shuttei: freezed == shuttei
+          ? _value.shuttei
+          : shuttei // ignore: cast_nullable_to_non_nullable
               as int?,
       doneAttendanceFlg: freezed == doneAttendanceFlg
           ? _value.doneAttendanceFlg
@@ -170,9 +170,9 @@ abstract class _$$HomeAttendanceModelImplCopyWith<$Res>
       @JsonKey(name: 'KessekiShuttei', disallowNullValue: false)
       @HiveField(5)
       int? kessekiShuttei,
-      @JsonKey(name: 'Influenza', disallowNullValue: false)
+      @JsonKey(name: 'Shuttei', disallowNullValue: false)
       @HiveField(6)
-      int? influenza,
+      int? shuttei,
       @JsonKey(name: 'DoneAttendanceFlg', disallowNullValue: false)
       @HiveField(7)
       bool? doneAttendanceFlg});
@@ -195,7 +195,7 @@ class __$$HomeAttendanceModelImplCopyWithImpl<$Res>
     Object? tikoku = freezed,
     Object? sotai = freezed,
     Object? kessekiShuttei = freezed,
-    Object? influenza = freezed,
+    Object? shuttei = freezed,
     Object? doneAttendanceFlg = freezed,
   }) {
     return _then(_$HomeAttendanceModelImpl(
@@ -223,9 +223,9 @@ class __$$HomeAttendanceModelImplCopyWithImpl<$Res>
           ? _value.kessekiShuttei
           : kessekiShuttei // ignore: cast_nullable_to_non_nullable
               as int?,
-      influenza: freezed == influenza
-          ? _value.influenza
-          : influenza // ignore: cast_nullable_to_non_nullable
+      shuttei: freezed == shuttei
+          ? _value.shuttei
+          : shuttei // ignore: cast_nullable_to_non_nullable
               as int?,
       doneAttendanceFlg: freezed == doneAttendanceFlg
           ? _value.doneAttendanceFlg
@@ -258,9 +258,9 @@ class _$HomeAttendanceModelImpl implements _HomeAttendanceModel {
       @JsonKey(name: 'KessekiShuttei', disallowNullValue: false)
       @HiveField(5)
       this.kessekiShuttei,
-      @JsonKey(name: 'Influenza', disallowNullValue: false)
+      @JsonKey(name: 'Shuttei', disallowNullValue: false)
       @HiveField(6)
-      this.influenza,
+      this.shuttei,
       @JsonKey(name: 'DoneAttendanceFlg', disallowNullValue: false)
       @HiveField(7)
       this.doneAttendanceFlg});
@@ -293,9 +293,9 @@ class _$HomeAttendanceModelImpl implements _HomeAttendanceModel {
   @HiveField(5)
   final int? kessekiShuttei;
   @override
-  @JsonKey(name: 'Influenza', disallowNullValue: false)
+  @JsonKey(name: 'Shuttei', disallowNullValue: false)
   @HiveField(6)
-  final int? influenza;
+  final int? shuttei;
   @override
   @JsonKey(name: 'DoneAttendanceFlg', disallowNullValue: false)
   @HiveField(7)
@@ -315,8 +315,7 @@ class _$HomeAttendanceModelImpl implements _HomeAttendanceModel {
             (identical(other.sotai, sotai) || other.sotai == sotai) &&
             (identical(other.kessekiShuttei, kessekiShuttei) ||
                 other.kessekiShuttei == kessekiShuttei) &&
-            (identical(other.influenza, influenza) ||
-                other.influenza == influenza) &&
+            (identical(other.shuttei, shuttei) || other.shuttei == shuttei) &&
             (identical(other.doneAttendanceFlg, doneAttendanceFlg) ||
                 other.doneAttendanceFlg == doneAttendanceFlg));
   }
@@ -324,7 +323,7 @@ class _$HomeAttendanceModelImpl implements _HomeAttendanceModel {
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, className, zaiseki, shusseki,
-      tikoku, sotai, kessekiShuttei, influenza, doneAttendanceFlg);
+      tikoku, sotai, kessekiShuttei, shuttei, doneAttendanceFlg);
 
   @JsonKey(ignore: true)
   @override
@@ -361,9 +360,9 @@ abstract class _HomeAttendanceModel implements HomeAttendanceModel {
       @JsonKey(name: 'KessekiShuttei', disallowNullValue: false)
       @HiveField(5)
       final int? kessekiShuttei,
-      @JsonKey(name: 'Influenza', disallowNullValue: false)
+      @JsonKey(name: 'Shuttei', disallowNullValue: false)
       @HiveField(6)
-      final int? influenza,
+      final int? shuttei,
       @JsonKey(name: 'DoneAttendanceFlg', disallowNullValue: false)
       @HiveField(7)
       final bool? doneAttendanceFlg}) = _$HomeAttendanceModelImpl;
@@ -396,9 +395,9 @@ abstract class _HomeAttendanceModel implements HomeAttendanceModel {
   @HiveField(5)
   int? get kessekiShuttei;
   @override
-  @JsonKey(name: 'Influenza', disallowNullValue: false)
+  @JsonKey(name: 'Shuttei', disallowNullValue: false)
   @HiveField(6)
-  int? get influenza;
+  int? get shuttei;
   @override
   @JsonKey(name: 'DoneAttendanceFlg', disallowNullValue: false)
   @HiveField(7)

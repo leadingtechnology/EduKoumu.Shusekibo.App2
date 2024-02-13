@@ -23,14 +23,15 @@ abstract class HomeHealthModel with _$HomeHealthModel {
     @JsonKey(name: 'Tikoku', disallowNullValue: false) @HiveField(3) int? tikoku,
     @JsonKey(name: 'Sotai', disallowNullValue: false) @HiveField(4) int? sotai,
     @JsonKey(name: 'KessekiShuttei', disallowNullValue: false) @HiveField(5) int? kessekiShuttei,
-    @JsonKey(name: 'Influenza', disallowNullValue: false) @HiveField(6) int? influenza,
-    @JsonKey(name: 'DoneKenkoKansatsuFlg', disallowNullValue: false) @HiveField(7) bool? doneKenkoKansatsuFlg,
+    @JsonKey(name: 'Shuttei', disallowNullValue: false) @HiveField(6) int? shuttei,
+    @JsonKey(name: 'Influenza', disallowNullValue: false) @HiveField(7) int? influenza,
+    @JsonKey(name: 'DoneKenkoKansatsuFlg', disallowNullValue: false) @HiveField(8) bool? doneKenkoKansatsuFlg,
   }) = _HomeHealthModel;
 
 
   @override
   String toString() {
-    return 'HomeHealthModel($className, $zaiseki, $shusseki, $tikoku, $sotai, $kessekiShuttei, $influenza, $doneKenkoKansatsuFlg)';
+    return 'HomeHealthModel($className, $zaiseki, $shusseki, $tikoku, $sotai, $kessekiShuttei, $shuttei, $influenza, $doneKenkoKansatsuFlg)';
   }
   factory HomeHealthModel.fromJson(Map<String, dynamic> json) => _$HomeHealthModelFromJson(json);
 }

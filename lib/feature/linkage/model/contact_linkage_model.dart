@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -12,13 +13,10 @@ List<ContactLinkageModel> contactLinkageListFromJson(List<dynamic> data) =>
 ContactLinkageModel contactLinkageFromJson(String str) => 
 ContactLinkageModel.fromJson(json.decode(str) as Map<String, dynamic>);
 
-
-
 @freezed
 abstract class ContactLinkageModel with _$ContactLinkageModel {
   @HiveType(typeId: 50, adapterName: 'ContactLinkageModelAdapter')
   const factory ContactLinkageModel({
-
     @JsonKey(name: 'Id', disallowNullValue: false) @HiveField(0) int? id,
     @JsonKey(name: 'TenantId', disallowNullValue: false) @HiveField(1) int? tenantId,
     @JsonKey(name: 'DantaiName', disallowNullValue: false) @HiveField(2) String? dantaiName,
@@ -47,4 +45,22 @@ abstract class ContactLinkageModel with _$ContactLinkageModel {
     return 'ContactLinkageModel($id, $tenantId, $dantaiName, $shozokuId, $shozokuName, $nendo, $taishoDate, $registDateTime, $memberId, $studentName, $shussekiNo, $renkeiJokyoCd, $renkeiJokyo, $jiyu, $biko, $renkeiStatus, $processStatus, $deleteFlg, $crtUserId, $crtUserName, $crtDateTime)';
   }
   factory ContactLinkageModel.fromJson(Map<String, dynamic> json) => _$ContactLinkageModelFromJson(json);
+}
+
+class ContactLinkageViewModel {
+  ContactLinkageViewModel({
+    required this.ids,
+    required this.names,
+    required this.no,
+    required this.jyokyo,
+    required this.strDate,
+    required this.text,
+  });
+
+  List<int> ids;
+  String names;
+  String no;
+  String jyokyo;
+  String strDate; 
+  String text; 
 }

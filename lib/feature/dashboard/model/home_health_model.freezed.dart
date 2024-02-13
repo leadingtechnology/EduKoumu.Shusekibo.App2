@@ -38,11 +38,14 @@ mixin _$HomeHealthModel {
   @JsonKey(name: 'KessekiShuttei', disallowNullValue: false)
   @HiveField(5)
   int? get kessekiShuttei => throw _privateConstructorUsedError;
-  @JsonKey(name: 'Influenza', disallowNullValue: false)
+  @JsonKey(name: 'Shuttei', disallowNullValue: false)
   @HiveField(6)
+  int? get shuttei => throw _privateConstructorUsedError;
+  @JsonKey(name: 'Influenza', disallowNullValue: false)
+  @HiveField(7)
   int? get influenza => throw _privateConstructorUsedError;
   @JsonKey(name: 'DoneKenkoKansatsuFlg', disallowNullValue: false)
-  @HiveField(7)
+  @HiveField(8)
   bool? get doneKenkoKansatsuFlg => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -76,11 +79,14 @@ abstract class $HomeHealthModelCopyWith<$Res> {
       @JsonKey(name: 'KessekiShuttei', disallowNullValue: false)
       @HiveField(5)
       int? kessekiShuttei,
-      @JsonKey(name: 'Influenza', disallowNullValue: false)
+      @JsonKey(name: 'Shuttei', disallowNullValue: false)
       @HiveField(6)
+      int? shuttei,
+      @JsonKey(name: 'Influenza', disallowNullValue: false)
+      @HiveField(7)
       int? influenza,
       @JsonKey(name: 'DoneKenkoKansatsuFlg', disallowNullValue: false)
-      @HiveField(7)
+      @HiveField(8)
       bool? doneKenkoKansatsuFlg});
 }
 
@@ -103,6 +109,7 @@ class _$HomeHealthModelCopyWithImpl<$Res, $Val extends HomeHealthModel>
     Object? tikoku = freezed,
     Object? sotai = freezed,
     Object? kessekiShuttei = freezed,
+    Object? shuttei = freezed,
     Object? influenza = freezed,
     Object? doneKenkoKansatsuFlg = freezed,
   }) {
@@ -130,6 +137,10 @@ class _$HomeHealthModelCopyWithImpl<$Res, $Val extends HomeHealthModel>
       kessekiShuttei: freezed == kessekiShuttei
           ? _value.kessekiShuttei
           : kessekiShuttei // ignore: cast_nullable_to_non_nullable
+              as int?,
+      shuttei: freezed == shuttei
+          ? _value.shuttei
+          : shuttei // ignore: cast_nullable_to_non_nullable
               as int?,
       influenza: freezed == influenza
           ? _value.influenza
@@ -170,11 +181,14 @@ abstract class _$$HomeHealthModelImplCopyWith<$Res>
       @JsonKey(name: 'KessekiShuttei', disallowNullValue: false)
       @HiveField(5)
       int? kessekiShuttei,
-      @JsonKey(name: 'Influenza', disallowNullValue: false)
+      @JsonKey(name: 'Shuttei', disallowNullValue: false)
       @HiveField(6)
+      int? shuttei,
+      @JsonKey(name: 'Influenza', disallowNullValue: false)
+      @HiveField(7)
       int? influenza,
       @JsonKey(name: 'DoneKenkoKansatsuFlg', disallowNullValue: false)
-      @HiveField(7)
+      @HiveField(8)
       bool? doneKenkoKansatsuFlg});
 }
 
@@ -195,6 +209,7 @@ class __$$HomeHealthModelImplCopyWithImpl<$Res>
     Object? tikoku = freezed,
     Object? sotai = freezed,
     Object? kessekiShuttei = freezed,
+    Object? shuttei = freezed,
     Object? influenza = freezed,
     Object? doneKenkoKansatsuFlg = freezed,
   }) {
@@ -222,6 +237,10 @@ class __$$HomeHealthModelImplCopyWithImpl<$Res>
       kessekiShuttei: freezed == kessekiShuttei
           ? _value.kessekiShuttei
           : kessekiShuttei // ignore: cast_nullable_to_non_nullable
+              as int?,
+      shuttei: freezed == shuttei
+          ? _value.shuttei
+          : shuttei // ignore: cast_nullable_to_non_nullable
               as int?,
       influenza: freezed == influenza
           ? _value.influenza
@@ -258,11 +277,14 @@ class _$HomeHealthModelImpl implements _HomeHealthModel {
       @JsonKey(name: 'KessekiShuttei', disallowNullValue: false)
       @HiveField(5)
       this.kessekiShuttei,
-      @JsonKey(name: 'Influenza', disallowNullValue: false)
+      @JsonKey(name: 'Shuttei', disallowNullValue: false)
       @HiveField(6)
+      this.shuttei,
+      @JsonKey(name: 'Influenza', disallowNullValue: false)
+      @HiveField(7)
       this.influenza,
       @JsonKey(name: 'DoneKenkoKansatsuFlg', disallowNullValue: false)
-      @HiveField(7)
+      @HiveField(8)
       this.doneKenkoKansatsuFlg});
 
   factory _$HomeHealthModelImpl.fromJson(Map<String, dynamic> json) =>
@@ -293,12 +315,16 @@ class _$HomeHealthModelImpl implements _HomeHealthModel {
   @HiveField(5)
   final int? kessekiShuttei;
   @override
-  @JsonKey(name: 'Influenza', disallowNullValue: false)
+  @JsonKey(name: 'Shuttei', disallowNullValue: false)
   @HiveField(6)
+  final int? shuttei;
+  @override
+  @JsonKey(name: 'Influenza', disallowNullValue: false)
+  @HiveField(7)
   final int? influenza;
   @override
   @JsonKey(name: 'DoneKenkoKansatsuFlg', disallowNullValue: false)
-  @HiveField(7)
+  @HiveField(8)
   final bool? doneKenkoKansatsuFlg;
 
   @override
@@ -315,6 +341,7 @@ class _$HomeHealthModelImpl implements _HomeHealthModel {
             (identical(other.sotai, sotai) || other.sotai == sotai) &&
             (identical(other.kessekiShuttei, kessekiShuttei) ||
                 other.kessekiShuttei == kessekiShuttei) &&
+            (identical(other.shuttei, shuttei) || other.shuttei == shuttei) &&
             (identical(other.influenza, influenza) ||
                 other.influenza == influenza) &&
             (identical(other.doneKenkoKansatsuFlg, doneKenkoKansatsuFlg) ||
@@ -324,7 +351,7 @@ class _$HomeHealthModelImpl implements _HomeHealthModel {
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, className, zaiseki, shusseki,
-      tikoku, sotai, kessekiShuttei, influenza, doneKenkoKansatsuFlg);
+      tikoku, sotai, kessekiShuttei, shuttei, influenza, doneKenkoKansatsuFlg);
 
   @JsonKey(ignore: true)
   @override
@@ -361,11 +388,14 @@ abstract class _HomeHealthModel implements HomeHealthModel {
       @JsonKey(name: 'KessekiShuttei', disallowNullValue: false)
       @HiveField(5)
       final int? kessekiShuttei,
-      @JsonKey(name: 'Influenza', disallowNullValue: false)
+      @JsonKey(name: 'Shuttei', disallowNullValue: false)
       @HiveField(6)
+      final int? shuttei,
+      @JsonKey(name: 'Influenza', disallowNullValue: false)
+      @HiveField(7)
       final int? influenza,
       @JsonKey(name: 'DoneKenkoKansatsuFlg', disallowNullValue: false)
-      @HiveField(7)
+      @HiveField(8)
       final bool? doneKenkoKansatsuFlg}) = _$HomeHealthModelImpl;
 
   factory _HomeHealthModel.fromJson(Map<String, dynamic> json) =
@@ -396,12 +426,16 @@ abstract class _HomeHealthModel implements HomeHealthModel {
   @HiveField(5)
   int? get kessekiShuttei;
   @override
-  @JsonKey(name: 'Influenza', disallowNullValue: false)
+  @JsonKey(name: 'Shuttei', disallowNullValue: false)
   @HiveField(6)
+  int? get shuttei;
+  @override
+  @JsonKey(name: 'Influenza', disallowNullValue: false)
+  @HiveField(7)
   int? get influenza;
   @override
   @JsonKey(name: 'DoneKenkoKansatsuFlg', disallowNullValue: false)
-  @HiveField(7)
+  @HiveField(8)
   bool? get doneKenkoKansatsuFlg;
   @override
   @JsonKey(ignore: true)
