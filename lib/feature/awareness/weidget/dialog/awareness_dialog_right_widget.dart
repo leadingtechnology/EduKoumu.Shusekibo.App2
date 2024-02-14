@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:kyoumutechou/feature/awareness/weidget/dialog/awareness_template_search_text.dart';
+import 'package:kyoumutechou/feature/kizuki/model/kizuki_template_model.dart';
+import 'package:kyoumutechou/feature/kizuki/provider/kizuki_template_provider.dart';
 import 'package:kyoumutechou/helpers/widgets/my_spacing.dart';
+import 'package:kyoumutechou/shared/http/app_exception.dart';
 
 class AwarenessDialogRightWidget extends ConsumerWidget {
   const AwarenessDialogRightWidget({
@@ -11,34 +15,89 @@ class AwarenessDialogRightWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return SizedBox(width: 300, child: Column(crossAxisAlignment: CrossAxisAlignment.start,  children: [
-      const Text('テンプレート文(学校共通)', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),),
-      //AwarenessTemplateSearchText(kizukiController: kizukiController,),
-      
-      MySpacing.height(12),
-      Text('テンプレート文(個人)', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),),
-      SingleChildScrollView(scrollDirection: Axis.horizontal, child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start, 
-        children: kizukiPerson.map((e) =>
-          
-          Column(children: [
+    final state = ref.watch(kizukiTemplateNotifierProvider);
+
+    return state.when(
+      loading: () {
+        return const Center(child: CircularProgressIndicator());
+      },
+      error: (AppException e) {
+        return Text(e.toString());
+      },
+      loaded: (list) {
+        if (list.isEmpty) {
+          return Container();
+        }
+
+        return _build(context, ref, list);
+      },
+    );
+
+
+  }
+  Widget _build(
+    BuildContext context, 
+    WidgetRef ref,
+    List<KizukiTemplateModel> list,
+  ) {  
+
+    final kizukiCommon = list
+        .where(
+          (e) => e.commonFlg! == true,
+        )
+        .toList();
+
+    final kizukiPersonal = list
+        .where(
+          (e) => e.commonFlg! != true,
+        ).map((e) => e.kizukiTemplate)
+        .toList();
+
+    return SizedBox(
+        width: 300,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'テンプレート文(学校共通)',
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+            ),
+            AwarenessTemplateSearchText(
+              kizukiController: kizukiController,
+              kizukiTemplate: kizukiPersonal.map((e) => '$e').toList(),
+            ),
             MySpacing.height(12),
-            OutlinedButton(
-              child: Text('$e', maxLines: 1,),
-              onPressed: (){kizukiController.text = e;}, 
-            )
-          ],)
-
-      ).toList(), ),)
-
-    ],));
+            const Text(
+              'テンプレート文(個人)',
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+            ),
+            SizedBox(
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: kizukiCommon
+                      .map((e) => Column(
+                            children: [
+                              MySpacing.height(4),
+                              OutlinedButton(
+                                child: Text(
+                                  '${e.kizukiTemplate}',
+                                  maxLines: 2,
+                                ),
+                                onPressed: () {
+                                  kizukiController.text = '$e';
+                                },
+                              ),
+                            ],
+                          ),)
+                      .toList(),
+                ),
+              ),
+            ),
+          ],
+        ),);
   }
 }
 
-List<String> kizukiPerson = [
-  'この調子で、がんばってほしいと思います。',
-  'どの学習でも、やる気いっぱいで取り組んでいました。',
-  'いつもフレッシュな気持ちで、学習に向かっていました。',
-  '心身共に、ひと回りたくましくなりました。',
-  '自立へのステップをふみながら、自信のある生活ぶりでした。',
-];
+
