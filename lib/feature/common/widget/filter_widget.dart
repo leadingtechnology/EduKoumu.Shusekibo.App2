@@ -30,6 +30,8 @@ class FilterWidget extends ConsumerWidget {
       DateTime? endDate,
     }
   ) async {
+    final dates = DateUtil.calculateFiscalYear(DateTime.now());
+    
     startDate ??= DateTime.now();
     endDate ??= DateTime.now();
 
@@ -39,8 +41,8 @@ class FilterWidget extends ConsumerWidget {
     final newDateRange = await showDateRangePicker(
         context: context,
         initialDateRange: initialDateRange,
-        firstDate: DateTime(2023, 4),
-        lastDate: DateTime(2024, 3, 31),
+        firstDate: dates.item1,
+        lastDate: dates.item2,
         locale: const Locale('ja', 'JP'),
         builder: (context, child) {
           return Column(

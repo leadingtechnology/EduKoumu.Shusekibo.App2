@@ -44,11 +44,6 @@ class DantaiNotifier extends StateNotifier<ApiState> {
     await fetch();
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
   Future<void> fetch() async {
     // トークンがない場合は、ログイン画面に遷移する。
     if (Boxes.getBox().get('token') == null || Boxes.getBox().get('token') == '')

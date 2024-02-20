@@ -2,6 +2,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 enum PageType { seat, list }
+enum LecternPosition{top, bottom, left, right}
 
 final buttonEnableProvider = StateProvider<bool>((ref) {
   return false; 

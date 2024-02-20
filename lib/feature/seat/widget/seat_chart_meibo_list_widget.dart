@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive/hive.dart';
 import 'package:kyoumutechou/feature/attendance/model/attendance_meibo_model.dart';
 import 'package:kyoumutechou/feature/seat/provider/seat_chart_provider.dart';
-import 'package:kyoumutechou/feature/seat/widget/seat_chart_seito_widget.dart';
+import 'package:kyoumutechou/feature/seat/widget/seat_chart_seito_for_List_widget.dart';
 
 class SeatChartMeiboListWidget extends ConsumerStatefulWidget {
   const SeatChartMeiboListWidget({super.key});
@@ -32,7 +32,7 @@ extends ConsumerState<SeatChartMeiboListWidget> {
 
   @override
   Widget build(BuildContext context) {
-    meibos = ref.watch(scMeiboListProvider);
+    meibos = ref.watch(scMeibosListProvider);
 
     return SizedBox(
       height: 80,
@@ -61,10 +61,12 @@ extends ConsumerState<SeatChartMeiboListWidget> {
                 for (var i = 0; i < meibos.length; i++) ...[
                   GestureDetector(
                     onDoubleTap: () => _removeItem(i),
-                    onTap: () => ref.read(seatChartListFocusProvider.notifier).state = meibos[i].studentKihonId!,
-                    child: SeatChartSeitoWidget(
+                    onTap: () {
+                      ref.read(seatChartListFocusProvider.notifier).state = 
+                      meibos[i].studentKihonId!;
+                    } ,
+                    child: SeatChartSeitoForListWidget(
                       meibo: meibos[i],
-                      isStack: false,
                       seatNumber: -1,
                       key: ValueKey(meibos[i].studentKihonId),
                     ),

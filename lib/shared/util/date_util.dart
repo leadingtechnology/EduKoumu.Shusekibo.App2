@@ -130,10 +130,15 @@ class DateUtil {
   // }
 
   // begindate , enddate (4/1~3/31)
-  static Tuple2<DateTime, DateTime> calculateFiscalYear(DateTime date) {
+  static Tuple2<DateTime, DateTime> calculateFiscalYear(
+    DateTime? date,
+  ) {
+
     int startYear;
     DateTime fiscalYearStart;
     DateTime fiscalYearEnd;
+
+    date ??= DateTime.now();
 
     if (date.month < 4) {
       startYear = date.year - 1;

@@ -36,10 +36,10 @@ class AttendanceMeiboListProvider extends StateNotifier<ApiState> {
   late final _repository = ref.read(attendanceMeiboRepositoryProvider);
 
   Future<void> _init() async { 
-    await _fetch(); 
+    await fetch(); 
   }
 
-  Future<void> _fetch() async {
+  Future<void> fetch() async {
 
     // 初期化完成しない場合、終了する
     if (filter.classId == null ||
@@ -69,8 +69,6 @@ class AttendanceMeiboListProvider extends StateNotifier<ApiState> {
         }
       }),
     );
-
-
 
     // エラー、ローディングの場合、エラーを表示する。
     var isError = false;

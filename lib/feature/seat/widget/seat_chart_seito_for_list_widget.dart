@@ -5,15 +5,13 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:kyoumutechou/feature/attendance/model/attendance_meibo_model.dart';
 import 'package:kyoumutechou/feature/seat/provider/seat_chart_provider.dart';
 
-class SeatChartSeitoWidget extends ConsumerWidget {
-  SeatChartSeitoWidget({
-    required this.isStack,
+class SeatChartSeitoForListWidget extends ConsumerWidget {
+  SeatChartSeitoForListWidget({
     required this.seatNumber,
     required this.meibo,
     super.key,
   });
 
-  final bool isStack;
   final int seatNumber;
   final AttendanceMeiboModel meibo;
   final _baseUrl = dotenv.env['BASE_URL']!;
@@ -23,21 +21,15 @@ class SeatChartSeitoWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    
     // Widgetの場所により、選択状態の取得方法が異なる
     final kihonId = ref.watch(seatChartListFocusProvider);
     final seatNo = ref.watch(seatChartStackFocusProvider);
-    
-    bool isOn = false;
-    if (isStack){
-      isOn = seatNo == seatNumber;
-    }else {
-      isOn = kihonId == meibo.studentKihonId;
-    }
+
+    bool isOn = kihonId == meibo.studentKihonId;
 
     return Draggable<AttendanceMeiboModel>(
       data: meibo,
-      feedback: buildContainer(isOn : isOn),
+      feedback: buildContainer(isOn: isOn),
       childWhenDragging: buildContainer(isOn: isOn),
       child: buildContainer(isOn: isOn),
     );
@@ -45,8 +37,8 @@ class SeatChartSeitoWidget extends ConsumerWidget {
 
   Widget buildContainer({required bool isOn}) {
     return Container(
-      width: 90,
-      height: 70,
+      width: 110,
+      height: 80,
       padding: const EdgeInsets.fromLTRB(4, 4, 4, 4),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -66,6 +58,7 @@ class SeatChartSeitoWidget extends ConsumerWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
+          // 生徒widget
           if (meibo.studentKihonId! > 0) ...[
             CircleAvatar(
               backgroundImage: NetworkImage(
@@ -75,36 +68,41 @@ class SeatChartSeitoWidget extends ConsumerWidget {
               radius: 20,
             ),
             Expanded(
-              child: Text(
-                meibo.name ?? '',
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                softWrap: false,
-                style: const TextStyle(
-                  fontSize: 12,
-                  color: Colors.black,
-                  decoration: TextDecoration.none,
-                ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  const SizedBox(width: 8),
+                  showText(meibo.studentNumber),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: showText(meibo.name),
+                  ),
+                ],
               ),
             ),
           ],
+
+          // 空席widget
           if (meibo.studentKihonId! == 0) ...[
             Icon(
               Icons.chair_alt_outlined,
               color: Colors.grey[600],
               size: 30,
             ),
-            const Text(
-              '空席',
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                fontSize: 12,
-                color: Colors.black,
-                decoration: TextDecoration.none,
+            if (seatNumber >= 0)
+              Text(
+                '$seatNumber',
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                  fontSize: 12,
+                  color: Colors.black,
+                  decoration: TextDecoration.none,
+                ),
               ),
-            ),
           ],
+
+          // 席なしwidget
           if (meibo.studentKihonId! < 0) ...[
             const Center(
               child: Text(
@@ -123,37 +121,49 @@ class SeatChartSeitoWidget extends ConsumerWidget {
       ),
     );
   }
+
+  Text showText(String? text) {
+    return Text(
+      text ?? '',
+      maxLines: 3,
+      overflow: TextOverflow.ellipsis,
+      softWrap: false,
+      style: const TextStyle(
+        fontSize: 12,
+        color: Colors.black,
+        decoration: TextDecoration.none,
+      ),
+    );
+  }
 }
 
-SeatChartSeitoWidget getNoChair({
-  required bool isStack, 
+SeatChartSeitoForListWidget getNoChair({
+  required bool isStack,
   required int seatNumber,
 }) {
   // Add your code here
-  return SeatChartSeitoWidget(
+  return SeatChartSeitoForListWidget(
     meibo: const AttendanceMeiboModel(
       studentKihonId: -1,
       studentSeq: '-1',
       name: '席無し',
     ),
-    isStack: isStack,
     seatNumber: seatNumber,
     key: const ValueKey(-1),
   );
 }
 
-SeatChartSeitoWidget getBlankChair({
-  required bool isStack, 
+SeatChartSeitoForListWidget getBlankChair({
+  required bool isStack,
   required int seatNumber,
 }) {
   // Add your code here
-  return SeatChartSeitoWidget(
+  return SeatChartSeitoForListWidget(
     meibo: const AttendanceMeiboModel(
       studentKihonId: 0,
       studentSeq: '0',
       name: '空席',
     ),
-    isStack: isStack,
     seatNumber: seatNumber,
     key: const ValueKey(0),
   );

@@ -1,18 +1,18 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:kyoumutechou/feature/attendance/provider/attendance_meibo_provider.dart';
 import 'package:kyoumutechou/feature/boxes.dart';
 import 'package:kyoumutechou/feature/common/provider/common_provider.dart';
-import 'package:kyoumutechou/feature/common/state/api_state.dart';
 import 'package:kyoumutechou/feature/common/widget/save2_button_widget.dart';
 import 'package:kyoumutechou/feature/common/widget/search_bar_widget.dart';
 import 'package:kyoumutechou/feature/common/widget/toast_helper.dart';
+import 'package:kyoumutechou/feature/linkage/widget/lectern_widget.dart';
 import 'package:kyoumutechou/feature/seat/provider/seat_chart_provider.dart';
 import 'package:kyoumutechou/feature/seat/widget/seat_chart_meibo_list_widget.dart';
 import 'package:kyoumutechou/feature/seat/widget/seat_chart_meibo_stack_widget.dart';
 import 'package:kyoumutechou/helpers/widgets/my_spacing.dart';
 import 'package:kyoumutechou/helpers/widgets/my_text.dart';
+import 'package:kyoumutechou/shared/http/app_exception.dart';
 
 class SeatChartGridWidget extends ConsumerStatefulWidget  {
   const SeatChartGridWidget({
@@ -24,7 +24,8 @@ class SeatChartGridWidget extends ConsumerStatefulWidget  {
   final GlobalKey<ScaffoldState> scaffoldKey;
 
   @override
-  ConsumerState<SeatChartGridWidget> createState() => _SeatChartGridWidgetState();
+  ConsumerState<SeatChartGridWidget> createState() =>
+      _SeatChartGridWidgetState();
 }
 
 class _SeatChartGridWidgetState extends ConsumerState<SeatChartGridWidget> {
@@ -45,28 +46,25 @@ class _SeatChartGridWidgetState extends ConsumerState<SeatChartGridWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final state = ref.watch(attendanceMeiboListProvider);
-    final state2 = ref.watch(seatChartListProvider);
+    final state = ref.watch(seatChartListProvider);
 
-    return state.maybeWhen(
-      loaded: () => state2.maybeWhen(
-        loaded: _buildGridItem,
-        orElse: () => _loadingOrErrorWidget(state2), // state2がloaded以外の場合
-      ),
-      orElse: () => _loadingOrErrorWidget(state), // stateがloaded以外の場合
-    );
-  }
-
-  Widget _loadingOrErrorWidget(ApiState state) {
     return state.when(
-      loading: () => const Center(child: CircularProgressIndicator()),
-      error: (error) => Text(error.toString()),
-      loaded: Container.new, // この場合は使用されない
+      loading: () {
+        return const Center(child: CircularProgressIndicator());
+      },
+      error: (AppException e) {
+        return Text(e.toString());
+      },
+      loaded: _buildGridItem,
     );
+    
   }
 
   Widget _buildGridItem() {
+    // 展開フラグ
     final isExp = ref.watch(isSeatExpandedProvider);
+    // 教卓表示位置
+    final lecternPosition = ref.watch(lecternPositionProvider);
     
     // 名簿リストの取得
     final len = meiboBox.length;
@@ -74,32 +72,34 @@ class _SeatChartGridWidgetState extends ConsumerState<SeatChartGridWidget> {
     return Column(
       children: [
         // 010.検索バー
-        SearchBarWidget(widget.scaffoldKey),
-        MySpacing.height(8),
-        SizedBox(
-          height: 40,
-          //decoration: BoxDecoration(border: Border.all()),
-          child: Row(
-            children: [
-              Expanded(child: Container()),
-              Row(
+        Row(
+          children: [
+            SizedBox(
+              width: 700,
+              child: SearchBarWidget(
+                widget.scaffoldKey,
+                partern: 'パターン',
+              ),
+            ),
+            Expanded(child: Container()),
+            Row(
                 children: [
                   MyText('未設定人数:', fontSize: 16),
                   MySpacing.width(8),
                   MyText(' 0 / $len ', fontSize: 16),
                   IconButton(
                     icon: isExp
-                        ? const Icon(Icons.expand_more)
-                        : const Icon(Icons.expand_less),
+                        ? const Icon(Icons.expand_less)
+                        : const Icon(Icons.expand_more),
                     onPressed: () {
                       ref.read(isSeatExpandedProvider.notifier).state = !isExp;
                     },
                   ),
                 ],
               ),
-            ],
-          ),
+          ],
         ),
+        
         MySpacing.height(8),
 
         // 020.空席＋生徒一覧
@@ -109,8 +109,15 @@ class _SeatChartGridWidgetState extends ConsumerState<SeatChartGridWidget> {
         if (!isExp)
         Container(),
 
-        // 030.座席設定
+        // 030.座席設定 -- 教卓
         MySpacing.height(2),
+        if (lecternPosition == LecternPosition.top) ...[
+          MySpacing.height(8),
+          const LecternWidget(),
+          MySpacing.height(1),
+        ],
+        
+        // 035.座席設定
         Expanded(
           child: Container(
             color: Colors.grey[100],
@@ -118,6 +125,9 @@ class _SeatChartGridWidgetState extends ConsumerState<SeatChartGridWidget> {
             child: const SeatChartMeiboStackWidget(),
           ),
         ),
+
+        // 040.座席設定 -- 教卓
+        if (lecternPosition == LecternPosition.bottom) const LecternWidget(),
         
         // 090.アンダーバー
         MySpacing.height(16),
@@ -136,7 +146,7 @@ class _SeatChartGridWidgetState extends ConsumerState<SeatChartGridWidget> {
                   color: Colors.green.shade200, // 枠線の色
                 ),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10), // 调整这个值来改变弧度
+                  borderRadius: BorderRadius.circular(10), 
                 ),
               ),
             ),
@@ -152,7 +162,7 @@ class _SeatChartGridWidgetState extends ConsumerState<SeatChartGridWidget> {
                   color: Colors.green.shade200, // 枠線の色
                 ),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10), // 调整这个值来改变弧度
+                  borderRadius: BorderRadius.circular(10), 
                 ),
               ),
             ),
@@ -162,23 +172,43 @@ class _SeatChartGridWidgetState extends ConsumerState<SeatChartGridWidget> {
               onPressed: () {
               },
               icon: const Icon(Icons.manage_accounts_outlined),
-              label: const Text('座席表を割り当て'),
+              label: const Text('座席番号順に座席を配置'),
               style: ElevatedButton.styleFrom(
                 side: BorderSide(
                   color: Colors.green.shade200, // 枠線の色
                 ),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10), // 调整这个值来改变弧度
+                  borderRadius: BorderRadius.circular(10), 
                 ),
               ),
             ),
 
             Expanded(child: Container()),
+            ElevatedButton.icon(
+              onPressed: () {
+                ref.read(lecternPositionProvider.notifier).state = 
+                    ref.read(lecternPositionProvider) == LecternPosition.top
+                        ? LecternPosition.bottom
+                        : LecternPosition.top;
+              },
+              icon: const Icon(Icons.swap_vert_outlined),
+              label: const Text('表示回転'),
+              style: ElevatedButton.styleFrom(
+                side: BorderSide(
+                  color: Colors.green.shade200, // 枠線の色
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+            ),
+            MySpacing.width(8),
             Save2ButtonWidget(
               label: '保存',
-              onPressed: () {
-                      ToastHelper.showToast(context, '　保存しました　');
-                    },
+              onPressed: () async{
+
+                ToastHelper.showToast(context, '　保存しました　');
+              },
             ),
           ],
         ),

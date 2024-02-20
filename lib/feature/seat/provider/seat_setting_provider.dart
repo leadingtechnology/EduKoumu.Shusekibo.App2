@@ -11,7 +11,7 @@ final seatSettingListProvider =
   
   final filter = ref.watch(filterProvider);
 
-  return SeatSettingListProvider(ref, '${filter.classId}');
+  return SeatSettingListProvider(ref, '${filter.classId ?? ''}');
 });
 
 final seatSettingProvider = 
@@ -34,6 +34,10 @@ class SeatSettingListProvider extends StateNotifier<ApiState> {
   }
 
   Future<void> fetch() async {
+    if (classId == '') {
+      return;
+    } 
+    
     final response = await _repository.fetch(classId);
     if (mounted) {
       state = response;
@@ -107,6 +111,7 @@ class SeatSettingListProvider extends StateNotifier<ApiState> {
     "EndDate": "${DateUtil.getStringDate(endDate)}"
 }
 ''';
+
     //データ作成
     await _repository.save(json);
     await _repository.fetch(classId);

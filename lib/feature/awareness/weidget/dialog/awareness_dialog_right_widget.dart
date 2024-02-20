@@ -50,7 +50,7 @@ class AwarenessDialogRightWidget extends ConsumerWidget {
     final kizukiPersonal = list
         .where(
           (e) => e.commonFlg! != true,
-        ).map((e) => e.kizukiTemplate)
+        )
         .toList();
 
     return SizedBox(
@@ -64,7 +64,7 @@ class AwarenessDialogRightWidget extends ConsumerWidget {
             ),
             AwarenessTemplateSearchText(
               kizukiController: kizukiController,
-              kizukiTemplate: kizukiPersonal.map((e) => '$e').toList(),
+              kizukiTemplate: kizukiCommon.map((e) => '${e.kizukiTemplate}').toList(),
             ),
             MySpacing.height(12),
             const Text(
@@ -76,21 +76,25 @@ class AwarenessDialogRightWidget extends ConsumerWidget {
                 scrollDirection: Axis.horizontal,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: kizukiCommon
-                      .map((e) => Column(
-                            children: [
-                              MySpacing.height(4),
-                              OutlinedButton(
-                                child: Text(
-                                  '${e.kizukiTemplate}',
-                                  maxLines: 2,
+                  children: kizukiPersonal
+                      .map((e) => Tooltip(
+                        message: '${e.kizukiTemplate}',
+                        child: Column(
+                              children: [
+                                MySpacing.height(16),
+                                InkWell(
+                                  onTap: () {
+                                    kizukiController.text = '${e.kizukiTemplate}';
+                                  },
+                                  child: Text(
+                                    '${e.title}',
+                                    overflow: TextOverflow.ellipsis,
+                                    softWrap: true,
+                                  ),
                                 ),
-                                onPressed: () {
-                                  kizukiController.text = '$e';
-                                },
-                              ),
-                            ],
-                          ),)
+                              ],
+                            ),
+                      ),)
                       .toList(),
                 ),
               ),
@@ -99,5 +103,3 @@ class AwarenessDialogRightWidget extends ConsumerWidget {
         ),);
   }
 }
-
-

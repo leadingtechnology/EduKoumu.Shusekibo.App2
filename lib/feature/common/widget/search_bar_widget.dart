@@ -1,19 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:kyoumutechou/feature/common/provider/common_provider.dart';
 import 'package:kyoumutechou/feature/common/provider/filter_provider.dart';
 import 'package:kyoumutechou/feature/common/widget/control_tokobi.dart';
 import 'package:kyoumutechou/feature/common/widget/control_tokobi2.dart';
 import 'package:kyoumutechou/feature/home/provider/home_provider.dart';
-import 'package:kyoumutechou/feature/seat/provider/seat_chart_provider.dart';
 import 'package:kyoumutechou/helpers/widgets/my_spacing.dart';
 import 'package:kyoumutechou/helpers/widgets/my_text.dart';
 import 'package:kyoumutechou/shared/util/date_util.dart';
 
 class SearchBarWidget extends ConsumerWidget {
-  const SearchBarWidget(this._scaffoldKey, {this.isPeriod, super.key});
+  const SearchBarWidget(
+    this._scaffoldKey, 
+    {this.isPeriod, 
+    this.partern = '',
+    super.key,
+  });
 
   final GlobalKey<ScaffoldState> _scaffoldKey;
+  final String partern;
   final bool? isPeriod;
 
   @override
@@ -220,6 +224,33 @@ class SearchBarWidget extends ConsumerWidget {
                     ],
                   ),
                 ],
+
+                if(partern.isNotEmpty) ...[
+                  Row(
+                    children: [
+                      MyText.bodyLarge(
+                        'パターン',
+                        fontWeight: 700,
+                      ),
+                      MySpacing.width(5),
+                      InkWell(
+                        onTap: () {
+                          _scaffoldKey.currentState?.openEndDrawer();
+                        },
+                        child: Container(
+                          constraints: const BoxConstraints(minWidth: 100),
+                          padding: MySpacing.x(4),
+                          alignment: Alignment.centerLeft,
+                          decoration: BoxDecoration(
+                            border: Border.all(),
+                            borderRadius: BorderRadius.circular(3),
+                          ),
+                          child: Text(partern),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
               ],
             ),
           ),
@@ -234,8 +265,8 @@ class SearchBarWidget extends ConsumerWidget {
                 },
               ),
               MySpacing.width(15),
-              if (menuId != Menu.setting &&
-                  ref.watch(seatChartPageTypeProvider) != PageType.seat)
+
+              if (partern.isEmpty)
                 IconButton(
                   icon: const Icon(Icons.tune),
                   onPressed: () {

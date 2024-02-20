@@ -5,6 +5,7 @@ import 'package:kyoumutechou/feature/common/provider/timeds_provider.dart';
 import 'package:kyoumutechou/helpers/theme/app_theme.dart';
 import 'package:kyoumutechou/helpers/widgets/my_spacing.dart';
 import 'package:kyoumutechou/helpers/widgets/my_text.dart';
+import 'package:kyoumutechou/shared/util/date_util.dart';
 
 
 Widget SingleIconChip({
@@ -55,11 +56,13 @@ Future<void> pickDate(
   {DateTime? iniDate,
 }) async {
   iniDate ??= DateTime.now();
+  
+  final dates = DateUtil.calculateFiscalYear(DateTime.now());
 
   final selected = await showDatePicker(
     context: context,
     initialDate: iniDate,
-    firstDate: DateTime(2023, 4),
+    firstDate: dates.item1,
     lastDate: DateTime.now(),
     initialEntryMode: DatePickerEntryMode.calendarOnly,
     locale: const Locale('ja', 'JP'),

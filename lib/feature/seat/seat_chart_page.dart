@@ -25,7 +25,7 @@ class SeatChartPage extends ConsumerWidget {
       endDrawer: FilterWidget(),
       body: Container(
         color: theme.colorScheme.surface,
-        padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
+        padding: const EdgeInsets.fromLTRB(12, 0, 12, 8),
         child: pageType == PageType.list
             ? SeatChartListWidget(scaffoldKey: scaffoldKey)
             : SeatChartGridWidget(scaffoldKey: scaffoldKey),

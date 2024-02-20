@@ -7,9 +7,11 @@ import 'package:kyoumutechou/shared/http/api_response.dart';
 import 'package:kyoumutechou/shared/http/app_exception.dart';
 
 
-// ignore: one_member_abstracts
 abstract class SeatSettingRepositoryProtocol {
   Future<ApiState> fetch(String classCode);
+  Future<ApiState> save(String json);
+  Future<ApiState> patch(int id, String json);
+  Future<ApiState> delete(int id);
 }
 
 final seatSettingRepositoryProvider = Provider(SeatSettingRepository.new);
@@ -58,6 +60,7 @@ class SeatSettingRepository implements SeatSettingRepositoryProtocol {
     }
   }
 
+  @override
   Future<ApiState> delete(int id) async {
     final response = await _api.delete('api/SeatCharts/$id', '');
 
@@ -76,6 +79,7 @@ class SeatSettingRepository implements SeatSettingRepositoryProtocol {
     }
   }
 
+  @override
   Future<ApiState> patch(int id, String json) async {
     final response = await _api.patch('api/SeatCharts/$id', json);
 
@@ -92,7 +96,7 @@ class SeatSettingRepository implements SeatSettingRepositoryProtocol {
     }
   }
 
-    @override
+  @override
   Future<ApiState> save(String json) async {
 
     const url = 'api/SeatCharts';

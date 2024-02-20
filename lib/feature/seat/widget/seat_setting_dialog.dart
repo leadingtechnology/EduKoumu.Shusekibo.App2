@@ -33,7 +33,7 @@ class SeatSettingState extends ConsumerState<SeatSettingDialog> {
     row: 6,
     column: 6,
     seatOrder: 0,
-    seatPattern: '0',
+    seatPattern: '',
     seatPatternName: '',
     startDate : DateTime.now(),
     endDate: DateTime.now(),
@@ -41,6 +41,7 @@ class SeatSettingState extends ConsumerState<SeatSettingDialog> {
   
   int selectedRow = 6;
   int selectedColumn = 6;
+  String seatPattern = '0';
   int selectedSeatOrder = seatConfigurations[0].seatOrder;
   DateTime startDate = DateTime.now();
   DateTime endDate = DateTime.now();
@@ -57,6 +58,15 @@ class SeatSettingState extends ConsumerState<SeatSettingDialog> {
             (element) => element.id == widget.id,
           );
       _patternNameController.text = model.seatPatternName!;
+
+      if (widget.id > 0) {
+        selectedRow = model.row!;
+        selectedColumn = model.column!;
+        seatPattern = model.seatPattern!;
+        selectedSeatOrder = model.seatOrder!;
+        startDate = model.startDate!;
+        endDate = model.endDate!;
+      }
     }
   }
 
@@ -67,14 +77,16 @@ class SeatSettingState extends ConsumerState<SeatSettingDialog> {
   }
 
   Future<void> _pickDateRange(BuildContext context, WidgetRef ref) async {
+    final dates = DateUtil.calculateFiscalYear(DateTime.now());
+
     final initialDateRange =
         DateTimeRange(start: DateTime.now(), end: DateTime.now());
 
     final newDateRange = await showDateRangePicker(
       context: context,
       initialDateRange: initialDateRange,
-      firstDate: DateTime(2023, 4),
-      lastDate: DateTime(2024, 3, 31),
+      firstDate: dates.item1,
+      lastDate: dates.item2,
       locale: const Locale('ja', 'JP'),
       builder: (context, child) {
         return Column(
@@ -101,15 +113,7 @@ class SeatSettingState extends ConsumerState<SeatSettingDialog> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.id > 0) {
-      selectedRow = model.row!;
-      selectedColumn = model.column!;
-      selectedSeatOrder = model.seatOrder!;
-      startDate = model.startDate!;
-      endDate = model.endDate!;
-    }
     
-
     return Form(
       key: _formKey,
       child: SimpleDialog(
@@ -163,7 +167,7 @@ class SeatSettingState extends ConsumerState<SeatSettingDialog> {
                       }),
                       onChanged: (value) {
                         setState(() {
-                          selectedRow = value!;  
+                          selectedRow = value ?? 6;  
                         });
                       },
                     ),
@@ -365,16 +369,28 @@ class SeatSettingState extends ConsumerState<SeatSettingDialog> {
                       return;
                     }
 
-                    await ref.read(seatSettingListProvider.notifier).save(
+                    if (widget.id > 0) {
+                      await ref.read(seatSettingListProvider.notifier).patch(
+                          id: widget.id,
                           row: selectedRow,
                           col: selectedColumn,
                           seatOrder: selectedSeatOrder,
-                          seatPattern: '0',
+                          seatPattern: seatPattern,
                           seatPatternName: _patternNameController.text,
                           startDate: startDate,
                           endDate: endDate,
                         );
-                    
+                    } else {  
+                      await ref.read(seatSettingListProvider.notifier).save(
+                          row: selectedRow,
+                          col: selectedColumn,
+                          seatOrder: selectedSeatOrder,
+                          seatPattern: seatPattern,
+                          seatPatternName: _patternNameController.text,
+                          startDate: startDate,
+                          endDate: endDate,
+                        );
+                    }
                     ref.read(filterProvider.notifier).refresh();
                     
                     // 成功の場合、トーストを表示して、ダイアログを閉じる。

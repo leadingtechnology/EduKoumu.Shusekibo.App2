@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:kyoumutechou/feature/attendance/model/attendance_meibo_model.dart';
+import 'package:kyoumutechou/feature/attendance/provider/attendance_meibo_provider.dart';
 import 'package:kyoumutechou/feature/boxes.dart';
 import 'package:kyoumutechou/feature/common/provider/common_provider.dart';
+import 'package:kyoumutechou/feature/common/provider/filter_provider.dart';
 import 'package:kyoumutechou/feature/common/widget/dialog_util.dart';
 import 'package:kyoumutechou/feature/common/widget/search_bar_widget.dart';
 import 'package:kyoumutechou/feature/seat/model/seat_setting_model.dart';
@@ -15,6 +18,7 @@ import 'package:kyoumutechou/helpers/widgets/my_text.dart';
 import 'package:kyoumutechou/shared/util/date_util.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
+// ignore: must_be_immutable
 class SeatChartListWidget extends ConsumerWidget {
   SeatChartListWidget({
     required this.scaffoldKey, 
@@ -131,8 +135,8 @@ class SeatChartListWidget extends ConsumerWidget {
         enableSorting: false,
         renderer: (rendererContext) {
           final seatOrder=rendererContext.row.cells['SeatOrder']!.value as int;
-          return Text(seatConfigurations[seatOrder].name);
-        }
+          return Text(seatConfigurations[seatOrder-1].name);
+        },
       ),
       // 6
       PlutoColumn(
@@ -177,7 +181,7 @@ class SeatChartListWidget extends ConsumerWidget {
         enableSorting: false,
         renderer: (rendererContext) {
           return ElevatedButton.icon(
-            onPressed: () {
+            onPressed: () async{
               var id = 0;
               try {
                 id = rendererContext.row.cells['Id']!.value as int;
@@ -185,10 +189,28 @@ class SeatChartListWidget extends ConsumerWidget {
                 id = 0;
               }
 
-              // 生徒リストを取得
-              ref.read(scMeiboListProvider.notifier).state = 
-              Boxes.getAttendanceMeibo().values.toList();
+              final strDate = rendererContext
+                  .row.cells['sDate']!.value as String;
               
+              var targetDate = DateTime.now();
+              try{
+                targetDate = DateTime.parse(strDate);
+              }catch(e){
+                targetDate = DateTime.now();
+              }
+              
+              final meibos = await ref.read(seatChartListProvider.notifier)
+              .getMeibos(
+                ref.read(filterProvider), 
+                targetDate,
+              );
+
+              ref.read(scMeibosListProvider.notifier).state = meibos;
+              if (meibos.isNotEmpty){
+                ref.read(seatChartListFocusProvider.notifier).state = 
+                meibos[0].studentKihonId!;  
+              }
+
               ref.read(seatSettingIdProvider.notifier).state = id;
               ref.read(seatChartPageTypeProvider.notifier).state =PageType.seat;
             },
@@ -205,6 +227,20 @@ class SeatChartListWidget extends ConsumerWidget {
           );
         },
       ),
+      // 9 hide column
+      PlutoColumn(
+        title: '',
+        field: 'sDate',
+        hide: true,
+        type: PlutoColumnType.date(),
+      ),
+      PlutoColumn(
+        title: '',
+        field: 'eDate',
+        hide: true,
+        type: PlutoColumnType.date(),
+      ),
+
     ];
   }
 
@@ -243,6 +279,9 @@ class SeatChartListWidget extends ConsumerWidget {
                   'EndDate': PlutoCell(value: e.endDate == null ? '' 
                     :DateUtil.getJapaneseDate(e.endDate ?? DateTime.now(),),),
                   'actions': PlutoCell(value: 'actions'),
+                  // 以下は非表示カラム
+                  'sDate': PlutoCell(value: e.startDate),
+                  'eDate': PlutoCell(value: e.endDate),
                 },
               );
             }).toList();
@@ -293,8 +332,8 @@ class SeatChartListWidget extends ConsumerWidget {
               stateManager.setSelectingMode(PlutoGridSelectingMode.cell);
             },
             onChanged: print,
-            configuration: PlutoGridConfiguration(),
-            onSorted: null,
+            //configuration: const PlutoGridConfiguration(),
+            //onSorted: null,
             mode: PlutoGridMode.selectWithOneTap,
             //mode: PlutoGridMode.set,
           ),
