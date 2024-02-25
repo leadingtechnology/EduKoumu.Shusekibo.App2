@@ -133,7 +133,7 @@ class SeatChartListProvider extends StateNotifier<ApiState> {
 
     // 020）設定先座席Widgetの取得先
     final scMeibos = _ref.read(scMeibosStackProvider);
-    final sc = scMeibos[index];
+    final sc = scMeibos.where((e) => e.seatIndex == index).first;
     if (sc.seatNumber == 0) {
       return;
     } 
@@ -182,7 +182,7 @@ class SeatChartListProvider extends StateNotifier<ApiState> {
 
     // 020）設定先座席Widgetの取得先
     final scMeibos = _ref.read(scMeibosStackProvider);
-    final sc = scMeibos[index];
+    final sc = scMeibos.where((e) => e.seatIndex == index).first;
 
     // 030）リストのリセット
     if (sc.meibo.studentKihonId! > 0) {
@@ -223,10 +223,61 @@ class SeatChartListProvider extends StateNotifier<ApiState> {
 
   }    
   // 生徒Stackの操作ファンクション) Stack席のダブルクリック
-  Future<void> doubleClickStackSeat({
-    required int seatSettingId, // 座席表設定ID　席番号の再設定に使用する
-    required int seatIndex, // 設定された席Index
-  }) async {
+  Future<void> doubleClickStackSeat() async {
+    final seatSettingId = _ref.read(seatSettingIdProvider);
+
+    // 010）フォーカスの取得
+    final index = _ref.read(seatChartStackFocusProvider);
+    if (index < 0) {
+      return;
+    }
+
+    // 020）設定先座席Widgetの取得先
+    final scMeibos = _ref.read(scMeibosStackProvider);
+    final sc = scMeibos.where((e) => e.seatIndex == index).first;
+
+    // 030）リストのリセット
+    if (sc.meibo.studentKihonId! > 0) {
+      await addMeibos(sc.meibo);
+
+      // 040）空席の追加
+      scMeibos[index] = getStackClearChair(
+        index: index,
+        seatNumber: sc.seatNumber,
+      );
+    }else{
+      final kihonId = _ref.read(seatChartListFocusProvider);
+      
+      if (kihonId <= 0) {
+        // 040）Stack席の設定
+        scMeibos[index] = getStackNoChair(
+          index: index,
+          seatNumber: sc.seatNumber,
+        );
+      } else {
+        final meibos = _ref.read(scMeibosListProvider);
+        final meibo = meibos.where((e) => e.studentKihonId == kihonId).first;
+
+        // 040）Stack席の設定
+        scMeibos[index] = SeatChartSeitoForStackWidget(
+          seatIndex: index,
+          seatNumber: sc.seatNumber,
+          meibo: meibo,
+        );
+
+        // 利用された場合、リストから削除する
+        await deleteMeibos(
+          kihonId: meibo.studentKihonId!,
+        );
+      }
+    }
+
+    // 050）座席番号の再設定
+    final newScMeibos = await resetSeatNumber(
+      seatSettingId,
+      scMeibos,
+    );
+    _ref.read(scMeibosStackProvider.notifier).state = newScMeibos;
 
   }
   // 生徒Stackの操作ファンクション) Stack席のクリック

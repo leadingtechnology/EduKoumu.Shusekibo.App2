@@ -49,6 +49,7 @@ class _SeatChartMeiboStackWidgetState
     final scMeibos = ref.watch(scMeibosStackProvider);
 
     // インデックスによりソートする
+    // ignore: cascade_invocations
     scMeibos.sort((a, b) => a.seatIndex.compareTo(b.seatIndex));
 
     return LayoutBuilder(
@@ -63,7 +64,7 @@ class _SeatChartMeiboStackWidgetState
 
         final heightScale = height > meiboHeight ? 1.0 : height / meiboHeight;
         final widthScale = width > meiboWidth ? 1.0 : width / meiboWidth;
-        var scale = heightScale < widthScale ? heightScale : widthScale;
+        final scale = heightScale < widthScale ? heightScale : widthScale;
 
         var rotate = 0.0;
         switch (lp) {
@@ -88,19 +89,26 @@ class _SeatChartMeiboStackWidgetState
                     scale,
                     Transform.rotate(
                       angle: rotate == 0.0 ? 0.0 : 3.14159265358979323846,
-                      child: GestureDetector(
-                        onTap: () {
-                          ref.read(seatChartStackFocusProvider.notifier).state =
-                              i * n + j;
-                        },
-                        onDoubleTap: () {
-                          ref.read(seatChartStackFocusProvider.notifier).state =
-                              i * n + j;
-                        },
-                        child: SizedBox(
-                          width: width,
-                          height: height,
-                          child: Center(child: scMeibos[i * n + j]),
+                      child: SizedBox(
+                        width: width,
+                        height: height,
+                        child: Center(
+                          child: GestureDetector(
+                            onTap: () {
+                              ref
+                                  .read(seatChartStackFocusProvider.notifier)
+                                  .state = i * n + j;
+                            },
+                            onDoubleTap: () {
+                              ref
+                                  .read(seatChartStackFocusProvider.notifier)
+                                  .state = i * n + j;
+                              ref
+                                  .read(seatChartListProvider.notifier)
+                                  .doubleClickStackSeat();
+                            },
+                            child: scMeibos[i * n + j],
+                          ),
                         ),
                       ),
                     ),

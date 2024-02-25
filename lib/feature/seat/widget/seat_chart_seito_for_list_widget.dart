@@ -1,9 +1,11 @@
+import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:kyoumutechou/feature/attendance/model/attendance_meibo_model.dart';
 import 'package:kyoumutechou/feature/seat/provider/seat_chart_provider.dart';
+import 'package:kyoumutechou/feature/seat/widget/blank_seat_widget.dart';
 
 class SeatChartSeitoForListWidget extends ConsumerWidget {
   SeatChartSeitoForListWidget({
@@ -30,7 +32,10 @@ class SeatChartSeitoForListWidget extends ConsumerWidget {
     return Draggable<AttendanceMeiboModel>(
       data: meibo,
       feedback: buildContainer(isOn: isOn),
-      childWhenDragging: buildContainer(isOn: isOn),
+      //childWhenDragging: buildContainer(isOn: isOn),
+      childWhenDragging: meibo.studentKihonId != -1
+          ? const BlankSeatWidget()
+          : buildContainer(isOn: isOn),
       child: buildContainer(isOn: isOn),
     );
   }
