@@ -206,7 +206,9 @@ class _SeatChartGridWidgetState extends ConsumerState<SeatChartGridWidget> {
             Save2ButtonWidget(
               label: '保存',
               onPressed: () async{
+                await ref.read(seatChartListProvider.notifier).patch();
 
+                // ignore: use_build_context_synchronously
                 ToastHelper.showToast(context, '　保存しました　');
               },
             ),

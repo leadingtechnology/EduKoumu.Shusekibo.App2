@@ -20,12 +20,15 @@ SeatChartModel _$SeatChartModelFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$SeatChartModel {
-  @JsonKey(name: 'SeatNumber', disallowNullValue: false)
+  @JsonKey(name: 'SeatIndex', disallowNullValue: false)
   @HiveField(0)
+  int? get seatIndex => throw _privateConstructorUsedError;
+  @JsonKey(name: 'SeatNumber', disallowNullValue: false)
+  @HiveField(1)
   int? get seatNumber => throw _privateConstructorUsedError;
   @JsonKey(name: 'SeitoSeq', disallowNullValue: false)
-  @HiveField(1)
-  int? get seitoSeq => throw _privateConstructorUsedError;
+  @HiveField(2)
+  String? get seitoSeq => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -40,12 +43,15 @@ abstract class $SeatChartModelCopyWith<$Res> {
       _$SeatChartModelCopyWithImpl<$Res, SeatChartModel>;
   @useResult
   $Res call(
-      {@JsonKey(name: 'SeatNumber', disallowNullValue: false)
+      {@JsonKey(name: 'SeatIndex', disallowNullValue: false)
       @HiveField(0)
+      int? seatIndex,
+      @JsonKey(name: 'SeatNumber', disallowNullValue: false)
+      @HiveField(1)
       int? seatNumber,
       @JsonKey(name: 'SeitoSeq', disallowNullValue: false)
-      @HiveField(1)
-      int? seitoSeq});
+      @HiveField(2)
+      String? seitoSeq});
 }
 
 /// @nodoc
@@ -61,10 +67,15 @@ class _$SeatChartModelCopyWithImpl<$Res, $Val extends SeatChartModel>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? seatIndex = freezed,
     Object? seatNumber = freezed,
     Object? seitoSeq = freezed,
   }) {
     return _then(_value.copyWith(
+      seatIndex: freezed == seatIndex
+          ? _value.seatIndex
+          : seatIndex // ignore: cast_nullable_to_non_nullable
+              as int?,
       seatNumber: freezed == seatNumber
           ? _value.seatNumber
           : seatNumber // ignore: cast_nullable_to_non_nullable
@@ -72,7 +83,7 @@ class _$SeatChartModelCopyWithImpl<$Res, $Val extends SeatChartModel>
       seitoSeq: freezed == seitoSeq
           ? _value.seitoSeq
           : seitoSeq // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as String?,
     ) as $Val);
   }
 }
@@ -86,12 +97,15 @@ abstract class _$$SeatChartModelImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {@JsonKey(name: 'SeatNumber', disallowNullValue: false)
+      {@JsonKey(name: 'SeatIndex', disallowNullValue: false)
       @HiveField(0)
+      int? seatIndex,
+      @JsonKey(name: 'SeatNumber', disallowNullValue: false)
+      @HiveField(1)
       int? seatNumber,
       @JsonKey(name: 'SeitoSeq', disallowNullValue: false)
-      @HiveField(1)
-      int? seitoSeq});
+      @HiveField(2)
+      String? seitoSeq});
 }
 
 /// @nodoc
@@ -105,10 +119,15 @@ class __$$SeatChartModelImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? seatIndex = freezed,
     Object? seatNumber = freezed,
     Object? seitoSeq = freezed,
   }) {
     return _then(_$SeatChartModelImpl(
+      seatIndex: freezed == seatIndex
+          ? _value.seatIndex
+          : seatIndex // ignore: cast_nullable_to_non_nullable
+              as int?,
       seatNumber: freezed == seatNumber
           ? _value.seatNumber
           : seatNumber // ignore: cast_nullable_to_non_nullable
@@ -116,7 +135,7 @@ class __$$SeatChartModelImplCopyWithImpl<$Res>
       seitoSeq: freezed == seitoSeq
           ? _value.seitoSeq
           : seitoSeq // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as String?,
     ));
   }
 }
@@ -126,30 +145,39 @@ class __$$SeatChartModelImplCopyWithImpl<$Res>
 @HiveType(typeId: 46, adapterName: 'SeatChartModelAdapter')
 class _$SeatChartModelImpl implements _SeatChartModel {
   const _$SeatChartModelImpl(
-      {@JsonKey(name: 'SeatNumber', disallowNullValue: false)
+      {@JsonKey(name: 'SeatIndex', disallowNullValue: false)
       @HiveField(0)
+      this.seatIndex,
+      @JsonKey(name: 'SeatNumber', disallowNullValue: false)
+      @HiveField(1)
       this.seatNumber,
       @JsonKey(name: 'SeitoSeq', disallowNullValue: false)
-      @HiveField(1)
+      @HiveField(2)
       this.seitoSeq});
 
   factory _$SeatChartModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$SeatChartModelImplFromJson(json);
 
   @override
-  @JsonKey(name: 'SeatNumber', disallowNullValue: false)
+  @JsonKey(name: 'SeatIndex', disallowNullValue: false)
   @HiveField(0)
+  final int? seatIndex;
+  @override
+  @JsonKey(name: 'SeatNumber', disallowNullValue: false)
+  @HiveField(1)
   final int? seatNumber;
   @override
   @JsonKey(name: 'SeitoSeq', disallowNullValue: false)
-  @HiveField(1)
-  final int? seitoSeq;
+  @HiveField(2)
+  final String? seitoSeq;
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$SeatChartModelImpl &&
+            (identical(other.seatIndex, seatIndex) ||
+                other.seatIndex == seatIndex) &&
             (identical(other.seatNumber, seatNumber) ||
                 other.seatNumber == seatNumber) &&
             (identical(other.seitoSeq, seitoSeq) ||
@@ -158,7 +186,7 @@ class _$SeatChartModelImpl implements _SeatChartModel {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, seatNumber, seitoSeq);
+  int get hashCode => Object.hash(runtimeType, seatIndex, seatNumber, seitoSeq);
 
   @JsonKey(ignore: true)
   @override
@@ -177,24 +205,31 @@ class _$SeatChartModelImpl implements _SeatChartModel {
 
 abstract class _SeatChartModel implements SeatChartModel {
   const factory _SeatChartModel(
-      {@JsonKey(name: 'SeatNumber', disallowNullValue: false)
+      {@JsonKey(name: 'SeatIndex', disallowNullValue: false)
       @HiveField(0)
+      final int? seatIndex,
+      @JsonKey(name: 'SeatNumber', disallowNullValue: false)
+      @HiveField(1)
       final int? seatNumber,
       @JsonKey(name: 'SeitoSeq', disallowNullValue: false)
-      @HiveField(1)
-      final int? seitoSeq}) = _$SeatChartModelImpl;
+      @HiveField(2)
+      final String? seitoSeq}) = _$SeatChartModelImpl;
 
   factory _SeatChartModel.fromJson(Map<String, dynamic> json) =
       _$SeatChartModelImpl.fromJson;
 
   @override
-  @JsonKey(name: 'SeatNumber', disallowNullValue: false)
+  @JsonKey(name: 'SeatIndex', disallowNullValue: false)
   @HiveField(0)
+  int? get seatIndex;
+  @override
+  @JsonKey(name: 'SeatNumber', disallowNullValue: false)
+  @HiveField(1)
   int? get seatNumber;
   @override
   @JsonKey(name: 'SeitoSeq', disallowNullValue: false)
-  @HiveField(1)
-  int? get seitoSeq;
+  @HiveField(2)
+  String? get seitoSeq;
   @override
   @JsonKey(ignore: true)
   _$$SeatChartModelImplCopyWith<_$SeatChartModelImpl> get copyWith =>

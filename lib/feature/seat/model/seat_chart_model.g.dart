@@ -17,18 +17,21 @@ class SeatChartModelAdapter extends TypeAdapter<_$SeatChartModelImpl> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return _$SeatChartModelImpl(
-      seatNumber: fields[0] as int?,
-      seitoSeq: fields[1] as int?,
+      seatIndex: fields[0] as int?,
+      seatNumber: fields[1] as int?,
+      seitoSeq: fields[2] as String?,
     );
   }
 
   @override
   void write(BinaryWriter writer, _$SeatChartModelImpl obj) {
     writer
-      ..writeByte(2)
+      ..writeByte(3)
       ..writeByte(0)
-      ..write(obj.seatNumber)
+      ..write(obj.seatIndex)
       ..writeByte(1)
+      ..write(obj.seatNumber)
+      ..writeByte(2)
       ..write(obj.seitoSeq);
   }
 
@@ -49,13 +52,15 @@ class SeatChartModelAdapter extends TypeAdapter<_$SeatChartModelImpl> {
 
 _$SeatChartModelImpl _$$SeatChartModelImplFromJson(Map<String, dynamic> json) =>
     _$SeatChartModelImpl(
+      seatIndex: json['SeatIndex'] as int?,
       seatNumber: json['SeatNumber'] as int?,
-      seitoSeq: json['SeitoSeq'] as int?,
+      seitoSeq: json['SeitoSeq'] as String?,
     );
 
 Map<String, dynamic> _$$SeatChartModelImplToJson(
         _$SeatChartModelImpl instance) =>
     <String, dynamic>{
+      'SeatIndex': instance.seatIndex,
       'SeatNumber': instance.seatNumber,
       'SeitoSeq': instance.seitoSeq,
     };

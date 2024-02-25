@@ -7,14 +7,14 @@ import 'package:kyoumutechou/feature/seat/provider/seat_chart_provider.dart';
 
 class SeatChartSeitoForStackWidget extends ConsumerWidget {
   SeatChartSeitoForStackWidget({
-    required this.no,
+    required this.seatIndex,
     required this.seatNumber,
     required this.meibo,
     super.key,
   });
 
-  final int no;
-  final int seatNumber;
+  final int seatIndex;
+  int seatNumber;
   final AttendanceMeiboModel meibo;
   final _baseUrl = dotenv.env['BASE_URL']!;
   final accessToken = Hive.box<String>('shusekibo').get('token').toString();
@@ -24,8 +24,8 @@ class SeatChartSeitoForStackWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     
-    final seatNo = ref.watch(seatChartStackFocusProvider);
-    final isOn = seatNo == seatNumber;
+    final stackNo = ref.watch(seatChartStackFocusProvider);
+    final isOn = stackNo == seatIndex;
 
     return Draggable<AttendanceMeiboModel>(
       data: meibo,
@@ -139,36 +139,38 @@ class SeatChartSeitoForStackWidget extends ConsumerWidget {
   }
 }
 
-SeatChartSeitoForStackWidget getNoChair({
-  required int no, 
+SeatChartSeitoForStackWidget getStackNoChair({
+  required int index, 
   required int seatNumber,
 }) {
   // Add your code here
   return SeatChartSeitoForStackWidget(
+    seatIndex: index,
+    seatNumber: seatNumber,
+    //
+    key: ValueKey(index),
     meibo: const AttendanceMeiboModel(
       studentKihonId: -1,
       studentSeq: '-1',
       name: '席無し',
     ),
-    no: no,
-    seatNumber: seatNumber,
-    key: ValueKey(no),
   );
 }
 
-SeatChartSeitoForStackWidget getBlankChair({
-  required int no, 
+SeatChartSeitoForStackWidget getStackClearChair({
+  required int index, 
   required int seatNumber,
 }) {
   // Add your code here
   return SeatChartSeitoForStackWidget(
+    seatIndex: index,
+    seatNumber: seatNumber,
+    // 
+    key: ValueKey(index),
     meibo: const AttendanceMeiboModel(
       studentKihonId: 0,
       studentSeq: '0',
       name: '空席',
     ),
-    no: no,
-    seatNumber: seatNumber,
-    key: ValueKey(no),
   );
 }

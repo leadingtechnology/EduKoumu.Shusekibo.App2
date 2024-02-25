@@ -3,7 +3,6 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:kyoumutechou/feature/attendance/model/attendance_meibo_model.dart';
 import 'package:kyoumutechou/helpers/theme/app_theme.dart';
-import 'package:kyoumutechou/helpers/widgets/my_container.dart';
 import 'package:kyoumutechou/helpers/widgets/my_spacing.dart';
 import 'package:kyoumutechou/helpers/widgets/my_text.dart';
 

@@ -11,6 +11,7 @@ import 'package:kyoumutechou/feature/common/widget/search_bar_widget.dart';
 import 'package:kyoumutechou/feature/seat/model/seat_setting_model.dart';
 import 'package:kyoumutechou/feature/seat/provider/seat_chart_provider.dart';
 import 'package:kyoumutechou/feature/seat/provider/seat_setting_provider.dart';
+import 'package:kyoumutechou/feature/seat/widget/seat_chart_edit_button_widget.dart';
 import 'package:kyoumutechou/feature/seat/widget/seat_configration.dart';
 import 'package:kyoumutechou/feature/seat/widget/seat_setting_dialog.dart';
 import 'package:kyoumutechou/helpers/widgets/my_spacing.dart';
@@ -180,50 +181,25 @@ class SeatChartListWidget extends ConsumerWidget {
         enableDropToResize: false,
         enableSorting: false,
         renderer: (rendererContext) {
-          return ElevatedButton.icon(
-            onPressed: () async{
-              var id = 0;
-              try {
-                id = rendererContext.row.cells['Id']!.value as int;
-              } catch (e) {
-                id = 0;
-              }
+          var id = 0;
+          try {
+            id = rendererContext.row.cells['Id']!.value as int;
+          } catch (e) {
+            id = 0;
+          }
 
-              final strDate = rendererContext
-                  .row.cells['sDate']!.value as String;
-              
-              var targetDate = DateTime.now();
-              try{
-                targetDate = DateTime.parse(strDate);
-              }catch(e){
-                targetDate = DateTime.now();
-              }
-              
-              final meibos = await ref.read(seatChartListProvider.notifier)
-              .getMeibos(
-                ref.read(filterProvider), 
-                targetDate,
-              );
+          final strDate = rendererContext.row.cells['sDate']!.value as String;
 
-              ref.read(scMeibosListProvider.notifier).state = meibos;
-              if (meibos.isNotEmpty){
-                ref.read(seatChartListFocusProvider.notifier).state = 
-                meibos[0].studentKihonId!;  
-              }
+          var targetDate = DateTime.now();
+          try {
+            targetDate = DateTime.parse(strDate);
+          } catch (e) {
+            targetDate = DateTime.now();
+          }
 
-              ref.read(seatSettingIdProvider.notifier).state = id;
-              ref.read(seatChartPageTypeProvider.notifier).state =PageType.seat;
-            },
-            icon: const Icon(Icons.edit),
-            label: const Text('座席表編集'),
-            style: ElevatedButton.styleFrom(
-              side: BorderSide(
-                color: Colors.green.shade200, // 枠線の色
-              ),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8), // 自定义按钮的弧度
-              ),
-            ),
+          return SeatChartEditButtonWidget(
+            id: id,
+            targetDate: targetDate,
           );
         },
       ),
@@ -259,7 +235,7 @@ class SeatChartListWidget extends ConsumerWidget {
           builder: (context, Box<SeatSettingModel> box, _) {
             final settings = box.values.toList().cast<SeatSettingModel>();
             
-            // ソートする
+            // ignore: cascade_invocations
             settings.sort(
               (a, b) => '${a.crtDateTime}'.compareTo('${a.crtDateTime}'),
             );
@@ -311,7 +287,7 @@ class SeatChartListWidget extends ConsumerWidget {
               label: const Text('新規追加'),
               style: ElevatedButton.styleFrom(
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8), // 自定义按钮的弧度
+                  borderRadius: BorderRadius.circular(8), 
                 ),
                 side: const BorderSide(
                   color: Colors.black54,

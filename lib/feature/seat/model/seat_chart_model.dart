@@ -17,13 +17,14 @@ abstract class SeatChartModel with _$SeatChartModel {
   @HiveType(typeId: 46, adapterName: 'SeatChartModelAdapter')
   const factory SeatChartModel({
 
-    @JsonKey(name: 'SeatNumber', disallowNullValue: false) @HiveField(0) int? seatNumber,
-    @JsonKey(name: 'SeitoSeq', disallowNullValue: false) @HiveField(1) int? seitoSeq,
+    @JsonKey(name: 'SeatIndex', disallowNullValue: false) @HiveField(0) int? seatIndex,
+    @JsonKey(name: 'SeatNumber', disallowNullValue: false) @HiveField(1) int? seatNumber,
+    @JsonKey(name: 'SeitoSeq', disallowNullValue: false) @HiveField(2) String? seitoSeq,
   }) = _SeatChartModel;
 
   @override
   String toString() {
-    return 'SeatChartModel($seatNumber, $seitoSeq)';
+    return 'SeatChartModel($seatIndex, $seatNumber, $seitoSeq)';
   }
   factory SeatChartModel.fromJson(Map<String, dynamic> json) => _$SeatChartModelFromJson(json);
 }
