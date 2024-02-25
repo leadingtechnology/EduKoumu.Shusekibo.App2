@@ -16,8 +16,8 @@ class _SeatChartMeiboStackWidgetState
     extends ConsumerState<SeatChartMeiboStackWidget> {
   final seatSettingBox = Boxes.getSeatSetting();
 
-  final rowPadding = 8.0;
-  final columnPadding = 8.0;
+  final rowPadding = 4.0;
+  final columnPadding = 4.0;
 
   final meiboWidth = 150.0;
   final meiboHeight = 70.0;

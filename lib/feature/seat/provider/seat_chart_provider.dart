@@ -72,6 +72,7 @@ class SeatChartListProvider extends StateNotifier<ApiState> {
     state = const ApiState.loaded();
   }
 
+  // 生徒一覧の操作ファンクション) DB検索処理
   Future<void> fetch(int seatSettingId) async {
     final response = await _seatSettingRep.fetch(seatSettingId);
     if (mounted) {
@@ -79,6 +80,7 @@ class SeatChartListProvider extends StateNotifier<ApiState> {
     }
   }
 
+  // 生徒一覧の操作ファンクション) DB更新処理
   Future<void> patch() async {
     final id = _ref.read(seatSettingIdProvider);
     final scMeibos = _ref.read(scMeibosStackProvider);
@@ -98,6 +100,7 @@ class SeatChartListProvider extends StateNotifier<ApiState> {
     await _seatSettingRep.patch(id, json);
   }
 
+  // 生徒一覧の操作ファンクション) 設定対象生徒一覧の取得
   Future<List<AttendanceMeiboModel>> getMeibos(
     FilterModel filter,
     DateTime targetDate,
@@ -122,7 +125,7 @@ class SeatChartListProvider extends StateNotifier<ApiState> {
   }
 
   // 生徒Stackの操作ファンクション) 席無しからStackへの設から
-  Future<void> setStackSeatWithNoSeat () async {
+  Future<void> setStackSeatWithNoSeat() async {
     final seatSettingId = _ref.read(seatSettingIdProvider);
 
     // 010）フォーカスの取得
@@ -136,7 +139,7 @@ class SeatChartListProvider extends StateNotifier<ApiState> {
     final sc = scMeibos.where((e) => e.seatIndex == index).first;
     if (sc.seatNumber == 0) {
       return;
-    } 
+    }
 
     // 030）リストのリセット
     if (sc.meibo.studentKihonId! > 0) {
@@ -165,9 +168,9 @@ class SeatChartListProvider extends StateNotifier<ApiState> {
     _ref.read(scMeibosStackProvider.notifier).state = newScMeibos;
 
     // 060）リストのリセット
-
+    //await resetStackFoucse(index: index);
   }
-  
+
   // 生徒Stackの操作ファンクション) リストからStackへの設から
   Future<void> setStackSeatWithMeibo({
     required AttendanceMeiboModel meibo, // 設定先生徒基本ID
@@ -190,7 +193,7 @@ class SeatChartListProvider extends StateNotifier<ApiState> {
         kihonId: meibo.studentKihonId!,
         meibo: sc.meibo,
       );
-    }else{
+    } else {
       await deleteMeibos(
         kihonId: meibo.studentKihonId!,
       );
@@ -211,17 +214,43 @@ class SeatChartListProvider extends StateNotifier<ApiState> {
     _ref.read(scMeibosStackProvider.notifier).state = newScMeibos;
 
     // 060）リストフォーカスのリセット
+  }
 
-
-  }  
-  
   // 生徒Stackの操作ファンクション) Stack席の交換
   Future<void> changeStackSeatWithId({
     required int fromSeatIndex, // 席Index
     required int toSeatIndex, // 席Index
   }) async {
+    final seatSettingId = _ref.read(seatSettingIdProvider);
 
-  }    
+    // 010）交換元交換先座席Widgetの取得
+    final scMeibos = _ref.read(scMeibosStackProvider);
+
+    final scFrom = scMeibos[fromSeatIndex];
+    final scTo = scMeibos[toSeatIndex];
+
+    // 020）交換元交換先座席の交換
+    scMeibos[toSeatIndex] = SeatChartSeitoForStackWidget(
+      seatIndex: scFrom.seatIndex,
+      seatNumber: scFrom.seatNumber,
+      meibo: scFrom.meibo,
+    );
+
+    scMeibos[fromSeatIndex] = SeatChartSeitoForStackWidget(
+      seatIndex: scTo.seatIndex,
+      seatNumber: scTo.seatNumber,
+      meibo: scTo.meibo,
+    );
+
+    // 030）座席番号の再設定
+    final newScMeibos = await resetSeatNumber(
+      seatSettingId,
+      scMeibos,
+    );
+    _ref.read(scMeibosStackProvider.notifier).state = newScMeibos;
+    _ref.read(seatChartStackFocusProvider.notifier).state = toSeatIndex;
+  }
+  
   // 生徒Stackの操作ファンクション) Stack席のダブルクリック
   Future<void> doubleClickStackSeat() async {
     final seatSettingId = _ref.read(seatSettingIdProvider);
@@ -237,17 +266,19 @@ class SeatChartListProvider extends StateNotifier<ApiState> {
     final sc = scMeibos.where((e) => e.seatIndex == index).first;
 
     // 030）リストのリセット
-    if (sc.meibo.studentKihonId! > 0) {
-      await addMeibos(sc.meibo);
+    if (sc.meibo.studentKihonId! > 0 || sc.meibo.studentKihonId! < 0) {
+      if (sc.meibo.studentKihonId! > 0) {
+        await addMeibos(sc.meibo);
+      }
 
       // 040）空席の追加
       scMeibos[index] = getStackClearChair(
         index: index,
         seatNumber: sc.seatNumber,
       );
-    }else{
+    } else {
       final kihonId = _ref.read(seatChartListFocusProvider);
-      
+
       if (kihonId <= 0) {
         // 040）Stack席の設定
         scMeibos[index] = getStackNoChair(
@@ -278,88 +309,105 @@ class SeatChartListProvider extends StateNotifier<ApiState> {
       scMeibos,
     );
     _ref.read(scMeibosStackProvider.notifier).state = newScMeibos;
-
   }
-  // 生徒Stackの操作ファンクション) Stack席のクリック
 
+  // 生徒Stackの操作ファンクション) すべてクリア
+  Future<void> clearAll() async {
+    final seatSettingId = _ref.read(seatSettingIdProvider);
 
-
-  // Stackの設定
-  Future<void> setStackSeat({
-    required int seatSettingId, // 座席表設定ID　席番号の再設定に使用する
-    required int toKihonId, // 設定先生徒基本ID
-    required int? fromKihonId, // 設定元生徒基本ID
-  }) async {
-    // 生徒一覧
-    final meibos = _ref.read(scMeibosListProvider);
-
-    // stack 座席表
+    // すべてのStack設定を取得する
     final scMeibos = _ref.read(scMeibosStackProvider);
-    final seatIndex = _ref.read(seatChartStackFocusProvider);
+    for (var i = 0; i < scMeibos.length; i++) {
+      final sc = scMeibos[i];
 
-    // 座席表stackのfocusが設定されていない場合、処理を終了する
-    if (seatIndex < 0) {
-      return;
-    }
-
-    // 010) 設定先座席Widgetの取得
-    final sc = scMeibos[seatIndex];
-
-    // クリアの場合
-    if (toKihonId <= 0) {
       if (sc.meibo.studentKihonId! > 0) {
-        // 生徒一覧に追加
-        meibos
-          ..add(sc.meibo)
-          ..sort((a, b) => a.studentKihonId!.compareTo(b.studentKihonId!));
-        _ref.read(scMeibosListProvider.notifier).state = meibos.toList();
+        await addMeibos(sc.meibo);
 
-        // 座席クリア
-        scMeibos[seatIndex] = getStackClearChair(
-          index: seatIndex,
+        // 040）空席の追加
+        scMeibos[i] = getStackClearChair(
+          index: i,
           seatNumber: sc.seatNumber,
         );
-      } else {
-        // 席無しに変更する
-        scMeibos[seatIndex] = getStackNoChair(
-          index: seatIndex,
-          seatNumber: 0,
-        );
       }
-    } else {
-      // 基本IDにより、生徒情報を取得する
-      final meibo = meibos.firstWhere(
-        (e) => e.studentKihonId == toKihonId,
-        orElse: () => const AttendanceMeiboModel(
-          studentKihonId: 0,
-          studentSeq: '0',
-          name: '空席',
-        ),
-      );
-
-      // 座席情報を設定する
-      scMeibos[seatIndex] = SeatChartSeitoForStackWidget(
-        seatIndex: seatIndex,
-        seatNumber: sc.seatNumber,
-        meibo: meibo,
-      );
     }
 
-    // 生徒一覧から削除する
-    meibos.removeWhere((e) => e.studentKihonId == toKihonId);
-    _ref.read(scMeibosListProvider.notifier).state = meibos.toList();
-
-    await resetMeibosFoucse(toKihonId);
-
-    // 席無し設定された場合、座席番号の再設定を行う
+    // 050）座席番号の再設定
     final newScMeibos = await resetSeatNumber(
       seatSettingId,
       scMeibos,
     );
     _ref.read(scMeibosStackProvider.notifier).state = newScMeibos;
+    _ref.read(seatChartStackFocusProvider.notifier).state = 0;
 
-    // フォーカスのリセット
-    await resetStackFoucse(seatIndex);
+  }
+
+  // 生徒Stackの操作ファンクション) すべて設定
+  Future<void> setAll() async {
+    final seatSettingId = _ref.read(seatSettingIdProvider);
+    final scMeibos = _ref.read(scMeibosStackProvider);
+    final meibos = _ref.read(scMeibosListProvider);
+
+    // すべての生徒をリストに追加する
+    for (var i = 0; i < scMeibos.length; i++) {
+      final sc = scMeibos[i];
+
+      if (sc.meibo.studentKihonId! > 0) {
+        meibos.add(sc.meibo);
+      }
+    }
+
+    meibos.sort((AttendanceMeiboModel a, AttendanceMeiboModel b) {
+      var inta = 0;
+      try {
+        inta = int.parse(a.studentNumber!);
+      } catch (e) {
+        inta = 0;
+      }
+
+      if (inta == 0) {
+        return -1;
+      }
+
+      var intb = 0;
+      try {
+        intb = int.parse(b.studentNumber!);
+      } catch (e) {
+        intb = 0;
+      }
+
+      return inta.compareTo(intb);
+    });
+
+    for (var i = 0; i < scMeibos.length; i++) {
+      if (meibos.length > i) {
+        scMeibos[i] = SeatChartSeitoForStackWidget(
+          seatIndex: i,
+          seatNumber: i + 1,
+          meibo: meibos[i],
+        );
+      }else{
+        scMeibos[i] = getStackClearChair(
+          index: i,
+          seatNumber: i + 1,
+        );
+      }
+    }
+
+    // 050）座席番号の再設定
+    final newScMeibos = await resetSeatNumber(
+      seatSettingId,
+      scMeibos,
+    );
+    _ref.read(scMeibosStackProvider.notifier).state = newScMeibos;
+    _ref.read(seatChartStackFocusProvider.notifier).state = 0;
+
+
+    final maxLength =
+        meibos.length > scMeibos.length ? scMeibos.length : meibos.length; 
+    meibos.removeRange(0, maxLength);
+    _ref.read(scMeibosListProvider.notifier).state = meibos.toList();
+    _ref.read(seatChartListFocusProvider.notifier).state = 0;
+
   }
 
   // 生徒Stackの操作ファンクション) 座席番号のリセット
@@ -435,7 +483,13 @@ class SeatChartListProvider extends StateNotifier<ApiState> {
       if (newScMeibos[i].seatNumber > 0 ||
           newScMeibos[i].meibo.studentKihonId! > 0) {
         seatNumber++;
-        newScMeibos[i].seatNumber = seatNumber;
+
+        final nsc = newScMeibos[i];
+        newScMeibos[i] = SeatChartSeitoForStackWidget(
+          seatIndex: nsc.seatIndex,
+          seatNumber: seatNumber,
+          meibo: nsc.meibo,
+        );
       }
     }
 
@@ -444,88 +498,32 @@ class SeatChartListProvider extends StateNotifier<ApiState> {
   }
 
   // 生徒Stackの操作ファンクション) フォーカスのリセット
-  Future<void> resetStackFoucse(int? index) async {
-    final index = _ref.read(seatChartStackFocusProvider);
+  Future<void> resetStackFoucse_misiyo({int? index}) async {
+    //final index = _ref.read(seatChartStackFocusProvider);
     final scMeibos = _ref.read(scMeibosStackProvider);
 
-    // インデックスが指定された場合、そのインデックスにフォーカスを設定する
-    // if (index != null && index >= 0 ) {
-    //   if(index < scMeibos.length){
-    //     _ref.read(seatChartStackFocusProvider.notifier).state = index;
-    //   }else{
-    //     _ref.read(seatChartStackFocusProvider.notifier).state = 0;
-    //   }
-    //   return;
-    // }
+    final scMeibo = scMeibos.where((e) => e.seatIndex == index).first;
+
 
     // ignore: cascade_invocations
+    if (scMeibo.seatNumber > 0){
+      scMeibos.removeWhere((e) => e.seatNumber < scMeibo.seatNumber);
+    }else{
+      scMeibos.removeWhere((e) => e.seatNumber <= 0);
+    }
     scMeibos.sort((a, b) => a.seatNumber.compareTo(b.seatNumber));
 
-    // 空席フォーカスの設定
-    var scMeibo = SeatChartSeitoForStackWidget(
-      seatIndex: -1,
-      seatNumber: 0,
-      meibo: const AttendanceMeiboModel(
-        studentKihonId: 0,
-        studentSeq: '0',
-        name: '空席',
-      ),
-    );
-
-    // 空席場合、処理を終了する
-    // try{
-    //   scMeibo = scMeibos.where(
-    //     (e) => e.seatIndex == index && e.meibo.studentKihonId == 0,
-    //   ) .first;
-    // }catch(e){
-    //   //
-    // }
-
-    // scIndexが空席ではない場合、次の席番号を取得する
-    if (scMeibo.seatIndex == -1) {
-      try {
-        final scms = scMeibos
-            .where(
-              (e) =>
-                  e.seatIndex >= index &&
-                  e.meibo.studentKihonId == 0 &&
-                  e.seatNumber > 0,
-            )
-            .toList()
-          ..sort((a, b) => a.seatNumber.compareTo(b.seatNumber));
-
-        if (scms.isNotEmpty) {
-          scMeibo = scms.first;
-        }
-      } catch (e) {
-        //
-      }
-    }
-
-    // 最初から席番号を取得する
-    if (scMeibo.seatIndex == -1) {
-      try {
-        final scms = scMeibos
-            .where(
-              (e) => e.meibo.studentKihonId == 0,
-            )
-            .toList()
-          ..sort((a, b) => a.seatNumber.compareTo(b.seatNumber));
-
-        if (scms.isNotEmpty) {
-          scMeibo = scms.first;
-        }
-      } catch (e) {
-        //
-      }
-    }
-
-    if (scMeibo.seatIndex == -1) {
+    if (scMeibos.isEmpty) {
       _ref.read(seatChartStackFocusProvider.notifier).state = 0;
     } else {
-      _ref.read(seatChartStackFocusProvider.notifier).state = scMeibo.seatIndex;
+      _ref.read(seatChartStackFocusProvider.notifier).state =
+          scMeibos[0].seatIndex;
     }
   }
+
+  /*
+   * 生徒一覧の操作ファンクション
+   */
 
   // 生徒一覧の操作ファンクション) 削除
   Future<void> deleteMeibos({
@@ -556,7 +554,7 @@ class SeatChartListProvider extends StateNotifier<ApiState> {
   }
 
   // 生徒一覧の操作ファンクション) フォーカスのリセット
-  Future<void> resetMeibosFoucse(int index) async {
+  Future<void> resetMeibosFoucse(int kihonId) async {
     final meiboIndex = _ref.read(seatChartListFocusProvider);
 
     // 席無しの場合、処理を終了する
@@ -565,40 +563,45 @@ class SeatChartListProvider extends StateNotifier<ApiState> {
     final meibos = _ref.read(scMeibosListProvider);
 
     // ignore: cascade_invocations
-    meibos.sort((a, b) => a.studentKihonId!.compareTo(b.studentKihonId!));
+    meibos.sort((AttendanceMeiboModel a, AttendanceMeiboModel b) {
+      var inta = 0;
+      try {
+        inta = int.parse(a.studentNumber!);
+      } catch (e) {
+        inta = 0;
+      }
+
+      if (inta == 0) {
+        return -1;
+      }
+
+      var intb = 0;
+      try {
+        intb = int.parse(b.studentNumber!);
+      } catch (e) {
+        intb = 0;
+      }
+
+      return inta.compareTo(intb);
+    });
 
     var meibo = const AttendanceMeiboModel(
       studentKihonId: 0,
       studentSeq: '0',
       name: '空席',
     );
+
     try {
-      meibo = meibos.where((e) => e.studentKihonId == index).first;
+      meibo = meibos.first;
     } catch (e) {
       //
-    }
-
-    if (meibo.studentKihonId! == 0) {
-      try {
-        meibo = meibos.where((e) => e.studentKihonId! > index).first;
-      } catch (e) {
-        //
-      }
-    }
-
-    if (meibo.studentKihonId! == 0) {
-      try {
-        meibo = meibos.first;
-      } catch (e) {
-        //
-      }
     }
 
     if (meibo.studentKihonId! > 0) {
       _ref.read(seatChartListFocusProvider.notifier).state =
           meibo.studentKihonId!;
     } else {
-      _ref.read(seatChartListFocusProvider.notifier).state = -1;
+      _ref.read(seatChartListFocusProvider.notifier).state = 0;
     }
   }
 }

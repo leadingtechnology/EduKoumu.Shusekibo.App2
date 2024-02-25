@@ -29,15 +29,19 @@ class SeatChartSeitoForListWidget extends ConsumerWidget {
 
     bool isOn = kihonId == meibo.studentKihonId;
 
-    return Draggable<AttendanceMeiboModel>(
-      data: meibo,
-      feedback: buildContainer(isOn: isOn),
-      //childWhenDragging: buildContainer(isOn: isOn),
-      childWhenDragging: meibo.studentKihonId != -1
-          ? const BlankSeatWidget()
-          : buildContainer(isOn: isOn),
-      child: buildContainer(isOn: isOn),
-    );
+    return buildContainer(isOn: isOn);
+    // return Draggable<AttendanceMeiboModel>(
+    //   data: meibo,
+    //   feedback: buildContainer(isOn: isOn),
+    //   //childWhenDragging: buildContainer(isOn: isOn),
+    //   childWhenDragging: meibo.studentKihonId != -1
+    //       ? const BlankSeatWidget(
+    //           width: 110,
+    //           height: 80,
+    //         )
+    //       : buildContainer(isOn: isOn),
+    //   child: buildContainer(isOn: isOn),
+    // );
   }
 
   Widget buildContainer({required bool isOn}) {
@@ -49,15 +53,17 @@ class SeatChartSeitoForListWidget extends ConsumerWidget {
         color: Colors.white,
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.5),
+            color: isOn
+                ? Colors.green.withOpacity(0.5)
+                : Colors.grey.withOpacity(0.5),
             spreadRadius: 5,
             blurRadius: 7,
             offset: const Offset(0, 3),
           ),
         ],
         border: isOn
-            ? Border.all(color: Colors.green, width: 3)
-            : Border.all(color: Colors.green.shade200),
+            ? Border.all(color: Colors.green, width: 2)
+            : Border.all(color: Colors.grey.shade500),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Column(

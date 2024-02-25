@@ -8,6 +8,7 @@ import 'package:kyoumutechou/feature/common/widget/search_bar_widget.dart';
 import 'package:kyoumutechou/feature/common/widget/toast_helper.dart';
 import 'package:kyoumutechou/feature/linkage/widget/lectern_widget.dart';
 import 'package:kyoumutechou/feature/seat/provider/seat_chart_provider.dart';
+import 'package:kyoumutechou/feature/seat/widget/seat_bar_widget.dart';
 import 'package:kyoumutechou/feature/seat/widget/seat_chart_meibo_list_widget.dart';
 import 'package:kyoumutechou/feature/seat/widget/seat_chart_meibo_stack_widget.dart';
 import 'package:kyoumutechou/helpers/widgets/my_spacing.dart';
@@ -72,33 +73,7 @@ class _SeatChartGridWidgetState extends ConsumerState<SeatChartGridWidget> {
     return Column(
       children: [
         // 010.検索バー
-        Row(
-          children: [
-            SizedBox(
-              width: 700,
-              child: SearchBarWidget(
-                widget.scaffoldKey,
-                partern: 'パターン',
-              ),
-            ),
-            Expanded(child: Container()),
-            Row(
-                children: [
-                  MyText('未設定人数:', fontSize: 16),
-                  MySpacing.width(8),
-                  MyText(' 0 / $len ', fontSize: 16),
-                  IconButton(
-                    icon: isExp
-                        ? const Icon(Icons.expand_less)
-                        : const Icon(Icons.expand_more),
-                    onPressed: () {
-                      ref.read(isSeatExpandedProvider.notifier).state = !isExp;
-                    },
-                  ),
-                ],
-              ),
-          ],
-        ),
+        SeatBarWidget(len: len),
         
         MySpacing.height(8),
 
@@ -153,7 +128,8 @@ class _SeatChartGridWidgetState extends ConsumerState<SeatChartGridWidget> {
             // 全てクリアボタン
             MySpacing.width(28),
             ElevatedButton.icon(
-              onPressed: () {
+              onPressed: () async{
+                await ref.read(seatChartListProvider.notifier).clearAll();
               },
               icon: const Icon(Icons.clear_all_outlined),
               label: const Text('全てクリア'),
@@ -166,10 +142,11 @@ class _SeatChartGridWidgetState extends ConsumerState<SeatChartGridWidget> {
                 ),
               ),
             ),
-            // 全てクリアボタン
+            // 全て設定
             MySpacing.width(8),
             ElevatedButton.icon(
-              onPressed: () {
+              onPressed: () async {
+                await ref.read(seatChartListProvider.notifier).setAll();
               },
               icon: const Icon(Icons.manage_accounts_outlined),
               label: const Text('座席番号順に座席を配置'),

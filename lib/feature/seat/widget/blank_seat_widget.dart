@@ -4,13 +4,20 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 
 class BlankSeatWidget extends StatelessWidget {
-  const BlankSeatWidget({super.key});
+  const BlankSeatWidget({
+    required this.width,
+    required this.height,
+    super.key,
+  });
+
+  final double width;
+  final double height;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 110,
-      height: 80,
+      width: width,
+      height: height,
       child: Center(
         child: DottedBorder(
           dashPattern: const [8, 4],
