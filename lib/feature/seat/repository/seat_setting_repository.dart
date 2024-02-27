@@ -8,7 +8,7 @@ import 'package:kyoumutechou/shared/http/app_exception.dart';
 
 
 abstract class SeatSettingRepositoryProtocol {
-  Future<ApiState> fetch(String classCode);
+  Future<ApiState> fetch(int classCode);
   Future<ApiState> save(String json);
   Future<ApiState> patch(int id, String json);
   Future<ApiState> delete(int id);
@@ -24,7 +24,7 @@ class SeatSettingRepository implements SeatSettingRepositoryProtocol {
   final box = Boxes.getSeatSetting();
 
   @override
-  Future<ApiState> fetch(String classId) async {
+  Future<ApiState> fetch(int classId) async {
     
     // データの取得
     final response = await _api.get('api/SeatCharts?ShozokuId=$classId');

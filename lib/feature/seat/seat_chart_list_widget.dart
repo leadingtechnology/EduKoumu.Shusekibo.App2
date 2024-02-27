@@ -1,15 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:kyoumutechou/feature/attendance/model/attendance_meibo_model.dart';
-import 'package:kyoumutechou/feature/attendance/provider/attendance_meibo_provider.dart';
 import 'package:kyoumutechou/feature/boxes.dart';
-import 'package:kyoumutechou/feature/common/provider/common_provider.dart';
-import 'package:kyoumutechou/feature/common/provider/filter_provider.dart';
 import 'package:kyoumutechou/feature/common/widget/dialog_util.dart';
 import 'package:kyoumutechou/feature/common/widget/search_bar_widget.dart';
 import 'package:kyoumutechou/feature/seat/model/seat_setting_model.dart';
-import 'package:kyoumutechou/feature/seat/provider/seat_chart_provider.dart';
 import 'package:kyoumutechou/feature/seat/provider/seat_setting_provider.dart';
 import 'package:kyoumutechou/feature/seat/widget/seat_chart_edit_button_widget.dart';
 import 'package:kyoumutechou/feature/seat/widget/seat_configration.dart';

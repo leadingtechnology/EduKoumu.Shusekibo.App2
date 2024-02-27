@@ -3,7 +3,6 @@ import 'package:kyoumutechou/feature/boxes.dart';
 import 'package:kyoumutechou/feature/common/model/gakunen_model.dart';
 import 'package:kyoumutechou/feature/common/model/shozoku_model.dart';
 import 'package:kyoumutechou/feature/common/provider/dantais_provider.dart';
-import 'package:kyoumutechou/feature/common/provider/gakunens_provider.dart';
 import 'package:kyoumutechou/feature/common/state/api_state.dart';
 
 final shozokuProvider = StateProvider<ShozokuModel>(

@@ -3,7 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:kyoumutechou/helpers/widgets/my_text.dart';
 
 class LecternWidget extends StatelessWidget {
-  const LecternWidget({super.key});
+  const LecternWidget({
+    this.title = '　教　卓　',
+    super.key,
+  });
+
+  final String? title;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +29,7 @@ class LecternWidget extends StatelessWidget {
         ),
         width: 200,
         height: 30,
-        child: Center(child: MyText.bodyLarge('　教　卓　')),
+        child: Center(child: MyText.bodyLarge('$title')),
       ),
     );
   }

@@ -8,6 +8,7 @@ import 'package:kyoumutechou/feature/common/widget/clip_shozoku.dart';
 import 'package:kyoumutechou/feature/common/widget/clip_timed.dart';
 import 'package:kyoumutechou/feature/common/widget/commom_widget.dart';
 import 'package:kyoumutechou/feature/home/provider/home_provider.dart';
+import 'package:kyoumutechou/feature/seat/provider/seat_setting_provider.dart';
 import 'package:kyoumutechou/helpers/widgets/my_spacing.dart';
 import 'package:kyoumutechou/helpers/widgets/my_text.dart';
 import 'package:kyoumutechou/shared/util/date_util.dart';
@@ -110,6 +111,7 @@ class FilterWidget extends ConsumerWidget {
                           .read(filterProvider.notifier)
                           .update(targetDate: targetDate);
                       Navigator.pop(context);
+                      
                     },
                   ),
                 ),
@@ -204,12 +206,12 @@ class FilterWidget extends ConsumerWidget {
                   child: SingleIconChip(
                     isSelected: true,
                     text:
-                          '${DateUtil.getJapaneseDate(beginDate)} ~ ${DateUtil.getJapaneseDate(endDate)}',
-                      iconData: Icons.calendar_month_outlined,
+                        '${DateUtil.getJapaneseDate(beginDate)} ~ ${DateUtil.getJapaneseDate(endDate)}',
+                    iconData: Icons.calendar_month_outlined,
                   ),
                 ),
               ),
-            ]
+            ],
           ],
         ),
       ),

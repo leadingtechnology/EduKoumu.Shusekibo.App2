@@ -1,7 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:kyoumutechou/feature/boxes.dart';
 import 'package:kyoumutechou/feature/common/provider/filter_provider.dart';
 import 'package:kyoumutechou/feature/common/state/api_state.dart';
 import 'package:kyoumutechou/feature/seat/model/seat_setting_model.dart';
+import 'package:kyoumutechou/feature/seat/repository/seat_chart_repository.dart';
 import 'package:kyoumutechou/feature/seat/repository/seat_setting_repository.dart';
 import 'package:kyoumutechou/shared/util/date_util.dart';
 
@@ -9,9 +11,7 @@ import 'package:kyoumutechou/shared/util/date_util.dart';
 final seatSettingListProvider =
     StateNotifierProvider<SeatSettingListProvider, ApiState>((ref) {
   
-  final filter = ref.watch(filterProvider);
-
-  return SeatSettingListProvider(ref, '${filter.classId ?? ''}');
+  return SeatSettingListProvider(ref );
 });
 
 final seatSettingProvider = 
@@ -20,32 +20,64 @@ final seatSettingProvider =
 class SeatSettingListProvider extends StateNotifier<ApiState> {
   SeatSettingListProvider(
     this.ref, 
-    this.classId,
   ) : super(const ApiState.loading()) {
     _init();
   }
 
   final Ref ref;
-  final String classId;
-  late final _repository = ref.read(seatSettingRepositoryProvider);
+  late final _settingRep = ref.read(seatSettingRepositoryProvider);
+  late final _seatChartRep = ref.read(seatChartRepositoryProvider);
 
   Future<void> _init() async {
     await fetch();
   }
 
+  // 検索処理
   Future<void> fetch() async {
-    if (classId == '') {
+    final classId = ref.read(filterProvider).classId ?? 0;
+    if (classId == 0) {
       return;
     } 
     
-    final response = await _repository.fetch(classId);
+    final response = await _settingRep.fetch(classId);
     if (mounted) {
       state = response;
     }
   }
 
+  // 初期値を設定する
+  Future<SeatSettingModel> setSeatSettingValue() async {
+    // 最新情報の取得条件
+    final filter = ref.read(filterProvider);
+    final tarDate = filter.targetDate ?? DateTime.now();
+
+
+    var setting = const SeatSettingModel(
+      id: 0,
+    );
+    try{
+      final box = Boxes.getSeatSetting();
+      final settings = box.values.toList()
+        ..removeWhere(
+          (e) => e.startDate!.isBefore(tarDate) && e.endDate!.isAfter(tarDate),
+        )
+        ..sort((a, b) => a.id!.compareTo(b.id!));
+      
+      setting = settings.first;
+    }catch(e){
+      //
+    }
+
+    if (setting.id! > 0) {
+      await _seatChartRep.fetch(setting.id!);
+    }
+
+    return setting;
+  }
+
+  // 削除処理
   Future<void> delete(int id) async {
-    final response = await _repository.delete(id);
+    final response = await _settingRep.delete(id);
 
     if (mounted) {
       state = response;
@@ -62,6 +94,7 @@ class SeatSettingListProvider extends StateNotifier<ApiState> {
     required DateTime startDate,
     required DateTime endDate,
   }) async {
+    final classId = ref.read(filterProvider).classId ?? 0;
 
     //データ作成
     final json = '''
@@ -77,8 +110,8 @@ class SeatSettingListProvider extends StateNotifier<ApiState> {
 ''';
     
     //データ作成
-    await _repository.patch(id, json);
-    await _repository.fetch(classId);
+    await _settingRep.patch(id, json);
+    await _settingRep.fetch(classId);
     
   }
 
@@ -95,7 +128,7 @@ class SeatSettingListProvider extends StateNotifier<ApiState> {
     final dantaiId = ref.read(filterProvider).dantaiId;
 
     //所属Idの取得
-    final shozokuId = ref.read(filterProvider).classId;
+    final shozokuId = ref.read(filterProvider).classId ?? 0;
 
     //データ作成
     final json = '''
@@ -113,7 +146,7 @@ class SeatSettingListProvider extends StateNotifier<ApiState> {
 ''';
 
     //データ作成
-    await _repository.save(json);
-    await _repository.fetch(classId);
+    await _settingRep.save(json);
+    await _settingRep.fetch(shozokuId);
   }  
 }

@@ -17,6 +17,8 @@ import 'package:kyoumutechou/feature/common/repository/tannin_repository.dart';
 import 'package:kyoumutechou/feature/common/repository/timeds_repository.dart';
 import 'package:kyoumutechou/feature/common/repository/tokobis_repository.dart';
 import 'package:kyoumutechou/feature/common/state/api_state.dart';
+import 'package:kyoumutechou/feature/seat/provider/seat_setting_provider.dart';
+import 'package:kyoumutechou/feature/seat/repository/seat_setting_repository.dart';
 import 'package:kyoumutechou/shared/http/app_exception.dart';
 import 'package:kyoumutechou/shared/util/date_util.dart';
 
@@ -46,6 +48,7 @@ class DantaiChangedNotifier extends StateNotifier<ApiState> {
   late final _tokobi = ref.watch(tokobisRepositoryProvider);
   late final _lastTokobi = ref.watch(lastTokobisRepositoryProvider);
   late final _timed = ref.read(timedsRepositoryProvider);
+  late final _seatSetting = ref.read(seatSettingRepositoryProvider);  
 
   Future<void> fetch(DantaiModel dantai) async {
     // 団体Idが0の場合は返す
@@ -146,6 +149,11 @@ class DantaiChangedNotifier extends StateNotifier<ApiState> {
           strDate,
         ),
 
+        // 座席設定情報の取得
+        _seatSetting.fetch(
+          shozoku.id ?? 0,
+        ),
+
         // 登校日情報(当月)の取得
         _tokobi.fetch(
           shozoku.id ?? 0,
@@ -206,6 +214,13 @@ class DantaiChangedNotifier extends StateNotifier<ApiState> {
       // 時限初期値の設定
       final timed = await ref.read(timedsProvider.notifier).setTimedValue();
       ref.read(timedProvider.notifier).state = timed;
+
+      // 座席設定
+      final setting = await ref
+          .read(seatSettingListProvider.notifier)
+          .setSeatSettingValue();
+      ref.read(seatSettingProvider.notifier).state = setting;
+
 
       // 登校日初期値の設定
       await ref.read(tokobisProvider.notifier).setTokobiValue(

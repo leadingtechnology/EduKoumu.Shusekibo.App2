@@ -11,6 +11,9 @@ import 'package:kyoumutechou/feature/common/provider/common_provider.dart';
 import 'package:kyoumutechou/feature/common/widget/common_page.dart';
 import 'package:kyoumutechou/feature/common/widget/save_button_widget.dart';
 import 'package:kyoumutechou/feature/common/widget/toast_helper.dart';
+import 'package:kyoumutechou/feature/seat/provider/seat_setting_provider.dart';
+import 'package:kyoumutechou/feature/seat/widget/blank_seat_widget.dart';
+import 'package:kyoumutechou/feature/seat/widget/no_seat_widget.dart';
 import 'package:kyoumutechou/shared/http/app_exception.dart';
 
 // 出欠（時限）widget
@@ -24,7 +27,6 @@ class AttendanceTimedPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final pageType = ref.watch(attendanceTimedPageTypeProvider);
     final buttonEnable = ref.watch(buttonEnableProvider);
-    
 
     return CommonPage(
       scaffoldKey: _timedKey,
@@ -36,7 +38,9 @@ class AttendanceTimedPage extends ConsumerWidget {
             pageType == PageType.seat ? PageType.list : PageType.seat;
       },
       setBlank: () async {
-        await ref.read(attendanceTimedMeiboListProvider.notifier).updateByBlank();
+        await ref
+            .read(attendanceTimedMeiboListProvider.notifier)
+            .updateByBlank();
         attendanceTimedGlobalKey.currentState?.setBlank();
       },
       saveWidget: SaveButtonWidget(
@@ -63,7 +67,6 @@ class SeatsWidget extends ConsumerStatefulWidget {
 }
 
 class _SeatsWidgetState extends ConsumerState<SeatsWidget> {
-
   @override
   void initState() {
     super.initState();
@@ -89,7 +92,7 @@ class _SeatsWidgetState extends ConsumerState<SeatsWidget> {
       if (isHogo.isNotEmpty && isHogo.length == list.length) {
         ToastHelper.showToast(context, '　既に保護されているため、編集・保存することができません。　');
       }
-    });    
+    });
   }
 
   @override
@@ -105,34 +108,105 @@ class _SeatsWidgetState extends ConsumerState<SeatsWidget> {
       loading: () {
         return const Center(child: CircularProgressIndicator());
       },
-      error: (AppException e) {return Text(e.toString());},
+      error: (AppException e) {
+        return Text(e.toString());
+      },
       loaded: () {
         setState(() {});
         return ValueListenableBuilder(
-            valueListenable:Boxes.getAttendanceTimedMeibo().listenable(),
-            builder: (context, Box<AttendanceTimedMeiboModel> box, _) {
-              final meibos = box.values.toList();
+          valueListenable: Boxes.getAttendanceTimedMeibo().listenable(),
+          builder: (context, Box<AttendanceTimedMeiboModel> box, _) {
+            final meibos = box.values.toList();
+            final newMeibos = <AttendanceTimedMeiboModel>[];
 
-              if (meibos.isEmpty) {
-                return Container();
+            var gridColumnCount = 6; 
+
+            if (meibos.isEmpty) {
+              return Container();
+            }
+
+            // 座席表設定情報取得
+            final seats = Boxes.getSeatChart().values.toList();
+            if (seats.isNotEmpty) {
+              seats.sort((a, b) => a.seatIndex!.compareTo(b.seatIndex!));
+
+              final setting = ref.watch(seatSettingProvider);
+              final m = setting.row!;
+              final n = setting.column!;
+              gridColumnCount = n;
+
+              // 座席ごとにデータを設定する
+              for (var i = 0; i < m * n; i++) {
+
+                var meibo = const AttendanceTimedMeiboModel(
+                  studentKihonId: 0,
+                  studentSeq: '0',
+                );
+
+                try {
+                  final seatData = seats.firstWhere((e) => e.seatIndex == i);
+
+                  // 席無し情報の設定
+                  if (seatData.seatNumber == 0) {
+                    meibo = const AttendanceTimedMeiboModel(
+                      studentKihonId: -1,
+                      studentSeq: '-1',
+                    );
+                  }
+
+                  // 生徒情報の設定
+                  if (seatData.seatNumber != 0) {
+                    meibo = meibos
+                        .firstWhere((e) => e.studentSeq == seatData.seitoSeq);
+                  }
+
+                } catch (ex) {
+                  //
+                }
+
+                newMeibos.add(meibo);
               }
+            }
 
-              return GridView.builder(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 6,
-                  crossAxisSpacing: 15,
-                  mainAxisSpacing: 15,
-                  childAspectRatio: 2,
-                ),
-                itemCount: meibos.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return AttendanceTimedSeatWidget(
-                    index: index,
-                    meibo: meibos[index],
+            if (newMeibos.isEmpty) {
+              newMeibos.addAll(meibos);
+            }
+
+            return GridView.builder(
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: gridColumnCount,
+                crossAxisSpacing: 15,
+                mainAxisSpacing: 15,
+                childAspectRatio: 2,
+              ),
+              itemCount: newMeibos.length,
+              itemBuilder: (BuildContext context, int index) {
+                final meibo = newMeibos[index];
+
+                if (meibo.studentKihonId == 0) {
+                  // 空席
+                  return const BlankSeatWidget(
+                    width: 150,
+                    height: 70,
                   );
-                },
-              );
-            },);
+                }
+
+                if (meibo.studentKihonId == -1) {
+                  return Container();
+                  // return const NoSeatWidget(
+                  //   width: 150,
+                  //   height: 70,
+                  // );
+                }
+
+                return AttendanceTimedSeatWidget(
+                  index: index,
+                  meibo: newMeibos[index],
+                );
+              },
+            );
+          },
+        );
       },
     );
   }
