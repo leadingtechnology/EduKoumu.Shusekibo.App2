@@ -65,7 +65,7 @@ class CommonPage extends ConsumerWidget {
             if (lecternPosition == LecternPosition.top && buttomName == '一覧'
             ) ...[
               MySpacing.height(8),
-              const SizedBox(height: 8, child: LecternWidget(title: '')),
+              const SizedBox(height: 10, child: LecternWidget(title: '')),
             ],
             
             Expanded(
@@ -78,7 +78,7 @@ class CommonPage extends ConsumerWidget {
             if (lecternPosition == LecternPosition.bottom &&
                 buttomName == '一覧'
             ) ...[
-              const SizedBox(height: 8, child: LecternWidget(title: '')),
+              const SizedBox(height: 10, child: LecternWidget(title: '')),
             ],
 
             // 底辺ボタン表示

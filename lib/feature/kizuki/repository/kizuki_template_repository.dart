@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:kyoumutechou/feature/common/provider/filter_provider.dart';
 import 'package:kyoumutechou/feature/kizuki/model/kizuki_template_model.dart';
 import 'package:kyoumutechou/feature/kizuki/state/kizuki_template_state.dart';
 
@@ -23,10 +24,13 @@ class KizukiTemplateRepository implements KizukiTemplateRepositoryProtocol {
 
   @override
   Future<KizukiTemplateState> fetch({int? id}) async {
+    final dantaiId = _ref.read(filterProvider).dantaiId ?? 0;
 
     var url = 'api/KizukiTemplates';
     if (id != null) {
       url = '$url/$id';
+    }else{
+      url = '$url?dantaiId=$dantaiId';
     }
     final response = await _api.get(url);
 

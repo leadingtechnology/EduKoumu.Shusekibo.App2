@@ -225,7 +225,7 @@ class _KizukiGridWidgetState extends ConsumerState<KizukiGridWidget> {
             'CommonFlg': PlutoCell(value: model.commonFlg),
             'Title': PlutoCell(value: model.title),
             'KizukiTemplate': PlutoCell(value: model.kizukiTemplate),
-            'KinyuKyoinId': PlutoCell(value: model.kinyuKyoinId),
+            'KinyuKyoinName': PlutoCell(value: model.kinyuKyoinName),
             'ModifiedDateTime': PlutoCell(value: model.modifiedDateTime),
             'id': PlutoCell(value: model.id),
           },
@@ -266,9 +266,9 @@ class _KizukiGridWidgetState extends ConsumerState<KizukiGridWidget> {
       ),
       // ２．学校共通
       PlutoColumn(
-        title: '学校共通',
+        title: '種別',
         field: 'CommonFlg',
-        width: 80,
+        width: 50,
         readOnly: true,
         enableContextMenu: false,
         type: PlutoColumnType.text(),
@@ -292,7 +292,7 @@ class _KizukiGridWidgetState extends ConsumerState<KizukiGridWidget> {
       PlutoColumn(
         title: 'テンプレート名',
         field: 'Title',
-        width: 250,
+        width: 280,
         readOnly: true,
         enableContextMenu: false,
         type: PlutoColumnType.text(),
@@ -338,7 +338,7 @@ class _KizukiGridWidgetState extends ConsumerState<KizukiGridWidget> {
       PlutoColumn(
         title: '気づき',
         field: 'KizukiTemplate',
-        width: 600,
+        width: 550,
         readOnly: true,
         enableContextMenu: false,
         type: PlutoColumnType.text(),
@@ -357,8 +357,8 @@ class _KizukiGridWidgetState extends ConsumerState<KizukiGridWidget> {
       // 5.登録者
       PlutoColumn(
         title: '登録者',
-        field: 'KinyuKyoinId',
-        width: 100,
+        field: 'KinyuKyoinName',
+        width: 150,
         readOnly: true,
         enableContextMenu: false,
         type: PlutoColumnType.text(),

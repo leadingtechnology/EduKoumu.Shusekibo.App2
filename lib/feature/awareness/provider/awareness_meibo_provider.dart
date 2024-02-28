@@ -1,7 +1,5 @@
-import 'dart:html' as html;
-import 'dart:typed_data';
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:kyoumutechou/feature/attendance/repository/attendance_meibo_repository.dart';
 import 'package:kyoumutechou/feature/awareness/model/awareness_common.dart';
 import 'package:kyoumutechou/feature/awareness/model/awareness_meibo_model.dart';
 import 'package:kyoumutechou/feature/awareness/provider/awareness_kizuki_provider.dart';
@@ -9,6 +7,7 @@ import 'package:kyoumutechou/feature/awareness/provider/tenpu_provider.dart';
 import 'package:kyoumutechou/feature/awareness/repsitory/awareness_kizuki_repository.dart';
 import 'package:kyoumutechou/feature/awareness/repsitory/awareness_meibo_repository.dart';
 import 'package:kyoumutechou/feature/boxes.dart';
+import 'package:kyoumutechou/feature/common/model/filter_model.dart';
 import 'package:kyoumutechou/feature/common/provider/filter_provider.dart';
 import 'package:kyoumutechou/feature/common/state/api_state.dart';
 import 'package:kyoumutechou/shared/util/date_util.dart';
@@ -16,9 +15,10 @@ import 'package:kyoumutechou/shared/util/image_handler.dart';
 
 final awarenessMeiboListProvider = 
 StateNotifierProvider<AwarenessMeiboListProvider, ApiState>((ref) {
+
   final filter = ref.watch(filterProvider);
 
-  return AwarenessMeiboListProvider(ref);
+  return AwarenessMeiboListProvider(ref, filter);
 });
 
 final awarenessMeiboProvider = StateProvider<AwarenessMeiboModel>(
@@ -37,21 +37,35 @@ final awarenessListIdProvider = StateProvider<String>((ref) => '');
 final awarenessTextProvider = StateProvider<String>((ref) => '');
 
 class AwarenessMeiboListProvider extends StateNotifier<ApiState> {
-  AwarenessMeiboListProvider(this.ref,)
+  AwarenessMeiboListProvider(this.ref, this.filter)
       : super(const ApiState.loading()) {
     _init();
   }
 
   final Ref ref;
-  late final _repository = ref.read(awarenessMeiboRepositoryProvider);
+  final FilterModel filter;
+  late final _awarenessRep = ref.read(awarenessMeiboRepositoryProvider);
+  late final _attendanceRep = ref.read(attendanceMeiboRepositoryProvider);
   late final _rep = ref.read(awarenessKizukiRepositoryProvider);
 
   Future<void> _init() async { await _fetch(); }
 
   Future<void> _fetch() async {
-    final response = await _repository.fetchAwarenessMeibo();
+    // 初期化完成しない場合、終了する
+    if (filter.classId == null ||
+        filter.classId == 0 ||
+        filter.targetDate == null) {
+      state = const ApiState.loading();
+      return;
+    }
+
+    final responses = await Future.wait([
+      _awarenessRep.fetchAwarenessMeibo(),
+      _attendanceRep.fetch(filter, 0, filter.targetDate ?? DateTime.now(),),
+    ]);
+
     if (mounted) {
-      state = response;
+      state = responses.first;
     }
   }
 
@@ -187,10 +201,10 @@ class AwarenessMeiboListProvider extends StateNotifier<ApiState> {
 }
 ''';
 
-    final response = await _repository.save(json);
+    final response = await _awarenessRep.save(json);
     final res = await _rep.fetch();
     if (opt != AwarenessOperationItem.add){
-      final resp = await _repository.fetchAwarenessMeibo();
+      final resp = await _awarenessRep.fetchAwarenessMeibo();
     }
     if (mounted) {
       state = response;

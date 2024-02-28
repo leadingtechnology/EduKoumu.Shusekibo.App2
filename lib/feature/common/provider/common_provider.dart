@@ -17,4 +17,6 @@ final sysEndDate = StateProvider<DateTime>((ref) {
   return DateTime.now();
 });
 
-
+final isContactAllowedProvider = StateProvider<bool>((ref) {
+  return false;
+});

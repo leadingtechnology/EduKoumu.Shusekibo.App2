@@ -20,19 +20,20 @@ abstract class KizukiTemplateModel with _$KizukiTemplateModel {
     @JsonKey(name: 'Id', disallowNullValue: false) @HiveField(0) int? id,
     @JsonKey(name: 'TenantId', disallowNullValue: false) @HiveField(1) int? tenantId,
     @JsonKey(name: 'KinyuKyoinId', disallowNullValue: false) @HiveField(2) int? kinyuKyoinId,
-    @JsonKey(name: 'KaruteSettingId', disallowNullValue: false) @HiveField(3) int? karuteSettingId,
-    @JsonKey(name: 'KaruteShubetsuNaibuCode', disallowNullValue: false) @HiveField(4) String? karuteShubetsuNaibuCode,
-    @JsonKey(name: 'KaruteBunruiCode', disallowNullValue: false) @HiveField(5) String? karuteBunruiCode,
-    @JsonKey(name: 'Title', disallowNullValue: false) @HiveField(6) String? title,
-    @JsonKey(name: 'KizukiTemplate', disallowNullValue: false) @HiveField(7) String? kizukiTemplate,
-    @JsonKey(name: 'CommonFlg', disallowNullValue: false) @HiveField(8) bool? commonFlg,
-    @JsonKey(name: 'ModifiedDateTime', disallowNullValue: false) @HiveField(9) String? modifiedDateTime,
-    @JsonKey(name: 'TIMESTAMP', disallowNullValue: false) @HiveField(10) String? timeStamp,
+    @JsonKey(name: 'KinyuKyoinName', disallowNullValue: false) @HiveField(3) String? kinyuKyoinName,
+    @JsonKey(name: 'KaruteSettingId', disallowNullValue: false) @HiveField(4) int? karuteSettingId,
+    @JsonKey(name: 'KaruteShubetsuNaibuCode', disallowNullValue: false) @HiveField(5) String? karuteShubetsuNaibuCode,
+    @JsonKey(name: 'KaruteBunruiCode', disallowNullValue: false) @HiveField(6) String? karuteBunruiCode,
+    @JsonKey(name: 'Title', disallowNullValue: false) @HiveField(7) String? title,
+    @JsonKey(name: 'KizukiTemplate', disallowNullValue: false) @HiveField(8) String? kizukiTemplate,
+    @JsonKey(name: 'CommonFlg', disallowNullValue: false) @HiveField(9) bool? commonFlg,
+    @JsonKey(name: 'ModifiedDateTime', disallowNullValue: false) @HiveField(10) String? modifiedDateTime,
+    @JsonKey(name: 'TIMESTAMP', disallowNullValue: false) @HiveField(11) String? timeStamp,
   }) = _KizukiTemplateModel;
 
   @override
   String toString() {
-    return 'KizukiTemplateModel($id, $tenantId, $kinyuKyoinId, $karuteSettingId, $karuteShubetsuNaibuCode, $karuteBunruiCode, $title, $kizukiTemplate, $commonFlg, $modifiedDateTime, $timeStamp)';
+    return 'KizukiTemplateModel($id, $tenantId, $kinyuKyoinId, $kinyuKyoinName, $karuteSettingId, $karuteShubetsuNaibuCode, $karuteBunruiCode, $title, $kizukiTemplate, $commonFlg, $modifiedDateTime, $timeStamp)';
   }
   factory KizukiTemplateModel.fromJson(Map<String, dynamic> json) => _$KizukiTemplateModelFromJson(json);
 }

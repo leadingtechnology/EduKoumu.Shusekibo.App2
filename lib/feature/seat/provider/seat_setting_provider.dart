@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kyoumutechou/feature/boxes.dart';
+import 'package:kyoumutechou/feature/common/model/filter_model.dart';
 import 'package:kyoumutechou/feature/common/provider/filter_provider.dart';
 import 'package:kyoumutechou/feature/common/state/api_state.dart';
 import 'package:kyoumutechou/feature/seat/model/seat_setting_model.dart';
@@ -10,8 +11,10 @@ import 'package:kyoumutechou/shared/util/date_util.dart';
 
 final seatSettingListProvider =
     StateNotifierProvider<SeatSettingListProvider, ApiState>((ref) {
+
+  final filter = ref.watch(filterProvider);
   
-  return SeatSettingListProvider(ref );
+  return SeatSettingListProvider(ref, filter);
 });
 
 final seatSettingProvider = 
@@ -20,15 +23,21 @@ final seatSettingProvider =
 class SeatSettingListProvider extends StateNotifier<ApiState> {
   SeatSettingListProvider(
     this.ref, 
+    this.filter,
   ) : super(const ApiState.loading()) {
     _init();
   }
 
   final Ref ref;
+  final FilterModel filter;
   late final _settingRep = ref.read(seatSettingRepositoryProvider);
   late final _seatChartRep = ref.read(seatChartRepositoryProvider);
 
   Future<void> _init() async {
+    if (filter.classId == null) {
+      state = const ApiState.loading();
+      return;
+    }
     await fetch();
   }
 
@@ -40,9 +49,14 @@ class SeatSettingListProvider extends StateNotifier<ApiState> {
     } 
     
     final response = await _settingRep.fetch(classId);
+
+    await setSeatSettingValue();
+    
     if (mounted) {
       state = response;
     }
+
+    
   }
 
   // 初期値を設定する

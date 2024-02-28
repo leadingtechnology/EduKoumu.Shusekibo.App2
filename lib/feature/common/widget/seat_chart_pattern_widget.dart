@@ -22,35 +22,50 @@ class SeatChartPatternState extends ConsumerState<SeatChartPatternWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final filter = ref.watch(filterProvider);
-    final settings =
-        Boxes.getSeatSetting().values.toList().cast<SeatSettingModel>();
+    final state = ref.watch(seatSettingListProvider);
+    return state.when(
+      loading: Container.new,
+      error: (error) => Center(child: Text(error.toString())),
+      loaded: () {
+          final filter = ref.watch(filterProvider);
+          final settings =
+              Boxes.getSeatSetting().values.toList().cast<SeatSettingModel>();
 
-    if (settings.isEmpty) {
-      return Container();
-    }
+          if (settings.isEmpty) {
+            return Container();
+          }
 
-    try{
-      // ignore: cascade_invocations
-      settings
-        ..removeWhere(
-          (e) =>
-              e.startDate!.isAfter(filter.targetDate!) &&
-              e.endDate!.isBefore(filter.targetDate!),
-        )
-        ..sort((a, b) => a.startDate!.compareTo(b.startDate!));
-    }catch(e){
-      //
-    }
+          try {
+            // ignore: cascade_invocations
+            settings
+              ..removeWhere(
+                (e) =>
+                    e.startDate!.isAfter(filter.targetDate!) &&
+                    e.endDate!.isBefore(filter.targetDate!),
+              )
+              ..sort((a, b) => a.startDate!.compareTo(b.startDate!));
+          } catch (e) {
+            //
+          }
 
-    return _buildGridItem(context, settings);
+          return _buildGridItem(context, settings);
+      },
+    );
   }
 
   Widget _buildGridItem(BuildContext context, List<SeatSettingModel> settings) {
-    final seatSetting = ref.watch(seatSettingProvider);
+    var seatSetting = ref.watch(seatSettingProvider);
+
     if (settings.isEmpty || seatSetting.id == null) {
       return Container();
     }
+
+    settings.sort((a, b) => a.id!.compareTo(b.id!));
+
+    if (settings.where((e) => e.id == seatSetting.id).isEmpty) {
+      seatSetting = settings.first;
+    }
+
     return Row(
       children: [
         const Text('座席表パターン'),

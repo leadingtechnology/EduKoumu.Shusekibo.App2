@@ -5,21 +5,26 @@ import 'package:kyoumutechou/feature/awareness/model/awareness_meibo_model.dart'
 import 'package:kyoumutechou/feature/awareness/provider/awareness_meibo_provider.dart';
 import 'package:kyoumutechou/feature/awareness/weidget/awareness_seat_widget.dart';
 import 'package:kyoumutechou/feature/boxes.dart';
+import 'package:kyoumutechou/feature/common/provider/common_provider.dart';
 import 'package:kyoumutechou/feature/common/widget/search_bar_widget.dart';
 import 'package:kyoumutechou/feature/common/widget/toast_helper.dart';
+import 'package:kyoumutechou/feature/linkage/widget/lectern_widget.dart';
+import 'package:kyoumutechou/feature/seat/provider/seat_chart_provider.dart';
+import 'package:kyoumutechou/feature/seat/provider/seat_setting_provider.dart';
+import 'package:kyoumutechou/feature/seat/widget/blank_seat_widget.dart';
 import 'package:kyoumutechou/helpers/widgets/my_spacing.dart';
 import 'package:kyoumutechou/shared/http/app_exception.dart';
 
-
 class AwarenessSeatPage extends ConsumerWidget {
-  AwarenessSeatPage(this._scaffoldKey, { super.key});
+  AwarenessSeatPage(this._scaffoldKey, {super.key});
 
   // draw key
-    final GlobalKey<ScaffoldState> _scaffoldKey;
-
+  final GlobalKey<ScaffoldState> _scaffoldKey;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final lecternPosition = ref.watch(lecternPositionProvider);
+    
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -28,16 +33,23 @@ class AwarenessSeatPage extends ConsumerWidget {
         // screen
         MySpacing.height(8),
         Expanded(
-            child: Column(children: [
-          Expanded(
-              child: Container(
-                color: Colors.grey[100],
-                padding: MySpacing.all(16),
-                child: const AwarenessSeats(),
+          child: Column(
+            children: [
+              if (lecternPosition == LecternPosition.top)
+                const SizedBox(height: 10, child: LecternWidget(title: '')),
+              Expanded(
+                child: Container(
+                  color: Colors.grey[100],
+                  padding: MySpacing.all(16),
+                  child: const AwarenessSeats(),
+                ),
               ),
-            ),
-          // tools bar
-        ],),),
+              if (lecternPosition == LecternPosition.bottom)
+                const SizedBox(height: 10, child: LecternWidget(title: '')),
+              // tools bar
+            ],
+          ),
+        ),
       ],
     );
   }
@@ -68,33 +80,128 @@ class _AwarenessSeatsState extends ConsumerState<AwarenessSeats> {
     final state = ref.watch(awarenessMeiboListProvider);
 
     return state.when(
-      loading: () { return Container(); },
-      error: (AppException e){ return Text(e.toString()); },
-      loaded: (){
-        return ValueListenableBuilder(
-          valueListenable: Boxes.getAwarenessMeiboBox().listenable(), 
-          builder: (context, Box<AwarenessMeiboModel> box, _){
-            final meibos = box.values.toList();
+      loading: () {
+        return Container();
+      },
+      error: (AppException e) {
+        return Text(e.toString());
+      },
+      loaded: () {
+        return _build(context);
+      },
+    );
+  }
 
-            if (meibos.isEmpty) {
-              return Container();
-            } 
-            
-            return GridView.builder(
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 6,
-                crossAxisSpacing: 15,
-                mainAxisSpacing: 15,
-                childAspectRatio: 2,
-              ),
-              itemCount: meibos.length,
-              itemBuilder: (BuildContext context, int index) {
-                return AwarenessSeatWidget(
-                  meibo: meibos[index],
-                );
-              },
+  Widget _build(BuildContext context) {
+    final lp = ref.watch(lecternPositionProvider);
+
+    return ValueListenableBuilder(
+      valueListenable: Boxes.getAwarenessMeiboBox().listenable(),
+      builder: (context, Box<AwarenessMeiboModel> box, _) {
+        final meibos = box.values.toList();
+        final ms = Boxes.getAttendanceMeibo().values.toList();
+        final newMeibos = <AwarenessMeiboModel>[];
+        final lecternPosition = ref.watch(lecternPositionProvider);
+
+        var rotate = 0.0;
+        switch (lp) {
+          case LecternPosition.top:
+            rotate = 0.0;
+          case LecternPosition.bottom:
+            rotate = 180.0;
+          // ignore: no_default_cases
+          default: // Add a default case
+            rotate = 0.0;
+        }
+
+        var gridColumnCount = 6;
+
+        if (meibos.isEmpty) {
+          return Container();
+        }
+
+        // 座席表設定情報取得
+        final seats = Boxes.getSeatChart().values.toList();
+        if (seats.isNotEmpty) {
+          seats.sort((a, b) => a.seatIndex!.compareTo(b.seatIndex!));
+
+          final setting = ref.watch(seatSettingProvider);
+          final m = setting.row!;
+          final n = setting.column!;
+          gridColumnCount = n;
+
+          // 座席ごとにデータを設定する
+          for (var i = 0; i < m * n; i++) {
+            var meibo = const AwarenessMeiboModel(
+              studentKihonId: 0,
             );
-          },
+
+            try {
+              final seatData = seats.firstWhere((e) => e.seatIndex == i);
+
+              // 席無し情報の設定
+              if (seatData.seatNumber == 0) {
+                meibo = const AwarenessMeiboModel(
+                  studentKihonId: -1,
+                );
+              }
+
+              // 生徒情報の設定
+              if (seatData.seatNumber != 0 && seatData.seitoSeq != '0') {
+                final m =
+                    ms.firstWhere((e) => e.studentSeq == seatData.seitoSeq);
+                meibo = meibos.firstWhere(
+                  (e) => e.studentId == m.studentKihonId,
+                );
+              }
+            } catch (ex) {
+              //
+            }
+            newMeibos.add(meibo);
+          }
+        }
+
+        if (newMeibos.isEmpty) {
+          newMeibos.addAll(meibos);
+        }
+
+        return Transform.rotate(
+          angle: rotate == 0.0 ? 0.0 : 3.14159265358979323846,
+          child: GridView.builder(
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: gridColumnCount,
+              crossAxisSpacing: 8,
+              mainAxisSpacing: 8,
+              childAspectRatio: 2,
+            ),
+            itemCount: newMeibos.length,
+            itemBuilder: (BuildContext context, int index) {
+              final meibo = newMeibos[index];
+        
+              if (meibo.studentKihonId == 0) {
+                // 空席
+                return const BlankSeatWidget(
+                  width: 150,
+                  height: 70,
+                );
+              }
+        
+              if (meibo.studentKihonId == -1) {
+                return Container();
+                // return const NoSeatWidget(
+                //   width: 150,
+                //   height: 70,
+                // );
+              }
+        
+              return Transform.rotate(
+                angle: rotate == 0.0 ? 0.0 : 3.14159265358979323846,
+                child: AwarenessSeatWidget(
+                  meibo: newMeibos[index],
+                ),
+              );
+            },
+          ),
         );
       },
     );

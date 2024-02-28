@@ -1,4 +1,5 @@
 
+import 'package:kyoumutechou/feature/common/provider/filter_provider.dart';
 import 'package:kyoumutechou/feature/kizuki/repository/kizuki_template_repository.dart';
 import 'package:kyoumutechou/feature/kizuki/state/kizuki_template_state.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -33,9 +34,11 @@ class KizukiTemplateNotifier extends _$KizukiTemplateNotifier {
     required String kizukiTemplate,
     required String commonFlg,
   }) async {
+    final dantaiId = ref.read(filterProvider).dantaiId ?? 0;
 
     final json = '''
 {
+    "DantaiId": $dantaiId,
     "KinyuKyoinId": $kinyuKyoinId,
     "KaruteSettingId": $karuteSettingId,
     "KaruteShubetsuNaibuCode": "$karuteShubetsuNaibuCode",

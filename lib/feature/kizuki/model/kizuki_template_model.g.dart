@@ -21,21 +21,22 @@ class KizukiTemplateModelAdapter
       id: fields[0] as int?,
       tenantId: fields[1] as int?,
       kinyuKyoinId: fields[2] as int?,
-      karuteSettingId: fields[3] as int?,
-      karuteShubetsuNaibuCode: fields[4] as String?,
-      karuteBunruiCode: fields[5] as String?,
-      title: fields[6] as String?,
-      kizukiTemplate: fields[7] as String?,
-      commonFlg: fields[8] as bool?,
-      modifiedDateTime: fields[9] as String?,
-      timeStamp: fields[10] as String?,
+      kinyuKyoinName: fields[3] as String?,
+      karuteSettingId: fields[4] as int?,
+      karuteShubetsuNaibuCode: fields[5] as String?,
+      karuteBunruiCode: fields[6] as String?,
+      title: fields[7] as String?,
+      kizukiTemplate: fields[8] as String?,
+      commonFlg: fields[9] as bool?,
+      modifiedDateTime: fields[10] as String?,
+      timeStamp: fields[11] as String?,
     );
   }
 
   @override
   void write(BinaryWriter writer, _$KizukiTemplateModelImpl obj) {
     writer
-      ..writeByte(11)
+      ..writeByte(12)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -43,20 +44,22 @@ class KizukiTemplateModelAdapter
       ..writeByte(2)
       ..write(obj.kinyuKyoinId)
       ..writeByte(3)
-      ..write(obj.karuteSettingId)
+      ..write(obj.kinyuKyoinName)
       ..writeByte(4)
-      ..write(obj.karuteShubetsuNaibuCode)
+      ..write(obj.karuteSettingId)
       ..writeByte(5)
-      ..write(obj.karuteBunruiCode)
+      ..write(obj.karuteShubetsuNaibuCode)
       ..writeByte(6)
-      ..write(obj.title)
+      ..write(obj.karuteBunruiCode)
       ..writeByte(7)
-      ..write(obj.kizukiTemplate)
+      ..write(obj.title)
       ..writeByte(8)
-      ..write(obj.commonFlg)
+      ..write(obj.kizukiTemplate)
       ..writeByte(9)
-      ..write(obj.modifiedDateTime)
+      ..write(obj.commonFlg)
       ..writeByte(10)
+      ..write(obj.modifiedDateTime)
+      ..writeByte(11)
       ..write(obj.timeStamp);
   }
 
@@ -81,6 +84,7 @@ _$KizukiTemplateModelImpl _$$KizukiTemplateModelImplFromJson(
       id: json['Id'] as int?,
       tenantId: json['TenantId'] as int?,
       kinyuKyoinId: json['KinyuKyoinId'] as int?,
+      kinyuKyoinName: json['KinyuKyoinName'] as String?,
       karuteSettingId: json['KaruteSettingId'] as int?,
       karuteShubetsuNaibuCode: json['KaruteShubetsuNaibuCode'] as String?,
       karuteBunruiCode: json['KaruteBunruiCode'] as String?,
@@ -97,6 +101,7 @@ Map<String, dynamic> _$$KizukiTemplateModelImplToJson(
       'Id': instance.id,
       'TenantId': instance.tenantId,
       'KinyuKyoinId': instance.kinyuKyoinId,
+      'KinyuKyoinName': instance.kinyuKyoinName,
       'KaruteSettingId': instance.karuteSettingId,
       'KaruteShubetsuNaibuCode': instance.karuteShubetsuNaibuCode,
       'KaruteBunruiCode': instance.karuteBunruiCode,

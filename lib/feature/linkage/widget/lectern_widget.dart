@@ -15,10 +15,10 @@ class LecternWidget extends StatelessWidget {
     return Center(
       child: Container(
         decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.primaryContainer,
+          color: Colors.green.shade200,
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.withOpacity(0.5),
+              color: Colors.grey.withOpacity(0.1),
               spreadRadius: 5,
               blurRadius: 7,
               offset: const Offset(0, 3),

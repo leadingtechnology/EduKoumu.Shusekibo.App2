@@ -23,27 +23,28 @@ class AwarenessSeatWidget extends ConsumerWidget {
     }
 
     final url = '$_baseUrl${meibo.photoUrl}';
-    String accessToken = Hive.box<String>('shusekibo').get('token').toString();
+    final accessToken = Hive.box<String>('shusekibo').get('token').toString();
 
     return GestureDetector(
       onTap: () async {
-        await ref.read(awarenessMeiboListProvider.notifier).updateByMeibo(meibo);
+        await ref
+            .read(awarenessMeiboListProvider.notifier)
+            .updateByMeibo(meibo);
       },
       child: Stack(children: [
           Padding(
-            padding: EdgeInsets.fromLTRB(0, 0, 5, 5),
+            padding: const EdgeInsets.fromLTRB(0, 0, 5, 5),
             child: Container(
               decoration: const BoxDecoration(
-                //color: Colors.primaries[Random().nextInt(Colors.primaries.length)],
                 borderRadius: BorderRadius.all(Radius.circular(6)),
                 color: Colors.white,
                 boxShadow: [
                   BoxShadow(
-                    spreadRadius: 1.0,
+                    spreadRadius: 1,
                     color: Colors.black26,
-                    blurRadius: 2.0,
+                    blurRadius: 2,
                     offset: Offset(2, 0),
-                  )
+                  ),
                 ],
               ),
               child: Column(
@@ -63,10 +64,12 @@ class AwarenessSeatWidget extends ConsumerWidget {
                             child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            Text('${meibo.shussekiNo ?? ''}' ,style: TextStyle(fontSize: 12)),
-                            Text('${meibo.studentName}',style: TextStyle(fontSize: 14) ),
+                            Text(meibo.shussekiNo ?? '',
+                                style: const TextStyle(fontSize: 12),),
+                            Text('${meibo.studentName}',
+                                style: const TextStyle(fontSize: 14),),
                           ],
-                        )),
+                        ),),
                       ],
                     ),
                   ),

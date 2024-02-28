@@ -23,7 +23,32 @@ class ContactLinkageDialog extends ConsumerWidget {
         return Text(e.toString());
       },
       loaded: (list) {
-        return _build(context, ref, list);
+        final contactItems = list.toList();
+        // ソート順
+        contactItems.sort((a, b) {
+          // registDateTime 降順
+          final dateCompare = b.registDateTime!.compareTo(a.registDateTime!);
+          if (dateCompare != 0) return dateCompare;
+
+          // shozokuName 昇順
+          final nameCompare = '${a.shozokuName}'.compareTo('${b.shozokuName}');
+          if (nameCompare != 0) return nameCompare;
+
+          // shozokuId 昇順
+          final idCompare = a.shozokuId!.compareTo(b.shozokuId!);
+          if (idCompare != 0) return idCompare;
+
+          // shussekiNo 昇順
+            final noCompare =
+                (a.shussekiNo ?? '').compareTo(b.shussekiNo ?? '');
+            if (noCompare != 0) return noCompare;
+
+          // memberId 昇順
+          return a.memberId!.compareTo(b.memberId!);
+        });
+
+
+        return _build(context, ref, contactItems);
       },
     );
   }
@@ -75,11 +100,14 @@ class ContactLinkageDialog extends ConsumerWidget {
           ),
           const Divider(),
           Expanded(
-            child: ListView.builder(
+            child: ListView.separated(
               itemCount: list.length,
               itemBuilder: (context, index) {
                 final item = list[index];
                 return ContactListItem(item: item);
+              },
+              separatorBuilder: (context, index) {
+                return const Divider();
               },
             ),
           ),

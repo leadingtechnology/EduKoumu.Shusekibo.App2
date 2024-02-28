@@ -29,29 +29,32 @@ mixin _$KizukiTemplateModel {
   @JsonKey(name: 'KinyuKyoinId', disallowNullValue: false)
   @HiveField(2)
   int? get kinyuKyoinId => throw _privateConstructorUsedError;
-  @JsonKey(name: 'KaruteSettingId', disallowNullValue: false)
+  @JsonKey(name: 'KinyuKyoinName', disallowNullValue: false)
   @HiveField(3)
+  String? get kinyuKyoinName => throw _privateConstructorUsedError;
+  @JsonKey(name: 'KaruteSettingId', disallowNullValue: false)
+  @HiveField(4)
   int? get karuteSettingId => throw _privateConstructorUsedError;
   @JsonKey(name: 'KaruteShubetsuNaibuCode', disallowNullValue: false)
-  @HiveField(4)
+  @HiveField(5)
   String? get karuteShubetsuNaibuCode => throw _privateConstructorUsedError;
   @JsonKey(name: 'KaruteBunruiCode', disallowNullValue: false)
-  @HiveField(5)
+  @HiveField(6)
   String? get karuteBunruiCode => throw _privateConstructorUsedError;
   @JsonKey(name: 'Title', disallowNullValue: false)
-  @HiveField(6)
+  @HiveField(7)
   String? get title => throw _privateConstructorUsedError;
   @JsonKey(name: 'KizukiTemplate', disallowNullValue: false)
-  @HiveField(7)
+  @HiveField(8)
   String? get kizukiTemplate => throw _privateConstructorUsedError;
   @JsonKey(name: 'CommonFlg', disallowNullValue: false)
-  @HiveField(8)
+  @HiveField(9)
   bool? get commonFlg => throw _privateConstructorUsedError;
   @JsonKey(name: 'ModifiedDateTime', disallowNullValue: false)
-  @HiveField(9)
+  @HiveField(10)
   String? get modifiedDateTime => throw _privateConstructorUsedError;
   @JsonKey(name: 'TIMESTAMP', disallowNullValue: false)
-  @HiveField(10)
+  @HiveField(11)
   String? get timeStamp => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -74,29 +77,32 @@ abstract class $KizukiTemplateModelCopyWith<$Res> {
       @JsonKey(name: 'KinyuKyoinId', disallowNullValue: false)
       @HiveField(2)
       int? kinyuKyoinId,
-      @JsonKey(name: 'KaruteSettingId', disallowNullValue: false)
+      @JsonKey(name: 'KinyuKyoinName', disallowNullValue: false)
       @HiveField(3)
+      String? kinyuKyoinName,
+      @JsonKey(name: 'KaruteSettingId', disallowNullValue: false)
+      @HiveField(4)
       int? karuteSettingId,
       @JsonKey(name: 'KaruteShubetsuNaibuCode', disallowNullValue: false)
-      @HiveField(4)
+      @HiveField(5)
       String? karuteShubetsuNaibuCode,
       @JsonKey(name: 'KaruteBunruiCode', disallowNullValue: false)
-      @HiveField(5)
+      @HiveField(6)
       String? karuteBunruiCode,
       @JsonKey(name: 'Title', disallowNullValue: false)
-      @HiveField(6)
+      @HiveField(7)
       String? title,
       @JsonKey(name: 'KizukiTemplate', disallowNullValue: false)
-      @HiveField(7)
+      @HiveField(8)
       String? kizukiTemplate,
       @JsonKey(name: 'CommonFlg', disallowNullValue: false)
-      @HiveField(8)
+      @HiveField(9)
       bool? commonFlg,
       @JsonKey(name: 'ModifiedDateTime', disallowNullValue: false)
-      @HiveField(9)
+      @HiveField(10)
       String? modifiedDateTime,
       @JsonKey(name: 'TIMESTAMP', disallowNullValue: false)
-      @HiveField(10)
+      @HiveField(11)
       String? timeStamp});
 }
 
@@ -116,6 +122,7 @@ class _$KizukiTemplateModelCopyWithImpl<$Res, $Val extends KizukiTemplateModel>
     Object? id = freezed,
     Object? tenantId = freezed,
     Object? kinyuKyoinId = freezed,
+    Object? kinyuKyoinName = freezed,
     Object? karuteSettingId = freezed,
     Object? karuteShubetsuNaibuCode = freezed,
     Object? karuteBunruiCode = freezed,
@@ -138,6 +145,10 @@ class _$KizukiTemplateModelCopyWithImpl<$Res, $Val extends KizukiTemplateModel>
           ? _value.kinyuKyoinId
           : kinyuKyoinId // ignore: cast_nullable_to_non_nullable
               as int?,
+      kinyuKyoinName: freezed == kinyuKyoinName
+          ? _value.kinyuKyoinName
+          : kinyuKyoinName // ignore: cast_nullable_to_non_nullable
+              as String?,
       karuteSettingId: freezed == karuteSettingId
           ? _value.karuteSettingId
           : karuteSettingId // ignore: cast_nullable_to_non_nullable
@@ -190,29 +201,32 @@ abstract class _$$KizukiTemplateModelImplCopyWith<$Res>
       @JsonKey(name: 'KinyuKyoinId', disallowNullValue: false)
       @HiveField(2)
       int? kinyuKyoinId,
-      @JsonKey(name: 'KaruteSettingId', disallowNullValue: false)
+      @JsonKey(name: 'KinyuKyoinName', disallowNullValue: false)
       @HiveField(3)
+      String? kinyuKyoinName,
+      @JsonKey(name: 'KaruteSettingId', disallowNullValue: false)
+      @HiveField(4)
       int? karuteSettingId,
       @JsonKey(name: 'KaruteShubetsuNaibuCode', disallowNullValue: false)
-      @HiveField(4)
+      @HiveField(5)
       String? karuteShubetsuNaibuCode,
       @JsonKey(name: 'KaruteBunruiCode', disallowNullValue: false)
-      @HiveField(5)
+      @HiveField(6)
       String? karuteBunruiCode,
       @JsonKey(name: 'Title', disallowNullValue: false)
-      @HiveField(6)
+      @HiveField(7)
       String? title,
       @JsonKey(name: 'KizukiTemplate', disallowNullValue: false)
-      @HiveField(7)
+      @HiveField(8)
       String? kizukiTemplate,
       @JsonKey(name: 'CommonFlg', disallowNullValue: false)
-      @HiveField(8)
+      @HiveField(9)
       bool? commonFlg,
       @JsonKey(name: 'ModifiedDateTime', disallowNullValue: false)
-      @HiveField(9)
+      @HiveField(10)
       String? modifiedDateTime,
       @JsonKey(name: 'TIMESTAMP', disallowNullValue: false)
-      @HiveField(10)
+      @HiveField(11)
       String? timeStamp});
 }
 
@@ -230,6 +244,7 @@ class __$$KizukiTemplateModelImplCopyWithImpl<$Res>
     Object? id = freezed,
     Object? tenantId = freezed,
     Object? kinyuKyoinId = freezed,
+    Object? kinyuKyoinName = freezed,
     Object? karuteSettingId = freezed,
     Object? karuteShubetsuNaibuCode = freezed,
     Object? karuteBunruiCode = freezed,
@@ -252,6 +267,10 @@ class __$$KizukiTemplateModelImplCopyWithImpl<$Res>
           ? _value.kinyuKyoinId
           : kinyuKyoinId // ignore: cast_nullable_to_non_nullable
               as int?,
+      kinyuKyoinName: freezed == kinyuKyoinName
+          ? _value.kinyuKyoinName
+          : kinyuKyoinName // ignore: cast_nullable_to_non_nullable
+              as String?,
       karuteSettingId: freezed == karuteSettingId
           ? _value.karuteSettingId
           : karuteSettingId // ignore: cast_nullable_to_non_nullable
@@ -300,29 +319,32 @@ class _$KizukiTemplateModelImpl implements _KizukiTemplateModel {
       @JsonKey(name: 'KinyuKyoinId', disallowNullValue: false)
       @HiveField(2)
       this.kinyuKyoinId,
-      @JsonKey(name: 'KaruteSettingId', disallowNullValue: false)
+      @JsonKey(name: 'KinyuKyoinName', disallowNullValue: false)
       @HiveField(3)
+      this.kinyuKyoinName,
+      @JsonKey(name: 'KaruteSettingId', disallowNullValue: false)
+      @HiveField(4)
       this.karuteSettingId,
       @JsonKey(name: 'KaruteShubetsuNaibuCode', disallowNullValue: false)
-      @HiveField(4)
+      @HiveField(5)
       this.karuteShubetsuNaibuCode,
       @JsonKey(name: 'KaruteBunruiCode', disallowNullValue: false)
-      @HiveField(5)
+      @HiveField(6)
       this.karuteBunruiCode,
       @JsonKey(name: 'Title', disallowNullValue: false)
-      @HiveField(6)
+      @HiveField(7)
       this.title,
       @JsonKey(name: 'KizukiTemplate', disallowNullValue: false)
-      @HiveField(7)
+      @HiveField(8)
       this.kizukiTemplate,
       @JsonKey(name: 'CommonFlg', disallowNullValue: false)
-      @HiveField(8)
+      @HiveField(9)
       this.commonFlg,
       @JsonKey(name: 'ModifiedDateTime', disallowNullValue: false)
-      @HiveField(9)
+      @HiveField(10)
       this.modifiedDateTime,
       @JsonKey(name: 'TIMESTAMP', disallowNullValue: false)
-      @HiveField(10)
+      @HiveField(11)
       this.timeStamp});
 
   factory _$KizukiTemplateModelImpl.fromJson(Map<String, dynamic> json) =>
@@ -341,36 +363,40 @@ class _$KizukiTemplateModelImpl implements _KizukiTemplateModel {
   @HiveField(2)
   final int? kinyuKyoinId;
   @override
-  @JsonKey(name: 'KaruteSettingId', disallowNullValue: false)
+  @JsonKey(name: 'KinyuKyoinName', disallowNullValue: false)
   @HiveField(3)
+  final String? kinyuKyoinName;
+  @override
+  @JsonKey(name: 'KaruteSettingId', disallowNullValue: false)
+  @HiveField(4)
   final int? karuteSettingId;
   @override
   @JsonKey(name: 'KaruteShubetsuNaibuCode', disallowNullValue: false)
-  @HiveField(4)
+  @HiveField(5)
   final String? karuteShubetsuNaibuCode;
   @override
   @JsonKey(name: 'KaruteBunruiCode', disallowNullValue: false)
-  @HiveField(5)
+  @HiveField(6)
   final String? karuteBunruiCode;
   @override
   @JsonKey(name: 'Title', disallowNullValue: false)
-  @HiveField(6)
+  @HiveField(7)
   final String? title;
   @override
   @JsonKey(name: 'KizukiTemplate', disallowNullValue: false)
-  @HiveField(7)
+  @HiveField(8)
   final String? kizukiTemplate;
   @override
   @JsonKey(name: 'CommonFlg', disallowNullValue: false)
-  @HiveField(8)
+  @HiveField(9)
   final bool? commonFlg;
   @override
   @JsonKey(name: 'ModifiedDateTime', disallowNullValue: false)
-  @HiveField(9)
+  @HiveField(10)
   final String? modifiedDateTime;
   @override
   @JsonKey(name: 'TIMESTAMP', disallowNullValue: false)
-  @HiveField(10)
+  @HiveField(11)
   final String? timeStamp;
 
   @override
@@ -383,6 +409,8 @@ class _$KizukiTemplateModelImpl implements _KizukiTemplateModel {
                 other.tenantId == tenantId) &&
             (identical(other.kinyuKyoinId, kinyuKyoinId) ||
                 other.kinyuKyoinId == kinyuKyoinId) &&
+            (identical(other.kinyuKyoinName, kinyuKyoinName) ||
+                other.kinyuKyoinName == kinyuKyoinName) &&
             (identical(other.karuteSettingId, karuteSettingId) ||
                 other.karuteSettingId == karuteSettingId) &&
             (identical(
@@ -408,6 +436,7 @@ class _$KizukiTemplateModelImpl implements _KizukiTemplateModel {
       id,
       tenantId,
       kinyuKyoinId,
+      kinyuKyoinName,
       karuteSettingId,
       karuteShubetsuNaibuCode,
       karuteBunruiCode,
@@ -443,29 +472,32 @@ abstract class _KizukiTemplateModel implements KizukiTemplateModel {
       @JsonKey(name: 'KinyuKyoinId', disallowNullValue: false)
       @HiveField(2)
       final int? kinyuKyoinId,
-      @JsonKey(name: 'KaruteSettingId', disallowNullValue: false)
+      @JsonKey(name: 'KinyuKyoinName', disallowNullValue: false)
       @HiveField(3)
+      final String? kinyuKyoinName,
+      @JsonKey(name: 'KaruteSettingId', disallowNullValue: false)
+      @HiveField(4)
       final int? karuteSettingId,
       @JsonKey(name: 'KaruteShubetsuNaibuCode', disallowNullValue: false)
-      @HiveField(4)
+      @HiveField(5)
       final String? karuteShubetsuNaibuCode,
       @JsonKey(name: 'KaruteBunruiCode', disallowNullValue: false)
-      @HiveField(5)
+      @HiveField(6)
       final String? karuteBunruiCode,
       @JsonKey(name: 'Title', disallowNullValue: false)
-      @HiveField(6)
+      @HiveField(7)
       final String? title,
       @JsonKey(name: 'KizukiTemplate', disallowNullValue: false)
-      @HiveField(7)
+      @HiveField(8)
       final String? kizukiTemplate,
       @JsonKey(name: 'CommonFlg', disallowNullValue: false)
-      @HiveField(8)
+      @HiveField(9)
       final bool? commonFlg,
       @JsonKey(name: 'ModifiedDateTime', disallowNullValue: false)
-      @HiveField(9)
+      @HiveField(10)
       final String? modifiedDateTime,
       @JsonKey(name: 'TIMESTAMP', disallowNullValue: false)
-      @HiveField(10)
+      @HiveField(11)
       final String? timeStamp}) = _$KizukiTemplateModelImpl;
 
   factory _KizukiTemplateModel.fromJson(Map<String, dynamic> json) =
@@ -484,36 +516,40 @@ abstract class _KizukiTemplateModel implements KizukiTemplateModel {
   @HiveField(2)
   int? get kinyuKyoinId;
   @override
-  @JsonKey(name: 'KaruteSettingId', disallowNullValue: false)
+  @JsonKey(name: 'KinyuKyoinName', disallowNullValue: false)
   @HiveField(3)
+  String? get kinyuKyoinName;
+  @override
+  @JsonKey(name: 'KaruteSettingId', disallowNullValue: false)
+  @HiveField(4)
   int? get karuteSettingId;
   @override
   @JsonKey(name: 'KaruteShubetsuNaibuCode', disallowNullValue: false)
-  @HiveField(4)
+  @HiveField(5)
   String? get karuteShubetsuNaibuCode;
   @override
   @JsonKey(name: 'KaruteBunruiCode', disallowNullValue: false)
-  @HiveField(5)
+  @HiveField(6)
   String? get karuteBunruiCode;
   @override
   @JsonKey(name: 'Title', disallowNullValue: false)
-  @HiveField(6)
+  @HiveField(7)
   String? get title;
   @override
   @JsonKey(name: 'KizukiTemplate', disallowNullValue: false)
-  @HiveField(7)
+  @HiveField(8)
   String? get kizukiTemplate;
   @override
   @JsonKey(name: 'CommonFlg', disallowNullValue: false)
-  @HiveField(8)
+  @HiveField(9)
   bool? get commonFlg;
   @override
   @JsonKey(name: 'ModifiedDateTime', disallowNullValue: false)
-  @HiveField(9)
+  @HiveField(10)
   String? get modifiedDateTime;
   @override
   @JsonKey(name: 'TIMESTAMP', disallowNullValue: false)
-  @HiveField(10)
+  @HiveField(11)
   String? get timeStamp;
   @override
   @JsonKey(ignore: true)

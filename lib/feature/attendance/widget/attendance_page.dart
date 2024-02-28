@@ -11,9 +11,9 @@ import 'package:kyoumutechou/feature/common/provider/common_provider.dart';
 import 'package:kyoumutechou/feature/common/widget/common_page.dart';
 import 'package:kyoumutechou/feature/common/widget/save_button_widget.dart';
 import 'package:kyoumutechou/feature/common/widget/toast_helper.dart';
+import 'package:kyoumutechou/feature/seat/provider/seat_chart_provider.dart';
 import 'package:kyoumutechou/feature/seat/provider/seat_setting_provider.dart';
 import 'package:kyoumutechou/feature/seat/widget/blank_seat_widget.dart';
-import 'package:kyoumutechou/feature/seat/widget/no_seat_widget.dart';
 import 'package:kyoumutechou/shared/http/app_exception.dart';
 
 // 出欠（日）widget
@@ -100,7 +100,8 @@ class _GridviewState extends ConsumerState<Gridview> {
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(attendanceMeiboListProvider);
-
+    final lp = ref.watch(lecternPositionProvider);
+    
     return state.when(
       loading: () {
         return const Center(child: CircularProgressIndicator());
@@ -115,6 +116,17 @@ class _GridviewState extends ConsumerState<Gridview> {
           builder: (context, Box<AttendanceMeiboModel> box, _) {
             final meibos = box.values.toList();
             final newMeibos = <AttendanceMeiboModel>[];
+            
+            var rotate = 0.0;
+            switch (lp) {
+              case LecternPosition.top:
+                rotate = 0.0;
+              case LecternPosition.bottom:
+                rotate = 180.0;
+              // ignore: no_default_cases
+              default: // Add a default case
+                rotate = 0.0;
+            }
 
             var gridColumnCount = 6; 
 
@@ -152,7 +164,7 @@ class _GridviewState extends ConsumerState<Gridview> {
                   }
 
                   // 生徒情報の設定
-                  if (seatData.seitoSeq != '0'){
+                  if (seatData.seitoSeq != '0' && seatData.seitoSeq != null){
                     meibo = meibos
                         .firstWhere((e) => e.studentSeq == seatData.seitoSeq);
                   }
@@ -168,38 +180,44 @@ class _GridviewState extends ConsumerState<Gridview> {
               newMeibos.addAll(meibos);
             }
 
-            return GridView.builder(
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: gridColumnCount,
-                crossAxisSpacing: 15,
-                mainAxisSpacing: 15,
-                childAspectRatio: 2,
-              ),
-              itemCount: newMeibos.length,
-              itemBuilder: (BuildContext context, int index) {
-                final meibo = newMeibos[index];
-
-                if (meibo.studentKihonId == 0) {
-                  // 空席
-                  return const BlankSeatWidget(
-                    width: 150,
-                    height: 70,
+            return Transform.rotate(
+              angle: rotate == 0.0 ? 0.0 : 3.14159265358979323846,
+              child: GridView.builder(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: gridColumnCount,
+                  crossAxisSpacing: 8,
+                  mainAxisSpacing: 8,
+                  childAspectRatio: 2,
+                ),
+                itemCount: newMeibos.length,
+                itemBuilder: (BuildContext context, int index) {
+                  final meibo = newMeibos[index];
+              
+                  if (meibo.studentKihonId == 0) {
+                    // 空席
+                    return const BlankSeatWidget(
+                      width: 150,
+                      height: 70,
+                    );
+                  }
+              
+                  if (meibo.studentKihonId == -1) {
+                    return Container();
+                    // return const NoSeatWidget(
+                    //   width: 150,
+                    //   height: 70,
+                    // );
+                  }
+              
+                  return Transform.rotate(
+                    angle: rotate == 0.0 ? 0.0 : 3.14159265358979323846,
+                    child: AttendanceSeatWidget(
+                      index: index,
+                      meibo: newMeibos[index],
+                    ),
                   );
-                }
-
-                if (meibo.studentKihonId == -1) {
-                  return Container();
-                  // return const NoSeatWidget(
-                  //   width: 150,
-                  //   height: 70,
-                  // );
-                }
-
-                return AttendanceSeatWidget(
-                  index: index,
-                  meibo: newMeibos[index],
-                );
-              },
+                },
+              ),
             );
           },
         );

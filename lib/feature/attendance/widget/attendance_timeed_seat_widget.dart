@@ -151,7 +151,7 @@ class AttendanceTimedSeatWidget extends ConsumerWidget {
               // status bar
               MySpacing.height(4),
               Container(
-                  height: 30,
+                  height: 22,
                   decoration: BoxDecoration(
                     color: bkColor,
                     borderRadius: const BorderRadius.only(
@@ -163,10 +163,12 @@ class AttendanceTimedSeatWidget extends ConsumerWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Text(jokyo.ryaku ?? ''),
-                      AutoSizeText(
-                        (jokyo.jiyu1 ?? '').trim(),
-                        maxLines: 1, 
-                        overflow: TextOverflow.ellipsis,
+                      Expanded(
+                        child: AutoSizeText(
+                          (jokyo.jiyu1 ?? '').trim(),
+                          maxLines: 1, 
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
                     ],
                   ),),

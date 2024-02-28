@@ -27,11 +27,8 @@ class ContactListItemState extends ConsumerState<ContactListItem> {
   @override
   Widget build(BuildContext context) {
     final name = '${widget.item.studentName}:${widget.item.shozokuName}';
-    final no = '(${widget.item.shussekiNo})';
+    final no = widget.item.shussekiNo!.isEmpty ? '' : '(${widget.item.shussekiNo})';
     final jyokyo = widget.item.renkeiJokyo ?? '';
-    final strDate = DateUtil.getMonthDay(
-      widget.item.taishoDate ?? DateTime.now(),
-    );
     final text = widget.item.deleteFlg! == true ? 
     'の連絡が取消されました。': 'の連絡が登録されました。';
     
@@ -99,7 +96,7 @@ class ContactListItemState extends ConsumerState<ContactListItem> {
               ),
               const TextSpan(text: 'に'),
               TextSpan(
-                text: strDate + jyokyo,
+                text: jyokyo,
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Colors.green[900],
@@ -136,7 +133,7 @@ class ContactListItemState extends ConsumerState<ContactListItem> {
             ),
             Row(
               children: [
-                Expanded(child: Text('${widget.item.biko}')),
+                Expanded(child: Text(widget.item.biko ?? '')),
               ],
             ),
             const Row(

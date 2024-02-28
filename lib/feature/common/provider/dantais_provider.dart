@@ -156,6 +156,8 @@ class DantaiNotifier extends StateNotifier<ApiState> {
     
     // 保護者初期表示可否設定
     final isCa = dotenv.env['IS_Contact_Allowed'];
+    ref.read(isContactAllowedProvider.notifier).state =
+        isCa == '1' ? true : false;
 
     // 性別初期表示可否設定
     final strGender = dotenv.env['Display_Gender'];

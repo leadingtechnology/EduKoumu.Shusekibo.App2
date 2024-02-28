@@ -7,7 +7,7 @@ part of 'kizuki_template_provider.dart';
 // **************************************************************************
 
 String _$kizukiTemplateNotifierHash() =>
-    r'3056db7dba6243464c8693763009e8e68835a02c';
+    r'ab5d6ae3521dc9efeea1bae894015382fc495979';
 
 /// See also [KizukiTemplateNotifier].
 @ProviderFor(KizukiTemplateNotifier)
