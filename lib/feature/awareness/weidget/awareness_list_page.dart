@@ -17,6 +17,7 @@ import 'package:kyoumutechou/feature/home/provider/home_provider.dart';
 import 'package:kyoumutechou/feature/kizuki/model/kizuki_template_model.dart';
 import 'package:kyoumutechou/feature/kizuki/widget/kizuki_template_dialog.dart';
 import 'package:kyoumutechou/helpers/widgets/my_spacing.dart';
+import 'package:kyoumutechou/helpers/widgets/my_text.dart';
 import 'package:kyoumutechou/shared/http/app_exception.dart';
 import 'package:kyoumutechou/shared/util/date_util.dart';
 
@@ -203,6 +204,7 @@ class PopUpMenu extends ConsumerWidget {
       onSelected: (AwarenessOperationItem opt) async {
         await _handlePressActionButton(context, kizuki, opt, ref);
       },
+      tooltip: 'メニュー表示',
       itemBuilder: (BuildContext context) =>
           <PopupMenuEntry<AwarenessOperationItem>>[
         PopupMenuItem<AwarenessOperationItem>(
@@ -315,6 +317,28 @@ Future<void> _handlePressActionButton(
   }
 
   if (opt == AwarenessOperationItem.delete) {
+
+    // ダイアログを表示してユーザーの選択を待つ
+    final result = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('確認'),
+        content: MyText('削除してもよろしいですか？', fontSize: 16),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false), // falseを返す
+            child: const Text('キャンセル'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(true), // trueを返す
+            child: const Text('OK'),
+          ),
+        ],
+      ),
+    );
+
+    if(result == null || !result) return; // キャンセルされた場合は何もしない
+
     await ref.read(awarenessKizukiListProvider.notifier).delete(kizuki);
     return;
   }

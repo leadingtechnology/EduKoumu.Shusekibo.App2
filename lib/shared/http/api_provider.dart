@@ -39,6 +39,26 @@ class ApiProvider {
       ),
     );
 
+    _dio.interceptors.addAll([
+      RetryOnConnectionChangeInterceptor(
+        requestRetrier: DioConnectivityRequestRetrier(
+          dio: _dio,
+          connectivity: Connectivity(),
+        ),
+      ),
+      InterceptorsWrapper(
+        onError: (DioException e, handler) {
+          if (e.type == DioExceptionType.connectionError ||
+              e.response?.statusCode == 401) {
+            // Do something with response error
+
+            return handler.next(e); //continue
+          }
+        },
+      ),
+
+    ]);
+
     if (kDebugMode) {
       _dio.interceptors.add(PrettyDioLogger(requestBody: true));
     }

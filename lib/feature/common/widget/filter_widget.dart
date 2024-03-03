@@ -138,7 +138,13 @@ class FilterWidget extends ConsumerWidget {
                     ref.read(kouryuProvider.notifier).state = v ?? false;
                   },
                 ),
-                MyText.bodyMedium('交流学級で表示'),
+                InkWell(
+                  onTap: () {
+                    ref.read(kouryuProvider.notifier).state =
+                        !ref.watch(kouryuProvider);
+                  },
+                  child: MyText.bodyMedium('交流学級で表示'),
+                ),
                 ],
               ],
             ),
