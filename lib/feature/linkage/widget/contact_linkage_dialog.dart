@@ -24,6 +24,7 @@ class ContactLinkageDialog extends ConsumerWidget {
       },
       loaded: (list) {
         final contactItems = list.toList();
+        
         // ソート順
         contactItems.sort((a, b) {
           // registDateTime 降順

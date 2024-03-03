@@ -58,7 +58,7 @@ class HealthStampReasonState extends ConsumerState<HealthStampReasonWidget> {
                   : const Icon(Icons.expand_more),
             ),
 
-            // 020:理由ドロップボックス
+            // 020:事由ドロップボックス
             Expanded(
               child: Container(),
             ),

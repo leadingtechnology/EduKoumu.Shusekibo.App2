@@ -95,8 +95,8 @@ class AwarenessPageState extends ConsumerState<AwarenessPage>
         child: Column(
           children: [
             Expanded(
-              child: Container(
-                padding: MySpacing.all(12),
+              child: ColoredBox(
+                //padding: MySpacing.all(8),
                 color: theme.colorScheme.background,
                 child: TabBarView(
                   controller: tabController,

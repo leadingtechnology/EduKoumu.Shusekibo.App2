@@ -38,9 +38,12 @@ class HomeHealthRepository implements HomeHealthRepositoryProtocol {
     if (response is APISuccess) {
       final value = response.value;
       try {
-        final list = homeHealthListFromJson(value as List<dynamic>);
+        // ignore: avoid_dynamic_calls
+        final date = DateTime.parse(value['Item1'] as String);
+        // ignore: avoid_dynamic_calls
+        final list = homeHealthListFromJson(value['Item2'] as List<dynamic>);
 
-        return HomeHealthState.loaded(list);
+        return HomeHealthState.loaded({DateUtil.getStringDate(date) : list});
       } catch (e) {
         return HomeHealthState.error(
             AppException.errorWithMessage(e.toString(),),);

@@ -44,7 +44,8 @@ class SeatChartRepository implements SeatChartRepositoryProtocol {
           return const ApiState.loaded();
         } 
 
-        final seatChart = seatChartListFromJson(value['SeatChartStudents'] as List<dynamic>);
+        final seatChart =
+            seatChartListFromJson(value['SeatChartStudents'] as List<dynamic>);
 
         // 2) save to hive with key
         final seatChartMap = Map.fromIterables(

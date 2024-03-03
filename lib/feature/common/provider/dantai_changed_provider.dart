@@ -7,6 +7,7 @@ import 'package:kyoumutechou/feature/common/model/tannin_model.dart';
 import 'package:kyoumutechou/feature/common/provider/dantais_provider.dart';
 import 'package:kyoumutechou/feature/common/provider/filter_provider.dart';
 import 'package:kyoumutechou/feature/common/provider/gakunens_provider.dart';
+import 'package:kyoumutechou/feature/common/provider/seat_chart_pattern_provider.dart';
 import 'package:kyoumutechou/feature/common/provider/shozokus_provider.dart';
 import 'package:kyoumutechou/feature/common/provider/timeds_provider.dart';
 import 'package:kyoumutechou/feature/common/provider/tokobis_provider.dart';
@@ -219,7 +220,7 @@ class DantaiChangedNotifier extends StateNotifier<ApiState> {
       final setting = await ref
           .read(seatSettingListProvider.notifier)
           .setSeatSettingValue();
-      ref.read(seatSettingProvider.notifier).state = setting;
+      ref.read(seatSettingPatternProvider.notifier).state = setting;
 
 
 

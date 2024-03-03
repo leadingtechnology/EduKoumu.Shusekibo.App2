@@ -12,12 +12,10 @@ class SearchBarWidget extends ConsumerWidget {
   const SearchBarWidget(
     this._scaffoldKey, 
     {this.isPeriod, 
-    this.partern = '',
     super.key,
   });
 
   final GlobalKey<ScaffoldState> _scaffoldKey;
-  final String partern;
   final bool? isPeriod;
 
   @override
@@ -224,33 +222,6 @@ class SearchBarWidget extends ConsumerWidget {
                     ],
                   ),
                 ],
-
-                if(partern.isNotEmpty) ...[
-                  Row(
-                    children: [
-                      MyText.bodyLarge(
-                        'パターン',
-                        fontWeight: 700,
-                      ),
-                      MySpacing.width(5),
-                      InkWell(
-                        onTap: () {
-                          _scaffoldKey.currentState?.openEndDrawer();
-                        },
-                        child: Container(
-                          constraints: const BoxConstraints(minWidth: 100),
-                          padding: MySpacing.x(4),
-                          alignment: Alignment.centerLeft,
-                          decoration: BoxDecoration(
-                            border: Border.all(),
-                            borderRadius: BorderRadius.circular(3),
-                          ),
-                          child: Text(partern),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
               ],
             ),
           ),
@@ -258,21 +229,48 @@ class SearchBarWidget extends ConsumerWidget {
           // 右側のアイコン
           Row(
             children: <Widget>[
-              IconButton(
-                icon: const Icon(Icons.refresh),
-                onPressed: () {
-                  ref.read(filterProvider.notifier).refresh();
-                },
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.refresh),
+                    onPressed: () {
+                      ref.read(filterProvider.notifier).refresh();
+                    },
+                  ),
+                  InkWell(
+                    onTap: () {
+                      ref.read(filterProvider.notifier).refresh();
+                    },
+                    child: MyText.bodyLarge(
+                      '再検索',
+                      fontWeight: 700,
+                    ),
+                  ),
+                ],
               ),
               MySpacing.width(15),
 
-              if (partern.isEmpty)
-                IconButton(
-                  icon: const Icon(Icons.tune),
-                  onPressed: () {
-                    _scaffoldKey.currentState?.openEndDrawer();
-                  },
-                ),
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.tune),
+                    onPressed: () {
+                      _scaffoldKey.currentState?.openEndDrawer();
+                    },
+                  ),
+                  InkWell(
+                    onTap: () {
+                      _scaffoldKey.currentState?.openEndDrawer();
+                    },
+                    child: MyText.bodyLarge(
+                      '検索条件設定',
+                      fontWeight: 700,
+                    ),
+                  ),
+                ],
+              ),
 
               MySpacing.width(10),
             ],

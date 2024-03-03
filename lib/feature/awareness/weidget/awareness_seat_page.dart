@@ -2,18 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:kyoumutechou/feature/awareness/model/awareness_meibo_model.dart';
-import 'package:kyoumutechou/feature/awareness/provider/awareness_meibo_provider.dart';
 import 'package:kyoumutechou/feature/awareness/weidget/awareness_seat_widget.dart';
 import 'package:kyoumutechou/feature/boxes.dart';
 import 'package:kyoumutechou/feature/common/provider/common_provider.dart';
+import 'package:kyoumutechou/feature/common/provider/seat_chart_pattern_provider.dart';
 import 'package:kyoumutechou/feature/common/widget/search_bar_widget.dart';
 import 'package:kyoumutechou/feature/common/widget/toast_helper.dart';
 import 'package:kyoumutechou/feature/linkage/widget/lectern_widget.dart';
 import 'package:kyoumutechou/feature/seat/provider/seat_chart_provider.dart';
-import 'package:kyoumutechou/feature/seat/provider/seat_setting_provider.dart';
 import 'package:kyoumutechou/feature/seat/widget/blank_seat_widget.dart';
 import 'package:kyoumutechou/helpers/widgets/my_spacing.dart';
-import 'package:kyoumutechou/shared/http/app_exception.dart';
 
 class AwarenessSeatPage extends ConsumerWidget {
   AwarenessSeatPage(this._scaffoldKey, {super.key});
@@ -77,16 +75,12 @@ class _AwarenessSeatsState extends ConsumerState<AwarenessSeats> {
 
   @override
   Widget build(BuildContext context) {
-    final state = ref.watch(awarenessMeiboListProvider);
+    final state = ref.watch(seatSettingAwarenessProvider);
 
     return state.when(
-      loading: () {
-        return Container();
-      },
-      error: (AppException e) {
-        return Text(e.toString());
-      },
-      loaded: () {
+      loading: () => const Center(child: CircularProgressIndicator()),
+      error: (error, stack) => Text(error.toString()),
+      data: (data) {
         return _build(context);
       },
     );
@@ -121,11 +115,11 @@ class _AwarenessSeatsState extends ConsumerState<AwarenessSeats> {
         }
 
         // 座席表設定情報取得
+        final setting = ref.watch(seatSettingPatternProvider);
         final seats = Boxes.getSeatChart().values.toList();
-        if (seats.isNotEmpty) {
+        if (seats.isNotEmpty && setting.id != null && setting.id != 0) {
           seats.sort((a, b) => a.seatIndex!.compareTo(b.seatIndex!));
 
-          final setting = ref.watch(seatSettingProvider);
           final m = setting.row!;
           final n = setting.column!;
           gridColumnCount = n;

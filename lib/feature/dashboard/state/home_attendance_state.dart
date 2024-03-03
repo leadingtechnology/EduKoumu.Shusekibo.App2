@@ -7,6 +7,7 @@ part 'home_attendance_state.freezed.dart';
 @freezed
 class HomeAttendanceState with _$HomeAttendanceState {
   const factory HomeAttendanceState.loading() = _Loading;
-  const factory HomeAttendanceState.loaded(List<HomeAttendanceModel> list) = _Loaded;
+  const factory HomeAttendanceState.loaded(
+      Map<String, List<HomeAttendanceModel>> maps,) = _Loaded;
   const factory HomeAttendanceState.error(AppException error) = _Error;
 }

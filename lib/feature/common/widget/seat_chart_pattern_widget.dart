@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kyoumutechou/feature/boxes.dart';
 import 'package:kyoumutechou/feature/common/provider/filter_provider.dart';
+import 'package:kyoumutechou/feature/common/provider/seat_chart_pattern_provider.dart';
 import 'package:kyoumutechou/feature/seat/model/seat_setting_model.dart';
 import 'package:kyoumutechou/feature/seat/provider/seat_chart_provider.dart';
 import 'package:kyoumutechou/feature/seat/provider/seat_setting_provider.dart';
@@ -54,7 +55,7 @@ class SeatChartPatternState extends ConsumerState<SeatChartPatternWidget> {
   }
 
   Widget _buildGridItem(BuildContext context, List<SeatSettingModel> settings) {
-    var seatSetting = ref.watch(seatSettingProvider);
+    var seatSetting = ref.watch(seatSettingPatternProvider);
 
     if (settings.isEmpty || seatSetting.id == null) {
       return Container();
@@ -112,7 +113,7 @@ class SeatChartPatternState extends ConsumerState<SeatChartPatternWidget> {
 
     // 2) 座席設定IDにより、座席表の詳細設定を取得する(hive box)
     await ref.read(seatChartListProvider.notifier).fetch(newValue.id ?? 0);
-    ref.read(seatSettingProvider.notifier).state = newValue;
+    ref.read(seatSettingPatternProvider.notifier).state = newValue;
 
   }
 }

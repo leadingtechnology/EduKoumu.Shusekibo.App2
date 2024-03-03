@@ -119,8 +119,8 @@ flutter:
         - asset: assets/fonts/NotoSansJP-SemiBold.ttf
         - asset: assets/fonts/NotoSansJP-Thin.ttf
 
-# dart run flutter_native_splash:create
+# 
 # dart run flutter_native_splash:remove
 flutter_native_splash:
   color: "#BFEEBB"
-  image: assets/icons/koumu6.png
+  image: assets/icons/koumu7.png

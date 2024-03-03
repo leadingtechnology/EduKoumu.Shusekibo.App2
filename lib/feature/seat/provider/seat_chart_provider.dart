@@ -55,21 +55,18 @@ final scMeibosStackProvider = StateProvider<List<SeatChartSeitoForStackWidget>>(
 
 final seatChartListProvider =
     StateNotifierProvider<SeatChartListProvider, ApiState>((ref) {
-  final setting = ref.watch(seatSettingProvider);
 
-  return SeatChartListProvider(ref, setting.id??0);
+  return SeatChartListProvider(ref);
 });
 
 class SeatChartListProvider extends StateNotifier<ApiState> {
   SeatChartListProvider(
     this.ref, 
-    this.id,
   ) : super(const ApiState.loading()) {
     _init();
   }
 
   final Ref ref;
-  final int id ;
   late final _seatChartRep = ref.read(seatChartRepositoryProvider);
   late final _meiboRep = ref.read(attendanceMeiboRepositoryProvider);
 

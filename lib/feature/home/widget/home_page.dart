@@ -175,12 +175,14 @@ class HomePageState extends ConsumerState<HomePage> {
                     padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
                     child: SizedBox(
                       width: 80,
-                      child: Image.asset(
-                        'assets/icons/default_pkg_icon.png',
-                        width: 60,
-                        height: 80,
-                        color: theme.primaryColor,
-                      ),
+                      height: 80,
+                      // child: Image.asset(
+                      //   'assets/icons/default_pkg_icon.png',
+                      //   width: 60,
+                      //   height: 80,
+                      //   color: theme.primaryColor,
+                      // ),
+                      child: Container(),
                     ),
                   ),
 

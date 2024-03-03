@@ -14,9 +14,6 @@ class AttendanceSummaryWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final tokobi = ref.watch(tokobiProvider);
-    if (tokobi == null) {
-      return Container();
-    }
 
     final state = ref.watch(homeAttendanceListNotifierProvider);
     return state.when(loading: () {

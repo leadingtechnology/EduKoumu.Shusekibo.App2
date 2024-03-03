@@ -61,7 +61,7 @@ class HealthReasonWidget extends ConsumerWidget {
         // 5) return dropdown widget
         return Row(
           children: [
-            const Text('理由'),
+            const Text('事由'),
             MySpacing.width(8),
             Container(
               height: 35,

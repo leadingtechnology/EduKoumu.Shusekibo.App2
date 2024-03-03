@@ -38,9 +38,13 @@ class HomeAttendanceRepository implements HomeAttendanceRepositoryProtocol {
     if (response is APISuccess) {
       final value = response.value;
       try {
-        final list = homeAttendanceListFromJson(value as List<dynamic>);
+        // ignore: avoid_dynamic_calls
+        final date = DateTime.parse(value['Item1'] as String);
+        final list =
+            // ignore: avoid_dynamic_calls
+            homeAttendanceListFromJson(value['Item2'] as List<dynamic>);
 
-        return HomeAttendanceState.loaded(list);
+        return HomeAttendanceState.loaded({DateUtil.getStringDate(date): list});
       } catch (e) {
         return HomeAttendanceState.error(
             AppException.errorWithMessage(e.toString(),),);

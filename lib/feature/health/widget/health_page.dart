@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:kyoumutechou/feature/boxes.dart';
 import 'package:kyoumutechou/feature/common/provider/common_provider.dart';
+import 'package:kyoumutechou/feature/common/provider/seat_chart_pattern_provider.dart';
 import 'package:kyoumutechou/feature/common/widget/common_page.dart';
 import 'package:kyoumutechou/feature/common/widget/save_button_widget.dart';
 import 'package:kyoumutechou/feature/common/widget/toast_helper.dart';
@@ -12,7 +13,6 @@ import 'package:kyoumutechou/feature/health/provider/health_provider.dart';
 import 'package:kyoumutechou/feature/health/widget/health_list_widget.dart';
 import 'package:kyoumutechou/feature/health/widget/health_seat_widget.dart';
 import 'package:kyoumutechou/feature/seat/provider/seat_chart_provider.dart';
-import 'package:kyoumutechou/feature/seat/provider/seat_setting_provider.dart';
 import 'package:kyoumutechou/feature/seat/widget/blank_seat_widget.dart';
 import 'package:kyoumutechou/shared/http/app_exception.dart';
 
@@ -71,25 +71,21 @@ class _SeatWidgetState extends ConsumerState<SeatWidget> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final list = Boxes.getHealthMeiboBox().values.toList();
-      if (list.isEmpty) {
-        ToastHelper.showToast(context, '　該当データがありません　');
-      }
+      // if (list.isEmpty) {
+      //   ToastHelper.showToast(context, '　該当データがありません　');
+      // }
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final state = ref.watch(healthMeiboListProvider);
+    final state = ref.watch(seatSettingHealthProvider);
     final lp = ref.watch(lecternPositionProvider);
 
     return state.when(
-      loading: () {
-        return const Center(child: CircularProgressIndicator());
-      },
-      error: (AppException e) {
-        return Text(e.toString());
-      },
-      loaded: () {
+      loading: () => const Center(child: CircularProgressIndicator()),
+      error: (error, stack) => Text(error.toString()),
+      data: (data) {
         return ValueListenableBuilder(
           valueListenable: Boxes.getHealthMeiboBox().listenable(),
           builder: (context, Box<HealthMeiboModel> box, _) {
@@ -114,11 +110,15 @@ class _SeatWidgetState extends ConsumerState<SeatWidget> {
             }
 
             // 座席表設定情報取得
+            final seatSetting = ref.watch(seatSettingPatternProvider);
             final seats = Boxes.getSeatChart().values.toList();
-            if (seats.isNotEmpty) {
+            if (seats.isNotEmpty &&
+                seatSetting.id != null &&
+                seatSetting.id != 0
+            ) {
               seats.sort((a, b) => a.seatIndex!.compareTo(b.seatIndex!));
 
-              final seatSetting = ref.watch(seatSettingProvider);
+              
               final m = seatSetting.row!;
               final n = seatSetting.column!;
               gridColumnCount = n;

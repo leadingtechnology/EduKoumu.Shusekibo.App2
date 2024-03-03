@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kyoumutechou/feature/boxes.dart';
 import 'package:kyoumutechou/feature/common/model/filter_model.dart';
 import 'package:kyoumutechou/feature/common/provider/filter_provider.dart';
+import 'package:kyoumutechou/feature/common/provider/seat_chart_pattern_provider.dart';
 import 'package:kyoumutechou/feature/common/state/api_state.dart';
 import 'package:kyoumutechou/feature/seat/model/seat_setting_model.dart';
 import 'package:kyoumutechou/feature/seat/repository/seat_chart_repository.dart';
@@ -16,9 +17,6 @@ final seatSettingListProvider =
   
   return SeatSettingListProvider(ref, filter);
 });
-
-final seatSettingProvider = 
-    StateProvider<SeatSettingModel>((ref) => const SeatSettingModel());
 
 class SeatSettingListProvider extends StateNotifier<ApiState> {
   SeatSettingListProvider(
@@ -86,6 +84,7 @@ class SeatSettingListProvider extends StateNotifier<ApiState> {
       await _seatChartRep.fetch(setting.id!);
     }
 
+    ref.read(seatSettingPatternProvider.notifier).state = setting;
     return setting;
   }
 

@@ -7,7 +7,7 @@ part of 'home_attendance_list_provider.dart';
 // **************************************************************************
 
 String _$homeAttendanceListNotifierHash() =>
-    r'7f013b67a61dc9044ae959e1ffba6b9fddcebb9f';
+    r'e6bc382b0fa2890e95b43a914c01ef63b1edc7c2';
 
 /// See also [HomeAttendanceListNotifier].
 @ProviderFor(HomeAttendanceListNotifier)

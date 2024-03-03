@@ -41,6 +41,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/koumu6.png
   AssetGenImage get koumu6 => const AssetGenImage('assets/icons/koumu6.png');
 
+  /// File path: assets/icons/koumu7.png
+  AssetGenImage get koumu7 => const AssetGenImage('assets/icons/koumu7.png');
+
   /// File path: assets/icons/notfound.png
   AssetGenImage get notfound =>
       const AssetGenImage('assets/icons/notfound.png');
@@ -63,6 +66,7 @@ class $AssetsIconsGen {
         koumu,
         koumu5,
         koumu6,
+        koumu7,
         notfound,
         seito,
         seito1,

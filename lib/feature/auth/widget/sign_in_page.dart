@@ -24,8 +24,8 @@ class SignInPageState extends ConsumerState<SignInPage> {
     theme = AppTheme.theme;
   }
 
-  final _emailController = TextEditingController(text: '');
-  final _passwordController = TextEditingController(text: '');
+  final _emailController = TextEditingController(text: 'login0026');
+  final _passwordController = TextEditingController(text: 'P@ssw0rd');
 
   @override
   Widget build(BuildContext context) {
@@ -82,7 +82,8 @@ class SignInPageState extends ConsumerState<SignInPage> {
                             decoration: const InputDecoration(
                               hintText: '',
                               border: OutlineInputBorder(),
-                              contentPadding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+                              contentPadding:
+                                  EdgeInsets.fromLTRB(10, 10, 10, 0),
                               prefixIcon: Icon(
                                 LucideIcons.user,
                                 size: 20,
@@ -107,7 +108,8 @@ class SignInPageState extends ConsumerState<SignInPage> {
                             decoration: const InputDecoration(
                               hintText: '',
                               border: OutlineInputBorder(),
-                              contentPadding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+                              contentPadding:
+                                  EdgeInsets.fromLTRB(10, 10, 10, 0),
                               prefixIcon: Icon(
                                 LucideIcons.lock,
                                 size: 20,

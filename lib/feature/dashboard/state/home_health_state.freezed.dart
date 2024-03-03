@@ -19,21 +19,21 @@ mixin _$HomeHealthState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function(List<HomeHealthModel> list) loaded,
+    required TResult Function(Map<String, List<HomeHealthModel>> maps) loaded,
     required TResult Function(AppException error) error,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
-    TResult? Function(List<HomeHealthModel> list)? loaded,
+    TResult? Function(Map<String, List<HomeHealthModel>> maps)? loaded,
     TResult? Function(AppException error)? error,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(List<HomeHealthModel> list)? loaded,
+    TResult Function(Map<String, List<HomeHealthModel>> maps)? loaded,
     TResult Function(AppException error)? error,
     required TResult orElse(),
   }) =>
@@ -119,7 +119,7 @@ class _$LoadingImpl implements _Loading {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function(List<HomeHealthModel> list) loaded,
+    required TResult Function(Map<String, List<HomeHealthModel>> maps) loaded,
     required TResult Function(AppException error) error,
   }) {
     return loading();
@@ -129,7 +129,7 @@ class _$LoadingImpl implements _Loading {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
-    TResult? Function(List<HomeHealthModel> list)? loaded,
+    TResult? Function(Map<String, List<HomeHealthModel>> maps)? loaded,
     TResult? Function(AppException error)? error,
   }) {
     return loading?.call();
@@ -139,7 +139,7 @@ class _$LoadingImpl implements _Loading {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(List<HomeHealthModel> list)? loaded,
+    TResult Function(Map<String, List<HomeHealthModel>> maps)? loaded,
     TResult Function(AppException error)? error,
     required TResult orElse(),
   }) {
@@ -194,7 +194,7 @@ abstract class _$$LoadedImplCopyWith<$Res> {
           _$LoadedImpl value, $Res Function(_$LoadedImpl) then) =
       __$$LoadedImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({List<HomeHealthModel> list});
+  $Res call({Map<String, List<HomeHealthModel>> maps});
 }
 
 /// @nodoc
@@ -208,13 +208,13 @@ class __$$LoadedImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? list = null,
+    Object? maps = null,
   }) {
     return _then(_$LoadedImpl(
-      null == list
-          ? _value._list
-          : list // ignore: cast_nullable_to_non_nullable
-              as List<HomeHealthModel>,
+      null == maps
+          ? _value._maps
+          : maps // ignore: cast_nullable_to_non_nullable
+              as Map<String, List<HomeHealthModel>>,
     ));
   }
 }
@@ -222,19 +222,20 @@ class __$$LoadedImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$LoadedImpl implements _Loaded {
-  const _$LoadedImpl(final List<HomeHealthModel> list) : _list = list;
+  const _$LoadedImpl(final Map<String, List<HomeHealthModel>> maps)
+      : _maps = maps;
 
-  final List<HomeHealthModel> _list;
+  final Map<String, List<HomeHealthModel>> _maps;
   @override
-  List<HomeHealthModel> get list {
-    if (_list is EqualUnmodifiableListView) return _list;
+  Map<String, List<HomeHealthModel>> get maps {
+    if (_maps is EqualUnmodifiableMapView) return _maps;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_list);
+    return EqualUnmodifiableMapView(_maps);
   }
 
   @override
   String toString() {
-    return 'HomeHealthState.loaded(list: $list)';
+    return 'HomeHealthState.loaded(maps: $maps)';
   }
 
   @override
@@ -242,12 +243,12 @@ class _$LoadedImpl implements _Loaded {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$LoadedImpl &&
-            const DeepCollectionEquality().equals(other._list, _list));
+            const DeepCollectionEquality().equals(other._maps, _maps));
   }
 
   @override
   int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(_list));
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(_maps));
 
   @JsonKey(ignore: true)
   @override
@@ -259,32 +260,32 @@ class _$LoadedImpl implements _Loaded {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function(List<HomeHealthModel> list) loaded,
+    required TResult Function(Map<String, List<HomeHealthModel>> maps) loaded,
     required TResult Function(AppException error) error,
   }) {
-    return loaded(list);
+    return loaded(maps);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
-    TResult? Function(List<HomeHealthModel> list)? loaded,
+    TResult? Function(Map<String, List<HomeHealthModel>> maps)? loaded,
     TResult? Function(AppException error)? error,
   }) {
-    return loaded?.call(list);
+    return loaded?.call(maps);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(List<HomeHealthModel> list)? loaded,
+    TResult Function(Map<String, List<HomeHealthModel>> maps)? loaded,
     TResult Function(AppException error)? error,
     required TResult orElse(),
   }) {
     if (loaded != null) {
-      return loaded(list);
+      return loaded(maps);
     }
     return orElse();
   }
@@ -325,9 +326,10 @@ class _$LoadedImpl implements _Loaded {
 }
 
 abstract class _Loaded implements HomeHealthState {
-  const factory _Loaded(final List<HomeHealthModel> list) = _$LoadedImpl;
+  const factory _Loaded(final Map<String, List<HomeHealthModel>> maps) =
+      _$LoadedImpl;
 
-  List<HomeHealthModel> get list;
+  Map<String, List<HomeHealthModel>> get maps;
   @JsonKey(ignore: true)
   _$$LoadedImplCopyWith<_$LoadedImpl> get copyWith =>
       throw _privateConstructorUsedError;
@@ -408,7 +410,7 @@ class _$ErrorImpl implements _Error {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function(List<HomeHealthModel> list) loaded,
+    required TResult Function(Map<String, List<HomeHealthModel>> maps) loaded,
     required TResult Function(AppException error) error,
   }) {
     return error(this.error);
@@ -418,7 +420,7 @@ class _$ErrorImpl implements _Error {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
-    TResult? Function(List<HomeHealthModel> list)? loaded,
+    TResult? Function(Map<String, List<HomeHealthModel>> maps)? loaded,
     TResult? Function(AppException error)? error,
   }) {
     return error?.call(this.error);
@@ -428,7 +430,7 @@ class _$ErrorImpl implements _Error {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(List<HomeHealthModel> list)? loaded,
+    TResult Function(Map<String, List<HomeHealthModel>> maps)? loaded,
     TResult Function(AppException error)? error,
     required TResult orElse(),
   }) {

@@ -31,6 +31,10 @@ class HomeAttendanceListNotifier extends _$HomeAttendanceListNotifier {
 
     // 登校日の取得
     final tokobis = ref.watch(lastTokobisProvider);
+    if (tokobis.isEmpty) {
+      state = const HomeAttendanceListState.loaded([[], [], []]);
+      return;
+    }
 
     // 非同期処理で最大３日間の生徒情報を取得する。
     final responses = await Future.wait(
@@ -51,7 +55,7 @@ class HomeAttendanceListNotifier extends _$HomeAttendanceListNotifier {
     var isError = false;
     var isLoading = false;
     var errorMessage = '';
-    final attendanceLists = <List<HomeAttendanceModel>>[[],[],[]];
+    final maps = <String, List<HomeAttendanceModel>>{};
     for (int i = 0; i < responses.length; i++) {
       final response = responses[i];
       if (response is HomeAttendanceState) {
@@ -63,10 +67,20 @@ class HomeAttendanceListNotifier extends _$HomeAttendanceListNotifier {
           loading: () {
             isLoading = true;
           },
-          loaded: (attendanceList) {
-            attendanceLists[i] = attendanceList;
+          loaded: (map) {
+            maps.addAll(map);
           },
         );
+      }
+    }
+
+    final attendanceLists = <List<HomeAttendanceModel>>[[], [], []];
+    if (maps.isNotEmpty) {
+      final sortedKeys = maps.keys.toList()..sort();
+      for (int i = 0; i < sortedKeys.length; i++) {
+        final key = sortedKeys[i];
+        final index = i % 3;
+        attendanceLists[index].addAll(maps[key]!);
       }
     }
 

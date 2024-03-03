@@ -7,6 +7,7 @@ part 'home_health_state.freezed.dart';
 @freezed
 class HomeHealthState with _$HomeHealthState {
   const factory HomeHealthState.loading() = _Loading;
-  const factory HomeHealthState.loaded(List<HomeHealthModel> list) = _Loaded;
+  const factory HomeHealthState.loaded(
+      Map<String, List<HomeHealthModel>> maps,) = _Loaded;
   const factory HomeHealthState.error(AppException error) = _Error;
 }

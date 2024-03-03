@@ -8,6 +8,7 @@ import 'package:kyoumutechou/feature/attendance/widget/attendance_timed_list_wid
 import 'package:kyoumutechou/feature/attendance/widget/attendance_timeed_seat_widget.dart';
 import 'package:kyoumutechou/feature/boxes.dart';
 import 'package:kyoumutechou/feature/common/provider/common_provider.dart';
+import 'package:kyoumutechou/feature/common/provider/seat_chart_pattern_provider.dart';
 import 'package:kyoumutechou/feature/common/widget/common_page.dart';
 import 'package:kyoumutechou/feature/common/widget/save_button_widget.dart';
 import 'package:kyoumutechou/feature/common/widget/toast_helper.dart';
@@ -75,7 +76,7 @@ class _SeatsWidgetState extends ConsumerState<SeatsWidget> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final list = Boxes.getAttendanceTimedMeibo().values.toList();
       if (list.isEmpty) {
-        ToastHelper.showToast(context, '　該当データがありません　');
+        //ToastHelper.showToast(context, '　該当データがありません　');
       }
       final isHogo = list.where((e) {
         try {
@@ -103,17 +104,13 @@ class _SeatsWidgetState extends ConsumerState<SeatsWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final state = ref.watch(attendanceTimedMeiboListProvider);
+    final state = ref.watch(seatSettingTimedProvider);
     final lp = ref.watch(lecternPositionProvider);
 
     return state.when(
-      loading: () {
-        return const Center(child: CircularProgressIndicator());
-      },
-      error: (AppException e) {
-        return Text(e.toString());
-      },
-      loaded: () {
+      loading: () => const Center(child: CircularProgressIndicator()),
+      error: (error, stack) => Text(error.toString()),
+      data: (data) {
         setState(() {});
         return ValueListenableBuilder(
           valueListenable: Boxes.getAttendanceTimedMeibo().listenable(),
@@ -139,11 +136,11 @@ class _SeatsWidgetState extends ConsumerState<SeatsWidget> {
             }
 
             // 座席表設定情報取得
+            final setting = ref.watch(seatSettingPatternProvider);
             final seats = Boxes.getSeatChart().values.toList();
-            if (seats.isNotEmpty) {
+            if (seats.isNotEmpty && setting.id != null && setting.id != 0) {
               seats.sort((a, b) => a.seatIndex!.compareTo(b.seatIndex!));
 
-              final setting = ref.watch(seatSettingProvider);
               final m = setting.row!;
               final n = setting.column!;
               gridColumnCount = n;

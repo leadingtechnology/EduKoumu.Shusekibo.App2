@@ -7,7 +7,7 @@ part of 'home_health_list_provider.dart';
 // **************************************************************************
 
 String _$homeHealthListNotifierHash() =>
-    r'a99f4fe571c208d5368e6fb588eaebb29d1a1eea';
+    r'82aabf850eeefbb75ee42b936343b21e9e610dd1';
 
 /// See also [HomeHealthListNotifier].
 @ProviderFor(HomeHealthListNotifier)
