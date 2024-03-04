@@ -17,6 +17,7 @@ final seatSettingHealthProvider = Provider<AsyncValue<bool>>((ref) {
 
   //　成功
   if (state1 == const ApiState.loaded() && state2 == const ApiState.loaded()) {
+    ref.read(seatSettingListProvider.notifier).setSeatSettingValue();
     return const AsyncData(true); 
   }
 

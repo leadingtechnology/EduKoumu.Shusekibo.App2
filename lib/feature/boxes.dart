@@ -71,7 +71,6 @@ class Boxes {
   static Box<AttendanceMeiboModel> getAttendanceMeibo2() =>
       Hive.box<AttendanceMeiboModel>('AttendanceMeibo2');
 
-
   static Box<TimedModel> getTimeds() => Hive.box<TimedModel>('Timed');
   static Box<AttendanceTimedMeiboModel> getAttendanceTimedMeibo() =>
       Hive.box<AttendanceTimedMeiboModel>('AttendanceTimedMeibo');
@@ -108,52 +107,57 @@ class Boxes {
       Hive.box<SeatChartModel>('SeatChart');
 }
 
-
 List<DateTime> getFilteredTokobiDates(DateTime targetDate, int shozokuId) {
   final box = Boxes.getTokobis();
 
   final inputDate = DateTime(targetDate.year, targetDate.month, targetDate.day);
 
-  final firstDay = DateUtil.calculateFiscalYear(targetDate).item1
+  final fDay = DateUtil.calculateFiscalYear(targetDate)
+      .item1
       .subtract(const Duration(days: 1));
-  
-  // key が　shozokuId　からのデータを取得する
-  final keys = box.keys
-      .where((e) => e.toString().startsWith('$shozokuId-'))
-      .toList();
-  
-  // keysの値を全部取得する
-  var filteredList = keys.map(box.get).toList();
-  try{
-    filteredList = box.values
-        .where(
-          (e) =>
-              e.isEditable! == true &&
-              e.tokobi!.isBefore(inputDate) &&
-              e.tokobi!.isAfter(firstDay),
-        )
-        .toList();
+  final firstDay = DateTime(fDay.year, fDay.month, fDay.day);
 
-    // 登校日データを降順に並び替える
+  // key が　shozokuId　からのデータを取得する
+  final keys =
+      box.keys.where((e) => e.toString().startsWith('$shozokuId-')).toList();
+  
+  if (keys.isEmpty) {
+    return [inputDate];
+  }
+
+  // keysの値を全部取得する
+  var filteredList = <TokobiModel?>[];
+  try {
+    keys.removeWhere(
+      (e) =>
+          e
+              .toString()
+              .compareTo('$shozokuId-${DateUtil.getStringDate(inputDate)}') >=
+          0,
+    );
+
+    filteredList = keys.map(box.get).toList()
+    ..removeWhere(
+      (item) =>
+          item == null ||
+          item.isEditable != true ||
+          item.tokobi == null ||
+          item.tokobi!.isBefore(firstDay),
+    );
+
     filteredList.sort((a, b) => b?.tokobi?.compareTo(a?.tokobi ?? DateTime(0)) ?? 0);
-  }catch(e){
+  } catch (e) {
     //print(e);
   }
 
-  
   final result = <DateTime>[inputDate];
-  for (var i = 0; i < 2; i++) {
-    try{
-      if (filteredList[i]?.tokobi != null) {
-        result.add(filteredList[i]!.tokobi!);
-      }
-    }
-    catch(e){
+  for (var i=0; i<2 && i<filteredList.length; i++) {
+    try {
+      result.add(filteredList[i]!.tokobi!);
+    } catch (e) {
       continue;
     }
   }
-
-  result.sort((a, b) => b.compareTo(a));
 
   return result;
 }

@@ -66,7 +66,7 @@ class TokobisRepository implements TokobisRepositoryProtocol {
 
         // 2) change to map and save the box
         final tokobiMap = Map.fromIterables(
-          tokobis.map((e) => '$shozokuId-${DateUtil.getStringDate(e.tokobi??DateTime.now())}}').toList(),
+          tokobis.map((e) => '$shozokuId-${DateUtil.getStringDate(e.tokobi??DateTime.now())}').toList(),
           tokobis.map((e) => e).toList(),
         );
         await box.putAll(tokobiMap);

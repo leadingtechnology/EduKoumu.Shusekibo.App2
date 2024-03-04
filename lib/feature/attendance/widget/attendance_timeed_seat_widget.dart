@@ -131,9 +131,13 @@ class AttendanceTimedSeatWidget extends ConsumerWidget {
                         child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        Text(
-                          meibo.studentNumber ?? '',
-                          style: const TextStyle(fontSize: 12),
+                        Container(
+                          alignment: Alignment.centerRight,
+                          padding: const EdgeInsets.fromLTRB(0, 0, 18, 0),
+                          child: Text(
+                            meibo.studentNumber ?? '',
+                            style: const TextStyle(fontSize: 12),
+                          ),
                         ),
                         Text(
                           '${meibo.name}', 
@@ -162,6 +166,7 @@ class AttendanceTimedSeatWidget extends ConsumerWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
+                      const SizedBox(width: 10,),
                       Text(jokyo.ryaku ?? ''),
                       Expanded(
                         child: AutoSizeText(

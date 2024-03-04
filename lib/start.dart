@@ -1,11 +1,11 @@
 import 'dart:async';
 import 'dart:developer';
+//import 'dart:html' as html;
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-
 import 'package:kyoumutechou/app/app.dart';
 import 'package:kyoumutechou/database/adapter/datetime_adapter.dart';
 import 'package:kyoumutechou/feature/attendance/model/attendance_meibo_model.dart';
@@ -167,7 +167,7 @@ Future<void> start() async {
   await scBox.clear();
 
   // Hive アダプター登録
-
+  //setBrowserTabTitle('デジタル教務手帳');
   runApp(
     EasyLocalization(
       supportedLocales: const [Locale('ja')],
@@ -185,3 +185,7 @@ Future<void> start() async {
     ),
   );
 }
+
+// void setBrowserTabTitle(String title) {
+//   html.document.title = title;
+// }
