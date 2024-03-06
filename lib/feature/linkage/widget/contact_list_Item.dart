@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kyoumutechou/feature/boxes.dart';
 import 'package:kyoumutechou/feature/common/model/gakunen_model.dart';
+import 'package:kyoumutechou/feature/common/model/shozoku_model.dart';
 import 'package:kyoumutechou/feature/common/provider/dantais_provider.dart';
 import 'package:kyoumutechou/feature/common/provider/filter_provider.dart';
 import 'package:kyoumutechou/feature/common/provider/gakunens_provider.dart';
 import 'package:kyoumutechou/feature/common/provider/shozokus_provider.dart';
 import 'package:kyoumutechou/feature/home/provider/home_provider.dart';
 import 'package:kyoumutechou/feature/linkage/model/contact_linkage_model.dart';
+import 'package:kyoumutechou/feature/linkage/provider/contact_linkage_provider.dart';
 import 'package:kyoumutechou/feature/linkage/widget/contact_confirm_button.dart';
 import 'package:kyoumutechou/shared/util/date_util.dart';
 
@@ -38,11 +40,8 @@ class ContactListItemState extends ConsumerState<ContactListItem> {
       leading: const Icon(Icons.campaign_outlined),
       title: InkWell(
         onTap: () {
-          // 検索条件の取得
-          final filter = ref.read(filterProvider);
-
           // 所属の取得
-          var shozoku = ref.read(shozokuProvider);
+          var shozoku =  const ShozokuModel();
           try{
             final shozokuId = widget.item.shozokuId ?? 0;
             shozoku = shozokuBox.values
@@ -54,7 +53,7 @@ class ContactListItemState extends ConsumerState<ContactListItem> {
           }
 
           // 学年の取得
-          var gakunen = ref.read(gakunenProvider);
+          var gakunen = const GakunenModel();
           try{
             final organizationKbn = ref.watch(dantaiProvider).organizationKbn;
             final keys = gakunenBox.keys.toList().where(
@@ -73,7 +72,8 @@ class ContactListItemState extends ConsumerState<ContactListItem> {
           ref.read(filterProvider.notifier).reset();
 
           // メニューの遷移
-          ref.read(menuProvider.notifier).state = Menu.health;
+          final menu = ref.read(contactNavigatorMenu);
+          ref.read(menuProvider.notifier).state = menu;
 
         },
         child: RichText(

@@ -13,15 +13,14 @@ class AttendanceSummaryWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final tokobi = ref.watch(tokobiProvider);
-
+    final tokobis = ref.watch(lastTokobisProvider);
     final state = ref.watch(homeAttendanceListNotifierProvider);
+
     return state.when(loading: () {
       return const Center(child: CircularProgressIndicator());
     }, error: (AppException e) {
       return Text(e.toString());
     }, loaded: (attendanceLists) {
-      final tokobis = ref.watch(lastTokobisProvider);
 
       return Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,

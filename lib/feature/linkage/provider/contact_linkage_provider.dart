@@ -1,10 +1,12 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kyoumutechou/feature/common/provider/dantais_provider.dart';
+import 'package:kyoumutechou/feature/home/provider/home_provider.dart';
 
 import 'package:kyoumutechou/feature/linkage/repository/contact_linkage_repository.dart';
 import 'package:kyoumutechou/feature/linkage/state/contact_linkage_state.dart';
 
 final contactDateProvider = StateProvider<DateTime>((ref) => DateTime.now());
+final contactNavigatorMenu = StateProvider<Menu>((ref) => Menu.health); 
 
 final contactLinkageListProvider =
     StateNotifierProvider<ContactLinkageListProvider, ContactLinkageState>(

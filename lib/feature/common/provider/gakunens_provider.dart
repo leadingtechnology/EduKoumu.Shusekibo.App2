@@ -62,12 +62,12 @@ class GakunenNotifier extends StateNotifier<ApiState> {
           .toList();
 
       // 取得したKeysにより、gakunenListを取得する
-      final gakunenList = keys.map(box.get).toList();
-
+      final gakunenList = keys.map(box.get).toList()
       //　ソートする
-      gakunenList.sort(
-        (a, b) => '${a?.kateiKbn}-${a?.gakunenCode}'.compareTo('${b?.kateiKbn}-${b?.gakunenCode}'),
-      );
+        ..sort(
+          (a, b) => '${a?.kateiKbn}-${a?.gakunenCode}'
+              .compareTo('${b?.kateiKbn}-${b?.gakunenCode}'),
+        );
 
       try {
         if (gakunenCode != null && gakunenCode.isNotEmpty) {

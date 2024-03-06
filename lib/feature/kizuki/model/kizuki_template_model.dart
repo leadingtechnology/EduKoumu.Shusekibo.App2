@@ -28,12 +28,13 @@ abstract class KizukiTemplateModel with _$KizukiTemplateModel {
     @JsonKey(name: 'KizukiTemplate', disallowNullValue: false) @HiveField(8) String? kizukiTemplate,
     @JsonKey(name: 'CommonFlg', disallowNullValue: false) @HiveField(9) bool? commonFlg,
     @JsonKey(name: 'ModifiedDateTime', disallowNullValue: false) @HiveField(10) String? modifiedDateTime,
-    @JsonKey(name: 'TIMESTAMP', disallowNullValue: false) @HiveField(11) String? timeStamp,
+    @JsonKey(name: 'CrtDateTime', disallowNullValue: false) @HiveField(11) DateTime? crtDateTime,
+    @JsonKey(name: 'TIMESTAMP', disallowNullValue: false) @HiveField(12) String? timeStamp,
   }) = _KizukiTemplateModel;
 
   @override
   String toString() {
-    return 'KizukiTemplateModel($id, $tenantId, $kinyuKyoinId, $kinyuKyoinName, $karuteSettingId, $karuteShubetsuNaibuCode, $karuteBunruiCode, $title, $kizukiTemplate, $commonFlg, $modifiedDateTime, $timeStamp)';
+    return 'KizukiTemplateModel($id, $tenantId, $kinyuKyoinId, $kinyuKyoinName, $karuteSettingId, $karuteShubetsuNaibuCode, $karuteBunruiCode, $title, $kizukiTemplate, $commonFlg, $modifiedDateTime, $crtDateTime, $timeStamp)';
   }
   factory KizukiTemplateModel.fromJson(Map<String, dynamic> json) => _$KizukiTemplateModelFromJson(json);
 }

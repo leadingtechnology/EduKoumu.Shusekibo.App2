@@ -7,7 +7,6 @@ import 'package:kyoumutechou/feature/boxes.dart';
 import 'package:kyoumutechou/feature/common/provider/common_provider.dart';
 import 'package:kyoumutechou/feature/common/provider/seat_chart_pattern_provider.dart';
 import 'package:kyoumutechou/feature/common/widget/search_bar_widget.dart';
-import 'package:kyoumutechou/feature/common/widget/toast_helper.dart';
 import 'package:kyoumutechou/feature/linkage/widget/lectern_widget.dart';
 import 'package:kyoumutechou/feature/seat/provider/seat_chart_provider.dart';
 import 'package:kyoumutechou/feature/seat/widget/blank_seat_widget.dart';
@@ -65,12 +64,12 @@ class _AwarenessSeatsState extends ConsumerState<AwarenessSeats> {
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final list = Boxes.getAwarenessMeiboBox().values.toList();
-      if (list.isEmpty) {
-        ToastHelper.showToast(context, '　該当データがありません　');
-      }
-    });
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   final list = Boxes.getAwarenessMeiboBox().values.toList();
+    //   if (list.isEmpty) {
+    //     ToastHelper.showToast(context, '　該当データがありません　');
+    //   }
+    // });
   }
 
   @override
@@ -95,7 +94,6 @@ class _AwarenessSeatsState extends ConsumerState<AwarenessSeats> {
         final meibos = box.values.toList();
         final ms = Boxes.getAttendanceMeibo().values.toList();
         final newMeibos = <AwarenessMeiboModel>[];
-        final lecternPosition = ref.watch(lecternPositionProvider);
 
         var rotate = 0.0;
         switch (lp) {

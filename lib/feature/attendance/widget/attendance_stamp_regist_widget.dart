@@ -25,9 +25,9 @@ class AttendanceStampRegistWidget extends ConsumerWidget {
           constraints: const BoxConstraints.expand(width: 50),
           fillColor: Theme.of(context).colorScheme.secondaryContainer,
           onPressed: (int index) {
-            if (stamps[index].shukketsuJokyoCd == selectedStamp.shukketsuJokyoCd) {
-              return;
-            }
+            // if (stamps[index].shukketsuJokyoCd == selectedStamp.shukketsuJokyoCd) {
+            //   return;
+            // }
 
             ref.read(attendanceStampProvider.notifier).state = stamps[index];
             

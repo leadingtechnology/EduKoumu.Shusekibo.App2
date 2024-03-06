@@ -23,8 +23,10 @@ class SearchBarWidget extends ConsumerWidget {
     final menuId = ref.watch(menuProvider);
     final filter = ref.watch(filterProvider);
 
-    final strBeginDate = DateUtil.getJapaneseDate(filter.beginDate ?? DateTime.now());
-    final strEndDate = DateUtil.getJapaneseDate(filter.endDate ?? DateTime.now());
+    final strBeginDate =
+        DateUtil.getJapaneseDate(filter.beginDate ?? DateTime.now());
+    final strEndDate =
+        DateUtil.getJapaneseDate(filter.endDate ?? DateTime.now());
     
     return Padding(
       padding: const EdgeInsets.all(8),

@@ -27,7 +27,6 @@ class KizukiTemplateDialog extends ConsumerWidget {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final kihonId = Hive.box<String>('shusekibo').get('kihonId');
 
-
   static Map<String, String> radioMap = {
     '1': '学校共通',
     '0': '個人',
@@ -57,6 +56,7 @@ class KizukiTemplateDialog extends ConsumerWidget {
       child: SimpleDialog(
         surfaceTintColor: theme.colorScheme.surface,
         children: [
+          const SizedBox(height: 4),
           // 1. title
           const Text(
             '　気づきテンプレート文の編集',
@@ -65,16 +65,20 @@ class KizukiTemplateDialog extends ConsumerWidget {
               fontSize: 20,
             ),
           ),
-      
+
           // 2. body
-          const Divider(color: Colors.grey),
+          const Padding(
+            padding: EdgeInsets.fromLTRB(8, 8, 8, 4),
+            child: Divider(color: Colors.grey),
+          ),
           Container(
-            padding: MySpacing.all(24),
+            padding: const EdgeInsets.fromLTRB(8, 4, 16, 4),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // 2.1 タイトル
                 Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
                       width: 100,
@@ -107,9 +111,13 @@ class KizukiTemplateDialog extends ConsumerWidget {
                     ),
                   ],
                 ),
-      
+
                 // 2.2 分類
-                MySpacing.height(16),
+                MySpacing.height(4),
+                const SizedBox(
+                  width: 560,
+                ),
+
                 Row(
                   children: [
                     Container(
@@ -129,7 +137,7 @@ class KizukiTemplateDialog extends ConsumerWidget {
                         radioMap: bunruiMap,
                         initialValue: _bunruiCd,
                         onSaved: (value) {
-                          _bunruiCd = '$value';                          
+                          _bunruiCd = '$value';
                         },
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -140,9 +148,9 @@ class KizukiTemplateDialog extends ConsumerWidget {
                     ),),
                   ],
                 ),
-      
+
                 // 2.3 種別
-                MySpacing.height(16),
+                MySpacing.height(4),
                 Row(
                   children: [
                     Container(
@@ -170,12 +178,13 @@ class KizukiTemplateDialog extends ConsumerWidget {
                           }
                           return null;
                         },
-                    ),),
+                      ),
+                    ),
                   ],
                 ),
-      
+
                 // 2.4 気づきテンプレート
-                MySpacing.height(16),
+                MySpacing.height(4),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -213,9 +222,12 @@ class KizukiTemplateDialog extends ConsumerWidget {
               ],
             ),
           ),
-      
+
           // 3.buttom button
-          const Divider(color: Colors.grey),
+          const Padding(
+            padding: EdgeInsets.all(8),
+            child: Divider(color: Colors.grey),
+          ),
           Container(
             padding: MySpacing.fromLTRB(16, 0, 16, 0),
             child: Row(
@@ -243,8 +255,9 @@ class KizukiTemplateDialog extends ConsumerWidget {
                     action == ScreenAction.detail) ...[
                   DeleteButtonWidget(
                     onPressed: () async {
-                      await ref.read(kizukiTemplateNotifierProvider.notifier)
-                      .delete(model.id!);
+                      await ref
+                          .read(kizukiTemplateNotifierProvider.notifier)
+                          .delete(model.id!);
 
                       ToastHelper.showToast(context, '　削除しました　');
                       Navigator.of(context).pop('1');
@@ -266,22 +279,20 @@ class KizukiTemplateDialog extends ConsumerWidget {
                     // 分類コードから分類名を取得
                     final bunrui = getBunrui(ref, _bunruiCd);
 
-
                     switch (action) {
                       case ScreenAction.add:
                       case ScreenAction.copy:
-                        await ref.read(kizukiTemplateNotifierProvider.notifier)
-                        .save(
-                          kinyuKyoinId: '$kihonId',
-
-                          karuteSettingId: '${bunrui.id}',
-                          karuteShubetsuNaibuCode: '20',
-                          karuteBunruiCode: '${bunrui.code}',
-
-                          title: ctrTitle.text,
-                          kizukiTemplate: ctrKizuki.text,
-                          commonFlg: _syubetu,
-                        );
+                        await ref
+                            .read(kizukiTemplateNotifierProvider.notifier)
+                            .save(
+                              kinyuKyoinId: '$kihonId',
+                              karuteSettingId: '${bunrui.id}',
+                              karuteShubetsuNaibuCode: '20',
+                              karuteBunruiCode: '${bunrui.code}',
+                              title: ctrTitle.text,
+                              kizukiTemplate: ctrKizuki.text,
+                              commonFlg: _syubetu,
+                            );
                       case ScreenAction.edit:
                         await ref
                             .read(kizukiTemplateNotifierProvider.notifier)
@@ -298,9 +309,6 @@ class KizukiTemplateDialog extends ConsumerWidget {
                       default:
                         break;
                     }
-
-
-
 
                     ToastHelper.showToast(context, '　保存しました　');
 
@@ -335,7 +343,6 @@ class KizukiTemplateDialog extends ConsumerWidget {
       for (final e in codeList) {
         bunruiMap['${e?.code}'] = '${e?.name}';
       }
-      
     } on Exception {
       //
     }
@@ -343,7 +350,7 @@ class KizukiTemplateDialog extends ConsumerWidget {
     return bunruiMap;
   }
 
-  AwarenessCodeModel getBunrui(WidgetRef ref, String code){
+  AwarenessCodeModel getBunrui(WidgetRef ref, String code) {
     final bunruibox = Boxes.getBunruiBox();
     final dantaiId = ref.read(dantaiProvider).id;
 
@@ -363,15 +370,12 @@ class KizukiTemplateDialog extends ConsumerWidget {
       id: 0,
       shortName: '',
     );
-    try{
-      bunrui = codeList.where((e) => e?.code == code)
-      .toList().first!; 
+    try {
+      bunrui = codeList.where((e) => e?.code == code).toList().first!;
     } on Exception {
       //
     }
 
     return bunrui;
-    
   }
-
 }

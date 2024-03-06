@@ -23,10 +23,10 @@ class ContactLinkageDialog extends ConsumerWidget {
         return Text(e.toString());
       },
       loaded: (list) {
-        final contactItems = list.toList();
+        final contactItems = list.toList()
         
         // ソート順
-        contactItems.sort((a, b) {
+        ..sort((a, b) {
           // registDateTime 降順
           final dateCompare = b.registDateTime!.compareTo(a.registDateTime!);
           if (dateCompare != 0) return dateCompare;

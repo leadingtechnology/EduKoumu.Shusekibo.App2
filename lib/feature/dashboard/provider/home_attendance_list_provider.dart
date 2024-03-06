@@ -1,4 +1,3 @@
-import 'package:kyoumutechou/feature/boxes.dart';
 import 'package:kyoumutechou/feature/common/provider/dantais_provider.dart';
 import 'package:kyoumutechou/feature/common/provider/tokobis_provider.dart';
 import 'package:kyoumutechou/feature/dashboard/model/home_attendance_model.dart';
@@ -13,9 +12,8 @@ part 'home_attendance_list_provider.g.dart';
 
 @riverpod
 class HomeAttendanceListNotifier extends _$HomeAttendanceListNotifier {
-
   late final _rep = ref.read(homeAttendanceRepositoryProvider);
-  final box = Boxes.getTokobis();
+
 
   @override
   HomeAttendanceListState build() {
@@ -24,15 +22,20 @@ class HomeAttendanceListNotifier extends _$HomeAttendanceListNotifier {
   }
 
   Future<void> _fetch() async {
-    final dantaiId = ref.watch(dantaiProvider).id ?? 0;
+    final dantaiId = ref.read(dantaiProvider).id ?? 0;
     if (dantaiId == 0) {
       return;
     }
 
     // 登校日の取得
-    final tokobis = ref.watch(lastTokobisProvider);
+    final tokobis = ref.read(lastTokobisProvider);
     if (tokobis.isEmpty) {
-      state = const HomeAttendanceListState.loaded([[], [], []]);
+            final value = [
+        <HomeAttendanceModel>[],
+        <HomeAttendanceModel>[],
+        <HomeAttendanceModel>[],
+      ];
+      state = HomeAttendanceListState.loaded(value);
       return;
     }
 
@@ -77,7 +80,7 @@ class HomeAttendanceListNotifier extends _$HomeAttendanceListNotifier {
     final attendanceLists = <List<HomeAttendanceModel>>[[], [], []];
     if (maps.isNotEmpty) {
       final sortedKeys = maps.keys.toList()..sort();
-      for (int i = 0; i < sortedKeys.length; i++) {
+      for (var i = 0; i < sortedKeys.length; i++) {
         final key = sortedKeys[i];
         final index = i % 3;
         attendanceLists[index].addAll(maps[key]!);

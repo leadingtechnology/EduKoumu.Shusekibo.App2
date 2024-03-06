@@ -69,12 +69,12 @@ class _SeatWidgetState extends ConsumerState<SeatWidget> {
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final list = Boxes.getHealthMeiboBox().values.toList();
-      // if (list.isEmpty) {
-      //   ToastHelper.showToast(context, '　該当データがありません　');
-      // }
-    });
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   final list = Boxes.getHealthMeiboBox().values.toList();
+    //   if (list.isEmpty) {
+    //     ToastHelper.showToast(context, '　該当データがありません　');
+    //   }
+    // });
   }
 
   @override

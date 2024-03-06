@@ -12,12 +12,10 @@ import 'package:kyoumutechou/feature/awareness/weidget/dialog/awareness_regist_d
 import 'package:kyoumutechou/feature/boxes.dart';
 import 'package:kyoumutechou/feature/common/widget/dialog_util.dart';
 import 'package:kyoumutechou/feature/common/widget/search_bar_widget.dart';
-import 'package:kyoumutechou/feature/common/widget/toast_helper.dart';
 import 'package:kyoumutechou/feature/home/provider/home_provider.dart';
 import 'package:kyoumutechou/feature/kizuki/model/kizuki_template_model.dart';
 import 'package:kyoumutechou/feature/kizuki/widget/kizuki_template_dialog.dart';
 import 'package:kyoumutechou/helpers/widgets/my_spacing.dart';
-import 'package:kyoumutechou/helpers/widgets/my_text.dart';
 import 'package:kyoumutechou/shared/http/app_exception.dart';
 import 'package:kyoumutechou/shared/util/date_util.dart';
 
@@ -43,7 +41,7 @@ class AwarenessListPage extends ConsumerWidget {
 
         // screen
         MySpacing.height(8),
-        Expanded(
+        const Expanded(
           child: AwarenessListView(),
         ),
 
@@ -54,7 +52,7 @@ class AwarenessListPage extends ConsumerWidget {
 }
 
 class AwarenessListView extends ConsumerStatefulWidget {
-  AwarenessListView({super.key});
+  const AwarenessListView({super.key});
 
   @override
   ConsumerState<AwarenessListView> createState() => _AwarenessListViewState();
@@ -88,13 +86,12 @@ class _AwarenessListViewState extends ConsumerState<AwarenessListView> {
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final list = Boxes.getAwarenessKizukiModelBox().values.toList();
-      if (list.isEmpty) {
-        ToastHelper.showToast(context, '　該当する期間に気づきは登録されていません　');
-      }
-      
-    });
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   final list = Boxes.getAwarenessKizukiModelBox().values.toList();
+    //   if (list.isEmpty) {
+    //     ToastHelper.showToast(context, '　該当する期間に気づきは登録されていません　');
+    //   }
+    // });
   }
 
   @override

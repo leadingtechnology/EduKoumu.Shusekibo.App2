@@ -7,10 +7,12 @@ import 'package:kyoumutechou/feature/awareness/provider/tenpu_provider.dart';
 import 'package:kyoumutechou/feature/awareness/weidget/awareness_list_page.dart';
 import 'package:kyoumutechou/feature/awareness/weidget/awareness_seat_page.dart';
 import 'package:kyoumutechou/feature/awareness/weidget/dialog/awareness_regist_dialog.dart';
+import 'package:kyoumutechou/feature/boxes.dart';
 import 'package:kyoumutechou/feature/common/provider/common_provider.dart';
 import 'package:kyoumutechou/feature/common/widget/dialog_util.dart';
 import 'package:kyoumutechou/feature/common/widget/filter_widget.dart';
 import 'package:kyoumutechou/feature/common/widget/seat_chart_pattern_widget.dart';
+import 'package:kyoumutechou/feature/common/widget/toast_helper.dart';
 import 'package:kyoumutechou/feature/seat/provider/seat_chart_provider.dart';
 import 'package:kyoumutechou/helpers/theme/app_theme.dart';
 import 'package:kyoumutechou/helpers/widgets/my_spacing.dart';
@@ -167,9 +169,24 @@ class AwarenessPageState extends ConsumerState<AwarenessPage>
   }
 
   Future<void> _handlePressActionButton(BuildContext context) async {
-    ref.read(tenpuListProvider.notifier).state = [];  
+    ref.read(tenpuListProvider.notifier).init();  
 
     ref.read(awarenessJuyoProvider.notifier).state = false;
+
+    final length = Boxes.getAwarenessMeiboBox()
+        .values
+        .toList()
+        .where(
+          (e) => e.selectFlag ?? false,
+        )
+        .toList()
+        .length;
+
+    if (length <= 0) {
+      ToastHelper.showToast(context, '　生徒を選択してください　');
+      ref.read(awarenessCountProvider.notifier).state = 0;
+      return;
+    }
 
     await DialogUtil.show(
       context: context,

@@ -26,9 +26,9 @@ class HealthStampRegistWidget extends ConsumerWidget {
           constraints: const BoxConstraints.expand(width: 50),
           fillColor: Theme.of(context).colorScheme.secondaryContainer,
           onPressed: (int index) {
-            if (stamps[index].jokyoCd == selectedStamp.jokyoCd) {
-              return;
-            }
+            // if (stamps[index].jokyoCd == selectedStamp.jokyoCd) {
+            //   return;
+            // }
             
             ref.read(healthStampProvider.notifier).state =
                 stamps[index];

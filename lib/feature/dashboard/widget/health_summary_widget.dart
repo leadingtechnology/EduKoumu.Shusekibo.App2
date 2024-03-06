@@ -13,12 +13,9 @@ class HealthSummaryWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final tokobi = ref.watch(tokobiProvider);
-    if (tokobi == null) {
-      return Container();
-    }
-
+    final tokobis = ref.watch(lastTokobisProvider);
     final state = ref.watch(homeHealthListNotifierProvider);
+
     return state.when(
       loading: () {
         return const Center(child: CircularProgressIndicator());
@@ -27,7 +24,6 @@ class HealthSummaryWidget extends ConsumerWidget {
         return Text(e.toString());
       },
       loaded: (healthListList) {
-        final tokobis = ref.watch(lastTokobisProvider);
 
         return Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,

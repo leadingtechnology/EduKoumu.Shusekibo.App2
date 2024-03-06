@@ -1,5 +1,3 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:kyoumutechou/feature/boxes.dart';
 import 'package:kyoumutechou/feature/common/provider/dantais_provider.dart';
 import 'package:kyoumutechou/feature/common/provider/tokobis_provider.dart';
 import 'package:kyoumutechou/feature/dashboard/model/home_health_model.dart';
@@ -12,11 +10,8 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'home_health_list_provider.g.dart';
 
-final homeTargetDateProvider = StateProvider<DateTime>((ref) => DateTime.now());
-
 @riverpod
 class HomeHealthListNotifier extends _$HomeHealthListNotifier {
-  
   late final _rep = ref.read(homeHealthRepositoryProvider);
 
   @override
@@ -26,7 +21,7 @@ class HomeHealthListNotifier extends _$HomeHealthListNotifier {
   }
 
   Future<void> _fetch() async {
-    final dantaiId = ref.watch(dantaiProvider).id??0;
+    final dantaiId = ref.read(dantaiProvider).id??0;
     if (dantaiId == 0) {
       return;
     }
@@ -34,7 +29,12 @@ class HomeHealthListNotifier extends _$HomeHealthListNotifier {
     // 登校日の取得
     final tokobis = ref.watch(lastTokobisProvider);
     if (tokobis.isEmpty) {
-      state = const HomeHealthListState.loaded([[], [], []]);
+      final value = [
+        <HomeHealthModel>[],
+        <HomeHealthModel>[],
+        <HomeHealthModel>[],
+      ];
+      state = HomeHealthListState.loaded(value);
       return;
     }
 
@@ -79,7 +79,7 @@ class HomeHealthListNotifier extends _$HomeHealthListNotifier {
     final healthLists = <List<HomeHealthModel>>[[], [], []];
     if (maps.isNotEmpty) {
       final sortedKeys = maps.keys.toList()..sort();
-      for (int i = 0; i < sortedKeys.length; i++) {
+      for (var i = 0; i < sortedKeys.length; i++) {
         final key = sortedKeys[i];
         final index = i % 3;
         healthLists[index].addAll(maps[key]!);

@@ -8,7 +8,8 @@ import 'package:kyoumutechou/shared/http/app_exception.dart';
 
 class AwarenessDialogRightWidget extends ConsumerWidget {
   const AwarenessDialogRightWidget({
-    required this.kizukiController, super.key,
+    required this.kizukiController,
+    super.key,
   });
 
   final TextEditingController kizukiController;
@@ -32,15 +33,13 @@ class AwarenessDialogRightWidget extends ConsumerWidget {
         return _build(context, ref, list);
       },
     );
-
-
   }
+
   Widget _build(
-    BuildContext context, 
+    BuildContext context,
     WidgetRef ref,
     List<KizukiTemplateModel> list,
-  ) {  
-
+  ) {
     final kizukiCommon = list
         .where(
           (e) => e.commonFlg! == true,
@@ -54,52 +53,56 @@ class AwarenessDialogRightWidget extends ConsumerWidget {
         .toList();
 
     return SizedBox(
-        width: 300,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'テンプレート文(学校共通)',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
-            ),
-            AwarenessTemplateSearchText(
-              kizukiController: kizukiController,
-              kizukiTemplate: kizukiCommon.map((e) => '${e.kizukiTemplate}').toList(),
-            ),
-            MySpacing.height(12),
-            const Text(
-              'テンプレート文(個人)',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
-            ),
-            SizedBox(
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: kizukiPersonal
-                      .map((e) => Tooltip(
+      width: 300,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'テンプレート文(学校共通)',
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+          ),
+          AwarenessTemplateSearchText(
+            kizukiController: kizukiController,
+            kizukiTemplate:
+                kizukiCommon.map((e) => '${e.kizukiTemplate}').toList(),
+          ),
+          MySpacing.height(12),
+          const Text(
+            'テンプレート文(個人)',
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+          ),
+          SizedBox(
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: kizukiPersonal
+                    .map(
+                      (e) => Tooltip(
                         message: '${e.kizukiTemplate}',
                         child: Column(
-                              children: [
-                                MySpacing.height(16),
-                                InkWell(
-                                  onTap: () {
-                                    kizukiController.text = '${e.kizukiTemplate}';
-                                  },
-                                  child: Text(
-                                    '${e.title}',
-                                    overflow: TextOverflow.ellipsis,
-                                    softWrap: true,
-                                  ),
-                                ),
-                              ],
+                          children: [
+                            MySpacing.height(16),
+                            InkWell(
+                              onTap: () {
+                                kizukiController.text = '${e.kizukiTemplate}';
+                              },
+                              child: Text(
+                                '${e.title}',
+                                overflow: TextOverflow.ellipsis,
+                                softWrap: true,
+                              ),
                             ),
-                      ),)
-                      .toList(),
-                ),
+                          ],
+                        ),
+                      ),
+                    )
+                    .toList(),
               ),
             ),
-          ],
-        ),);
+          ),
+        ],
+      ),
+    );
   }
 }

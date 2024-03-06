@@ -9,13 +9,12 @@ import 'package:kyoumutechou/feature/attendance/widget/attendance_timeed_seat_wi
 import 'package:kyoumutechou/feature/boxes.dart';
 import 'package:kyoumutechou/feature/common/provider/common_provider.dart';
 import 'package:kyoumutechou/feature/common/provider/seat_chart_pattern_provider.dart';
+import 'package:kyoumutechou/feature/common/state/api_state.dart';
 import 'package:kyoumutechou/feature/common/widget/common_page.dart';
 import 'package:kyoumutechou/feature/common/widget/save_button_widget.dart';
 import 'package:kyoumutechou/feature/common/widget/toast_helper.dart';
 import 'package:kyoumutechou/feature/seat/provider/seat_chart_provider.dart';
-import 'package:kyoumutechou/feature/seat/provider/seat_setting_provider.dart';
 import 'package:kyoumutechou/feature/seat/widget/blank_seat_widget.dart';
-import 'package:kyoumutechou/feature/seat/widget/no_seat_widget.dart';
 import 'package:kyoumutechou/shared/http/app_exception.dart';
 
 // 出欠（時限）widget
@@ -72,29 +71,6 @@ class _SeatsWidgetState extends ConsumerState<SeatsWidget> {
   @override
   void initState() {
     super.initState();
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final list = Boxes.getAttendanceTimedMeibo().values.toList();
-      if (list.isEmpty) {
-        //ToastHelper.showToast(context, '　該当データがありません　');
-      }
-      final isHogo = list.where((e) {
-        try {
-          final jokyo = e.jokyoList!.first;
-          if (jokyo.isEditable == false) {
-            return true;
-          } else {
-            return false;
-          }
-        } catch (ex) {
-          return false;
-        }
-      }).toList();
-
-      if (isHogo.isNotEmpty && isHogo.length == list.length) {
-        ToastHelper.showToast(context, '　既に保護されているため、編集・保存することができません。　');
-      }
-    });
   }
 
   @override
@@ -106,6 +82,31 @@ class _SeatsWidgetState extends ConsumerState<SeatsWidget> {
   Widget build(BuildContext context) {
     final state = ref.watch(seatSettingTimedProvider);
     final lp = ref.watch(lecternPositionProvider);
+
+    ref.listen<ApiState>(attendanceTimedMeiboListProvider, (previous, next) {
+      if (next == const ApiState.loaded()) {
+        final list = Boxes.getAttendanceTimedMeibo().values.toList();
+        if (list.isEmpty) {
+          return;
+        }
+        final isHogo = list.where((e) {
+          try {
+            final jokyo = e.jokyoList!.first;
+            if (jokyo.isEditable == false) {
+              return true;
+            } else {
+              return false;
+            }
+          } catch (ex) {
+            return false;
+          }
+        }).toList();
+
+        if (isHogo.isNotEmpty && isHogo.length == list.length) {
+          ToastHelper.showToast(context, '　既に保護されているため、編集・保存することができません。　');
+        }
+      }
+    });
 
     return state.when(
       loading: () => const Center(child: CircularProgressIndicator()),
@@ -234,6 +235,31 @@ class ListView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(attendanceTimedMeiboListProvider);
+
+    ref.listen<ApiState>(attendanceTimedMeiboListProvider, (previous, next) {
+      if (next == const ApiState.loaded()) {
+        final list = Boxes.getAttendanceTimedMeibo().values.toList();
+        if (list.isEmpty) {
+          return;
+        }
+        final isHogo = list.where((e) {
+          try {
+            final jokyo = e.jokyoList!.first;
+            if (jokyo.isEditable == false) {
+              return true;
+            } else {
+              return false;
+            }
+          } catch (ex) {
+            return false;
+          }
+        }).toList();
+
+        if (isHogo.isNotEmpty && isHogo.length == list.length) {
+          ToastHelper.showToast(context, '　既に保護されているため、編集・保存することができません。　');
+        }
+      }
+    });
 
     return state.when(
       loading: () {

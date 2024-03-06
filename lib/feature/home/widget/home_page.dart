@@ -282,7 +282,7 @@ class HomePageState extends ConsumerState<HomePage> {
                                   return Align(
                                     alignment: Alignment.topRight,
                                     child: Container(
-                                      width: 600,
+                                      width: 650,
                                       margin: EdgeInsets.only(
                                         top: MediaQuery.of(context).padding.top,
                                       ),

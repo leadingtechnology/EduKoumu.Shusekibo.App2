@@ -10,8 +10,6 @@ import 'package:kyoumutechou/feature/attendance/provider/attendance_timed_meibo_
 import 'package:kyoumutechou/feature/boxes.dart';
 import 'package:kyoumutechou/feature/common/provider/filter_provider.dart';
 import 'package:kyoumutechou/feature/common/provider/tokobis_provider.dart';
-import 'package:kyoumutechou/feature/common/widget/toast_helper.dart';
-import 'package:kyoumutechou/shared/http/app_exception.dart';
 import 'package:kyoumutechou/shared/util/date_util.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
@@ -90,7 +88,7 @@ class _AttendanceTimedListWidgetState
         'reason1': PlutoCell(value: jokyo0.jiyu1 ?? ''),
         'reason2': PlutoCell(value: jokyo0.jiyu2 ?? ''),
         'isEditable': PlutoCell(
-            value: jokyo0.isEditable == true && isTokobi == true ? 1 : 0),
+            value: jokyo0.isEditable == true && isTokobi == true ? 1 : 0,),
         'tenshutsuYoteiFlg':
             PlutoCell(value: e0.tenshutsuYoteiFlg == true ? 1 : 0),
         'tenshutsuSumiFlg':
@@ -302,29 +300,6 @@ class _AttendanceTimedListWidgetState
   @override
   void initState() {
     super.initState();
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final list = Boxes.getAttendanceTimedMeibo().values.toList();
-      if (list.isEmpty) {
-        ToastHelper.showToast(context, '　該当データがありません　');
-      }
-      final isHogo = list.where((e) {
-        try {
-          final jokyo = e.jokyoList!.first;
-          if (jokyo.isEditable == false) {
-            return true;
-          } else {
-            return false;
-          }
-        } catch (ex) {
-          return false;
-        }
-      }).toList();
-
-      if (isHogo.isNotEmpty && isHogo.length == list.length) {
-        ToastHelper.showToast(context, '　既に保護されているため、編集・保存することができません。　');
-      }
-    });
   }
 
   @override
@@ -354,6 +329,7 @@ class _AttendanceTimedListWidgetState
           .toList()
           .first;
     } catch (e) {
+      // ignore: avoid_print
       print('AttendanceTimedList PlutoGrid get meibo error. $e');
       return;
     }
@@ -438,30 +414,13 @@ class _AttendanceTimedListWidgetState
 
   @override
   Widget build(BuildContext context) {
-    final state = ref.watch(attendanceTimedMeiboListProvider);
-
-    return state.when(
-      loading: () {
-        return const Center(child: CircularProgressIndicator());
-      },
-      error: (AppException e) {
-        return Text(e.toString());
-      },
-      loaded: () {
-        setState(() {});
-        return _build(context);
-      },
-    );
-  }
-
-  Widget _build(BuildContext context) {
     final list = Boxes.getAttendanceTimedMeibo().values.toList();
     if (list.isEmpty) {
       return Container();
     } else {
       tokobis = getFilteredTokobiDates(
         ref.read(filterProvider).targetDate ?? DateTime.now(),
-        ref.read(filterProvider).classId ?? 0, 
+        ref.read(filterProvider).classId ?? 0,
       );
     }
 

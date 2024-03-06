@@ -53,8 +53,11 @@ mixin _$KizukiTemplateModel {
   @JsonKey(name: 'ModifiedDateTime', disallowNullValue: false)
   @HiveField(10)
   String? get modifiedDateTime => throw _privateConstructorUsedError;
-  @JsonKey(name: 'TIMESTAMP', disallowNullValue: false)
+  @JsonKey(name: 'CrtDateTime', disallowNullValue: false)
   @HiveField(11)
+  DateTime? get crtDateTime => throw _privateConstructorUsedError;
+  @JsonKey(name: 'TIMESTAMP', disallowNullValue: false)
+  @HiveField(12)
   String? get timeStamp => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -101,8 +104,11 @@ abstract class $KizukiTemplateModelCopyWith<$Res> {
       @JsonKey(name: 'ModifiedDateTime', disallowNullValue: false)
       @HiveField(10)
       String? modifiedDateTime,
-      @JsonKey(name: 'TIMESTAMP', disallowNullValue: false)
+      @JsonKey(name: 'CrtDateTime', disallowNullValue: false)
       @HiveField(11)
+      DateTime? crtDateTime,
+      @JsonKey(name: 'TIMESTAMP', disallowNullValue: false)
+      @HiveField(12)
       String? timeStamp});
 }
 
@@ -130,6 +136,7 @@ class _$KizukiTemplateModelCopyWithImpl<$Res, $Val extends KizukiTemplateModel>
     Object? kizukiTemplate = freezed,
     Object? commonFlg = freezed,
     Object? modifiedDateTime = freezed,
+    Object? crtDateTime = freezed,
     Object? timeStamp = freezed,
   }) {
     return _then(_value.copyWith(
@@ -177,6 +184,10 @@ class _$KizukiTemplateModelCopyWithImpl<$Res, $Val extends KizukiTemplateModel>
           ? _value.modifiedDateTime
           : modifiedDateTime // ignore: cast_nullable_to_non_nullable
               as String?,
+      crtDateTime: freezed == crtDateTime
+          ? _value.crtDateTime
+          : crtDateTime // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
       timeStamp: freezed == timeStamp
           ? _value.timeStamp
           : timeStamp // ignore: cast_nullable_to_non_nullable
@@ -225,8 +236,11 @@ abstract class _$$KizukiTemplateModelImplCopyWith<$Res>
       @JsonKey(name: 'ModifiedDateTime', disallowNullValue: false)
       @HiveField(10)
       String? modifiedDateTime,
-      @JsonKey(name: 'TIMESTAMP', disallowNullValue: false)
+      @JsonKey(name: 'CrtDateTime', disallowNullValue: false)
       @HiveField(11)
+      DateTime? crtDateTime,
+      @JsonKey(name: 'TIMESTAMP', disallowNullValue: false)
+      @HiveField(12)
       String? timeStamp});
 }
 
@@ -252,6 +266,7 @@ class __$$KizukiTemplateModelImplCopyWithImpl<$Res>
     Object? kizukiTemplate = freezed,
     Object? commonFlg = freezed,
     Object? modifiedDateTime = freezed,
+    Object? crtDateTime = freezed,
     Object? timeStamp = freezed,
   }) {
     return _then(_$KizukiTemplateModelImpl(
@@ -299,6 +314,10 @@ class __$$KizukiTemplateModelImplCopyWithImpl<$Res>
           ? _value.modifiedDateTime
           : modifiedDateTime // ignore: cast_nullable_to_non_nullable
               as String?,
+      crtDateTime: freezed == crtDateTime
+          ? _value.crtDateTime
+          : crtDateTime // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
       timeStamp: freezed == timeStamp
           ? _value.timeStamp
           : timeStamp // ignore: cast_nullable_to_non_nullable
@@ -343,8 +362,11 @@ class _$KizukiTemplateModelImpl implements _KizukiTemplateModel {
       @JsonKey(name: 'ModifiedDateTime', disallowNullValue: false)
       @HiveField(10)
       this.modifiedDateTime,
-      @JsonKey(name: 'TIMESTAMP', disallowNullValue: false)
+      @JsonKey(name: 'CrtDateTime', disallowNullValue: false)
       @HiveField(11)
+      this.crtDateTime,
+      @JsonKey(name: 'TIMESTAMP', disallowNullValue: false)
+      @HiveField(12)
       this.timeStamp});
 
   factory _$KizukiTemplateModelImpl.fromJson(Map<String, dynamic> json) =>
@@ -395,8 +417,12 @@ class _$KizukiTemplateModelImpl implements _KizukiTemplateModel {
   @HiveField(10)
   final String? modifiedDateTime;
   @override
-  @JsonKey(name: 'TIMESTAMP', disallowNullValue: false)
+  @JsonKey(name: 'CrtDateTime', disallowNullValue: false)
   @HiveField(11)
+  final DateTime? crtDateTime;
+  @override
+  @JsonKey(name: 'TIMESTAMP', disallowNullValue: false)
+  @HiveField(12)
   final String? timeStamp;
 
   @override
@@ -425,6 +451,8 @@ class _$KizukiTemplateModelImpl implements _KizukiTemplateModel {
                 other.commonFlg == commonFlg) &&
             (identical(other.modifiedDateTime, modifiedDateTime) ||
                 other.modifiedDateTime == modifiedDateTime) &&
+            (identical(other.crtDateTime, crtDateTime) ||
+                other.crtDateTime == crtDateTime) &&
             (identical(other.timeStamp, timeStamp) ||
                 other.timeStamp == timeStamp));
   }
@@ -444,6 +472,7 @@ class _$KizukiTemplateModelImpl implements _KizukiTemplateModel {
       kizukiTemplate,
       commonFlg,
       modifiedDateTime,
+      crtDateTime,
       timeStamp);
 
   @JsonKey(ignore: true)
@@ -496,8 +525,11 @@ abstract class _KizukiTemplateModel implements KizukiTemplateModel {
       @JsonKey(name: 'ModifiedDateTime', disallowNullValue: false)
       @HiveField(10)
       final String? modifiedDateTime,
-      @JsonKey(name: 'TIMESTAMP', disallowNullValue: false)
+      @JsonKey(name: 'CrtDateTime', disallowNullValue: false)
       @HiveField(11)
+      final DateTime? crtDateTime,
+      @JsonKey(name: 'TIMESTAMP', disallowNullValue: false)
+      @HiveField(12)
       final String? timeStamp}) = _$KizukiTemplateModelImpl;
 
   factory _KizukiTemplateModel.fromJson(Map<String, dynamic> json) =
@@ -548,8 +580,12 @@ abstract class _KizukiTemplateModel implements KizukiTemplateModel {
   @HiveField(10)
   String? get modifiedDateTime;
   @override
-  @JsonKey(name: 'TIMESTAMP', disallowNullValue: false)
+  @JsonKey(name: 'CrtDateTime', disallowNullValue: false)
   @HiveField(11)
+  DateTime? get crtDateTime;
+  @override
+  @JsonKey(name: 'TIMESTAMP', disallowNullValue: false)
+  @HiveField(12)
   String? get timeStamp;
   @override
   @JsonKey(ignore: true)

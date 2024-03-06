@@ -92,11 +92,22 @@ class KizukiTemplateListWidget extends ConsumerWidget {
       error: (AppException e) {
         return Text(e.toString());
       },
-      loaded: (list) {
+      loaded: (items) {
         final dantaiId = ref.read(filterProvider).dantaiId ?? 0;
         final bunruis = getBunruis(dantaiId);
         //final searchText = ref.watch(kzukiSearchTextProvider);
         //final filteredList = filterList(list, searchText, bunruis);
+        final list = <KizukiTemplateModel>[...items];
+
+        list.sort((a, b) {
+          var compare = b.crtDateTime!.compareTo(a.crtDateTime!);
+          if (compare != 0) return compare;
+
+          compare = a.karuteBunruiCode!.compareTo(b.karuteBunruiCode!);
+          if (compare != 0) return compare;
+
+          return a.id!.compareTo(b.id!);
+        });
 
         return KizukiGridWidget(
           list: list,

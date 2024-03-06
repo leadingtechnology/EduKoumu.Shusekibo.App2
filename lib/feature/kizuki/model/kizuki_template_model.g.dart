@@ -29,14 +29,15 @@ class KizukiTemplateModelAdapter
       kizukiTemplate: fields[8] as String?,
       commonFlg: fields[9] as bool?,
       modifiedDateTime: fields[10] as String?,
-      timeStamp: fields[11] as String?,
+      crtDateTime: fields[11] as DateTime?,
+      timeStamp: fields[12] as String?,
     );
   }
 
   @override
   void write(BinaryWriter writer, _$KizukiTemplateModelImpl obj) {
     writer
-      ..writeByte(12)
+      ..writeByte(13)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -60,6 +61,8 @@ class KizukiTemplateModelAdapter
       ..writeByte(10)
       ..write(obj.modifiedDateTime)
       ..writeByte(11)
+      ..write(obj.crtDateTime)
+      ..writeByte(12)
       ..write(obj.timeStamp);
   }
 
@@ -92,6 +95,9 @@ _$KizukiTemplateModelImpl _$$KizukiTemplateModelImplFromJson(
       kizukiTemplate: json['KizukiTemplate'] as String?,
       commonFlg: json['CommonFlg'] as bool?,
       modifiedDateTime: json['ModifiedDateTime'] as String?,
+      crtDateTime: json['CrtDateTime'] == null
+          ? null
+          : DateTime.parse(json['CrtDateTime'] as String),
       timeStamp: json['TIMESTAMP'] as String?,
     );
 
@@ -109,5 +115,6 @@ Map<String, dynamic> _$$KizukiTemplateModelImplToJson(
       'KizukiTemplate': instance.kizukiTemplate,
       'CommonFlg': instance.commonFlg,
       'ModifiedDateTime': instance.modifiedDateTime,
+      'CrtDateTime': instance.crtDateTime?.toIso8601String(),
       'TIMESTAMP': instance.timeStamp,
     };

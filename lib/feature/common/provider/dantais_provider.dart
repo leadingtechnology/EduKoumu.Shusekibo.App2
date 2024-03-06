@@ -16,6 +16,8 @@ import 'package:kyoumutechou/feature/health/provider/health_reason_provider.dart
 import 'package:kyoumutechou/feature/health/provider/health_stamp_provider.dart';
 import 'package:kyoumutechou/feature/health/repository/health_reason_repository.dart';
 import 'package:kyoumutechou/feature/health/repository/health_stamp_repository.dart';
+import 'package:kyoumutechou/feature/home/provider/home_provider.dart';
+import 'package:kyoumutechou/feature/linkage/provider/contact_linkage_provider.dart';
 import 'package:kyoumutechou/shared/http/app_exception.dart';
 import 'package:kyoumutechou/shared/util/date_util.dart';
 
@@ -127,14 +129,14 @@ class DantaiNotifier extends StateNotifier<ApiState> {
         (e) => '${e.id}' == Boxes.getBox().get('dantaiId'),
       ).first;
     }catch(e) {
-      final dantaiList = Boxes.getDantais().values.toList();
-      dantaiList.sort((a, b) =>
+      final dantaiList = Boxes.getDantais().values.toList()
+      ..sort((a, b) =>
           '${a.organizationBunrui}${a.organizationKbn}${a.code}'.compareTo(
-              '${b.organizationBunrui}${b.organizationKbn}${b.code}',));
+              '${b.organizationBunrui}${b.organizationKbn}${b.code}',),);
       
       dantai = dantaiList.first;
     }
-   
+  
     // 団体ドローンダウンの初期値を設定する。
     ref.read(dantaiProvider.notifier).state = dantai;
 
@@ -155,14 +157,22 @@ class DantaiNotifier extends StateNotifier<ApiState> {
         dm == 'seat' ? PageType.seat : PageType.list; 
     
     // 保護者初期表示可否設定
-    final isCa = dotenv.env['IS_Contact_Allowed'];
-    ref.read(isContactAllowedProvider.notifier).state =
-        isCa == '1' ? true : false;
+    final isCa = dotenv.env['IS_Contact_Allowed'] ?? '';
+    ref.read(isContactAllowedProvider.notifier).state = isCa == '1' ;
 
     // 性別初期表示可否設定
     final strGender = dotenv.env['Display_Gender'];
-    final isGender = strGender == '1' ? true : false;
-    
+    final isGender = strGender == '1' ;
+
+    // 保護者連絡からの画面遷移先 (health / attendance);
+    final strNavigator = dotenv.env['Contact_Navigation'];
+    if (strNavigator == 'health'){
+      ref.read(contactNavigatorMenu.notifier).state = Menu.health;
+    }
+    if (strNavigator == 'attendance'){
+      ref.read(contactNavigatorMenu.notifier).state = Menu.attendance;
+    }
+
     ref.read(isGenderProvider.notifier).state = isGender;
   }
 

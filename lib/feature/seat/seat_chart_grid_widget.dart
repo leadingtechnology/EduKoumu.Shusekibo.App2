@@ -4,15 +4,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kyoumutechou/feature/boxes.dart';
 import 'package:kyoumutechou/feature/common/provider/common_provider.dart';
 import 'package:kyoumutechou/feature/common/widget/save2_button_widget.dart';
-import 'package:kyoumutechou/feature/common/widget/search_bar_widget.dart';
 import 'package:kyoumutechou/feature/common/widget/toast_helper.dart';
 import 'package:kyoumutechou/feature/linkage/widget/lectern_widget.dart';
 import 'package:kyoumutechou/feature/seat/provider/seat_chart_provider.dart';
-import 'package:kyoumutechou/feature/seat/widget/seat_bar_widget.dart';
+import 'package:kyoumutechou/feature/seat/widget/seat_bar_search_widget.dart';
 import 'package:kyoumutechou/feature/seat/widget/seat_chart_meibo_list_widget.dart';
 import 'package:kyoumutechou/feature/seat/widget/seat_chart_meibo_stack_widget.dart';
 import 'package:kyoumutechou/helpers/widgets/my_spacing.dart';
-import 'package:kyoumutechou/helpers/widgets/my_text.dart';
 import 'package:kyoumutechou/shared/http/app_exception.dart';
 
 class SeatChartGridWidget extends ConsumerStatefulWidget  {
@@ -43,7 +41,6 @@ class _SeatChartGridWidgetState extends ConsumerState<SeatChartGridWidget> {
   void dispose() {
     super.dispose();
   }
-  
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +70,7 @@ class _SeatChartGridWidgetState extends ConsumerState<SeatChartGridWidget> {
     return Column(
       children: [
         // 010.検索バー
-        SeatBarWidget(len: len),
+        SeatSearchBarWidget(len: len),
         
         MySpacing.height(8),
 

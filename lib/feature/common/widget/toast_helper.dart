@@ -3,7 +3,12 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 class ToastHelper {
-  static void showToast(BuildContext context, String text) {
+  static void showToast(
+    BuildContext context, 
+    String text,
+    {Key? key, int seconds = 2,}
+  ) {
+    
     const style = TextStyle(color: Colors.white, fontSize: 16);
 
     final Widget widget = Center(
@@ -25,6 +30,6 @@ class ToastHelper {
 
     Overlay.of(context).insert(entry);
 
-    Timer(const Duration(seconds: 1), entry.remove);
+    Timer(Duration(seconds: seconds), entry.remove);
   }
 }
