@@ -26,7 +26,7 @@ class AttendanceStampUnregistWidget extends ConsumerWidget {
           fillColor: Theme.of(context).colorScheme.secondaryContainer,
           onPressed: (int index) {
             ref.read(attendanceStampProvider.notifier).state = stamps[index];
-            
+
             ref.read(attendanceReason1Provider.notifier).state =
                 const AttendanceReasonModel();
 

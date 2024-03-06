@@ -106,6 +106,7 @@ class SeatChartSeitoForStackWidget extends ConsumerWidget {
                     url,
                     headers: {'Authorization': 'Bearer $accessToken'},
                   ),
+                  backgroundColor: Colors.white,
                   radius: 20,
                 ),
                 Expanded(

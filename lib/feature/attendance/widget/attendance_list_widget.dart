@@ -42,7 +42,7 @@ class _AttendanceListWidgetState extends ConsumerState<AttendanceListWidget> {
       AttendanceMeiboModel e1;
       try {
         e1 = meibos1
-          .where((e) => e.studentNumber == e0.studentNumber)
+          .where((e) => e.studentKihonId == e0.studentKihonId)
           .toList()
           .first;
       } catch (ex) {
@@ -52,7 +52,7 @@ class _AttendanceListWidgetState extends ConsumerState<AttendanceListWidget> {
       AttendanceMeiboModel e2;
       try {
         e2 = meibos2
-          .where((e) => e.studentNumber == e0.studentNumber)
+          .where((e) => e.studentKihonId == e0.studentKihonId)
           .toList()
           .first;
       } catch (ex) {
@@ -134,6 +134,7 @@ class _AttendanceListWidgetState extends ConsumerState<AttendanceListWidget> {
             'tenshutsuSumiFlg':
                 PlutoCell(value: e0.tenshutsuSumiFlg == true ? 1 : 0),
             'gakunen': PlutoCell(value: e0.gakunen),
+            'studentKihonId': PlutoCell(value: e0.studentKihonId),
           },
         );
         break;
@@ -164,6 +165,7 @@ class _AttendanceListWidgetState extends ConsumerState<AttendanceListWidget> {
             'tenshutsuSumiFlg':
                 PlutoCell(value: e0.tenshutsuSumiFlg == true ? 1 : 0),
             'gakunen': PlutoCell(value: e0.gakunen),
+            'studentKihonId': PlutoCell(value: e0.studentKihonId),
           },
         );
         break;
@@ -185,6 +187,7 @@ class _AttendanceListWidgetState extends ConsumerState<AttendanceListWidget> {
             'tenshutsuSumiFlg':
                 PlutoCell(value: e0.tenshutsuSumiFlg == true ? 1 : 0),
             'gakunen': PlutoCell(value: e0.gakunen),
+            'studentKihonId':PlutoCell(value: e0.studentKihonId),
           },
         );
         break;
@@ -583,12 +586,24 @@ class _AttendanceListWidgetState extends ConsumerState<AttendanceListWidget> {
         hide: true,
         type: PlutoColumnType.text(),
       ),
+      PlutoColumn(
+        title: 'StudentKihonId',
+        field: 'studentKihonId',
+        hide: true,
+        type: PlutoColumnType.text(),
+      ),
     ];
   }
 
   @override
   void initState() {
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    attendanceGlobalKey = GlobalKey();
   }
 
   Future<void> setReason(PlutoRow row) async {
@@ -598,15 +613,15 @@ class _AttendanceListWidgetState extends ConsumerState<AttendanceListWidget> {
     final reason1 = ref.read(attendanceReason1Provider);
     final reason2 = ref.read(attendanceReason2Provider);
 
-    final studentNumber = row.cells['shusekiNo']!.value.toString();
-    if (studentNumber.isEmpty) return;
+    final studentKihonId = row.cells['studentKihonId']!.value.toString();
+    if (studentKihonId.isEmpty) return;
 
     final meibos = Boxes.getAttendanceMeibo().values.toList();
     AttendanceMeiboModel meibo;
     try {
       meibo = meibos
           .where(
-            (e) => e.studentNumber == studentNumber,
+            (e) => e.studentKihonId == int.parse(studentKihonId),
           )
           .toList()
           .first;
@@ -689,12 +704,6 @@ class _AttendanceListWidgetState extends ConsumerState<AttendanceListWidget> {
   //     row.cells['reason2']!.value = reason2;
   //   }
   // }
-
-  @override
-  void dispose() {
-    super.dispose();
-    attendanceGlobalKey = GlobalKey();
-  }
 
   @override
   Widget build(BuildContext context) {

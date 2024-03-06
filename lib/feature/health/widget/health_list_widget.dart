@@ -5,7 +5,6 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:kyoumutechou/feature/boxes.dart';
 import 'package:kyoumutechou/feature/common/provider/filter_provider.dart';
 import 'package:kyoumutechou/feature/common/provider/tokobis_provider.dart';
-import 'package:kyoumutechou/feature/common/widget/toast_helper.dart';
 import 'package:kyoumutechou/feature/health/model/health_meibo_model.dart';
 import 'package:kyoumutechou/feature/health/model/health_status_model.dart';
 import 'package:kyoumutechou/feature/health/provider/health_meibo_provider.dart';
@@ -43,7 +42,7 @@ class _HealthListWidgetState extends ConsumerState<HealthListWidget> {
       HealthMeiboModel e1;
       try{
         e1 = meibos1
-          .where((e) => e.studentNumber == e0.studentNumber)
+          .where((e) => e.studentKihonId == e0.studentKihonId)
           .toList()
           .first;
       }catch(e){
@@ -53,7 +52,7 @@ class _HealthListWidgetState extends ConsumerState<HealthListWidget> {
       HealthMeiboModel e2;
       try {
         e2 = meibos2
-            .where((e) => e.studentNumber == e0.studentNumber)
+            .where((e) => e.studentKihonId == e0.studentKihonId)
             .toList()
             .first;
       } catch (e) {
@@ -133,6 +132,7 @@ class _HealthListWidgetState extends ConsumerState<HealthListWidget> {
             'tenshutsuSumiFlg':
                 PlutoCell(value: e0.tenshutsuSumiFlg == true ? 1 : 0),
             'gakunen': PlutoCell(value: e0.gakunen),
+            'studentKihonId': PlutoCell(value: e0.studentKihonId),
           },
         );
         break;
@@ -159,6 +159,7 @@ class _HealthListWidgetState extends ConsumerState<HealthListWidget> {
             'tenshutsuSumiFlg':
                 PlutoCell(value: e0.tenshutsuSumiFlg == true ? 1 : 0),
             'gakunen': PlutoCell(value: e0.gakunen),
+            'studentKihonId': PlutoCell(value: e0.studentKihonId),
           },
         );
         break;
@@ -179,6 +180,7 @@ class _HealthListWidgetState extends ConsumerState<HealthListWidget> {
             'tenshutsuSumiFlg':
                 PlutoCell(value: e0.tenshutsuSumiFlg == true ? 1 : 0),
             'gakunen': PlutoCell(value: e0.gakunen),
+            'studentKihonId': PlutoCell(value: e0.studentKihonId),
           },
         );
         break;
@@ -566,19 +568,18 @@ class _HealthListWidgetState extends ConsumerState<HealthListWidget> {
         hide: true,
         type: PlutoColumnType.text(),
       ),
+      PlutoColumn(
+        title: 'StudentKihonId',
+        field: 'studentKihonId',
+        hide: true,
+        type: PlutoColumnType.text(),
+      ),
     ];
   }
 
   @override
   void initState() {
     super.initState();
-
-    // WidgetsBinding.instance.addPostFrameCallback((_) {
-    //   final list = Boxes.getHealthMeiboBox().values.toList();
-    //   if (list.isEmpty) {
-    //     ToastHelper.showToast(context, '　該当データがありません　');
-    //   }
-    // });
   }
 
   @override
@@ -593,15 +594,15 @@ class _HealthListWidgetState extends ConsumerState<HealthListWidget> {
     final reason1 = ref.read(healthReason1Provider);
     final reason2 = ref.read(healthReason2Provider);
 
-    final studentNumber = row.cells['shusekiNo']!.value.toString();
-    if (studentNumber.isEmpty) return;
+    final studentKihonId = row.cells['studentKihonId']!.value.toString();
+    if (studentKihonId.isEmpty) return;
 
     final meibos = Boxes.getHealthMeiboBox().values.toList();
     HealthMeiboModel meibo;
     try {
       meibo = meibos
           .where(
-            (e) => e.studentNumber == studentNumber,
+            (e) => e.studentKihonId == int.parse(studentKihonId),
           )
           .toList()
           .first;

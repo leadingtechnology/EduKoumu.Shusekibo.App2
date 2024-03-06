@@ -48,7 +48,7 @@ class SeatChartSeitoForListWidget extends ConsumerWidget {
       height: 80,
       padding: const EdgeInsets.fromLTRB(4, 4, 4, 4),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Colors.white, 
         boxShadow: [
           BoxShadow(
             color: isOn
@@ -74,6 +74,7 @@ class SeatChartSeitoForListWidget extends ConsumerWidget {
                 url,
                 headers: {'Authorization': 'Bearer $accessToken'},
               ),
+              backgroundColor: Colors.white,
               radius: 20,
             ),
             Expanded(

@@ -94,6 +94,7 @@ class _AttendanceTimedListWidgetState
         'tenshutsuSumiFlg':
             PlutoCell(value: e0.tenshutsuSumiFlg == true ? 1 : 0),
         'gakunen': PlutoCell(value: e0.gakunen),
+        'studentKihonId': PlutoCell(value: e0.studentKihonId),
       },
     );
 
@@ -294,6 +295,12 @@ class _AttendanceTimedListWidgetState
         hide: true,
         type: PlutoColumnType.text(),
       ),
+      PlutoColumn(
+        title: 'StudentKihonId',
+        field: 'studentKihonId',
+        hide: true,
+        type: PlutoColumnType.text(),
+      ),
     ];
   }
 
@@ -316,15 +323,15 @@ class _AttendanceTimedListWidgetState
     final reason1 = ref.read(attendanceReason1Provider);
     final reason2 = ref.read(attendanceReason2Provider);
 
-    final studentNumber = row.cells['shusekiNo']!.value.toString();
-    if (studentNumber.isEmpty) return;
+    final studentKihonId = row.cells['studentKihonId']!.value.toString();
+    if (studentKihonId.isEmpty) return;
 
     final meibos = Boxes.getAttendanceTimedMeibo().values.toList();
     AttendanceTimedMeiboModel meibo;
     try {
       meibo = meibos
           .where(
-            (e) => e.studentNumber == studentNumber,
+            (e) => e.studentKihonId == int.parse(studentKihonId),
           )
           .toList()
           .first;

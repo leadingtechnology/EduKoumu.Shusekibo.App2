@@ -29,7 +29,8 @@ class AttendanceSeatWidget extends ConsumerWidget {
     final reason2 = ref.watch(attendanceReason2Provider);
     var isEditable = ref.watch(isTokobiProvider);
 
-    Color bkColor, textColor;
+    Color bkColor;
+    Color textColor;
     final url = '$_baseUrl${meibo.photoUrl}';
     final accessToken = Hive.box<String>('shusekibo').get('token').toString();
 

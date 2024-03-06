@@ -17,7 +17,7 @@ import 'package:pluto_grid/pluto_grid.dart';
 // ignore: must_be_immutable
 class SeatChartListWidget extends ConsumerWidget {
   SeatChartListWidget({
-    required this.scaffoldKey, 
+    required this.scaffoldKey,
     super.key,
   });
 
@@ -72,8 +72,8 @@ class SeatChartListWidget extends ConsumerWidget {
         renderer: (rendererContext) {
           final id = rendererContext.row.cells['Id']!.value as int;
 
-          final seatPatternName = 
-          rendererContext.row.cells['SeatPatternName']!.value;
+          final seatPatternName =
+              rendererContext.row.cells['SeatPatternName']!.value;
 
           return GestureDetector(
             onTap: () async {
@@ -130,8 +130,9 @@ class SeatChartListWidget extends ConsumerWidget {
         enableDropToResize: false,
         enableSorting: false,
         renderer: (rendererContext) {
-          final seatOrder=rendererContext.row.cells['SeatOrder']!.value as int;
-          return Text(seatConfigurations[seatOrder-1].name);
+          final seatOrder =
+              rendererContext.row.cells['SeatOrder']!.value as int;
+          return Text(seatConfigurations[seatOrder - 1].name);
         },
       ),
       // 6
@@ -211,7 +212,6 @@ class SeatChartListWidget extends ConsumerWidget {
         hide: true,
         type: PlutoColumnType.date(),
       ),
-
     ];
   }
 
@@ -220,7 +220,7 @@ class SeatChartListWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(seatSettingListProvider);
-    
+
     return state.when(
       loading: () => const Center(child: CircularProgressIndicator()),
       error: (error) => Center(child: Text(error.toString())),
@@ -229,7 +229,7 @@ class SeatChartListWidget extends ConsumerWidget {
           valueListenable: Boxes.getSeatSetting().listenable(),
           builder: (context, Box<SeatSettingModel> box, _) {
             final settings = box.values.toList().cast<SeatSettingModel>();
-            
+
             // ignore: cascade_invocations
             settings.sort(
               (a, b) => '${a.crtDateTime}'.compareTo('${a.crtDateTime}'),
@@ -245,10 +245,20 @@ class SeatChartListWidget extends ConsumerWidget {
                   'Row': PlutoCell(value: e.row),
                   'Column': PlutoCell(value: e.column),
                   'SeatOrder': PlutoCell(value: e.seatOrder),
-                  'StartDate': PlutoCell(value: e.startDate == null ? '' 
-                    :DateUtil.getJapaneseDate(e.startDate ?? DateTime.now(),),),
-                  'EndDate': PlutoCell(value: e.endDate == null ? '' 
-                    :DateUtil.getJapaneseDate(e.endDate ?? DateTime.now(),),),
+                  'StartDate': PlutoCell(
+                    value: e.startDate == null
+                        ? ''
+                        : DateUtil.getJapaneseDate(
+                            e.startDate ?? DateTime.now(),
+                          ),
+                  ),
+                  'EndDate': PlutoCell(
+                    value: e.endDate == null
+                        ? ''
+                        : DateUtil.getJapaneseDate(
+                            e.endDate ?? DateTime.now(),
+                          ),
+                  ),
                   'actions': PlutoCell(value: 'actions'),
                   // 以下は非表示カラム
                   'sDate': PlutoCell(value: e.startDate),
@@ -257,7 +267,7 @@ class SeatChartListWidget extends ConsumerWidget {
               );
             }).toList();
 
-            // 
+            //
             return showList(context);
           },
         );
@@ -272,7 +282,13 @@ class SeatChartListWidget extends ConsumerWidget {
         MySpacing.height(8),
         Row(
           children: [
-            MyText.bodyLarge('座席表の設定', fontWeight: 900),
+            const Text(
+              '座席表の設定',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+              ),
+            ),
             Expanded(child: Container()),
             TextButton.icon(
               onPressed: () async {
@@ -282,7 +298,7 @@ class SeatChartListWidget extends ConsumerWidget {
               label: const Text('新規追加'),
               style: ElevatedButton.styleFrom(
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8), 
+                  borderRadius: BorderRadius.circular(8),
                 ),
                 side: const BorderSide(
                   color: Colors.black54,
@@ -290,7 +306,6 @@ class SeatChartListWidget extends ConsumerWidget {
               ),
             ),
           ],
-          
         ),
         MySpacing.height(8),
         SizedBox(
@@ -314,13 +329,13 @@ class SeatChartListWidget extends ConsumerWidget {
   }
 
   Future<void> _handlePressActionButton(BuildContext context, int id) async {
-
     await DialogUtil.show(
       context: context,
       builder: (BuildContext context) {
-        return SeatSettingDialog(id: id,);
+        return SeatSettingDialog(
+          id: id,
+        );
       },
     );
-  }  
-
+  }
 }

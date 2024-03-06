@@ -78,7 +78,9 @@ class HomeHealthListNotifier extends _$HomeHealthListNotifier {
 
     final healthLists = <List<HomeHealthModel>>[[], [], []];
     if (maps.isNotEmpty) {
-      final sortedKeys = maps.keys.toList()..sort();
+      final sortedKeys = maps.keys.toList()
+      ..sort((a, b) => b.compareTo(a));
+      
       for (var i = 0; i < sortedKeys.length; i++) {
         final key = sortedKeys[i];
         final index = i % 3;

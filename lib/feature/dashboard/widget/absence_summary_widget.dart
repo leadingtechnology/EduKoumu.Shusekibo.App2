@@ -193,7 +193,7 @@ class _AbsenceSummaryWidgetState extends ConsumerState<AbsenceSummaryWidget> {
 
       // 理由1
       PlutoColumn(
-        title: '理由1',
+        title: '事由1',
         field: 'reason1',
         readOnly: true,
         enableSorting: false,
@@ -211,7 +211,7 @@ class _AbsenceSummaryWidgetState extends ConsumerState<AbsenceSummaryWidget> {
 
       // 理由2
       PlutoColumn(
-        title: '理由2',
+        title: '事由2',
         field: 'reason2',
         readOnly: true,
         enableSorting: false,

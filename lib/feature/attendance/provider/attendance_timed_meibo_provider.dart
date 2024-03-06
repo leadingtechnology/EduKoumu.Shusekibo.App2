@@ -8,8 +8,6 @@ import 'package:kyoumutechou/feature/boxes.dart';
 import 'package:kyoumutechou/feature/common/model/filter_model.dart';
 import 'package:kyoumutechou/feature/common/provider/filter_provider.dart';
 import 'package:kyoumutechou/feature/common/state/api_state.dart';
-import 'package:kyoumutechou/shared/http/api_response.dart';
-import 'package:kyoumutechou/shared/http/app_exception.dart';
 
 final attendanceTimedMeiboListProvider = 
     StateNotifierProvider<AttendanceTimedMeiboListProvider, ApiState>((ref) {
@@ -94,8 +92,17 @@ class AttendanceTimedMeiboListProvider extends StateNotifier<ApiState> {
     }
 
     //clear all and set one
-    if (meibo.jokyoList![0].shukketsuBunrui == '50' ||
-        meibo.jokyoList![0].shukketsuBunrui == '60'
+    var jokyo = meibo.jokyoList![0];
+    try {
+      jokyo = meibo.jokyoList!
+          .where((e) => e.jigenIdx == filter.jigenIdx)
+          .toList()
+          .first;
+    } catch (ex) {
+      //
+    }
+    if (jokyo.shukketsuBunrui == '50' ||
+        jokyo.shukketsuBunrui == '60'
     ) {
 
       var meibos = Boxes.getAttendanceTimedMeibo().values.toList();
