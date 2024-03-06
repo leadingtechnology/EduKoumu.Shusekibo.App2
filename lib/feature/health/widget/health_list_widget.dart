@@ -637,17 +637,21 @@ class _HealthListWidgetState extends ConsumerState<HealthListWidget> {
     //clear all and set one
     if (row.cells['mark']!.value.toString().startsWith('臨')) {
       for (final r in stateManager.rows) {
-        if (r.sortIdx == row.sortIdx) {
-          r.cells['mark']!.value = stamp.jokyoCd == '999'
-              ? ''
-              : '${stamp.jokyoNmRyaku}${reason1.jiyuNmRyaku ?? ''}';
+        if (r.cells['gakunen']!.value.toString() == gakunen &&
+            r.cells['isEditable']!.value == 1) {
 
-          r.cells['reason1']!.value = reason1.jiyuNmSeishiki ?? '';
-          r.cells['reason2']!.value = reason2.jiyuNmSeishiki ?? '';
-        } else {
-          r.cells['mark']!.value = '';
-          r.cells['reason1']!.value = '';
-          r.cells['reason2']!.value = '';
+          if (r.sortIdx == row.sortIdx) {
+            r.cells['mark']!.value = stamp.jokyoCd == '999'
+                ? ''
+                : '${stamp.jokyoNmRyaku}${reason1.jiyuNmRyaku ?? ''}';
+
+            r.cells['reason1']!.value = reason1.jiyuNmSeishiki ?? '';
+            r.cells['reason2']!.value = reason2.jiyuNmSeishiki ?? '';
+          } else {
+            r.cells['mark']!.value = '';
+            r.cells['reason1']!.value = '';
+            r.cells['reason2']!.value = '';
+          }
         }
       }
       stateManager.notifyListeners();

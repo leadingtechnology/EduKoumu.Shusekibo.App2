@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kyoumutechou/feature/boxes.dart';
+import 'package:kyoumutechou/feature/common/provider/common_provider.dart';
 import 'package:kyoumutechou/feature/common/provider/filter_provider.dart';
 import 'package:kyoumutechou/feature/common/provider/seat_chart_pattern_provider.dart';
 import 'package:kyoumutechou/feature/seat/model/seat_setting_model.dart';
 import 'package:kyoumutechou/feature/seat/provider/seat_chart_provider.dart';
 import 'package:kyoumutechou/feature/seat/provider/seat_setting_provider.dart';
 import 'package:kyoumutechou/helpers/widgets/my_spacing.dart';
+import 'package:kyoumutechou/shared/util/date_util.dart';
 
 class SeatChartPatternWidget extends ConsumerStatefulWidget {
   const SeatChartPatternWidget({super.key});
@@ -28,28 +30,29 @@ class SeatChartPatternState extends ConsumerState<SeatChartPatternWidget> {
       loading: Container.new,
       error: (error) => Center(child: Text(error.toString())),
       loaded: () {
-          final filter = ref.watch(filterProvider);
-          final settings =
-              Boxes.getSeatSetting().values.toList().cast<SeatSettingModel>();
+        final filter = ref.watch(filterProvider);
+        final settings =
+            Boxes.getSeatSetting().values.toList().cast<SeatSettingModel>();
 
-          if (settings.isEmpty) {
-            return Container();
-          }
+        if (settings.isEmpty) {
+          return Container();
+        }
 
-          try {
-            // ignore: cascade_invocations
-            settings
-              ..removeWhere(
-                (e) =>
-                    e.startDate!.isAfter(filter.targetDate!) &&
-                    e.endDate!.isBefore(filter.targetDate!),
-              )
-              ..sort((a, b) => a.startDate!.compareTo(b.startDate!));
-          } catch (e) {
-            //
-          }
+        try {
+          settings
+            ..removeWhere(
+              (e) => !DateUtil.isDateInRange(
+                filter.targetDate!,
+                e.startDate,
+                e.endDate,
+              ),
+            )
+            ..sort((a, b) => a.startDate!.compareTo(b.startDate!));
+        } catch (e) {
+          //
+        }
 
-          return _buildGridItem(context, settings);
+        return _buildGridItem(context, settings);
       },
     );
   }
@@ -102,6 +105,25 @@ class SeatChartPatternState extends ConsumerState<SeatChartPatternWidget> {
             ),
           ),
         ),
+        MySpacing.width(8),
+        ElevatedButton.icon(
+          onPressed: () {
+            ref.read(lecternPositionProvider.notifier).state =
+                ref.read(lecternPositionProvider) == LecternPosition.top
+                    ? LecternPosition.bottom
+                    : LecternPosition.top;
+          },
+          icon: const Icon(Icons.swap_vert_outlined),
+          label: const Text('表示回転'),
+          style: ElevatedButton.styleFrom(
+            side: BorderSide(
+              color: Colors.green.shade200, // 枠線の色
+            ),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+          ),
+        ),
       ],
     );
   }
@@ -114,6 +136,5 @@ class SeatChartPatternState extends ConsumerState<SeatChartPatternWidget> {
     // 2) 座席設定IDにより、座席表の詳細設定を取得する(hive box)
     await ref.read(seatChartListProvider.notifier).fetch(newValue.id ?? 0);
     ref.read(seatSettingPatternProvider.notifier).state = newValue;
-
   }
 }

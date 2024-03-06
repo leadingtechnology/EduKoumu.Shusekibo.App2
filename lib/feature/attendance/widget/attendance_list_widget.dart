@@ -655,18 +655,23 @@ class _AttendanceListWidgetState extends ConsumerState<AttendanceListWidget> {
     //clear all and set one
     if (row.cells['mark']!.value == '臨１' || row.cells['mark']!.value == '臨２') {
       for (final r in stateManager.rows) {
-        if (r.sortIdx == row.sortIdx) {
-          r.cells['mark']!.value = stamp.shukketsuJokyoCd == '999'
-              ? ''
-              : '${stamp.shukketsuJokyoNmRyaku}';
+        if (r.cells['gakunen']!.value.toString() == gakunen &&
+            r.cells['isEditable']!.value == 1) {
+              
+          if (r.sortIdx == row.sortIdx) {
+            r.cells['mark']!.value = stamp.shukketsuJokyoCd == '999'
+                ? ''
+                : '${stamp.shukketsuJokyoNmRyaku}';
 
-          r.cells['reason1']!.value = reason1.shukketsuJiyuNmSeishiki ?? '';
-          r.cells['reason2']!.value = reason2.shukketsuJiyuNmSeishiki ?? '';
-        } else {
-          r.cells['mark']!.value = '';
-          r.cells['reason1']!.value = '';
-          r.cells['reason2']!.value = '';
+            r.cells['reason1']!.value = reason1.shukketsuJiyuNmSeishiki ?? '';
+            r.cells['reason2']!.value = reason2.shukketsuJiyuNmSeishiki ?? '';
+          } else {
+            r.cells['mark']!.value = '';
+            r.cells['reason1']!.value = '';
+            r.cells['reason2']!.value = '';
+          }
         }
+        
       }
       stateManager.notifyListeners();
       return;

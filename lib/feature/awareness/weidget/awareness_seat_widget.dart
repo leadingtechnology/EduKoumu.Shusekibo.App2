@@ -64,8 +64,14 @@ class AwarenessSeatWidget extends ConsumerWidget {
                             child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            Text(meibo.shussekiNo ?? '',
-                                style: const TextStyle(fontSize: 12),),
+                            Container(
+                                alignment: Alignment.centerRight,
+                                padding: const EdgeInsets.fromLTRB(0, 0, 18, 0),
+                                child: Text(
+                                  meibo.shussekiNo ?? '',
+                                  style: const TextStyle(fontSize: 12),
+                                ),
+                              ),
                             Text('${meibo.studentName}',
                                 style: const TextStyle(fontSize: 14),),
                           ],

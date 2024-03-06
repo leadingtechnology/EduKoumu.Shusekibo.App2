@@ -74,7 +74,19 @@ class DateUtil {
   static String getMonthDay(DateTime? date) {
     final targetDate = date ?? DateTime.now();
     return DateFormat('M月d日').format(targetDate);
-  }  
+  }
+
+  // YYYY/MM/DD ~ YYYY/MM/DD の範囲内かどうか
+  static bool isDateInRange(DateTime date, DateTime? start, DateTime? end) {
+    if (start == null || end == null) return false;
+
+    final startDate = DateTime(start.year, start.month, start.day);
+    final endDate = DateTime(end.year, end.month, end.day);
+    final targetDate = DateTime(date.year, date.month, date.day);
+
+    return targetDate.isAfter(startDate.subtract(const Duration(days: 1))) &&
+        targetDate.isBefore(endDate.add(const Duration(days: 1)));
+  }
 
 //  static List<DateTime> getTokobis(){
 //    final now = DateTime.now();
@@ -133,7 +145,6 @@ class DateUtil {
   static Tuple2<DateTime, DateTime> calculateFiscalYear(
     DateTime? date,
   ) {
-
     int startYear;
     DateTime fiscalYearStart;
     DateTime fiscalYearEnd;

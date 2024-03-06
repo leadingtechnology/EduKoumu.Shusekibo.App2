@@ -23,31 +23,24 @@ extends ConsumerState<SeatChartMeiboListWidget> {
   void initState() {
     super.initState();
   }
+
+  void sortMeibos(List<AttendanceMeiboModel> meibos) {
+    meibos.sort((a, b) {
+      final numA = a.studentNumber != null
+          ? int.tryParse(a.studentNumber!) ?? double.infinity
+          : double.infinity;
+      final numB = b.studentNumber != null
+          ? int.tryParse(b.studentNumber!) ?? double.infinity
+          : double.infinity;
+
+      return numA.compareTo(numB);
+    });
+  }
   
   @override
   Widget build(BuildContext context) {
     meibos = ref.watch(scMeibosListProvider);
-    meibos.sort((AttendanceMeiboModel a, AttendanceMeiboModel b) {
-      var inta = 0;
-      try {
-        inta = int.parse('${a.studentNumber!}');
-      } catch (e) {
-        inta = 0;
-      }
-
-      if (inta == 0) {
-        return -1;
-      }
-      
-      var intb = 0;
-      try {
-        intb = int.parse(b.studentNumber!);
-      } catch (e) {
-        intb = 0;
-      }
-      
-      return inta.compareTo(intb);
-    });
+    sortMeibos(meibos);
 
     return SizedBox(
       height: 80,

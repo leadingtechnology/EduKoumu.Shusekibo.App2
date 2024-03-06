@@ -54,7 +54,6 @@ class SeatSettingListProvider extends StateNotifier<ApiState> {
       state = response;
     }
 
-    
   }
 
   // 初期値を設定する
@@ -71,7 +70,7 @@ class SeatSettingListProvider extends StateNotifier<ApiState> {
       final box = Boxes.getSeatSetting();
       final settings = box.values.toList()
         ..removeWhere(
-          (e) => e.startDate!.isBefore(tarDate) && e.endDate!.isAfter(tarDate),
+          (e) => !DateUtil.isDateInRange(tarDate, e.startDate, e.endDate),
         )
         ..sort((a, b) => a.id!.compareTo(b.id!));
       
@@ -87,6 +86,8 @@ class SeatSettingListProvider extends StateNotifier<ApiState> {
     ref.read(seatSettingPatternProvider.notifier).state = setting;
     return setting;
   }
+
+
 
   // 削除処理
   Future<void> delete(int id) async {

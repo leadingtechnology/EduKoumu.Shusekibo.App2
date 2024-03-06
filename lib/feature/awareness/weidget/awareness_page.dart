@@ -8,12 +8,10 @@ import 'package:kyoumutechou/feature/awareness/weidget/awareness_list_page.dart'
 import 'package:kyoumutechou/feature/awareness/weidget/awareness_seat_page.dart';
 import 'package:kyoumutechou/feature/awareness/weidget/dialog/awareness_regist_dialog.dart';
 import 'package:kyoumutechou/feature/boxes.dart';
-import 'package:kyoumutechou/feature/common/provider/common_provider.dart';
 import 'package:kyoumutechou/feature/common/widget/dialog_util.dart';
 import 'package:kyoumutechou/feature/common/widget/filter_widget.dart';
 import 'package:kyoumutechou/feature/common/widget/seat_chart_pattern_widget.dart';
 import 'package:kyoumutechou/feature/common/widget/toast_helper.dart';
-import 'package:kyoumutechou/feature/seat/provider/seat_chart_provider.dart';
 import 'package:kyoumutechou/helpers/theme/app_theme.dart';
 import 'package:kyoumutechou/helpers/widgets/my_spacing.dart';
 
@@ -120,26 +118,6 @@ class AwarenessPageState extends ConsumerState<AwarenessPage>
                 children: [
                   Expanded(child: Container()),
                   const SeatChartPatternWidget(),
-                  MySpacing.width(8),
-                  ElevatedButton.icon(
-                      onPressed: () {
-                        ref.read(lecternPositionProvider.notifier).state =
-                            ref.read(lecternPositionProvider) ==
-                                    LecternPosition.top
-                                ? LecternPosition.bottom
-                                : LecternPosition.top;
-                      },
-                      icon: const Icon(Icons.swap_vert_outlined),
-                      label: const Text('表示回転'),
-                      style: ElevatedButton.styleFrom(
-                        side: BorderSide(
-                          color: Colors.green.shade200, // 枠線の色
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ),
-                    ),
                   MySpacing.width(30),
                   OutlinedButton.icon(
                     onPressed: count <= 0

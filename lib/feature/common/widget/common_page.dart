@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kyoumutechou/feature/attendance/widget/attendance_stamp_reason_widget.dart';
+import 'package:kyoumutechou/feature/boxes.dart';
 import 'package:kyoumutechou/feature/common/provider/common_provider.dart';
+import 'package:kyoumutechou/feature/common/provider/filter_provider.dart';
 import 'package:kyoumutechou/feature/common/provider/tokobis_provider.dart';
 import 'package:kyoumutechou/feature/common/widget/filter_widget.dart';
 import 'package:kyoumutechou/feature/common/widget/search_bar_widget.dart';
@@ -12,6 +14,7 @@ import 'package:kyoumutechou/feature/linkage/widget/lectern_widget.dart';
 import 'package:kyoumutechou/feature/seat/provider/seat_chart_provider.dart';
 import 'package:kyoumutechou/helpers/theme/app_theme.dart';
 import 'package:kyoumutechou/helpers/widgets/my_spacing.dart';
+import 'package:kyoumutechou/shared/util/date_util.dart';
 
 class CommonPage extends ConsumerWidget {
   const CommonPage({
@@ -38,6 +41,23 @@ class CommonPage extends ConsumerWidget {
     final menuId = ref.watch(menuProvider);
     final isTokobi = ref.watch(isTokobiProvider);
     final lecternPosition = ref.watch(lecternPositionProvider);
+
+    final filter = ref.watch(filterProvider);
+    final box = Boxes.getSeatSetting();
+    var settingsLength = 0; 
+    try {
+      final settings = box.values.toList()
+        ..removeWhere(
+          (e) => !DateUtil.isDateInRange(
+            filter.targetDate!,
+            e.startDate,
+            e.endDate,
+          ),
+        );
+      settingsLength = settings.length;
+    } catch (e) {
+      //
+    }
 
     return Scaffold(
       key: scaffoldKey,
@@ -125,29 +145,8 @@ class CommonPage extends ConsumerWidget {
                     ],
                   ),
                   Expanded(child: Container()),
-                  if (buttomName == '一覧') ...[
+                  if (buttomName == '一覧' && settingsLength > 0)
                     const SeatChartPatternWidget(),
-                    MySpacing.width(8),
-                    ElevatedButton.icon(
-                      onPressed: () {
-                        ref.read(lecternPositionProvider.notifier).state =
-                            ref.read(lecternPositionProvider) ==
-                                    LecternPosition.top
-                                ? LecternPosition.bottom
-                                : LecternPosition.top;
-                      },
-                      icon: const Icon(Icons.swap_vert_outlined),
-                      label: const Text('表示回転'),
-                      style: ElevatedButton.styleFrom(
-                        side: BorderSide(
-                          color: Colors.green.shade200, // 枠線の色
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ),
-                    ),
-                  ],
                   MySpacing.width(30),
                   saveWidget,
                 ],
