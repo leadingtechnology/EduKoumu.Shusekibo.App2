@@ -4,6 +4,7 @@ import 'package:kyoumutechou/feature/attendance/repository/attendance_meibo_repo
 import 'package:kyoumutechou/feature/boxes.dart';
 import 'package:kyoumutechou/feature/common/model/filter_model.dart';
 import 'package:kyoumutechou/feature/common/provider/common_provider.dart';
+import 'package:kyoumutechou/feature/common/provider/filter_provider.dart';
 import 'package:kyoumutechou/feature/common/state/api_state.dart';
 import 'package:kyoumutechou/feature/seat/repository/seat_chart_repository.dart';
 import 'package:kyoumutechou/feature/seat/widget/seat_chart_seito_for_stack_widget.dart';
@@ -53,6 +54,8 @@ final scMeibosStackProvider = StateProvider<List<SeatChartSeitoForStackWidget>>(
 
 final seatChartListProvider =
     StateNotifierProvider<SeatChartListProvider, ApiState>((ref) {
+  
+  final filter = ref.watch(filterProvider);
 
   return SeatChartListProvider(ref);
 });

@@ -24,7 +24,7 @@ class SignInPageState extends ConsumerState<SignInPage> {
     theme = AppTheme.theme;
   }
 
-  final _emailController = TextEditingController(text: 'login0048');
+  final _emailController = TextEditingController(text: 'login0026');
   final _passwordController = TextEditingController(text: 'P@ssw0rd');
 
   @override

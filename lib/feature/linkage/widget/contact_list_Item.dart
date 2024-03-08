@@ -131,6 +131,13 @@ class ContactListItemState extends ConsumerState<ContactListItem> {
                 Text('事由・備考：'),
               ],
             ),
+            if (widget.item.jiyu != null && widget.item.jiyu!.isNotEmpty)
+              Row(
+                children: [
+                  Expanded(child: Text(widget.item.jiyu ?? '')),
+                ],
+              ),
+
             Row(
               children: [
                 Expanded(child: Text(widget.item.biko ?? '')),

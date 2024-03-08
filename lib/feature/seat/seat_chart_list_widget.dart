@@ -10,7 +10,6 @@ import 'package:kyoumutechou/feature/seat/widget/seat_chart_edit_button_widget.d
 import 'package:kyoumutechou/feature/seat/widget/seat_configration.dart';
 import 'package:kyoumutechou/feature/seat/widget/seat_setting_dialog.dart';
 import 'package:kyoumutechou/helpers/widgets/my_spacing.dart';
-import 'package:kyoumutechou/helpers/widgets/my_text.dart';
 import 'package:kyoumutechou/shared/util/date_util.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 

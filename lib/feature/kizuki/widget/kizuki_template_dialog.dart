@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive/hive.dart';
-import 'package:kyoumutechou/feature/awareness/model/awareness_code_model.dart';
-import 'package:kyoumutechou/feature/boxes.dart';
-import 'package:kyoumutechou/feature/common/provider/dantais_provider.dart';
+import 'package:kyoumutechou/feature/awareness/provider/awareness_code_provider.dart';
 import 'package:kyoumutechou/feature/common/widget/delete_button_widget.dart';
 import 'package:kyoumutechou/feature/common/widget/radio_group_form_field.dart';
 import 'package:kyoumutechou/feature/common/widget/save2_button_widget.dart';
@@ -39,7 +37,8 @@ class KizukiTemplateDialog extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final bunruiMap = getBunruis(ref);
+    final bunruiMap =
+        ref.read(awarenessCodeListProvider.notifier).getBunruiList();
 
     if (action == ScreenAction.add) {
       _bunruiCd = bunruiMap.keys.first;
@@ -254,9 +253,13 @@ class KizukiTemplateDialog extends ConsumerWidget {
                 if (action == ScreenAction.edit ||
                     action == ScreenAction.detail) ...[
                   DeleteButtonWidget(
-                    onPressed: () async {
+                    onPressed: 
+                        model.crtUserId == null  || 
+                        kihonId != model.kinyuKyoinId.toString()  
+                        ? null
+                        : () async {
                       await ref
-                          .read(kizukiTemplateNotifierProvider.notifier)
+                          .read(kizukiTemplateProvider.notifier)
                           .delete(model.id!);
 
                       ToastHelper.showToast(context, '　削除しました　');
@@ -268,7 +271,12 @@ class KizukiTemplateDialog extends ConsumerWidget {
                 ],
                 Save2ButtonWidget(
                   label: '保存',
-                  onPressed: () async {
+                  onPressed: 
+                    action != ScreenAction.add && (
+                    model.crtUserId == null || 
+                    kihonId != model.kinyuKyoinId.toString() )
+                  ? null 
+                  :   () async {
                     if (_formKey.currentState!.validate() == false) {
                       ToastHelper.showToast(context, '　必須項目を入力してください　');
                       return;
@@ -277,13 +285,16 @@ class KizukiTemplateDialog extends ConsumerWidget {
                     _formKey.currentState!.save();
 
                     // 分類コードから分類名を取得
-                    final bunrui = getBunrui(ref, _bunruiCd);
-
+                    final bunrui = ref
+                              .read(awarenessCodeListProvider.notifier)
+                              .setCodeValue(
+                                code : _bunruiCd,
+                              );
                     switch (action) {
                       case ScreenAction.add:
                       case ScreenAction.copy:
                         await ref
-                            .read(kizukiTemplateNotifierProvider.notifier)
+                            .read(kizukiTemplateProvider.notifier)
                             .save(
                               kinyuKyoinId: '$kihonId',
                               karuteSettingId: '${bunrui.id}',
@@ -295,7 +306,7 @@ class KizukiTemplateDialog extends ConsumerWidget {
                             );
                       case ScreenAction.edit:
                         await ref
-                            .read(kizukiTemplateNotifierProvider.notifier)
+                            .read(kizukiTemplateProvider.notifier)
                             .patch(
                               id: model.id!,
                               kinyuKyoinId: '$kihonId',
@@ -323,59 +334,4 @@ class KizukiTemplateDialog extends ConsumerWidget {
     );
   }
 
-  Map<String, String> getBunruis(WidgetRef ref) {
-    final bunruibox = Boxes.getBunruiBox();
-    final dantaiId = ref.watch(dantaiProvider).id;
-
-    var bunruiMap = <String, String>{};
-
-    try {
-      final keys = bunruibox.keys.toList().where(
-            (element) => element.toString().startsWith('$dantaiId-'),
-          );
-
-      final codeList = keys.map(bunruibox.get).toList();
-      // ignore: cascade_invocations
-      codeList.sort(
-        (a, b) => '${a?.code}'.compareTo('${b?.code}'),
-      );
-
-      for (final e in codeList) {
-        bunruiMap['${e?.code}'] = '${e?.name}';
-      }
-    } on Exception {
-      //
-    }
-
-    return bunruiMap;
-  }
-
-  AwarenessCodeModel getBunrui(WidgetRef ref, String code) {
-    final bunruibox = Boxes.getBunruiBox();
-    final dantaiId = ref.read(dantaiProvider).id;
-
-    final keys = bunruibox.keys.toList().where(
-          (element) => element.toString().startsWith('$dantaiId-'),
-        );
-
-    final codeList = keys.map(bunruibox.get).toList();
-    // ignore: cascade_invocations
-    codeList.sort(
-      (a, b) => '${a?.code}'.compareTo('${b?.code}'),
-    );
-
-    var bunrui = const AwarenessCodeModel(
-      code: '',
-      name: '',
-      id: 0,
-      shortName: '',
-    );
-    try {
-      bunrui = codeList.where((e) => e?.code == code).toList().first!;
-    } on Exception {
-      //
-    }
-
-    return bunrui;
-  }
 }

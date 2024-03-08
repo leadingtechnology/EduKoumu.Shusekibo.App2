@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kyoumutechou/feature/boxes.dart';
+import 'package:kyoumutechou/feature/common/provider/common_provider.dart';
 import 'package:kyoumutechou/feature/common/provider/filter_provider.dart';
-import 'package:kyoumutechou/feature/common/provider/seat_chart_pattern_provider.dart';
 import 'package:kyoumutechou/feature/seat/provider/seat_chart_provider.dart';
 import 'package:kyoumutechou/helpers/widgets/my_spacing.dart';
 import 'package:kyoumutechou/helpers/widgets/my_text.dart';
@@ -116,21 +116,23 @@ class SeatSearchBarWidget extends ConsumerWidget {
                 ),
                 MySpacing.width(30),
 
-                IconButton(
-                  icon: const Icon(Icons.refresh),
-                  onPressed: () {
-                    _refreash(ref);
-                  },
-                ),
-                InkWell(
-                  onTap: () {
-                    _refreash(ref);
-                  },
-                  child: MyText.bodyLarge(
-                    '再検索',
-                    fontWeight: 700,
-                  ),
-                ),
+                // IconButton(
+                //   icon: const Icon(Icons.refresh),
+                //   onPressed: () {
+                //     ref.read(seatChartPageTypeProvider.notifier).state =
+                //         PageType.seat;
+                //   },
+                // ),
+                // InkWell(
+                //   onTap: () {
+                //     ref.read(seatChartPageTypeProvider.notifier).state =
+                //         PageType.seat;
+                //   },
+                //   child: MyText.bodyLarge(
+                //     '再検索',
+                //     fontWeight: 700,
+                //   ),
+                // ),
               ],
             ),
           ),
@@ -161,5 +163,8 @@ class SeatSearchBarWidget extends ConsumerWidget {
   void _refreash(WidgetRef ref) {
     final id = ref.read(seatSettingIdProvider);
     ref.read(seatChartListProvider.notifier).fetch(id);
+
+    ref.refresh(seatChartListProvider);
+    
   }
 }

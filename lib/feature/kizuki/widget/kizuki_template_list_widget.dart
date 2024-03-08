@@ -17,15 +17,6 @@ class KizukiTemplateListWidget extends ConsumerWidget {
     super.key,
   });
 
-  final box = Boxes.getBunruiBox();
-
-  List<AwarenessCodeModel> getBunruis(int dantaiId) {
-    final keys = box.keys.toList().where(
-          (element) => element.toString().startsWith('$dantaiId-'),
-        );
-    return keys.map(box.get).toList().cast<AwarenessCodeModel>();
-  }
-
   List<KizukiTemplateModel> filterList(
     List<KizukiTemplateModel> list,
     String searchText,
@@ -83,7 +74,7 @@ class KizukiTemplateListWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(kizukiTemplateNotifierProvider);
+    final state = ref.watch(kizukiTemplateProvider);
 
     return state.when(
       loading: () {
@@ -93,13 +84,11 @@ class KizukiTemplateListWidget extends ConsumerWidget {
         return Text(e.toString());
       },
       loaded: (items) {
-        final dantaiId = ref.read(filterProvider).dantaiId ?? 0;
-        final bunruis = getBunruis(dantaiId);
         //final searchText = ref.watch(kzukiSearchTextProvider);
         //final filteredList = filterList(list, searchText, bunruis);
-        final list = <KizukiTemplateModel>[...items];
+        final list = <KizukiTemplateModel>[...items]
 
-        list.sort((a, b) {
+        ..sort((a, b) {
           var compare = b.crtDateTime!.compareTo(a.crtDateTime!);
           if (compare != 0) return compare;
 
@@ -111,7 +100,6 @@ class KizukiTemplateListWidget extends ConsumerWidget {
 
         return KizukiGridWidget(
           list: list,
-          bunruis: bunruis,
           key: kizukiGlobalKey,
         );
       },
@@ -125,12 +113,10 @@ GlobalKey<_KizukiGridWidgetState> kizukiGlobalKey = GlobalKey();
 class KizukiGridWidget extends ConsumerStatefulWidget {
   const KizukiGridWidget({
     required this.list,
-    required this.bunruis,
     super.key,
   });
 
   final List<KizukiTemplateModel> list;
-  final List<AwarenessCodeModel> bunruis;
 
   @override
   ConsumerState<KizukiGridWidget> createState() =>
@@ -141,6 +127,7 @@ class _KizukiGridWidgetState extends ConsumerState<KizukiGridWidget> {
   late final PlutoGridStateManager stateManager;
 
   String accessToken = Hive.box<String>('shusekibo').get('token').toString();
+  final bunruis = Boxes.getBunruiBox().values.toList();
 
   @override
   void initState() {
@@ -174,7 +161,7 @@ class _KizukiGridWidgetState extends ConsumerState<KizukiGridWidget> {
         // 分類
         if (karuteBunruiCode != null) {
           try {
-            final name = widget.bunruis
+            final name = bunruis
                 .firstWhere((element) => element.code == karuteBunruiCode)
                 .name;
             if (value == name) {
@@ -229,6 +216,11 @@ class _KizukiGridWidgetState extends ConsumerState<KizukiGridWidget> {
     final rows = <PlutoRow>[];
     for (var i = 0; i < list.length; i++) {
       final model = list[i];
+      if (!bunruis
+          .any((AwarenessCodeModel m) => m.code == model.karuteBunruiCode)) {
+        continue;
+      }
+      
       rows.add(
         PlutoRow(
           cells: {
@@ -266,8 +258,7 @@ class _KizukiGridWidgetState extends ConsumerState<KizukiGridWidget> {
           final cd = rendererContext.row.cells['KaruteBunruiCode']!.value;
           var codeName = '';
           try {
-            final code =
-                widget.bunruis.firstWhere((element) => element.code == cd);
+            final code = bunruis.firstWhere((element) => element.code == cd);
             codeName = code.name!;
           } catch (e) {
             // ignore
@@ -303,7 +294,7 @@ class _KizukiGridWidgetState extends ConsumerState<KizukiGridWidget> {
       PlutoColumn(
         title: 'テンプレート名',
         field: 'Title',
-        width: 280,
+        width: 250,
         readOnly: true,
         enableContextMenu: false,
         type: PlutoColumnType.text(),
@@ -333,7 +324,7 @@ class _KizukiGridWidgetState extends ConsumerState<KizukiGridWidget> {
               );
 
               if (result != null && result == '1') {
-                ref.refresh(kizukiTemplateNotifierProvider);
+                ref.refresh(kizukiTemplateProvider);
               }
             },
             child: Text(
@@ -349,7 +340,7 @@ class _KizukiGridWidgetState extends ConsumerState<KizukiGridWidget> {
       PlutoColumn(
         title: '気づき',
         field: 'KizukiTemplate',
-        width: 550,
+        width: 780,
         readOnly: true,
         enableContextMenu: false,
         type: PlutoColumnType.text(),
@@ -362,7 +353,11 @@ class _KizukiGridWidgetState extends ConsumerState<KizukiGridWidget> {
           final kizukiTemplate =
               rendererContext.row.cells['KizukiTemplate']!.value;
 
-          return Text('$kizukiTemplate');
+          return Text(
+            '$kizukiTemplate',
+            maxLines: 2,
+            overflow:  TextOverflow.ellipsis,
+          );
         },
       ),
       // 5.登録者

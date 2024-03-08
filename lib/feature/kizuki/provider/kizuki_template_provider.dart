@@ -1,21 +1,31 @@
 
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:kyoumutechou/feature/common/model/filter_model.dart';
 import 'package:kyoumutechou/feature/common/provider/filter_provider.dart';
 import 'package:kyoumutechou/feature/kizuki/repository/kizuki_template_repository.dart';
 import 'package:kyoumutechou/feature/kizuki/state/kizuki_template_state.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-part 'kizuki_template_provider.g.dart';
 
-//final kzukiSearchTextProvider = StateProvider<String>((ref) => '');
+final kizukiTemplateProvider =
+    StateNotifierProvider<KizukiTemplateProvider, KizukiTemplateState>((ref) {
+  final filter = ref.watch(filterProvider);
 
-@riverpod
-class KizukiTemplateNotifier extends _$KizukiTemplateNotifier {
+  return KizukiTemplateProvider(ref, filter);
+});
+
+class  KizukiTemplateProvider extends StateNotifier<KizukiTemplateState> {
+  KizukiTemplateProvider(this.ref, this.filter)
+      : super(const KizukiTemplateState.loading()) {
+    _init();
+  }
+
+  final Ref ref;
+  final FilterModel filter;
+
   late final rep = ref.read(kizukiTemplateRepositoryProvider);
 
-  @override
-  KizukiTemplateState build() {
-    _fetch();
-    return const KizukiTemplateState.loading();
+  Future<void> _init() async {
+    await _fetch();
   }
 
   Future<void> _fetch() async {

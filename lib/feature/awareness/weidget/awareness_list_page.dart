@@ -301,7 +301,6 @@ Future<void> _handlePressActionButton(
 
   if (opt == AwarenessOperationItem.copy ||
       opt == AwarenessOperationItem.edit) {
-    ref.read(awarenessBunruiProvider.notifier).state = '${kizuki.bunruiCode}';
     ref.read(awarenessJuyoProvider.notifier).state = kizuki.juyoFlg ?? false;
     ref.read(awarenessIdProvider.notifier).state = kizuki.id ?? 0;
 

@@ -53,9 +53,8 @@ class AwarenessKizukiListProvider extends StateNotifier<ApiState> {
     }
   }
 
-  Future<void> patch(String str) async {
+  Future<void> patch(String text, String burui) async {
     final juyo = ref.read(awarenessJuyoProvider);
-    final burui = ref.read(awarenessBunruiProvider);
     final images = ref.read(tenpuListProvider);
 
     final boxKizuki = Boxes.getAwarenessKizukiModelBox();
@@ -93,7 +92,7 @@ class AwarenessKizukiListProvider extends StateNotifier<ApiState> {
     final json = '''
 {
     "Id": ${kizuki.id},
-    "Kizuki": "$str",
+    "Kizuki": "$text",
     "JuyoFlg": $juyo,
     "KaruteBunruiCode": $burui,
     "TenpuFileList": $tenpuList

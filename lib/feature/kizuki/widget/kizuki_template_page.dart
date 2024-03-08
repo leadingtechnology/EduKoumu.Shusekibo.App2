@@ -88,7 +88,7 @@ class KizukiTemplatePage extends ConsumerWidget {
                     );
 
                     if (result != null && result == '1') {
-                      ref.refresh(kizukiTemplateNotifierProvider);
+                      ref.refresh(kizukiTemplateProvider);
                     }
                   },
                   icon: const Icon(Icons.add),

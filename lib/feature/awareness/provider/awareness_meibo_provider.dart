@@ -13,9 +13,8 @@ import 'package:kyoumutechou/feature/common/state/api_state.dart';
 import 'package:kyoumutechou/shared/util/date_util.dart';
 import 'package:kyoumutechou/shared/util/image_handler.dart';
 
-final awarenessMeiboListProvider = 
-StateNotifierProvider<AwarenessMeiboListProvider, ApiState>((ref) {
-
+final awarenessMeiboListProvider =
+    StateNotifierProvider<AwarenessMeiboListProvider, ApiState>((ref) {
   final filter = ref.watch(filterProvider);
 
   return AwarenessMeiboListProvider(ref, filter);
@@ -25,7 +24,7 @@ final awarenessMeiboProvider = StateProvider<AwarenessMeiboModel>(
   (ref) => const AwarenessMeiboModel(),
 );
 final awarenessTabProvider = StateProvider<int>((ref) => 0); // switch the tab.
-final awarenessBunruiProvider = StateProvider<String>((ref) => '10'); 
+//final awarenessBunruiProvider = StateProvider<String>((ref) => '10');
 final awarenessJuyoProvider = StateProvider<bool>((ref) => false);
 final awarenessStudentAddProvider = StateProvider<List<int>>((ref) => []);
 final awarenessEditProvider = StateProvider<int>((ref) => 0);
@@ -48,7 +47,9 @@ class AwarenessMeiboListProvider extends StateNotifier<ApiState> {
   late final _attendanceRep = ref.read(attendanceMeiboRepositoryProvider);
   late final _rep = ref.read(awarenessKizukiRepositoryProvider);
 
-  Future<void> _init() async { await _fetch(); }
+  Future<void> _init() async {
+    await _fetch();
+  }
 
   Future<void> _fetch() async {
     // 初期化完成しない場合、終了する
@@ -61,7 +62,11 @@ class AwarenessMeiboListProvider extends StateNotifier<ApiState> {
 
     final responses = await Future.wait([
       _awarenessRep.fetchAwarenessMeibo(),
-      _attendanceRep.fetch(filter, 0, filter.targetDate ?? DateTime.now(),),
+      _attendanceRep.fetch(
+        filter,
+        0,
+        filter.targetDate ?? DateTime.now(),
+      ),
     ]);
 
     if (mounted) {
@@ -71,66 +76,8 @@ class AwarenessMeiboListProvider extends StateNotifier<ApiState> {
 
   Future<void> updateByList(List<AwarenessMeiboModel> meibos) async {
     final box = Boxes.getAwarenessMeiboBox();
-    for(var meibo in meibos){
+    for (var meibo in meibos) {
       meibo = AwarenessMeiboModel(
-          gakunen: meibo.gakunen,
-          shozokuId: meibo.shozokuId,
-          className: meibo.className,
-          shussekiNo: meibo.shussekiNo,
-          studentId: meibo.studentId,
-          studentName: meibo.studentName,
-          photoUrl: meibo.photoUrl,
-          genderCode: meibo.genderCode,
-          kizukiCount: meibo.kizukiCount,
-          selectFlag: !(meibo.selectFlag ?? false),
-      );
-
-      final index =
-          box.keys.firstWhere(
-            (k) => box.getAt(k as int)?.studentId == meibo.studentId,
-          );      
-      await box.put(index, meibo);
-    }
-
-    ref.read(awarenessCountProvider.notifier).state = 
-    box.values.toList().where((e) => e.selectFlag??false ).toList().length;
-
-  }
-  
-  Future<void> updateById(int studentId) async {
-    final box = Boxes.getAwarenessMeiboBox();
-    var meibo = box.values.where(
-      (e) => e.studentId == studentId,
-    ).toList().first;
-
-    meibo = AwarenessMeiboModel(
-        gakunen: meibo.gakunen,
-        shozokuId: meibo.shozokuId,
-        className: meibo.className,
-        shussekiNo: meibo.shussekiNo,
-        studentId: meibo.studentId,
-        studentName: meibo.studentName,
-        photoUrl: meibo.photoUrl,
-        genderCode: meibo.genderCode,
-        kizukiCount: meibo.kizukiCount,
-        selectFlag: !(meibo.selectFlag ?? false),);
-
-    final index = box.keys
-        .firstWhere((k) => box.getAt(k as int)?.studentId == studentId);
-    await box.put(index, meibo);
-
-    ref.read(awarenessCountProvider.notifier).state = box.values
-        .toList()
-        .where((e) => e.selectFlag ?? false)
-        .toList()
-        .length;
-  }
-
-  // set stamp by Id
-  Future<void> updateByMeibo(AwarenessMeiboModel meibo) async {
-    final box = Boxes.getAwarenessMeiboBox();
-
-    final newMeibo = AwarenessMeiboModel(
         gakunen: meibo.gakunen,
         shozokuId: meibo.shozokuId,
         className: meibo.className,
@@ -141,32 +88,96 @@ class AwarenessMeiboListProvider extends StateNotifier<ApiState> {
         genderCode: meibo.genderCode,
         kizukiCount: meibo.kizukiCount,
         selectFlag: !(meibo.selectFlag ?? false),
+      );
+
+      final index = box.keys.firstWhere(
+        (k) => box.getAt(k as int)?.studentId == meibo.studentId,
+      );
+      await box.put(index, meibo);
+    }
+
+    ref.read(awarenessCountProvider.notifier).state =
+        box.values.toList().where((e) => e.selectFlag ?? false).toList().length;
+  }
+
+  Future<void> updateById(int studentId) async {
+    final box = Boxes.getAwarenessMeiboBox();
+    var meibo = box.values
+        .where(
+          (e) => e.studentId == studentId,
+        )
+        .toList()
+        .first;
+
+    meibo = AwarenessMeiboModel(
+      gakunen: meibo.gakunen,
+      shozokuId: meibo.shozokuId,
+      className: meibo.className,
+      shussekiNo: meibo.shussekiNo,
+      studentId: meibo.studentId,
+      studentName: meibo.studentName,
+      photoUrl: meibo.photoUrl,
+      genderCode: meibo.genderCode,
+      kizukiCount: meibo.kizukiCount,
+      selectFlag: !(meibo.selectFlag ?? false),
+    );
+
+    final index =
+        box.keys.firstWhere((k) => box.getAt(k as int)?.studentId == studentId);
+    await box.put(index, meibo);
+
+    ref.read(awarenessCountProvider.notifier).state =
+        box.values.toList().where((e) => e.selectFlag ?? false).toList().length;
+  }
+
+  // set stamp by Id
+  Future<void> updateByMeibo(AwarenessMeiboModel meibo) async {
+    final box = Boxes.getAwarenessMeiboBox();
+
+    final newMeibo = AwarenessMeiboModel(
+      gakunen: meibo.gakunen,
+      shozokuId: meibo.shozokuId,
+      className: meibo.className,
+      shussekiNo: meibo.shussekiNo,
+      studentId: meibo.studentId,
+      studentName: meibo.studentName,
+      photoUrl: meibo.photoUrl,
+      genderCode: meibo.genderCode,
+      kizukiCount: meibo.kizukiCount,
+      selectFlag: !(meibo.selectFlag ?? false),
     );
 
     final index = box.keys.firstWhere(
-      (k) => box.getAt(k as int)?.studentId == newMeibo.studentId,);
+      (k) => box.getAt(k as int)?.studentId == newMeibo.studentId,
+    );
     await box.put(index, newMeibo);
 
-    ref.read(awarenessCountProvider.notifier).state = box.values.toList().where((e) => e.selectFlag??false ).toList().length;
-    
+    ref.read(awarenessCountProvider.notifier).state =
+        box.values.toList().where((e) => e.selectFlag ?? false).toList().length;
   }
 
-  Future<void> save(String str, AwarenessOperationItem opt) async {
+  Future<void> save(
+    String str, 
+    AwarenessOperationItem opt, 
+    String burui,
+  ) async {
     final juyo = ref.read(awarenessJuyoProvider);
-    final burui = ref.read(awarenessBunruiProvider);
     final images = ref.read(tenpuListProvider);
-    
+
     String students;
     int shozokuId;
-    if (opt == AwarenessOperationItem.add){
+    if (opt == AwarenessOperationItem.add) {
       final boxMeibo = Boxes.getAwarenessMeiboBox();
-      final studentList = boxMeibo.values.toList().where(
-        (e) => e.selectFlag ?? false, 
-      ).toList();
-      
+      final studentList = boxMeibo.values
+          .toList()
+          .where(
+            (e) => e.selectFlag ?? false,
+          )
+          .toList();
+
       shozokuId = studentList.first.shozokuId ?? 0;
       students = studentList.map((e) => e.studentId).toList().toString();
-    }else{
+    } else {
       final boxKizuki = Boxes.getAwarenessKizukiModelBox();
       final studentList = boxKizuki.values.toList();
 
@@ -175,7 +186,7 @@ class AwarenessMeiboListProvider extends StateNotifier<ApiState> {
     }
 
     final tenpuList = <String>[];
-    for (final image in images){
+    for (final image in images) {
       final imageData = await ImageHandler.fetchImageData(image);
 
       final value = '''
@@ -187,7 +198,6 @@ class AwarenessMeiboListProvider extends StateNotifier<ApiState> {
 ''';
       tenpuList.add(value);
     }
-
 
     // jsonの作成
     final json = '''
@@ -203,7 +213,7 @@ class AwarenessMeiboListProvider extends StateNotifier<ApiState> {
 
     final response = await _awarenessRep.save(json);
     final res = await _rep.fetch();
-    if (opt != AwarenessOperationItem.add){
+    if (opt != AwarenessOperationItem.add) {
       final resp = await _awarenessRep.fetchAwarenessMeibo();
     }
     if (mounted) {

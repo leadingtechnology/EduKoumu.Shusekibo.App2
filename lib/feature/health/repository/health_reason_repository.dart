@@ -34,6 +34,9 @@ class HealthReasonRepository implements HealthReasonRepositoryProtocol {
     // jokyoCdが空の場合、正常終了
     if (jokyoCd.isEmpty) return const ApiState.loaded();
 
+    await Boxes.getHealthReason1().clear();
+    await Boxes.getHealthReason2().clear();
+
     // 理由マスタ理由
     final response = await _api.get('api/KenkouKansatsubo/reasons/$jokyoCd');
 
@@ -51,6 +54,8 @@ class HealthReasonRepository implements HealthReasonRepositoryProtocol {
             (e) => HealthReasonModel
             .fromJson(Map<String, dynamic>.from(e as Map<dynamic, dynamic>),),)
           .toList();
+
+          reason1List.removeWhere((e) => e.delFlg == true,);
 
         // _reason1ListのLengthが１以上の場合、空白の理由を追加する
         if (reason1List.isNotEmpty) {
@@ -79,6 +84,10 @@ class HealthReasonRepository implements HealthReasonRepositoryProtocol {
             healthReasonListFromJson(
               value['Reason2List'][0]['ReasonList'] as List<dynamic>,
             );
+          
+          reason2List.removeWhere(
+            (e) => e.delFlg == true,
+          );
 
           // _reason1ListのLengthが１以上の場合、空白の理由を追加する
           if (reason2List.isNotEmpty) {

@@ -1,14 +1,17 @@
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:kyoumutechou/feature/attendance/model/attendance_reason_model.dart';
 import 'package:kyoumutechou/feature/attendance/provider/attendance_provider.dart';
 import 'package:kyoumutechou/feature/attendance/provider/attendance_reason_provider.dart';
 import 'package:kyoumutechou/feature/attendance/provider/attendance_stamp_provider.dart';
 import 'package:kyoumutechou/feature/attendance/repository/attendance_stamp_repository.dart';
+import 'package:kyoumutechou/feature/awareness/repsitory/awareness_code_repository.dart';
 import 'package:kyoumutechou/feature/boxes.dart';
 import 'package:kyoumutechou/feature/common/model/dantai_model.dart';
 import 'package:kyoumutechou/feature/common/provider/common_provider.dart';
 import 'package:kyoumutechou/feature/common/repository/dantais_repository.dart';
+import 'package:kyoumutechou/feature/common/repository/tannin_repository.dart';
 import 'package:kyoumutechou/feature/common/state/api_state.dart';
 import 'package:kyoumutechou/feature/health/model/health_reason_model.dart';
 import 'package:kyoumutechou/feature/health/provider/health_provider.dart';
@@ -39,7 +42,7 @@ class DantaiNotifier extends StateNotifier<ApiState> {
   late final _healthStamp = ref.read(healthStampRepositoryProvider);
   late final _attendStamp = ref.read(attendanceStampRepositoryProvider);
   late final _healthReason = ref.read(healthReasonRepositoryProvider);
-
+  late final _burun = ref.read(awarenessCodeRepositoryProvider);
 
   Future<void> init() async {
     state = const ApiState.loading();
@@ -65,7 +68,11 @@ class DantaiNotifier extends StateNotifier<ApiState> {
         // 出欠スタンプの取得
         _attendStamp.fetch(),
 
+        // 健康観察理由の取得
         _healthReason.fetch('100', '101'),
+
+        // 分類コード情報を取得する。
+        _burun.fetch(),
 
       ]);
 

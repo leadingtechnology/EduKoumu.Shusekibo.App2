@@ -3,9 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kyoumutechou/feature/awareness/model/awareness_common.dart';
 import 'package:kyoumutechou/feature/awareness/model/awareness_kizuki_model.dart';
 import 'package:kyoumutechou/feature/awareness/model/awareness_meibo_model.dart';
+import 'package:kyoumutechou/feature/awareness/provider/awareness_code_provider.dart';
 import 'package:kyoumutechou/feature/awareness/provider/awareness_kizuki_provider.dart';
 import 'package:kyoumutechou/feature/awareness/provider/awareness_meibo_provider.dart';
-import 'package:kyoumutechou/feature/awareness/weidget/dialog/awareness_bunrui.dart';
 import 'package:kyoumutechou/feature/awareness/weidget/dialog/awareness_dialog_left_widget.dart';
 import 'package:kyoumutechou/feature/awareness/weidget/dialog/awareness_dialog_middle_widget.dart';
 import 'package:kyoumutechou/feature/awareness/weidget/dialog/awareness_dialog_right_widget.dart';
@@ -13,11 +13,13 @@ import 'package:kyoumutechou/feature/awareness/weidget/dialog/awareness_template
 import 'package:kyoumutechou/feature/awareness/weidget/dialog/photo_widget.dart';
 import 'package:kyoumutechou/feature/awareness/weidget/dialog/seito_widget.dart';
 import 'package:kyoumutechou/feature/boxes.dart';
+import 'package:kyoumutechou/feature/common/widget/radio_group_form_field.dart';
 import 'package:kyoumutechou/feature/common/widget/save2_button_widget.dart';
 import 'package:kyoumutechou/feature/common/widget/toast_helper.dart';
 import 'package:kyoumutechou/helpers/theme/app_theme.dart';
 import 'package:kyoumutechou/helpers/widgets/my_spacing.dart';
 
+// ignore: must_be_immutable
 class AwarenessRegistDialog extends ConsumerWidget {
   AwarenessRegistDialog({
     required this.kizuki,
@@ -30,14 +32,21 @@ class AwarenessRegistDialog extends ConsumerWidget {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   final kizukiController = TextEditingController();
+  String _bunruiCd = '';
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final bunruiMap =
+        ref.read(awarenessCodeListProvider.notifier).getBunruiList();
+
     final meiboBox = Boxes.getAwarenessMeiboBox();
     var meibos = <AwarenessMeiboModel>[];
 
     // Add Mode
     if (opt == AwarenessOperationItem.add) {
+      // 初期値の取得
+      _bunruiCd = bunruiMap.keys.first;
+
       meibos = meiboBox.values
           .toList()
           .where(
@@ -49,11 +58,15 @@ class AwarenessRegistDialog extends ConsumerWidget {
     // Edit Mode
     if (opt == AwarenessOperationItem.edit) {
       kizukiController.text = '${kizuki.naiyou}';
+
+      _bunruiCd = kizuki.bunruiCode ?? '';
     }
 
     // Copy Mode
     if (opt == AwarenessOperationItem.copy) {
       kizukiController.text = '${kizuki.naiyou}';
+
+      _bunruiCd = kizuki.bunruiCode ?? '';
     }
 
     return Form(
@@ -152,12 +165,20 @@ class AwarenessRegistDialog extends ConsumerWidget {
                       ),
                     ),
                     MySpacing.width(12),
-                    const Expanded(
-                      child: SizedBox(
-                        width: 600,
-                        child: AwarenessBunrui(),
-                      ),
-                    ),
+                    Expanded(
+                      child: RadioGroupFormField(
+                        radioMap: bunruiMap,
+                        initialValue: _bunruiCd,
+                        onSaved: (value) {
+                          _bunruiCd = '$value';
+                        },
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return '';
+                          }
+                          return null;
+                        },
+                    ),),
                   ],
                 ),
 
@@ -224,16 +245,18 @@ class AwarenessRegistDialog extends ConsumerWidget {
                       return;
                     }
 
+                    _formKey.currentState!.save();
+
                     if (opt == AwarenessOperationItem.edit) {
                       ref.read(awarenessEditProvider.notifier).state =
                           kizuki.id!;
                       await ref
                           .read(awarenessKizukiListProvider.notifier)
-                          .patch(kizukiController.text);
+                          .patch(kizukiController.text, _bunruiCd);
                     } else {
                       await ref
                           .read(awarenessMeiboListProvider.notifier)
-                          .save(kizukiController.text, opt);
+                          .save(kizukiController.text, opt, _bunruiCd);
                     }
                     ToastHelper.showToast(context, '　保存しました　');
                     ref.read(awarenessCountProvider.notifier).state = 0;

@@ -25,7 +25,7 @@ class _DeleteButtonWidgetState extends State<DeleteButtonWidget> {
     return SizedBox(
       width: 130,
       child: ElevatedButton.icon(
-        onPressed: _isButtonDisabled
+        onPressed: _isButtonDisabled || widget.onPressed == null
             ? null
             : () async {
                 setState(() => _isButtonDisabled = true);

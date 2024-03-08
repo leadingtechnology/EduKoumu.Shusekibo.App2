@@ -47,7 +47,6 @@ class DantaiChangedNotifier extends StateNotifier<ApiState> {
   late final _tannin = ref.read(tanninRepositoryProvider);
   late final _gakunen = ref.read(gakunensRepositoryProvider);
   late final _shozoku = ref.read(shozokusRepositoryProvider);
-  late final _burun = ref.read(awarenessCodeRepositoryProvider);
 
   late final _tokobi = ref.read(tokobisRepositoryProvider);
   late final _lastTokobi = ref.read(lastTokobisRepositoryProvider);
@@ -76,9 +75,6 @@ class DantaiChangedNotifier extends StateNotifier<ApiState> {
 
         // 所属情報を取得す情報
         _shozoku.fetch(dantaiId),
-
-        // 分類コード情報を取得する。
-        _burun.fetch(dantaiId),
       ]);
 
       var isError = false;
@@ -159,10 +155,7 @@ class DantaiChangedNotifier extends StateNotifier<ApiState> {
 
       // 分類コード初期値の設定
       final awarenessCode = 
-      ref.read(awarenessCodeListProvider.notifier).setCodeValue(
-        ref,
-        dantai,
-      );
+      ref.read(awarenessCodeListProvider.notifier).setCodeValue();
       ref.read(awarenessCodeProvider.notifier).state = awarenessCode;
 
       final fiscalYear = DateUtil.calculateFiscalYear(DateTime.now());

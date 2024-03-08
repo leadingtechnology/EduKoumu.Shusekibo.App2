@@ -16,7 +16,7 @@ class AwarenessDialogRightWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(kizukiTemplateNotifierProvider);
+    final state = ref.watch(kizukiTemplateProvider);
 
     return state.when(
       loading: () {
@@ -52,10 +52,11 @@ class AwarenessDialogRightWidget extends ConsumerWidget {
         )
         .toList();
 
-    return SizedBox(
+    return Container(
       width: 300,
+      height: 320,
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        //crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text(
             'テンプレート文(学校共通)',
@@ -71,30 +72,30 @@ class AwarenessDialogRightWidget extends ConsumerWidget {
             'テンプレート文(個人)',
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
           ),
-          SizedBox(
+          Expanded(
             child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: kizukiPersonal
                     .map(
-                      (e) => Tooltip(
-                        message: '${e.kizukiTemplate}',
-                        child: Column(
-                          children: [
-                            MySpacing.height(16),
-                            InkWell(
+                      (e) => Row(
+                        children: [
+                          Expanded(
+                            child: InkWell(
                               onTap: () {
                                 kizukiController.text = '${e.kizukiTemplate}';
                               },
-                              child: Text(
-                                '${e.title}',
-                                overflow: TextOverflow.ellipsis,
-                                softWrap: true,
+                              child: Padding(
+                                padding: const EdgeInsets.fromLTRB(0, 6, 0, 4),
+                                child: Text(
+                                  '${e.title}',
+                                  overflow: TextOverflow.ellipsis,
+                                  softWrap: true,
+                                ),
                               ),
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     )
                     .toList(),

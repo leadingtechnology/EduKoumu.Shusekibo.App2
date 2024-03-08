@@ -51,7 +51,7 @@ class AwarenessKizukiRepository implements AwarenessKizukiRepositoryProtocol {
     TakeNo: 100,
     PageNo: 1
 }
-   ''';
+''';
 
     await Boxes.getAwarenessKizukiModelBox().clear();
     final response = await _api.post2('api/kizuki/search', json);
