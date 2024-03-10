@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kyoumutechou/feature/common/provider/filter_provider.dart';
 import 'package:kyoumutechou/feature/common/widget/control_tokobi.dart';
-import 'package:kyoumutechou/feature/common/widget/control_tokobi2.dart';
 import 'package:kyoumutechou/feature/home/provider/home_provider.dart';
 import 'package:kyoumutechou/helpers/widgets/my_spacing.dart';
 import 'package:kyoumutechou/helpers/widgets/my_text.dart';
@@ -145,7 +144,6 @@ class SearchBarWidget extends ConsumerWidget {
                         ),
                       ),
                       const ControlTokobi(),
-                      const ControlTokobi2(),
                     ],
                   ),
 

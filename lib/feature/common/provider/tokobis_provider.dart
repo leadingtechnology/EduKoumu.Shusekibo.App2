@@ -1,6 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kyoumutechou/feature/boxes.dart';
-import 'package:kyoumutechou/feature/common/model/tokobi_model.dart';
 import 'package:kyoumutechou/feature/common/provider/filter_provider.dart';
 import 'package:kyoumutechou/feature/common/repository/tokobis_repository.dart';
 import 'package:kyoumutechou/feature/common/state/api_state.dart';
@@ -9,7 +8,6 @@ import 'package:kyoumutechou/shared/util/date_util.dart';
 
 final isTokobiProvider = StateProvider<bool>((ref) => false);
 final lastTokobisProvider = StateProvider<List<DateTime>>((ref) => []);
-final tokobiProvider = StateProvider<TokobiModel>((ref) => const TokobiModel());
 
 // 登校日データの更新
 final tokobisProvider =
@@ -82,6 +80,8 @@ class TokobiNotifier extends StateNotifier<ApiState> {
       );
     }
 
+    await setTokobiValue(shozokuId, targetDate);
+
     if (isError || isLoading) {
       state = const ApiState.error(
         AppException.errorWithMessage('Error occurred'),
@@ -106,8 +106,6 @@ class TokobiNotifier extends StateNotifier<ApiState> {
       final tokobi = box.get(key);
       if(tokobi != null){
         isEditable = tokobi.isEditable ?? false;
-
-        ref.read(tokobiProvider.notifier).state = tokobi;
       }
     }
 

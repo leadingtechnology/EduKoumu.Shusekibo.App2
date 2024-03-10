@@ -44,7 +44,6 @@ class DashboardPageState extends ConsumerState<DashboardPage>
 
   @override
   Widget build(BuildContext context) {
-    final tokobi = ref.watch(tokobiProvider);
 
     return Scaffold(
       appBar: PreferredSize(
@@ -62,7 +61,6 @@ class DashboardPageState extends ConsumerState<DashboardPage>
                       fontSize: 16,
                     ),
                   ),
-                  //Text('${tokobi.tokobi}'),
                 ],
               ),
             ],
