@@ -35,7 +35,7 @@ class AwarenessDialogMiddleWidget extends ConsumerWidget {
       Positioned(
         bottom: -14,
         child: SizedBox(
-          width: 120,
+          width: 240,
           child: CheckboxListTile(
             title:const Text('重要', style: TextStyle(fontSize: 14),),
             value:juyo,

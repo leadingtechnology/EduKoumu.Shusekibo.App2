@@ -48,8 +48,20 @@ class HomeAbsenceRepository implements HomeAbsenceRepositoryProtocol {
           if (classNameComparison != 0) return classNameComparison;
 
           // 出席番号
-          final studentNumberComparison =
-              compareNullable(a.studentNumber, b.studentNumber);
+          var aNumber = 0; 
+          try{
+            aNumber = int.parse(a.studentNumber!);
+          }catch(e) {
+            //
+          }
+
+          var bNumber = 0;
+          try{
+            bNumber = int.parse(b.studentNumber!);
+          }catch(e) {
+            //
+          }
+          final studentNumberComparison =  aNumber.compareTo(bNumber);
           if (studentNumberComparison != 0) return studentNumberComparison;
 
           // シーケンス番号
