@@ -27,7 +27,7 @@ class AttendanceReasonWidget extends ConsumerWidget {
         // 1) get reason's key by jukyoCd
         final reason1Keys = Boxes.getAttendanceReason1()
             .keys
-            .where((e) => e.startsWith(stamp.shukketsuJokyoCd) as bool)
+            .where((e) => e.startsWith('${stamp.shukketsuJokyoCd}-') as bool)
             .toList();
 
         // 2) create drowdown item
@@ -50,7 +50,7 @@ class AttendanceReasonWidget extends ConsumerWidget {
         // 3) get reason's key by jukyoCd
         final reason2Keys = Boxes.getAttendanceReason2()
             .keys
-            .where((e) => e.startsWith(stamp.shukketsuJokyoCd) as bool)
+            .where((e) => e.startsWith('${stamp.shukketsuJokyoCd}-') as bool)
             .toList();
 
         // 4) create drowdown item

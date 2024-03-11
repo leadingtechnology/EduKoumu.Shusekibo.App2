@@ -36,7 +36,25 @@ class HomeAbsenceRepository implements HomeAbsenceRepositoryProtocol {
     if (response is APISuccess) {
       final value = response.value;
       try {
-        final list = homeAbsenceListFromJson(value as List<dynamic>);
+        final list = homeAbsenceListFromJson(value as List<dynamic>)
+
+        ..sort((a, b) {
+          // 学年
+          final gakunenComparison = compareNullable(a.gakunen, b.gakunen);
+          if (gakunenComparison != 0) return gakunenComparison;
+
+          // クラス
+          final classNameComparison = compareNullable(a.className, b.className);
+          if (classNameComparison != 0) return classNameComparison;
+
+          // 出席番号
+          final studentNumberComparison =
+              compareNullable(a.studentNumber, b.studentNumber);
+          if (studentNumberComparison != 0) return studentNumberComparison;
+
+          // シーケンス番号
+          return compareNullable(a.studentSeq, b.studentSeq);
+        });
 
 
         return HomeAbsenceState.loaded(list);
@@ -50,5 +68,16 @@ class HomeAbsenceRepository implements HomeAbsenceRepositoryProtocol {
     } else {
       return const HomeAbsenceState.loading();
     }
+  }
+
+  int compareNullable(String? a, String? b) {
+    // 全部Nullの場合は同じとみなす
+    if (a == null && b == null) return 0;
+    // aがnullの場合、bがnullでないのでbが大きい
+    if (a == null) return 1;
+    // bがnullの場合、aがnullでないのでaが大きい
+    if (b == null) return -1;
+    // どちらもnullでないので比較する
+    return a.compareTo(b);
   }
 }

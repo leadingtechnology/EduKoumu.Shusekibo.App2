@@ -11,7 +11,7 @@ import 'package:kyoumutechou/shared/util/date_util.dart';
 
 
 final seatSettingListProvider =
-    StateNotifierProvider<SeatSettingListProvider, ApiState>((ref) {
+    StateNotifierProvider.autoDispose<SeatSettingListProvider, ApiState>((ref) {
 
   final filter = ref.watch(filterProvider);
   

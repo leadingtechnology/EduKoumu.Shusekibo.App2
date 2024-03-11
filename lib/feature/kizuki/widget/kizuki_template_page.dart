@@ -104,7 +104,7 @@ class KizukiTemplatePage extends ConsumerWidget {
                 ),
               ],
             ),
-            MySpacing.height(100),
+            MySpacing.height(16),
             Expanded(child: KizukiTemplateListWidget(),),
           ],
         ),

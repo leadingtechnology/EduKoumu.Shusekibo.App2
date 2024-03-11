@@ -16,7 +16,7 @@ class HomeAbsenceNotifier extends _$HomeAbsenceNotifier {
   }
 
   Future<void> _fetch() async {
-    final filter = ref.read(filterProvider);
+    final filter = ref.watch(filterProvider);
     final dantaiId = filter.dantaiId ?? 0;
     if (dantaiId == 0) {
       state = const HomeAbsenceState.loaded([]);

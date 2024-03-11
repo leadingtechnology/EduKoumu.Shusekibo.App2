@@ -177,11 +177,11 @@ class HealthMeiboListProvider extends StateNotifier<ApiState> {
 
     final stamp = Boxes.getRegistHealthStamp().get('100');
     
-    var keys = Boxes.getHealthReason1()
+    final keys = Boxes.getHealthReason1()
         .keys
         .toList()
         .where(
-          (element) => element.toString().startsWith('${stamp?.jokyoCd}'),
+          (element) => element.toString().startsWith('${stamp?.jokyoCd}-'),
         )
         .toList();
     

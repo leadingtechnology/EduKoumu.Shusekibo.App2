@@ -46,7 +46,7 @@ class AttendanceReasonListProvider extends StateNotifier<ApiState> {
     final response = await _repository.fetch(_jokyoCd, _shukketsuKbn);
 
     var keys = Boxes.getAttendanceReason1().keys.toList().where(
-      (element) => element.toString().startsWith(_jokyoCd),
+      (element) => element.toString().startsWith('${_jokyoCd}-'),
     ).toList(); 
     keys.sort((a, b) => a.toString().compareTo(b.toString()),);
 
@@ -56,7 +56,7 @@ class AttendanceReasonListProvider extends StateNotifier<ApiState> {
     } 
 
     keys = Boxes.getAttendanceReason2().keys.toList().where(
-      (element) => element.toString().startsWith(_jokyoCd),
+      (element) => element.toString().startsWith('${_jokyoCd}-'),
     ).toList(); 
     //keys.sort((a, b) => a.toString().compareTo(b.toString()),);
 

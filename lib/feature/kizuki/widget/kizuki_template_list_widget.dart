@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive/hive.dart';
 import 'package:kyoumutechou/feature/awareness/model/awareness_code_model.dart';
 import 'package:kyoumutechou/feature/boxes.dart';
-import 'package:kyoumutechou/feature/common/provider/filter_provider.dart';
 import 'package:kyoumutechou/feature/home/provider/home_provider.dart';
 import 'package:kyoumutechou/feature/kizuki/model/kizuki_template_model.dart';
 import 'package:kyoumutechou/feature/kizuki/provider/kizuki_template_provider.dart';
@@ -22,54 +21,62 @@ class KizukiTemplateListWidget extends ConsumerWidget {
     String searchText,
     List<AwarenessCodeModel> bunruis,
   ) {
-    return list.where((row) {
-      final commonFlg = row.commonFlg;
-      final karuteBunruiCode = row.karuteBunruiCode;
-      final title = row.title;
-      final kizukiTemplate = row.kizukiTemplate;
+    var ktms = <KizukiTemplateModel>[];
+    try{
+      ktms = list.where((row) {
+        final commonFlg = row.commonFlg;
+        final karuteBunruiCode = row.karuteBunruiCode;
+        final title = row.title;
+        final kizukiTemplate = row.kizukiTemplate;
 
-      if (searchText != '') {
-        // 学校共通
-        if (commonFlg != null) {
-          if (searchText.contains('共通') && commonFlg == true) {
-            return true;
-          }
-          if (searchText.contains('個人') && commonFlg == false) {
-            return true;
-          }
-        }
-
-        // 分類
-        if (karuteBunruiCode != null) {
-          try {
-            final name = bunruis
-                .firstWhere((element) => element.code == karuteBunruiCode)
-                .name;
-            if (searchText.contains('$name')) {
+        if (searchText != '') {
+          // 学校共通
+          if (commonFlg != null) {
+            if (searchText.contains('共通') && commonFlg == true) {
               return true;
             }
-          } catch (e) {
-            // ignore
+            if (searchText.contains('個人') && commonFlg == false) {
+              return true;
+            }
           }
-        }
 
-        // タイトル
-        if (title != null) {
-          if (title.contains(searchText)) {
-            return true;
+          // 分類
+          if (karuteBunruiCode != null) {
+            try {
+              final name = bunruis
+                  .firstWhere((element) => element.code == karuteBunruiCode)
+                  .name;
+              if (searchText.contains('$name')) {
+                return true;
+              }
+            } catch (e) {
+              // ignore
+            }
           }
-        }
 
-        // 気づき
-        if (kizukiTemplate != null) {
-          if (kizukiTemplate.contains(searchText)) {
-            return true;
+          // タイトル
+          if (title != null) {
+            if (title.contains(searchText)) {
+              return true;
+            }
           }
+
+          // 気づき
+          if (kizukiTemplate != null) {
+            if (kizukiTemplate.contains(searchText)) {
+              return true;
+            }
+          }
+          return false;
         }
-        return false;
-      }
-      return true;
-    }).toList();
+        return true;
+      }).toList();
+
+    }catch(e){
+      // ignore
+    }
+    
+    return ktms;
   }
 
   @override

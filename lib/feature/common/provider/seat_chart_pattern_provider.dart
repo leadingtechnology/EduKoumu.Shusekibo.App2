@@ -11,7 +11,7 @@ import 'package:kyoumutechou/feature/seat/provider/seat_setting_provider.dart';
 final seatSettingPatternProvider =
     StateProvider<SeatSettingModel>((ref) => const SeatSettingModel());
 
-final seatSettingHealthProvider = Provider<AsyncValue<bool>>((ref) {
+final seatSettingHealthProvider = Provider.autoDispose<AsyncValue<bool>>((ref) {
   final state1 = ref.watch(healthMeiboListProvider);
   final state2 = ref.watch(seatSettingListProvider);
 
@@ -28,7 +28,7 @@ final seatSettingHealthProvider = Provider<AsyncValue<bool>>((ref) {
           state2 != const ApiState.loading()
   ) {
     return AsyncError(
-      Exception('One or both states have an error'),
+      Exception('データの読取エラーが発生しました。'),
       StackTrace.empty,
     );
   }
@@ -37,7 +37,7 @@ final seatSettingHealthProvider = Provider<AsyncValue<bool>>((ref) {
   return const AsyncLoading();
 });
 
-final seatSettingAttendanceProvider = Provider<AsyncValue<bool>>((ref) {
+final seatSettingAttendanceProvider = Provider.autoDispose<AsyncValue<bool>>((ref) {
   final state1 = ref.watch(attendanceMeiboListProvider);
   final state2 = ref.watch(seatSettingListProvider);
 
@@ -51,7 +51,7 @@ final seatSettingAttendanceProvider = Provider<AsyncValue<bool>>((ref) {
           state1 != const ApiState.loading() ||
       state2 != const ApiState.loaded() && state2 != const ApiState.loading()) {
     return AsyncError(
-      Exception('One or both states have an error'),
+      Exception('データの読取エラーが発生しました。'),
       StackTrace.empty,
     );
   }
@@ -60,7 +60,7 @@ final seatSettingAttendanceProvider = Provider<AsyncValue<bool>>((ref) {
   return const AsyncLoading();
 });
 
-final seatSettingTimedProvider = Provider<AsyncValue<bool>>((ref) {
+final seatSettingTimedProvider = Provider.autoDispose<AsyncValue<bool>>((ref) {
   final state1 = ref.watch(attendanceTimedMeiboListProvider);
   final state2 = ref.watch(seatSettingListProvider);
 
@@ -74,7 +74,7 @@ final seatSettingTimedProvider = Provider<AsyncValue<bool>>((ref) {
           state1 != const ApiState.loading() ||
       state2 != const ApiState.loaded() && state2 != const ApiState.loading()) {
     return AsyncError(
-      Exception('One or both states have an error'),
+      Exception('データの読取エラーが発生しました。'),
       StackTrace.empty,
     );
   }
@@ -83,7 +83,7 @@ final seatSettingTimedProvider = Provider<AsyncValue<bool>>((ref) {
   return const AsyncLoading();
 });
 
-final seatSettingAwarenessProvider = Provider<AsyncValue<bool>>((ref) {
+final seatSettingAwarenessProvider = Provider.autoDispose<AsyncValue<bool>>((ref) {
   final state1 = ref.watch(awarenessMeiboListProvider);
   final state2 = ref.watch(seatSettingListProvider);
 

@@ -22,7 +22,7 @@ class HealthReasonWidget extends ConsumerWidget {
         // 1) get reason's key by jukyoCd
         final reason1Keys = Boxes.getHealthReason1()
             .keys
-            .where((e) => e.startsWith(stamp.jokyoCd) as bool)
+            .where((e) => e.startsWith('${stamp.jokyoCd}-') as bool)
             .toList();
         
         // 2) create drowdown item
@@ -43,7 +43,7 @@ class HealthReasonWidget extends ConsumerWidget {
         // 3) get reason's key by jukyoCd
         final reason2Keys = Boxes.getHealthReason2()
             .keys
-            .where((e) => e.startsWith(stamp.jokyoCd) as bool)
+            .where((e) => e.startsWith('${stamp.jokyoCd}-') as bool)
             .toList();
 
         // 4) create drowdown item

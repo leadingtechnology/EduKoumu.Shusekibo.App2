@@ -129,7 +129,7 @@ class CommonPage extends ConsumerWidget {
                       ),
                       MySpacing.width(12),
                       ElevatedButton(
-                        onPressed: !isTokobi || ref.watch(buttonEnableProvider)? setBlank : null,
+                        onPressed: isTokobi || ref.watch(buttonEnableProvider)? setBlank : null,
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.white,
                           shape: RoundedRectangleBorder(

@@ -53,7 +53,7 @@ final scMeibosStackProvider = StateProvider<List<SeatChartSeitoForStackWidget>>(
 // StateProvider<SeatChartModel>((ref) => const SeatChartModel());
 
 final seatChartListProvider =
-    StateNotifierProvider<SeatChartListProvider, ApiState>((ref) {
+    StateNotifierProvider.autoDispose<SeatChartListProvider, ApiState>((ref) {
   
   final filter = ref.watch(filterProvider);
 

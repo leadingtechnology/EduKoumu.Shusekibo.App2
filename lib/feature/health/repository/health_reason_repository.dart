@@ -22,22 +22,19 @@ class HealthReasonRepository implements HealthReasonRepositoryProtocol {
   @override
   Future<ApiState> fetch(String jokyoCd, String kubun) async {
 
-    // if box had saved the data. then return ok.
-    // if (Boxes.getHealthReason1().values.isNotEmpty) {
-    //   final keys = Boxes.getHealthReason1().keys.toList().where(
-    //     (element) => element.toString().startsWith(jokyoCd),
-    //   );
-      
-    //   if (keys.isNotEmpty ) return const ApiState.loaded();
-    // }
-
     // jokyoCdが空の場合、正常終了
     if (jokyoCd.isEmpty) return const ApiState.loaded();
 
-    await Boxes.getHealthReason1().clear();
-    await Boxes.getHealthReason2().clear();
+    // if box had saved the data. then return ok.
+    if (Boxes.getHealthReason1().values.isNotEmpty) {
+      final keys = Boxes.getHealthReason1().keys.toList().where(
+        (element) => element.toString().startsWith('$jokyoCd-'),
+      );
+      
+      if (keys.isNotEmpty ) return const ApiState.loaded();
+    }
 
-    // 理由マスタ理由
+    // Restful API からデータを取得する
     final response = await _api.get('api/KenkouKansatsubo/reasons/$jokyoCd');
 
     response.when(
@@ -73,7 +70,7 @@ class HealthReasonRepository implements HealthReasonRepositoryProtocol {
 
         // Reason1
         final reason1Map = Map.fromIterables(
-          reason1List.map((e) => e.getKey()).toList(),
+          reason1List.map((e) => '$jokyoCd-${e.jiyuCd}').toList(),
           reason1List.map((e) => e).toList(),
         );
         
@@ -104,7 +101,7 @@ class HealthReasonRepository implements HealthReasonRepositoryProtocol {
           }
 
           final reason2Map = Map.fromIterables(
-            reason2List.map((e) => e.getKey()).toList(),
+            reason2List.map((e) => '$jokyoCd-${e.jiyuCd}').toList(),
             reason2List.map((e) => e).toList(),
           );
           await Boxes.getHealthReason2().putAll(reason2Map);

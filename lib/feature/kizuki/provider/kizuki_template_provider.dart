@@ -29,6 +29,11 @@ class  KizukiTemplateProvider extends StateNotifier<KizukiTemplateState> {
   }
 
   Future<void> _fetch() async {
+    final dantaiId = ref.read(filterProvider).dantaiId ?? 0;
+    if (dantaiId == 0) {
+      return;
+    }
+
     final response = await rep.fetch();
     state = response;
   }
