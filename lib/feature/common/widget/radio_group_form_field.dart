@@ -22,7 +22,7 @@ class RadioGroupFormField extends FormField<String> {
                       field.didChange(entry.key);
                     },
                     child: Padding(
-                      padding: const EdgeInsets.fromLTRB(8, 4, 8, 4),
+                      padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: <Widget>[

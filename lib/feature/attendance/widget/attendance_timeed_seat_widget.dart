@@ -61,7 +61,7 @@ class AttendanceTimedSeatWidget extends ConsumerWidget {
           isEditable = false;
         }            
       } catch (ex) {
-        jokyo = const AttendanceTimedStatusModel();
+        //
       }
     } else {
       jokyo = const AttendanceTimedStatusModel();

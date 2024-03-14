@@ -55,276 +55,283 @@ class KizukiTemplateDialog extends ConsumerWidget {
       child: SimpleDialog(
         surfaceTintColor: theme.colorScheme.surface,
         children: [
-          const SizedBox(height: 4),
-          // 1. title
-          const Text(
-            '　気づきテンプレート文の編集',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 20,
-            ),
-          ),
-
-          // 2. body
-          const Padding(
-            padding: EdgeInsets.fromLTRB(8, 8, 8, 4),
-            child: Divider(color: Colors.grey),
-          ),
-          Container(
-            padding: const EdgeInsets.fromLTRB(8, 4, 16, 4),
+          SizedBox(
+            width: 900,
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // 2.1 タイトル
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      width: 100,
-                      height: 36,
-                      alignment: Alignment.centerRight,
-                      child: const Text(
-                        'テンプレート名',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 14,
-                        ),
-                      ),
-                    ),
-                    MySpacing.width(16),
-                    Expanded(
-                      child: TextFormField(
-                        controller: ctrTitle,
-                        keyboardType: TextInputType.multiline,
-                        maxLength: 20,
-                        decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
-                        ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return '';
-                          }
-                          return null;
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-
-                // 2.2 分類
-                MySpacing.height(4),
-                const SizedBox(
-                  width: 560,
-                ),
-
-                Row(
-                  children: [
-                    Container(
-                      width: 100,
-                      alignment: Alignment.centerRight,
-                      child: const Text(
-                        '分類',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 14,
-                        ),
-                      ),
-                    ),
-                    MySpacing.width(12),
-                    Expanded(
-                      child: RadioGroupFormField(
-                        radioMap: bunruiMap,
-                        initialValue: _bunruiCd,
-                        onSaved: (value) {
-                          _bunruiCd = '$value';
-                        },
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return '';
-                          }
-                          return null;
-                        },
-                    ),),
-                  ],
-                ),
-
-                // 2.3 種別
-                MySpacing.height(4),
-                Row(
-                  children: [
-                    Container(
-                      width: 100,
-                      alignment: Alignment.centerRight,
-                      child: const Text(
-                        '種別',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 14,
-                        ),
-                      ),
-                    ),
-                    MySpacing.width(12),
-                    Expanded(
-                      child: RadioGroupFormField(
-                        radioMap: radioMap,
-                        initialValue: _syubetu,
-                        onSaved: (value) {
-                          _syubetu = '$value';
-                        },
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return '';
-                          }
-                          return null;
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-
-                // 2.4 気づきテンプレート
-                MySpacing.height(4),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      width: 100,
-                      alignment: Alignment.centerRight,
-                      child: const Text(
-                        '気づき',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 14,
-                        ),
-                      ),
-                    ),
-                    MySpacing.width(12),
-                    Expanded(
-                      child: TextFormField(
-                        controller: ctrKizuki,
-                        keyboardType: TextInputType.multiline,
-                        maxLength: 300,
-                        maxLines: 9,
-                        decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
-                        ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return '';
-                          }
-                          return null;
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-
-          // 3.buttom button
-          const Padding(
-            padding: EdgeInsets.all(8),
-            child: Divider(color: Colors.grey),
-          ),
-          Container(
-            padding: MySpacing.fromLTRB(16, 0, 16, 0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                ElevatedButton.icon(
-                  icon: const Icon(Icons.close),
-                  label: const Text(
-                    '閉じる',
-                    style: TextStyle(color: Colors.black),
-                  ),
-                  onPressed: () {
-                    Navigator.of(context).pop('0');
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(4),
-                      //side: const BorderSide(),
-                    ),
+                const SizedBox(height: 4),
+                // 1. title
+                const Text(
+                  '　気づきテンプレート文の編集',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
                   ),
                 ),
-                Expanded(child: Container()),
-                if (action == ScreenAction.edit ||
-                    action == ScreenAction.detail) ...[
-                  DeleteButtonWidget(
-                    onPressed: 
-                        model.crtUserId == null  || 
-                        kihonId != model.kinyuKyoinId.toString()  
-                        ? null
-                        : () async {
-                      await ref
-                          .read(kizukiTemplateProvider.notifier)
-                          .delete(model.id!);
 
-                      ToastHelper.showToast(context, '　削除しました　');
-                      Navigator.of(context).pop('1');
-                    },
-                    label: '削除',
+                // 2. body
+                const Padding(
+                  padding: EdgeInsets.fromLTRB(8, 8, 8, 4),
+                  child: Divider(color: Colors.grey),
+                ),
+                Container(
+                  padding: const EdgeInsets.fromLTRB(8, 4, 16, 4),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // 2.1 タイトル
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            width: 100,
+                            height: 36,
+                            alignment: Alignment.centerRight,
+                            child: const Text(
+                              'テンプレート名',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14,
+                              ),
+                            ),
+                          ),
+                          MySpacing.width(16),
+                          Expanded(
+                            child: TextFormField(
+                              controller: ctrTitle,
+                              keyboardType: TextInputType.multiline,
+                              maxLength: 20,
+                              decoration: const InputDecoration(
+                                border: OutlineInputBorder(),
+                              ),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return '';
+                                }
+                                return null;
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+
+                      Row(
+                        children: [
+                          Container(
+                            width: 100,
+                            alignment: Alignment.centerRight,
+                            child: const Text(
+                              '分類',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14,
+                              ),
+                            ),
+                          ),
+                          MySpacing.width(12),
+                          Expanded(
+                            child: RadioGroupFormField(
+                              radioMap: bunruiMap,
+                              initialValue: _bunruiCd,
+                              onSaved: (value) {
+                                _bunruiCd = '$value';
+                              },
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return '';
+                                }
+                                return null;
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+
+                      // 2.3 種別
+                      Row(
+                        children: [
+                          Container(
+                            width: 100,
+                            alignment: Alignment.centerRight,
+                            child: const Text(
+                              '種別',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14,
+                              ),
+                            ),
+                          ),
+                          MySpacing.width(12),
+                          Expanded(
+                            child: RadioGroupFormField(
+                              radioMap: radioMap,
+                              initialValue: _syubetu,
+                              onSaved: (value) {
+                                _syubetu = '$value';
+                              },
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return '';
+                                }
+                                return null;
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+
+                      // 2.4 気づきテンプレート
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            width: 100,
+                            alignment: Alignment.centerRight,
+                            child: const Text(
+                              '気づき',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14,
+                              ),
+                            ),
+                          ),
+                          MySpacing.width(12),
+                          Expanded(
+                            child: TextFormField(
+                              controller: ctrKizuki,
+                              keyboardType: TextInputType.multiline,
+                              maxLength: 300,
+                              maxLines: 9,
+                              decoration: const InputDecoration(
+                                border: OutlineInputBorder(),
+                              ),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return '';
+                                }
+                                return null;
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
-                  MySpacing.width(16),
-                ],
-                Save2ButtonWidget(
-                  label: '保存',
-                  onPressed: 
-                    action != ScreenAction.add && (
-                    model.crtUserId == null || 
-                    kihonId != model.kinyuKyoinId.toString() )
-                  ? null 
-                  :   () async {
-                    if (_formKey.currentState!.validate() == false) {
-                      ToastHelper.showToast(context, '　必須項目を入力してください　');
-                      return;
-                    }
+                ),
 
-                    _formKey.currentState!.save();
+                // 3.buttom button
+                const Padding(
+                  padding: EdgeInsets.all(8),
+                  child: Divider(color: Colors.grey),
+                ),
+                Container(
+                  padding: MySpacing.fromLTRB(16, 0, 16, 0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      ElevatedButton.icon(
+                        icon: const Icon(Icons.close),
+                        label: const Text(
+                          '閉じる',
+                          style: TextStyle(color: Colors.black),
+                        ),
+                        onPressed: () {
+                          Navigator.of(context).pop('0');
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(4),
+                            //side: const BorderSide(),
+                          ),
+                        ),
+                      ),
+                      Expanded(child: Container()),
+                      if (action == ScreenAction.edit ||
+                          action == ScreenAction.detail) ...[
+                        DeleteButtonWidget(
+                          onPressed: model.kinyuKyoinId == null ||
+                                  kihonId != model.kinyuKyoinId.toString()
+                              ? null
+                              : () async {
+                                  await ref
+                                      .read(kizukiTemplateProvider.notifier)
+                                      .delete(model.id!);
 
-                    // 分類コードから分類名を取得
-                    final bunrui = ref
-                              .read(awarenessCodeListProvider.notifier)
-                              .setCodeValue(
-                                code : _bunruiCd,
-                              );
-                    switch (action) {
-                      case ScreenAction.add:
-                      case ScreenAction.copy:
-                        await ref
-                            .read(kizukiTemplateProvider.notifier)
-                            .save(
-                              kinyuKyoinId: '$kihonId',
-                              karuteSettingId: '${bunrui.id}',
-                              karuteShubetsuNaibuCode: '20',
-                              karuteBunruiCode: '${bunrui.code}',
-                              title: ctrTitle.text,
-                              kizukiTemplate: ctrKizuki.text,
-                              commonFlg: _syubetu,
-                            );
-                      case ScreenAction.edit:
-                        await ref
-                            .read(kizukiTemplateProvider.notifier)
-                            .patch(
-                              id: model.id!,
-                              kinyuKyoinId: '$kihonId',
-                              karuteSettingId: '${bunrui.id}',
-                              karuteShubetsuNaibuCode: '20',
-                              karuteBunruiCode: '${bunrui.code}',
-                              title: ctrTitle.text,
-                              kizukiTemplate: ctrKizuki.text,
-                              commonFlg: _syubetu,
-                            );
-                      default:
-                        break;
-                    }
+                                  ToastHelper.showToast(context, '　削除しました　');
+                                  Navigator.of(context).pop('1');
+                                },
+                          label: '削除',
+                        ),
+                        MySpacing.width(16),
+                      ],
+                      Save2ButtonWidget(
+                        label: '保存',
+                        onPressed: action != ScreenAction.add &&
+                                action !=
+                                    ScreenAction.copy && 
+                                (model.kinyuKyoinId == null ||
+                                    kihonId != model.kinyuKyoinId.toString())
+                            ? null
+                            : () async {
+                                if (_formKey.currentState!.validate() ==
+                                    false) {
+                                  ToastHelper.showToast(
+                                      context, '　必須項目を入力してください　');
+                                  return;
+                                }
 
-                    ToastHelper.showToast(context, '　保存しました　');
+                                _formKey.currentState!.save();
 
-                    Navigator.of(context).pop('1');
-                  },
+                                // 分類コードから分類名を取得
+                                final bunrui = ref
+                                    .read(awarenessCodeListProvider.notifier)
+                                    .setCodeValue(
+                                      code: _bunruiCd,
+                                    );
+                                switch (action) {
+                                  case ScreenAction.add:
+                                  case ScreenAction.copy:
+                                    try{
+                                      await ref
+                                          .read(kizukiTemplateProvider.notifier)
+                                          .save(
+                                            kinyuKyoinId: '$kihonId',
+                                            karuteSettingId: '${bunrui.id}',
+                                            karuteShubetsuNaibuCode: '20',
+                                            karuteBunruiCode: '${bunrui.code}',
+                                            title: ctrTitle.text,
+                                            kizukiTemplate: ctrKizuki.text,
+                                            commonFlg: _syubetu,
+                                          );
+                                    }catch(e){
+                                      //
+                                    }
+                                    
+                                  case ScreenAction.edit:
+                                    await ref
+                                        .read(kizukiTemplateProvider.notifier)
+                                        .patch(
+                                          id: model.id!,
+                                          kinyuKyoinId: '$kihonId',
+                                          karuteSettingId: '${bunrui.id}',
+                                          karuteShubetsuNaibuCode: '20',
+                                          karuteBunruiCode: '${bunrui.code}',
+                                          title: ctrTitle.text,
+                                          kizukiTemplate: ctrKizuki.text,
+                                          commonFlg: _syubetu,
+                                        );
+                                  default:
+                                    break;
+                                }
+
+                                ToastHelper.showToast(context, '　保存しました　');
+
+                                Navigator.of(context).pop();
+                              },
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
@@ -333,5 +340,4 @@ class KizukiTemplateDialog extends ConsumerWidget {
       ),
     );
   }
-
 }

@@ -7,7 +7,7 @@ import 'package:kyoumutechou/feature/kizuki/state/kizuki_template_state.dart';
 
 
 final kizukiTemplateProvider =
-    StateNotifierProvider<KizukiTemplateProvider, KizukiTemplateState>((ref) {
+    StateNotifierProvider.autoDispose<KizukiTemplateProvider, KizukiTemplateState>((ref) {
   final filter = ref.watch(filterProvider);
 
   return KizukiTemplateProvider(ref, filter);
@@ -67,6 +67,7 @@ class  KizukiTemplateProvider extends StateNotifier<KizukiTemplateState> {
     final response = await rep.save(json);
 
     state = response;
+    
   }
 
   Future<void> patch({

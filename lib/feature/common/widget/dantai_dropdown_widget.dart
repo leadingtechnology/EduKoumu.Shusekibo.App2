@@ -15,7 +15,7 @@ class DantaiDropdownWidget extends ConsumerWidget {
     // 座席表設定時は非表示にする
     final menu = ref.watch(menuProvider).index;
     final pageType = ref.watch(seatChartPageTypeProvider);
-    if (menu == Menu.seatChart || pageType == PageType.seat) {
+    if (menu == Menu.seatChart && pageType == PageType.seat) {
       return const SizedBox.shrink();
     }
 

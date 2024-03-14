@@ -24,8 +24,12 @@ class SignInPageState extends ConsumerState<SignInPage> {
     theme = AppTheme.theme;
   }
 
-  final _emailController = TextEditingController(text: 'login0001');
+  final _emailController = TextEditingController(text: 'login0026');
   final _passwordController = TextEditingController(text: 'P@ssw0rd');
+  
+  final _focusUserId = FocusNode();
+  final _focusPassword = FocusNode();
+  final _focusLogin = FocusNode();
 
   @override
   Widget build(BuildContext context) {
@@ -89,7 +93,12 @@ class SignInPageState extends ConsumerState<SignInPage> {
                                 size: 20,
                               ),
                             ),
-                            //cursorColor: customTheme.groceryPrimary,
+                            focusNode: _focusUserId,
+                            textInputAction: TextInputAction.next,
+                            onFieldSubmitted: (value) {
+                              FocusScope.of(context)
+                                  .requestFocus(_focusPassword);
+                            },
                             autofocus: true,
                           ),
                         ),
@@ -115,6 +124,13 @@ class SignInPageState extends ConsumerState<SignInPage> {
                                 size: 20,
                               ),
                             ),
+                            focusNode: _focusPassword,
+                            textInputAction: TextInputAction.next,
+                            onFieldSubmitted: (value) {
+                              FocusScope.of(context)
+                                  .requestFocus(_focusLogin);
+                            },
+
                             //cursorColor: customTheme.groceryPrimary,
                             autofocus: true,
                           ),
@@ -141,6 +157,7 @@ class SignInPageState extends ConsumerState<SignInPage> {
       height: 35,
       width: double.infinity,
       child: OutlinedButton(
+        focusNode: _focusLogin,
         onPressed: () {
           ref
               .read(authNotifierProvider.notifier)
