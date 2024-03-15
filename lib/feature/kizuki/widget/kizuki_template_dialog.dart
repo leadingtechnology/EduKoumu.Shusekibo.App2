@@ -259,7 +259,7 @@ class KizukiTemplateDialog extends ConsumerWidget {
                                       .delete(model.id!);
 
                                   ToastHelper.showToast(context, '　削除しました　');
-                                  Navigator.of(context).pop('1');
+                                  Navigator.of(context).pop();
                                 },
                           label: '削除',
                         ),

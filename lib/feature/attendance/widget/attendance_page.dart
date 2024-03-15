@@ -9,6 +9,7 @@ import 'package:kyoumutechou/feature/attendance/widget/attendance_seat_widget.da
 import 'package:kyoumutechou/feature/boxes.dart';
 import 'package:kyoumutechou/feature/common/provider/common_provider.dart';
 import 'package:kyoumutechou/feature/common/provider/seat_chart_pattern_provider.dart';
+import 'package:kyoumutechou/feature/common/provider/tokobis_provider.dart';
 import 'package:kyoumutechou/feature/common/state/api_state.dart';
 import 'package:kyoumutechou/feature/common/widget/common_page.dart';
 import 'package:kyoumutechou/feature/common/widget/save_button_widget.dart';
@@ -79,6 +80,7 @@ class _GridviewState extends ConsumerState<Gridview> {
   Widget build(BuildContext context) {
     final state = ref.watch(seatSettingAttendanceProvider);
     final lp = ref.watch(lecternPositionProvider);
+    final isLocked = ref.watch(isLockedProvider);
 
     ref.listen<ApiState>(attendanceMeiboListProvider, (previous, next) {
       if (next == const ApiState.loaded()) {
@@ -86,20 +88,8 @@ class _GridviewState extends ConsumerState<Gridview> {
         if (list.isEmpty) {
           return;
         }
-        final isHogo = list.where((e) {
-          try {
-            final jokyo = e.jokyoList!.first;
-            if (jokyo.isEditable == false) {
-              return true;
-            } else {
-              return false;
-            }
-          } catch (ex) {
-            return false;
-          }
-        }).toList();
 
-        if (isHogo.isNotEmpty && isHogo.length == list.length) {
+        if (isLocked) {
           ToastHelper.showToast(context, '　既に保護されているため、編集・保存することができません。　');
         }
       }
@@ -231,6 +221,7 @@ class ListView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(attendanceMeiboListProvider);
+    final isLocked = ref.watch(isLockedProvider);
 
     ref.listen<ApiState>(attendanceMeiboListProvider, (previous, next) {
       if (next == const ApiState.loaded()) {
@@ -238,20 +229,8 @@ class ListView extends ConsumerWidget {
         if (list.isEmpty) {
           return;
         }
-        final isHogo = list.where((e) {
-          try {
-            final jokyo = e.jokyoList!.first;
-            if (jokyo.isEditable == false) {
-              return true;
-            } else {
-              return false;
-            }
-          } catch (ex) {
-            return false;
-          }
-        }).toList();
-
-        if (isHogo.isNotEmpty && isHogo.length == list.length) {
+        
+        if (isLocked) {
           ToastHelper.showToast(context, '　既に保護されているため、編集・保存することができません。　');
         }
       }

@@ -24,13 +24,14 @@ abstract class TokobiModel with _$TokobiModel {
     @JsonKey(name: 'Jigen', disallowNullValue: false) @HiveField(3) int? jigen,
     @JsonKey(name: 'IsToday', disallowNullValue: false) @HiveField(4) bool? isToday,
     @JsonKey(name: 'IsEditable', disallowNullValue: false) @HiveField(5) bool? isEditable,
-    @JsonKey(name: 'StampedCount', disallowNullValue: false) @HiveField(6) int? stampedCount,
-    @JsonKey(name: 'TotalCount', disallowNullValue: false) @HiveField(7) int? totalCount,
+    @JsonKey(name: 'IsLocked', disallowNullValue: false) @HiveField(6) bool? isLocked,
+    @JsonKey(name: 'StampedCount', disallowNullValue: false) @HiveField(7) int? stampedCount,
+    @JsonKey(name: 'TotalCount', disallowNullValue: false) @HiveField(8) int? totalCount,
   }) = _TokobiModel;
 
   @override
   String toString() {
-    return 'TokobiModel($tokobi, $yobiCd, $weekName, $jigen, $isToday, $isEditable, $stampedCount, $totalCount)';
+    return 'TokobiModel($tokobi, $yobiCd, $weekName, $jigen, $isToday, $isEditable, $isLocked, $stampedCount, $totalCount)';
   }
   factory TokobiModel.fromJson(Map<String, dynamic> json) => _$TokobiModelFromJson(json);
 }

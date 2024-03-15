@@ -7,6 +7,7 @@ import 'package:kyoumutechou/shared/http/app_exception.dart';
 import 'package:kyoumutechou/shared/util/date_util.dart';
 
 final isTokobiProvider = StateProvider<bool>((ref) => false);
+final isLockedProvider = StateProvider<bool>((ref) => false);
 final lastTokobisProvider = StateProvider<List<DateTime>>((ref) => []);
 
 // 登校日データの更新
@@ -102,14 +103,17 @@ class TokobiNotifier extends StateNotifier<ApiState> {
         ).toList().firstOrNull;
     
     var isEditable = false ;
+    var isLocked = false;
     if(key != null){
       final tokobi = box.get(key);
       if(tokobi != null){
         isEditable = tokobi.isEditable ?? false;
+        isLocked = tokobi.isLocked ?? false;
       }
     }
 
     ref.read(isTokobiProvider.notifier).state = isEditable;
+    ref.read(isLockedProvider.notifier).state = isLocked;
 
   }
 }

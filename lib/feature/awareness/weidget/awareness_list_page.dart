@@ -342,7 +342,7 @@ Future<void> _handlePressActionButton(
   if (opt == AwarenessOperationItem.favorite ||
       opt == AwarenessOperationItem.template) 
   {
-    final commonFlg = opt == AwarenessOperationItem.template ? true : false;
+    final commonFlg = opt == AwarenessOperationItem.template;
 
     final model = KizukiTemplateModel(
       karuteBunruiCode: kizuki.bunruiCode,
@@ -351,8 +351,10 @@ Future<void> _handlePressActionButton(
       kizukiTemplate: kizuki.naiyou,
     );
 
+    final dialogContext = context;
+
     await DialogUtil.show(
-      context: context,
+      context: dialogContext,
       builder: (context) {
         return KizukiTemplateDialog(
           model: model,

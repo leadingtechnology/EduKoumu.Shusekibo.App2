@@ -38,11 +38,14 @@ mixin _$TokobiModel {
   @JsonKey(name: 'IsEditable', disallowNullValue: false)
   @HiveField(5)
   bool? get isEditable => throw _privateConstructorUsedError;
-  @JsonKey(name: 'StampedCount', disallowNullValue: false)
+  @JsonKey(name: 'IsLocked', disallowNullValue: false)
   @HiveField(6)
+  bool? get isLocked => throw _privateConstructorUsedError;
+  @JsonKey(name: 'StampedCount', disallowNullValue: false)
+  @HiveField(7)
   int? get stampedCount => throw _privateConstructorUsedError;
   @JsonKey(name: 'TotalCount', disallowNullValue: false)
-  @HiveField(7)
+  @HiveField(8)
   int? get totalCount => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -76,11 +79,14 @@ abstract class $TokobiModelCopyWith<$Res> {
       @JsonKey(name: 'IsEditable', disallowNullValue: false)
       @HiveField(5)
       bool? isEditable,
-      @JsonKey(name: 'StampedCount', disallowNullValue: false)
+      @JsonKey(name: 'IsLocked', disallowNullValue: false)
       @HiveField(6)
+      bool? isLocked,
+      @JsonKey(name: 'StampedCount', disallowNullValue: false)
+      @HiveField(7)
       int? stampedCount,
       @JsonKey(name: 'TotalCount', disallowNullValue: false)
-      @HiveField(7)
+      @HiveField(8)
       int? totalCount});
 }
 
@@ -103,6 +109,7 @@ class _$TokobiModelCopyWithImpl<$Res, $Val extends TokobiModel>
     Object? jigen = freezed,
     Object? isToday = freezed,
     Object? isEditable = freezed,
+    Object? isLocked = freezed,
     Object? stampedCount = freezed,
     Object? totalCount = freezed,
   }) {
@@ -130,6 +137,10 @@ class _$TokobiModelCopyWithImpl<$Res, $Val extends TokobiModel>
       isEditable: freezed == isEditable
           ? _value.isEditable
           : isEditable // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      isLocked: freezed == isLocked
+          ? _value.isLocked
+          : isLocked // ignore: cast_nullable_to_non_nullable
               as bool?,
       stampedCount: freezed == stampedCount
           ? _value.stampedCount
@@ -170,11 +181,14 @@ abstract class _$$TokobiModelImplCopyWith<$Res>
       @JsonKey(name: 'IsEditable', disallowNullValue: false)
       @HiveField(5)
       bool? isEditable,
-      @JsonKey(name: 'StampedCount', disallowNullValue: false)
+      @JsonKey(name: 'IsLocked', disallowNullValue: false)
       @HiveField(6)
+      bool? isLocked,
+      @JsonKey(name: 'StampedCount', disallowNullValue: false)
+      @HiveField(7)
       int? stampedCount,
       @JsonKey(name: 'TotalCount', disallowNullValue: false)
-      @HiveField(7)
+      @HiveField(8)
       int? totalCount});
 }
 
@@ -195,6 +209,7 @@ class __$$TokobiModelImplCopyWithImpl<$Res>
     Object? jigen = freezed,
     Object? isToday = freezed,
     Object? isEditable = freezed,
+    Object? isLocked = freezed,
     Object? stampedCount = freezed,
     Object? totalCount = freezed,
   }) {
@@ -222,6 +237,10 @@ class __$$TokobiModelImplCopyWithImpl<$Res>
       isEditable: freezed == isEditable
           ? _value.isEditable
           : isEditable // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      isLocked: freezed == isLocked
+          ? _value.isLocked
+          : isLocked // ignore: cast_nullable_to_non_nullable
               as bool?,
       stampedCount: freezed == stampedCount
           ? _value.stampedCount
@@ -258,11 +277,14 @@ class _$TokobiModelImpl implements _TokobiModel {
       @JsonKey(name: 'IsEditable', disallowNullValue: false)
       @HiveField(5)
       this.isEditable,
-      @JsonKey(name: 'StampedCount', disallowNullValue: false)
+      @JsonKey(name: 'IsLocked', disallowNullValue: false)
       @HiveField(6)
+      this.isLocked,
+      @JsonKey(name: 'StampedCount', disallowNullValue: false)
+      @HiveField(7)
       this.stampedCount,
       @JsonKey(name: 'TotalCount', disallowNullValue: false)
-      @HiveField(7)
+      @HiveField(8)
       this.totalCount});
 
   factory _$TokobiModelImpl.fromJson(Map<String, dynamic> json) =>
@@ -293,12 +315,16 @@ class _$TokobiModelImpl implements _TokobiModel {
   @HiveField(5)
   final bool? isEditable;
   @override
-  @JsonKey(name: 'StampedCount', disallowNullValue: false)
+  @JsonKey(name: 'IsLocked', disallowNullValue: false)
   @HiveField(6)
+  final bool? isLocked;
+  @override
+  @JsonKey(name: 'StampedCount', disallowNullValue: false)
+  @HiveField(7)
   final int? stampedCount;
   @override
   @JsonKey(name: 'TotalCount', disallowNullValue: false)
-  @HiveField(7)
+  @HiveField(8)
   final int? totalCount;
 
   @override
@@ -314,6 +340,8 @@ class _$TokobiModelImpl implements _TokobiModel {
             (identical(other.isToday, isToday) || other.isToday == isToday) &&
             (identical(other.isEditable, isEditable) ||
                 other.isEditable == isEditable) &&
+            (identical(other.isLocked, isLocked) ||
+                other.isLocked == isLocked) &&
             (identical(other.stampedCount, stampedCount) ||
                 other.stampedCount == stampedCount) &&
             (identical(other.totalCount, totalCount) ||
@@ -323,7 +351,7 @@ class _$TokobiModelImpl implements _TokobiModel {
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, tokobi, yobiCd, weekName, jigen,
-      isToday, isEditable, stampedCount, totalCount);
+      isToday, isEditable, isLocked, stampedCount, totalCount);
 
   @JsonKey(ignore: true)
   @override
@@ -359,11 +387,14 @@ abstract class _TokobiModel implements TokobiModel {
       @JsonKey(name: 'IsEditable', disallowNullValue: false)
       @HiveField(5)
       final bool? isEditable,
-      @JsonKey(name: 'StampedCount', disallowNullValue: false)
+      @JsonKey(name: 'IsLocked', disallowNullValue: false)
       @HiveField(6)
+      final bool? isLocked,
+      @JsonKey(name: 'StampedCount', disallowNullValue: false)
+      @HiveField(7)
       final int? stampedCount,
       @JsonKey(name: 'TotalCount', disallowNullValue: false)
-      @HiveField(7)
+      @HiveField(8)
       final int? totalCount}) = _$TokobiModelImpl;
 
   factory _TokobiModel.fromJson(Map<String, dynamic> json) =
@@ -394,12 +425,16 @@ abstract class _TokobiModel implements TokobiModel {
   @HiveField(5)
   bool? get isEditable;
   @override
-  @JsonKey(name: 'StampedCount', disallowNullValue: false)
+  @JsonKey(name: 'IsLocked', disallowNullValue: false)
   @HiveField(6)
+  bool? get isLocked;
+  @override
+  @JsonKey(name: 'StampedCount', disallowNullValue: false)
+  @HiveField(7)
   int? get stampedCount;
   @override
   @JsonKey(name: 'TotalCount', disallowNullValue: false)
-  @HiveField(7)
+  @HiveField(8)
   int? get totalCount;
   @override
   @JsonKey(ignore: true)

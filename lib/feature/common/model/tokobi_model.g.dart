@@ -23,15 +23,16 @@ class TokobiModelAdapter extends TypeAdapter<_$TokobiModelImpl> {
       jigen: fields[3] as int?,
       isToday: fields[4] as bool?,
       isEditable: fields[5] as bool?,
-      stampedCount: fields[6] as int?,
-      totalCount: fields[7] as int?,
+      isLocked: fields[6] as bool?,
+      stampedCount: fields[7] as int?,
+      totalCount: fields[8] as int?,
     );
   }
 
   @override
   void write(BinaryWriter writer, _$TokobiModelImpl obj) {
     writer
-      ..writeByte(8)
+      ..writeByte(9)
       ..writeByte(0)
       ..write(obj.tokobi)
       ..writeByte(1)
@@ -45,8 +46,10 @@ class TokobiModelAdapter extends TypeAdapter<_$TokobiModelImpl> {
       ..writeByte(5)
       ..write(obj.isEditable)
       ..writeByte(6)
-      ..write(obj.stampedCount)
+      ..write(obj.isLocked)
       ..writeByte(7)
+      ..write(obj.stampedCount)
+      ..writeByte(8)
       ..write(obj.totalCount);
   }
 
@@ -74,6 +77,7 @@ _$TokobiModelImpl _$$TokobiModelImplFromJson(Map<String, dynamic> json) =>
       jigen: json['Jigen'] as int?,
       isToday: json['IsToday'] as bool?,
       isEditable: json['IsEditable'] as bool?,
+      isLocked: json['IsLocked'] as bool?,
       stampedCount: json['StampedCount'] as int?,
       totalCount: json['TotalCount'] as int?,
     );
@@ -86,6 +90,7 @@ Map<String, dynamic> _$$TokobiModelImplToJson(_$TokobiModelImpl instance) =>
       'Jigen': instance.jigen,
       'IsToday': instance.isToday,
       'IsEditable': instance.isEditable,
+      'IsLocked': instance.isLocked,
       'StampedCount': instance.stampedCount,
       'TotalCount': instance.totalCount,
     };
