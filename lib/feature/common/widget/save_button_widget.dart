@@ -31,7 +31,10 @@ class _SaveButtonWidgetState extends ConsumerState<SaveButtonWidget> {
     return SizedBox(
       width: 130,
       child: ElevatedButton.icon(
-        onPressed: _isButtonDisabled || !buttonEnable || !isTokobi
+        onPressed: _isButtonDisabled ||
+                !buttonEnable ||
+                !isTokobi ||
+                widget.onPressed == null
             ? null
             : () async {
                 setState(() => _isButtonDisabled = true);
