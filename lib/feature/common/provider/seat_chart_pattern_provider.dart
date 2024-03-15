@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kyoumutechou/feature/attendance/provider/attendance_meibo_provider.dart';
 import 'package:kyoumutechou/feature/attendance/provider/attendance_timed_meibo_provider.dart';
 import 'package:kyoumutechou/feature/awareness/provider/awareness_meibo_provider.dart';
+import 'package:kyoumutechou/feature/common/provider/filter_provider.dart';
 import 'package:kyoumutechou/feature/common/state/api_state.dart';
 import 'package:kyoumutechou/feature/health/provider/health_meibo_provider.dart';
 import 'package:kyoumutechou/feature/seat/model/seat_setting_model.dart';
@@ -14,6 +15,7 @@ final seatSettingPatternProvider =
 final seatSettingHealthProvider = Provider.autoDispose<AsyncValue<bool>>((ref) {
   final state1 = ref.watch(healthMeiboListProvider);
   final state2 = ref.watch(seatSettingListProvider);
+  final filter = ref.watch(filterProvider);
 
   //　成功
   if (state1 == const ApiState.loaded() && state2 == const ApiState.loaded()) {
@@ -40,6 +42,7 @@ final seatSettingHealthProvider = Provider.autoDispose<AsyncValue<bool>>((ref) {
 final seatSettingAttendanceProvider = Provider.autoDispose<AsyncValue<bool>>((ref) {
   final state1 = ref.watch(attendanceMeiboListProvider);
   final state2 = ref.watch(seatSettingListProvider);
+  final filter = ref.watch(filterProvider);
 
   //　成功
   if (state1 == const ApiState.loaded() && state2 == const ApiState.loaded()) {
@@ -63,6 +66,7 @@ final seatSettingAttendanceProvider = Provider.autoDispose<AsyncValue<bool>>((re
 final seatSettingTimedProvider = Provider.autoDispose<AsyncValue<bool>>((ref) {
   final state1 = ref.watch(attendanceTimedMeiboListProvider);
   final state2 = ref.watch(seatSettingListProvider);
+  final filter = ref.watch(filterProvider);
 
   //　成功
   if (state1 == const ApiState.loaded() && state2 == const ApiState.loaded()) {

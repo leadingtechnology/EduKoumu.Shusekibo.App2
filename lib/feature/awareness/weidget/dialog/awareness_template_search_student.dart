@@ -176,112 +176,10 @@ class _AwarenessTemplateSearchStudentState
                 },
               ),
             );
-
-            // return SizedBox(
-            //   width: 300,
-            //   child: DropdownSearch<AwarenessMeiboModel>.multiSelection(
-            //     key: _multiKey,
-            //     onChanged:(List<AwarenessMeiboModel> meibos) async{
-            //       final ids = meibos.map((e) => e.studentId??0).toList();
-            //       ref.read(awarenessStudentAddProvider.notifier).state = ids;
-            //     },
-            //     autoValidateMode: AutovalidateMode.always,
-            //     validator: (List<AwarenessMeiboModel>? v) {
-            //       return v == null || v.isEmpty ? '必須項目です' : null;
-            //     },
-            //     popupProps: PopupPropsMultiSelection.menu(
-            //       showSelectedItems: true,
-            //       itemBuilder: (BuildContext context, AwarenessMeiboModel item, bool isSelected){
-            //         return Column(children: [
-            //             MySpacing.height(8),
-            //             Row(children: [
-            //               MySpacing.width(8),
-            //               SeitoWidget(
-            //                 studentName: item.studentName??'',
-            //                 studentId: item.studentId??0,
-            //                 photoUrl: item.photoUrl ?? '',
-            //               ),
-            //             ],),
-            //             const Divider(color: Colors.black12,),
-            //         ],);
-            //       },
-
-            //       //disabledItemFn: (String s) => s.startsWith('I'),
-            //     ),
-
-            //     dropdownBuilder: (context, selectedItems) {
-            //       Widget item(AwarenessMeiboModel m) => Container(
-            //             height: 32,
-            //             padding: const EdgeInsets.only(left: 6),
-            //             margin: const EdgeInsets.symmetric(
-            //               horizontal: 2,
-            //               vertical: 1,
-            //             ),
-            //             decoration: BoxDecoration(
-            //               borderRadius: BorderRadius.circular(10),
-            //               color: Theme.of(context).primaryColorLight,
-            //             ),
-            //             child: Row(
-            //               mainAxisSize: MainAxisSize.min,
-            //               children: [
-            //                 SeitoWidget(
-            //                   studentName: '${m.studentName}',
-            //                   studentId: m.studentId??0,
-            //                   photoUrl: m.photoUrl ?? '',
-            //                 ),
-            //                 MaterialButton(
-            //                   height: 20,
-            //                   shape: const CircleBorder(),
-            //                   color: Colors.red[200],
-            //                   minWidth: 20,
-            //                   onPressed: () {
-            //                     _multiKey.currentState?.removeItem( m);
-            //                   },
-            //                   child: const Icon(
-            //                     Icons.close_outlined,
-            //                     size: 18,
-            //                   ),
-            //                 ),
-            //               ],
-            //             ),
-            //           );
-            //       return Wrap(
-            //         children: selectedItems.map(item).toList(),
-            //       );
-            //     },
-
-            //     items: meibos,
-
-            //     //clearButtonSplashRadius: 20,
-            //     selectedItems: [],
-            //     compareFn: (item, selectedItem) {return item.studentId == selectedItem.studentId;} ,
-            //   ),
-            // );
           },
         );
       },
     );
-
-    // return DropdownSearch<String>(
-    //   items: _kizukiSchool,
-    //   dropdownSearchDecoration: InputDecoration(
-    //     //labelText: "Custom BottomShet mode",
-    //     contentPadding: EdgeInsets.fromLTRB(12, 12, 0, 0),
-    //     border: OutlineInputBorder(),
-    //   ),
-    //   onChanged: (String? value){ kizukiController.text = '$value'; },
-    //   //selectedItem: "",
-    //   popupProps: PopupProps.menu(
-    //     searchFieldProps: TextFieldProps(
-    //       padding: EdgeInsets.fromLTRB(8, 8, 8, 0),
-    //       decoration: InputDecoration(
-    //         border: OutlineInputBorder(),
-    //         contentPadding: EdgeInsets.fromLTRB(12, 12, 8, 0),
-    //       ),
-    //     ),
-    //     showSearchBox: true,
-    //   ),
-    // );
   }
 }
 
@@ -325,7 +223,7 @@ class CheckBoxState extends State<_CheckBoxWidget> {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             const SizedBox(height: 16,),
-            const Text('すべて選択: '),
+            const Text('すべて選択 '),
             Checkbox(
               value: isSelected,
               tristate: true,

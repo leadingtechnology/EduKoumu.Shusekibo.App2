@@ -28,7 +28,10 @@ class AttendancePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final pageType = ref.watch(attendancePageTypeProvider);
-    final buttonEnable = ref.watch(buttonEnableProvider);
+    var buttonEnable = ref.watch(buttonEnableProvider);
+    if (ref.watch(isLockedProvider)) {
+      buttonEnable = false;
+    }
 
     return CommonPage(
       scaffoldKey: _attendanceKey,
@@ -44,7 +47,7 @@ class AttendancePage extends ConsumerWidget {
       },
       saveWidget: SaveButtonWidget(
         label: '保存',
-        onPressed: !buttonEnable
+        onPressed: !buttonEnable 
             ? null
             : () {
                 ref.read(attendanceMeiboListProvider.notifier).save();

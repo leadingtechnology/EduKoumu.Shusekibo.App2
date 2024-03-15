@@ -28,7 +28,10 @@ class AttendanceTimedPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final pageType = ref.watch(attendanceTimedPageTypeProvider);
-    final buttonEnable = ref.watch(buttonEnableProvider);
+    var buttonEnable = ref.watch(buttonEnableProvider);
+    if (ref.watch(isLockedProvider)) {
+      buttonEnable = false;
+    }
 
     return CommonPage(
       scaffoldKey: _timedKey,

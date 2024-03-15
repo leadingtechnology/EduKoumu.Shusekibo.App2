@@ -12,6 +12,7 @@ import 'package:kyoumutechou/feature/awareness/weidget/dialog/awareness_regist_d
 import 'package:kyoumutechou/feature/boxes.dart';
 import 'package:kyoumutechou/feature/common/widget/dialog_util.dart';
 import 'package:kyoumutechou/feature/common/widget/search_bar_widget.dart';
+import 'package:kyoumutechou/feature/common/widget/toast_helper.dart';
 import 'package:kyoumutechou/feature/home/provider/home_provider.dart';
 import 'package:kyoumutechou/feature/kizuki/model/kizuki_template_model.dart';
 import 'package:kyoumutechou/feature/kizuki/widget/kizuki_template_dialog.dart';
@@ -335,7 +336,10 @@ Future<void> _handlePressActionButton(
 
     // if(result == null || !result) return; // キャンセルされた場合は何もしない
 
+    ToastHelper.showToast(context, '　削除しました。　');
     await ref.read(awarenessKizukiListProvider.notifier).delete(kizuki);
+    // ignore: use_build_context_synchronously
+    
     return;
   }
 

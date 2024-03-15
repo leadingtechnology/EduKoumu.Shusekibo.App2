@@ -65,7 +65,7 @@ Future<void> _handleCamera(BuildContext context) async {
   await DialogUtil.show(
     context: context,
     builder: (BuildContext context) {
-      return CameraView(camera: firstCamera);
+      return CameraView(cameras:cameras);
     },
   );
 }
