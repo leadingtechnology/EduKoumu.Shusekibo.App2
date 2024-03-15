@@ -336,7 +336,7 @@ Future<void> _handlePressActionButton(
 
     // if(result == null || !result) return; // キャンセルされた場合は何もしない
 
-    ToastHelper.showToast(context, '　削除しました。　');
+    ToastHelper.showToast(context, '　削除しました　');
     await ref.read(awarenessKizukiListProvider.notifier).delete(kizuki);
     // ignore: use_build_context_synchronously
     

@@ -71,11 +71,11 @@ class KizukiTemplateDialog extends ConsumerWidget {
 
                 // 2. body
                 const Padding(
-                  padding: EdgeInsets.fromLTRB(8, 8, 8, 4),
+                  padding: EdgeInsets.fromLTRB(8, 0, 8, 0),
                   child: Divider(color: Colors.grey),
                 ),
                 Container(
-                  padding: const EdgeInsets.fromLTRB(8, 4, 16, 4),
+                  padding: const EdgeInsets.fromLTRB(0, 4, 16, 4),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -84,7 +84,7 @@ class KizukiTemplateDialog extends ConsumerWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Container(
-                            width: 100,
+                            width: 120,
                             height: 36,
                             alignment: Alignment.centerRight,
                             child: const Text(
@@ -95,7 +95,7 @@ class KizukiTemplateDialog extends ConsumerWidget {
                               ),
                             ),
                           ),
-                          MySpacing.width(16),
+                          MySpacing.width(12),
                           Expanded(
                             child: TextFormField(
                               controller: ctrTitle,
@@ -118,7 +118,7 @@ class KizukiTemplateDialog extends ConsumerWidget {
                       Row(
                         children: [
                           Container(
-                            width: 100,
+                            width: 120,
                             alignment: Alignment.centerRight,
                             child: const Text(
                               '分類',
@@ -151,7 +151,7 @@ class KizukiTemplateDialog extends ConsumerWidget {
                       Row(
                         children: [
                           Container(
-                            width: 100,
+                            width: 120,
                             alignment: Alignment.centerRight,
                             child: const Text(
                               '種別',
@@ -185,7 +185,7 @@ class KizukiTemplateDialog extends ConsumerWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Container(
-                            width: 100,
+                            width: 120,
                             alignment: Alignment.centerRight,
                             child: const Text(
                               '気づき',
@@ -225,7 +225,7 @@ class KizukiTemplateDialog extends ConsumerWidget {
                   child: Divider(color: Colors.grey),
                 ),
                 Container(
-                  padding: MySpacing.fromLTRB(16, 0, 16, 0),
+                  padding: MySpacing.fromLTRB(24, 0, 24, 8),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
