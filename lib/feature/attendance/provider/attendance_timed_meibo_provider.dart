@@ -92,14 +92,22 @@ class AttendanceTimedMeiboListProvider extends StateNotifier<ApiState> {
     }
 
     //clear all and set one
-    var jokyo = meibo.jokyoList![0];
+    late AttendanceTimedStatusModel jokyo;
     try {
       jokyo = meibo.jokyoList!
           .where((e) => e.jigenIdx == filter.jigenIdx)
           .toList()
           .first;
     } catch (ex) {
-      //
+      jokyo = AttendanceTimedStatusModel(
+        jigenIdx: filter.jigenIdx,
+        shukketsuBunrui: '',
+        shukketsuKbn: '',
+        ryaku: '',
+        jiyu1: '',
+        jiyu2: '',
+        isEditable: meibo.jokyoList![0].isEditable,
+      );
     }
     if (jokyo.shukketsuBunrui == '50' ||
         jokyo.shukketsuBunrui == '60'
@@ -147,9 +155,10 @@ class AttendanceTimedMeiboListProvider extends StateNotifier<ApiState> {
     final stamp = Boxes.getRegistAttendanceStamp().get('100');
 
     for (final m in meibos) {
+      var isEditable = false;
       
       // 編集可否フラグの取得
-      var jokyo = m.jokyoList![0];
+      late AttendanceTimedStatusModel jokyo;
       try {
         jokyo = m.jokyoList!
             .where(
@@ -158,11 +167,19 @@ class AttendanceTimedMeiboListProvider extends StateNotifier<ApiState> {
             .toList()
             .first;
       } catch (ex) {
-        //
+        jokyo = AttendanceTimedStatusModel(
+          jigenIdx: filter.jigenIdx,
+          shukketsuBunrui: '',
+          shukketsuKbn: '',
+          ryaku: '',
+          jiyu1: '',
+          jiyu2: '',
+          isEditable: m.jokyoList![0].isEditable,
+        );
       }
 
       // 保護されない場合、編集可能
-      final isEditable = jokyo.isEditable == true ? true : false;
+      isEditable = jokyo.isEditable == true ? true : false;
       if (isEditable && jokyo.shukketsuBunrui!.isEmpty) {
         await updateBox(
             m, 
