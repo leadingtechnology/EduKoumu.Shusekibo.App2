@@ -11,7 +11,7 @@ import 'package:kyoumutechou/shared/http/api_response.dart';
 import 'package:kyoumutechou/shared/http/app_exception.dart';
 import 'package:kyoumutechou/shared/util/date_util.dart';
 
-abstract class TimedRepositoryProtocol { 
+abstract class TimedRepositoryProtocol {
   Future<ApiState> fetch(FilterModel filter, DateTime targetDate);
   Future<ApiState> save(FilterModel filter);
 }
@@ -32,24 +32,24 @@ class TimedMeiboRepository implements TimedRepositoryProtocol {
     FilterModel filter,
     DateTime targetDate,
   ) async {
-
     await box0.clear();
     final strDate = DateUtil.getStringDate(targetDate);
 
-    if (filter.classId == null || 
-        filter.classId == 0 || 
-        filter.jigenIdx == null
-    ) {
+    if (filter.classId == null ||
+        filter.classId == 0 ||
+        filter.jigenIdx == null) {
       return const ApiState.loaded();
     }
-    
+
     var url = 'api/shozoku/${filter.classId}/JigenbetsuShussekibo';
     url = '$url?date=$strDate&kouryuGakkyu=${filter.kouryuGakkyu}';
     final response = await _api.get(url);
 
     response.when(
-        success: (success) {},
-        error: (error) {return ApiState.error(error);},
+      success: (success) {},
+      error: (error) {
+        return ApiState.error(error);
+      },
     );
 
     if (response is APISuccess) {
@@ -63,7 +63,7 @@ class TimedMeiboRepository implements TimedRepositoryProtocol {
         // 2) change list to map
         final timedMeiboMap = timedMeibo.asMap();
 
-           // set save button enable
+        // set save button enable
         if (timedMeibo.isNotEmpty) {
           ref.read(buttonEnableProvider.notifier).state = true;
         } else {
@@ -72,11 +72,12 @@ class TimedMeiboRepository implements TimedRepositoryProtocol {
 
         // 3) save to hive with key
         await box0.putAll(timedMeiboMap);
-        
+
         return const ApiState.loaded();
       } catch (e) {
         return ApiState.error(
-            AppException.errorWithMessage(e.toString()),);
+          AppException.errorWithMessage(e.toString()),
+        );
       }
     } else if (response is APIError) {
       return ApiState.error(response.exception);
@@ -87,22 +88,56 @@ class TimedMeiboRepository implements TimedRepositoryProtocol {
 
   @override
   Future<ApiState> save(FilterModel filter) async {
-
     final strDate = DateUtil.getStringDate(filter.targetDate ?? DateTime.now());
 
+    // 010) データの取得
     final meibos = box0.values.toList();
-    final json = jsonEncode(
-      meibos.map((v) => v.toNewJson()).toList(),
-    ); //jsonEncode(meibos.map((i) => i.toJson()).toList()).toString();
+    if (meibos.isEmpty) {
+      return const ApiState.loaded();
+    }
 
-    final url = 'api/shozoku/${filter.classId}/JigenbetsuShussekibo?date=$strDate';
+    // 020) 対象外データの削除
+    meibos.removeWhere((e) {
+      var flg = true;
+      try {
+        final jokyo =
+            e.jokyoList!.firstWhere((e) => e.jigenIdx == filter.jigenIdx);
+        if (jokyo.jigenIdx == filter.jigenIdx) {
+          flg = false;
+        }
+      } catch (ex) {
+        flg = true;
+      }
+      return flg;
+    });
+
+    if (meibos.isEmpty) {
+      return const ApiState.loaded();
+    }
+
+    // 030) jokyoList について　filter.jigenIdx に該当するデータのみを残す
+    final newMeibos = <AttendanceTimedMeiboModel>[];
+    for (final meibo in meibos) {
+      final jokyo = meibo.jokyoList!.firstWhere((e) => e.jigenIdx == filter.jigenIdx);
+      newMeibos.add(meibo.copyWith(jokyoList: [jokyo]));
+    }
+
+    // 040) 送信データの作成
+    final json = jsonEncode(
+      newMeibos.map((v) => v.toNewJson()).toList(),
+    ); 
+
+    final url =
+        'api/shozoku/${filter.classId}/JigenbetsuShussekibo?date=$strDate';
     final response = await _api.post2(url, json);
 
-    return response.when(success: (success) async {
-
-      return const ApiState.loaded();
-    }, error: (error) {
-      return ApiState.error(error);
-    },);
-  }   
+    return response.when(
+      success: (success) async {
+        return const ApiState.loaded();
+      },
+      error: (error) {
+        return ApiState.error(error);
+      },
+    );
+  }
 }

@@ -36,6 +36,15 @@ class AttendanceTimedSeatWidget extends ConsumerWidget {
     final url = '$_baseUrl${meibo.photoUrl}';
     final accessToken = Hive.box<String>('shusekibo').get('token').toString();
 
+    final constJokyo = AttendanceTimedStatusModel(
+      jokyoDate: filter.targetDate,
+      jigenIdx: filter.jigenIdx,
+      shukketsuKbn: '',
+      shukketsuBunrui: '',
+      jiyu1: '',
+      jiyu2: '',
+      isEditable: true,
+    );
     late AttendanceTimedStatusModel jokyo;
 
     if (meibo.jokyoList != null && meibo.jokyoList!.isNotEmpty) {
@@ -47,7 +56,7 @@ class AttendanceTimedSeatWidget extends ConsumerWidget {
           isEditable = false;
         }
       } catch (ex) {
-        jokyo = const AttendanceTimedStatusModel();
+        //
       }
 
       try {
@@ -61,10 +70,10 @@ class AttendanceTimedSeatWidget extends ConsumerWidget {
           isEditable = false;
         }            
       } catch (ex) {
-        //
+        jokyo = constJokyo;
       }
     } else {
-      jokyo = const AttendanceTimedStatusModel();
+      jokyo = constJokyo;
     }
 
     // 登校日の判定

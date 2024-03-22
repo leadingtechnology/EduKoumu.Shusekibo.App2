@@ -9,7 +9,7 @@ final contactDateProvider = StateProvider<DateTime>((ref) => DateTime.now());
 final contactNavigatorMenu = StateProvider<Menu>((ref) => Menu.health); 
 
 final contactLinkageListProvider =
-    StateNotifierProvider<ContactLinkageListProvider, ContactLinkageState>(
+    StateNotifierProvider.autoDispose<ContactLinkageListProvider, ContactLinkageState>(
         (ref) {
   final targetDate = ref.watch(contactDateProvider);
   final dantaiId = ref.watch(dantaiProvider).id ?? 0;
