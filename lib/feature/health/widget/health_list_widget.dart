@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -729,6 +731,18 @@ class _HealthListWidgetState extends ConsumerState<HealthListWidget> {
         }
       },
       mode: PlutoGridMode.selectWithOneTap,
+      configuration: const PlutoGridConfiguration(
+        scrollbar: PlutoGridScrollbarConfig(
+          isAlwaysShown: true,
+          onlyDraggingThumb: false,
+          dragDevices: {
+            // PointerDeviceKind.mouse,
+            PointerDeviceKind.touch,
+            PointerDeviceKind.trackpad,
+            PointerDeviceKind.unknown,
+          },
+        ),
+      ),
     );
   }
 }

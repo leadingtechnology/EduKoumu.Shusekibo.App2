@@ -118,7 +118,7 @@ class Assets {
   static const $AssetsLangGen lang = $AssetsLangGen();
 
   /// List of all assets
-  List<AssetGenImage> get values => [appLogo];
+  static List<AssetGenImage> get values => [appLogo];
 }
 
 class AssetGenImage {

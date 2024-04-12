@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive/hive.dart';
@@ -216,6 +218,18 @@ class _KizukiGridWidgetState extends ConsumerState<KizukiGridWidget> {
       },
       onSelected: (PlutoGridOnSelectedEvent event) async {},
       mode: PlutoGridMode.selectWithOneTap,
+      configuration: const PlutoGridConfiguration(
+        scrollbar: PlutoGridScrollbarConfig(
+          isAlwaysShown: true,
+          onlyDraggingThumb: false,
+          dragDevices: {
+            // PointerDeviceKind.mouse,
+            PointerDeviceKind.touch,
+            PointerDeviceKind.trackpad,
+            PointerDeviceKind.unknown,
+          },
+        ),
+      ),
     );
   }
 
