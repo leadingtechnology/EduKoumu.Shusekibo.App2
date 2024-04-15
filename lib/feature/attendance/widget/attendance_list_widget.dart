@@ -233,7 +233,7 @@ class _AttendanceListWidgetState extends ConsumerState<AttendanceListWidget> {
         readOnly: true,
         enableSorting: false,
         type: PlutoColumnType.text(),
-        width: 80,
+        width: 100,
         enableDropToResize: false,
         enableContextMenu: false,
         textAlign: PlutoColumnTextAlign.right,

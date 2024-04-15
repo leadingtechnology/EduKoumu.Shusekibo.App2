@@ -93,7 +93,7 @@ class SeatChartListWidget extends ConsumerWidget {
       PlutoColumn(
         title: '行',
         field: 'Row',
-        width: 35,
+        width: 45,
         readOnly: true,
         enableContextMenu: false,
         type: PlutoColumnType.text(),
@@ -107,7 +107,7 @@ class SeatChartListWidget extends ConsumerWidget {
       PlutoColumn(
         title: '列',
         field: 'Column',
-        width: 35,
+        width: 45,
         readOnly: true,
         enableContextMenu: false,
         type: PlutoColumnType.text(),

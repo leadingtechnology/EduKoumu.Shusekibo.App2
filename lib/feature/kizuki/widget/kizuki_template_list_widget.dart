@@ -265,7 +265,7 @@ class _KizukiGridWidgetState extends ConsumerState<KizukiGridWidget> {
       PlutoColumn(
         title: '分類',
         field: 'KaruteBunruiCode',
-        width: 50,
+        width: 60,
         readOnly: true,
         enableContextMenu: false,
         type: PlutoColumnType.text(),
@@ -291,7 +291,7 @@ class _KizukiGridWidgetState extends ConsumerState<KizukiGridWidget> {
       PlutoColumn(
         title: '種別',
         field: 'CommonFlg',
-        width: 50,
+        width: 60,
         readOnly: true,
         enableContextMenu: false,
         type: PlutoColumnType.text(),
