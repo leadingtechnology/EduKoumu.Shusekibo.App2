@@ -1,12 +1,14 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:kyoumutechou/feature/common/provider/common_provider.dart';
 import 'package:kyoumutechou/feature/common/widget/camera/camera_view.dart';
 import 'package:kyoumutechou/feature/common/widget/dialog_util.dart';
 import 'package:kyoumutechou/feature/common/widget/media/speech_input.dart';
 import 'package:kyoumutechou/helpers/widgets/my_spacing.dart';
 
-class AwarenessDialogLeftWidget extends StatelessWidget {
+class AwarenessDialogLeftWidget extends ConsumerWidget {
   const AwarenessDialogLeftWidget({
     required this.kizukiController,
     super.key,
@@ -15,7 +17,7 @@ class AwarenessDialogLeftWidget extends StatelessWidget {
   final TextEditingController kizukiController;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return SizedBox(
       width: 88,
       child: Column(
@@ -26,6 +28,8 @@ class AwarenessDialogLeftWidget extends StatelessWidget {
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
           ),
           MySpacing.height(24),
+          
+          if (ref.watch(isMicrophoneProvider))
           IconButton(
             icon: const FaIcon(FontAwesomeIcons.microphone),
             onPressed: () async {
@@ -34,6 +38,7 @@ class AwarenessDialogLeftWidget extends StatelessWidget {
           ),
 
           MySpacing.height(24),
+          if (ref.watch(isCameraProvider))
           IconButton(
             icon: const FaIcon(FontAwesomeIcons.image),
             onPressed: () async {

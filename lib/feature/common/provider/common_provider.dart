@@ -20,3 +20,12 @@ final sysEndDate = StateProvider<DateTime>((ref) {
 final isContactAllowedProvider = StateProvider<bool>((ref) {
   return false;
 });
+
+
+final isCameraProvider = StateProvider<bool>((ref) {
+  return false;
+});
+
+final isMicrophoneProvider = StateProvider<bool>((ref) {
+  return false;
+});

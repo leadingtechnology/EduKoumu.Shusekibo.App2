@@ -347,13 +347,26 @@ Future<void> _handlePressActionButton(
         ),
         actions: <Widget>[
           TextButton(
-            onPressed: () => Navigator.of(context).pop(false), // falseを返す
-            child: MyText.bodyLarge('キャンセル'),
+            onPressed: () => Navigator.of(context).pop(false),
+            style: TextButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(4),
+                side: const BorderSide(color: Colors.grey), // 加灰色边框
+              ),
+            ), // falseを返す
+            child: const Text(' キャンセル '),
           ),
           MySpacing.width(198),
           TextButton(
-            onPressed: () => Navigator.of(context).pop(true), // trueを返す
-            child: MyText.bodyLarge('削除'),
+            onPressed: () => Navigator.of(context).pop(true),
+            style: TextButton.styleFrom(
+              foregroundColor: Colors.red,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(4),
+                side: const BorderSide(color: Colors.red), // 加灰色边框
+              ),
+            ), // trueを返す
+            child:  const Text('　削除　'),
           ),
         ],
       ),

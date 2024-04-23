@@ -168,6 +168,7 @@ class DantaiNotifier extends StateNotifier<ApiState> {
     // 性別初期表示可否設定
     final strGender = dotenv.env['Display_Gender'];
     final isGender = strGender == '1' ;
+    ref.read(isGenderProvider.notifier).state = isGender;
 
     // 保護者連絡からの画面遷移先 (health / attendance);
     final strNavigator = dotenv.env['Contact_Navigation'];
@@ -178,7 +179,16 @@ class DantaiNotifier extends StateNotifier<ApiState> {
       ref.read(contactNavigatorMenu.notifier).state = Menu.attendance;
     }
 
-    ref.read(isGenderProvider.notifier).state = isGender;
+    // カメラとマイクの表示可否設定
+    final strCamera = dotenv.env['Camera'];
+    final strMicrophone = dotenv.env['Microphone'];
+    if (strCamera == 'ON') {
+      ref.read(isCameraProvider.notifier).state = true;
+    }
+    if (strMicrophone == 'ON') {
+      ref.read(isMicrophoneProvider.notifier).state = true;
+    }
+
   }
 
   void setProviderInitValue(){
