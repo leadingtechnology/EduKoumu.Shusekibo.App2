@@ -8,10 +8,14 @@ import 'package:kyoumutechou/feature/awareness/model/awareness_meibo_model.dart'
 import 'package:kyoumutechou/feature/awareness/provider/awareness_meibo_provider.dart';
 import 'package:kyoumutechou/helpers/widgets/my_spacing.dart';
 
+// ignore: must_be_immutable
 class AwarenessSeatWidget extends ConsumerWidget {
-  AwarenessSeatWidget({required this.meibo, super.key});
+  AwarenessSeatWidget(
+    this.tabController,
+    {required this.meibo, super.key,});
 
   final AwarenessMeiboModel meibo;
+  final TabController tabController;
   Color changeColor = Colors.black;
   final _baseUrl = dotenv.env['BASE_URL']!;
 
@@ -82,56 +86,69 @@ class AwarenessSeatWidget extends ConsumerWidget {
 
                   // status bar
                   MySpacing.height(4),
-                  Container(
-                      decoration: BoxDecoration(
-                        color: Colors.grey.withAlpha(50),
-                        borderRadius: const BorderRadius.only(
-                          bottomLeft: Radius.circular(6),
-                          bottomRight: Radius.circular(6),
+                  InkWell(
+                    onTap: meibo.kizukiCount == 0 ? null : () {
+                            // 生徒情報を設定する
+                            ref.read(studentIdProvider.notifier).state =
+                                meibo.studentId ?? 0;
+                            ref.read(isStudentIdProvider.notifier).state = true;
+
+                            // タブを遷移する
+                            tabController.animateTo(1);
+                      //Navigator.pop(context);
+                    },
+                    child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.grey.withAlpha(50),
+                          borderRadius: const BorderRadius.only(
+                            bottomLeft: Radius.circular(6),
+                            bottomRight: Radius.circular(6),
+                          ),
                         ),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          //Text('$a1'),
-                          meibo.kizukiCount!=0 ? FaIcon(FontAwesomeIcons.lightbulb,size: 16,): Container(),
-                          meibo.kizukiCount!=0 ? Text(
-                            '${meibo.kizukiCount} 件',
-                            style: TextStyle(color: changeColor ),
-                          ) : Text(' '),
-                        ],
-                      )),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            //Text('$a1'),
+                            if (meibo.kizukiCount!=0) 
+                              const FaIcon(FontAwesomeIcons.lightbulb,size: 16,) 
+                            else Container(),
+                            
+                            if (meibo.kizukiCount!=0) Text(
+                              '${meibo.kizukiCount} 件',
+                              style: TextStyle(color: changeColor ),
+                            ) else const Text(' '),
+                          ],
+                        ),),
+                  ),
                 ],
               ),
             ),
           ),
-          meibo.selectFlag??false == true ? Opacity(opacity: 0.6,
+          if (meibo.selectFlag??false == true) Opacity(opacity: 0.6,
             child: Stack(
               children: [
                 Container(color: Colors.grey[500]),
               ],
             ),
-          ) : Container(),
-          meibo.selectFlag??false == true ? 
-            Column( mainAxisAlignment: MainAxisAlignment.start,
-              children: [
+          ) else Container(),
+          if (meibo.selectFlag??false == true) Column( children: [
                 MySpacing.height(2),
                 Row(mainAxisAlignment: MainAxisAlignment.end, children: [
                   Container(
-                    padding: const EdgeInsets.all(2.0), 
+                    padding: const EdgeInsets.all(2), 
                     alignment: Alignment.topRight, 
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(90),
                     ),
                     child: FaIcon(
-                      FontAwesomeIcons.solidCircleCheck,color: Theme.of(context).primaryColor,
-                    )
+                      FontAwesomeIcons.solidCircleCheck,
+                      color: Theme.of(context).primaryColor,
+                    ),
                   ),
                   //Spacing.width(8),
                 ],),
-            ],) 
-          : Container(),
+            ],) else Container(),
         ],
       ),
     );

@@ -46,10 +46,18 @@ class CommonPage extends ConsumerWidget {
     final box = Boxes.getSeatSetting();
     var settingsLength = 0; 
     try {
+      
+      // 気づきの場合、対象日が当日とする
+      final menuId = ref.read(menuProvider);
+      var tarDate = DateTime.now(); 
+      if (menuId != Menu.awareness){
+        tarDate = filter.targetDate ?? DateTime.now(); 
+      }
+      
       final settings = box.values.toList()
         ..removeWhere(
           (e) => !DateUtil.isDateInRange(
-            filter.targetDate!,
+            tarDate,
             e.startDate,
             e.endDate,
           ),

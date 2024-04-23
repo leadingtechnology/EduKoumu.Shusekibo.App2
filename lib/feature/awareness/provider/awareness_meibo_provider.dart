@@ -35,6 +35,10 @@ final awarenessListIdProvider = StateProvider<String>((ref) => '');
 
 final awarenessTextProvider = StateProvider<String>((ref) => '');
 
+// tab変更時StudentIdの設定可否
+final isStudentIdProvider = StateProvider<bool>((ref) => false);  
+final studentIdProvider = StateProvider<int>((ref) => 0);  
+
 class AwarenessMeiboListProvider extends StateNotifier<ApiState> {
   AwarenessMeiboListProvider(this.ref, this.filter)
       : super(const ApiState.loading()) {

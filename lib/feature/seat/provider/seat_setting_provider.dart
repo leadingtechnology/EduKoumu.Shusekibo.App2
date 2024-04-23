@@ -4,6 +4,7 @@ import 'package:kyoumutechou/feature/common/model/filter_model.dart';
 import 'package:kyoumutechou/feature/common/provider/filter_provider.dart';
 import 'package:kyoumutechou/feature/common/provider/seat_chart_pattern_provider.dart';
 import 'package:kyoumutechou/feature/common/state/api_state.dart';
+import 'package:kyoumutechou/feature/home/provider/home_provider.dart';
 import 'package:kyoumutechou/feature/seat/model/seat_setting_model.dart';
 import 'package:kyoumutechou/feature/seat/repository/seat_chart_repository.dart';
 import 'package:kyoumutechou/feature/seat/repository/seat_setting_repository.dart';
@@ -60,9 +61,15 @@ class SeatSettingListProvider extends StateNotifier<ApiState> {
   Future<SeatSettingModel> setSeatSettingValue() async {
     // 最新情報の取得条件
     final filter = ref.read(filterProvider);
-    final tarDate = filter.targetDate ?? DateTime.now();
 
+    // 気づきの場合は、システム日付を取得
+    var tarDate = filter.targetDate ?? DateTime.now();
 
+    final menuId = ref.read(menuProvider);
+    if (menuId == Menu.awareness){
+      tarDate = DateTime.now(); 
+    }
+    
     var setting = const SeatSettingModel(
       id: 0,
     );

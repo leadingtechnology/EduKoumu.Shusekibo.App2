@@ -52,7 +52,7 @@ class AwarenessDialogRightWidget extends ConsumerWidget {
         )
         .toList();
 
-    return Container(
+    return SizedBox(
       width: 300,
       height: 320,
       child: Column(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:kyoumutechou/feature/awareness/model/awareness_common.dart';
 import 'package:kyoumutechou/feature/awareness/model/awareness_kizuki_model.dart';
 import 'package:kyoumutechou/feature/awareness/provider/awareness_kizuki_provider.dart';
 import 'package:kyoumutechou/feature/awareness/provider/awareness_meibo_provider.dart';
@@ -8,6 +9,7 @@ import 'package:kyoumutechou/feature/awareness/weidget/awareness_list_page.dart'
 import 'package:kyoumutechou/feature/awareness/weidget/awareness_seat_page.dart';
 import 'package:kyoumutechou/feature/awareness/weidget/dialog/awareness_regist_dialog.dart';
 import 'package:kyoumutechou/feature/boxes.dart';
+import 'package:kyoumutechou/feature/common/provider/filter_provider.dart';
 import 'package:kyoumutechou/feature/common/widget/dialog_util.dart';
 import 'package:kyoumutechou/feature/common/widget/filter_widget.dart';
 import 'package:kyoumutechou/feature/common/widget/seat_chart_pattern_widget.dart';
@@ -40,20 +42,46 @@ class AwarenessPageState extends ConsumerState<AwarenessPage>
     theme = AppTheme.theme;
     tabController = TabController(length: 2, vsync: this);
 
-    tabController?.addListener(() { 
-      if (tabController!.indexIsChanging) {
-        setState(() {
-          currentIndex = tabController!.index;
-        });
-        ref.read(awarenessTabIndexProvider.notifier).state = currentIndex;  
+    tabController?.addListener(_handleTabChange);
+  }
+
+  void _handleTabChange() {
+    if (tabController!.indexIsChanging) {
+      setState(() {
+        currentIndex = tabController!.index;
+      });
+      ref.read(awarenessTabIndexProvider.notifier).state = currentIndex;
+
+      if (ref.watch(isStudentIdProvider) == true) {
+        ref.read(isStudentIdProvider.notifier).state = false;
+
+        // 生徒Widgetからの場合、開始終了日が当日に設定する
+        ref.read(beginDateProvider.notifier).state = DateTime.now();
+        ref.read(endDateProvider.notifier).state = DateTime.now();
+
+        // 検索条件も更新する
+        ref.read(filterProvider.notifier).updateAwarenessFilter(
+              beginDate: DateTime.now(),
+            );
+      }else{
+        ref.read(studentIdProvider.notifier).state = 0;
+
+        // 生徒Widgetからの場合、開始終了日が7日間に設定する
+        ref.read(beginDateProvider.notifier).state =
+            DateTime.now().subtract(const Duration(days: 7));
+        ref.read(endDateProvider.notifier).state = DateTime.now();
+
+        // 検索条件も更新する
+        ref.read(filterProvider.notifier).updateAwarenessFilter();
       }
-    });
+    }
   }
 
   @override
   void dispose() {
-    super.dispose();
+    tabController?.removeListener(_handleTabChange);
     tabController!.dispose();
+    super.dispose();
   }  
 
   @override
@@ -101,7 +129,7 @@ class AwarenessPageState extends ConsumerState<AwarenessPage>
                 child: TabBarView(
                   controller: tabController,
                   children: <Widget>[
-                    AwarenessSeatPage(_scaffoldKey),
+                    AwarenessSeatPage(_scaffoldKey, tabController!),
                     AwarenessListPage(_scaffoldKey),
                   ],
                 ),
@@ -140,6 +168,33 @@ class AwarenessPageState extends ConsumerState<AwarenessPage>
                 ],
               ),
             ),
+            if (currentIndex == 1 ) 
+              ColoredBox(
+                color: theme.colorScheme.surface,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(child: Container()),
+                    OutlinedButton.icon(
+                      onPressed: () async {
+                              await _handlePressActionButton2(context);
+                            },
+                      label: const Text(' 気づきの登録 '),
+                      icon: const Icon(Icons.add),
+                      style: OutlinedButton.styleFrom(
+                        foregroundColor: Colors.black,
+                        backgroundColor: Colors.white,
+                        fixedSize: const Size(180, 36),
+                        side: const BorderSide(
+                          color: Colors.black87,
+                        ),
+                        shape: const StadiumBorder(),
+                        elevation: 8,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
           ],
         ),
       ),
@@ -173,6 +228,23 @@ class AwarenessPageState extends ConsumerState<AwarenessPage>
             kizuki: const AwarenessKizukiModel(
           id: 0,
         ),);
+      },
+    );
+  }  
+
+  Future<void> _handlePressActionButton2(BuildContext context) async {
+    ref.read(tenpuListProvider.notifier).init();
+    ref.read(awarenessJuyoProvider.notifier).state = false;
+
+    await DialogUtil.show(
+      context: context,
+      builder: (BuildContext context) {
+        return AwarenessRegistDialog(
+          kizuki: const AwarenessKizukiModel(
+            id: 0,
+          ),
+          opt: AwarenessOperationItem.addNoUser,
+        );
       },
     );
   }  

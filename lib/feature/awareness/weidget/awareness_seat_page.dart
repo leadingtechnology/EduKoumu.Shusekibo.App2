@@ -13,10 +13,15 @@ import 'package:kyoumutechou/feature/seat/widget/blank_seat_widget.dart';
 import 'package:kyoumutechou/helpers/widgets/my_spacing.dart';
 
 class AwarenessSeatPage extends ConsumerWidget {
-  AwarenessSeatPage(this._scaffoldKey, {super.key});
+  const AwarenessSeatPage(
+    this._scaffoldKey, 
+    this.tabController,
+    {super.key,}
+  );
 
   // draw key
   final GlobalKey<ScaffoldState> _scaffoldKey;
+  final TabController tabController;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -38,7 +43,7 @@ class AwarenessSeatPage extends ConsumerWidget {
                 child: Container(
                   color: Colors.grey[100],
                   padding: MySpacing.all(16),
-                  child: const AwarenessSeats(),
+                  child: AwarenessSeats(tabController),
                 ),
               ),
               if (lecternPosition == LecternPosition.bottom)
@@ -53,7 +58,12 @@ class AwarenessSeatPage extends ConsumerWidget {
 }
 
 class AwarenessSeats extends ConsumerStatefulWidget {
-  const AwarenessSeats({super.key});
+  const AwarenessSeats(
+    this.tabController,
+    {super.key,}
+  );
+
+  final TabController tabController;
 
   @override
   ConsumerState<AwarenessSeats> createState() => _AwarenessSeatsState();
@@ -189,6 +199,7 @@ class _AwarenessSeatsState extends ConsumerState<AwarenessSeats> {
               return Transform.rotate(
                 angle: rotate == 0.0 ? 0.0 : 3.14159265358979323846,
                 child: AwarenessSeatWidget(
+                  widget.tabController,
                   meibo: newMeibos[index],
                 ),
               );

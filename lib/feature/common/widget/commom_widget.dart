@@ -64,8 +64,8 @@ Future<void> pickDate(
     initialDate: iniDate,
     firstDate: dates.item1,
     lastDate: DateTime.now(),
-    initialEntryMode: DatePickerEntryMode.calendarOnly,
     locale: const Locale('ja', 'JP'),
+    
   );
   if (selected != null) {
     ref.read(targetDateProvider.notifier).state = selected;

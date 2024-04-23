@@ -16,7 +16,9 @@ import 'package:kyoumutechou/feature/common/widget/toast_helper.dart';
 import 'package:kyoumutechou/feature/home/provider/home_provider.dart';
 import 'package:kyoumutechou/feature/kizuki/model/kizuki_template_model.dart';
 import 'package:kyoumutechou/feature/kizuki/widget/kizuki_template_dialog.dart';
+import 'package:kyoumutechou/helpers/theme/app_theme.dart';
 import 'package:kyoumutechou/helpers/widgets/my_spacing.dart';
+import 'package:kyoumutechou/helpers/widgets/my_text.dart';
 import 'package:kyoumutechou/shared/http/app_exception.dart';
 import 'package:kyoumutechou/shared/util/date_util.dart';
 
@@ -83,6 +85,8 @@ class _AwarenessListViewState extends ConsumerState<AwarenessListView> {
   final _baseUrl = dotenv.env['BASE_URL']!;
   String accessToken = Hive.box<String>('shusekibo').get('token').toString();
 
+  late int targetIndex;
+
   @override
   void initState() {
     super.initState();
@@ -131,44 +135,56 @@ class _AwarenessListViewState extends ConsumerState<AwarenessListView> {
               return a.studentId!.compareTo(b.studentId!);
             });
 
+            //
+            final studentId = ref.watch(studentIdProvider);
+
             return ListView.separated(
               padding: const EdgeInsets.only(top: 20),
-              itemBuilder: (context, index) => ListTile(
-                leading: ClipOval(
-                  child: Image.network(
-                    '$_baseUrl${kizuki[index].photoUrl}',
-                    headers: {'Authorization': 'Bearer $accessToken'},
+              itemBuilder: (context, index) => Container(
+                color: studentId == kizuki[index].studentId
+                    ? theme.colorScheme.secondaryContainer
+                    : theme.colorScheme.background,
+                child: ListTile(
+                  leading: ClipOval(
+                    child: Image.network(
+                      '$_baseUrl${kizuki[index].photoUrl}',
+                      headers: {'Authorization': 'Bearer $accessToken'},
+                    ),
                   ),
-                ),
-                title: Text('${kizuki[index].studentName}'),
-                isThreeLine: true,
-                subtitle: Column(
-                  children: [
-                    Row(
-                      children: [
-                        Expanded(child: Text('${kizuki[index].naiyou}'),),],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Text(
-                            '${kizuki[index].tourokusyaId == 0 ? 'システム管理者' : kizuki[index].tourokusyaName}'),
-                        MySpacing.width(10),
-                        const SizedBox(
-                          width: 10,
-                          child: Text('|'),
-                        ),
-                        Text(
-                          DateUtil.getJapaneseDate(
-                            DateTime.parse(kizuki[index].torokuDate ?? ''),
+                  title: Text('${kizuki[index].studentName}'),
+                  isThreeLine: true,
+                  subtitle: Column(
+                    children: [
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Text('${kizuki[index].naiyou}'),
                           ),
-                        ),
-                      ],
-                    ),
-                  ],
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Text(
+                            '${kizuki[index].tourokusyaId == 0 ? 'システム管理者' : kizuki[index].tourokusyaName}',
+                          ),
+                          MySpacing.width(10),
+                          const SizedBox(
+                            width: 10,
+                            child: Text('|'),
+                          ),
+                          Text(
+                            DateUtil.getJapaneseDate(
+                              DateTime.parse(kizuki[index].torokuDate ?? ''),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  trailing: PopUpMenu(kizuki: kizuki[index]),
                 ),
-                trailing: PopUpMenu(kizuki: kizuki[index]),
               ),
               itemCount: kizuki.length,
               separatorBuilder: (context, index) {
@@ -280,7 +296,7 @@ class PopUpMenu extends ConsumerWidget {
               ),
               MySpacing.width(8),
               const Text(
-                '「テンプレート文（学校共通）」登録', 
+                '「テンプレート文（学校共通）」登録',
                 style: TextStyle(fontSize: 13),
               ),
             ],
@@ -314,38 +330,46 @@ Future<void> _handlePressActionButton(
   }
 
   if (opt == AwarenessOperationItem.delete) {
+    //ダイアログを表示してユーザーの選択を待つ
+    final result = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('気づきを削除しますか？'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            MySpacing.height(8),
+            MyText.bodyLarge('選択した気づきを削除すると、もとに戻せることが'),
+            MyText.bodyLarge('できません。'),
+            MySpacing.height(8),
+          ],
+        ),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false), // falseを返す
+            child: MyText.bodyLarge('キャンセル'),
+          ),
+          MySpacing.width(198),
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(true), // trueを返す
+            child: MyText.bodyLarge('削除'),
+          ),
+        ],
+      ),
+    );
 
-    // ダイアログを表示してユーザーの選択を待つ
-    // final result = await showDialog<bool>(
-    //   context: context,
-    //   builder: (context) => AlertDialog(
-    //     title: const Text('確認'),
-    //     content: MyText('削除してもよろしいですか？', fontSize: 16),
-    //     actions: <Widget>[
-    //       TextButton(
-    //         onPressed: () => Navigator.of(context).pop(false), // falseを返す
-    //         child: const Text('キャンセル'),
-    //       ),
-    //       TextButton(
-    //         onPressed: () => Navigator.of(context).pop(true), // trueを返す
-    //         child: const Text('OK'),
-    //       ),
-    //     ],
-    //   ),
-    // );
-
-    // if(result == null || !result) return; // キャンセルされた場合は何もしない
+    if (result == null || !result) return; // キャンセルされた場合は何もしない
 
     ToastHelper.showToast(context, '　削除しました　');
     await ref.read(awarenessKizukiListProvider.notifier).delete(kizuki);
     // ignore: use_build_context_synchronously
-    
+
     return;
   }
 
   if (opt == AwarenessOperationItem.favorite ||
-      opt == AwarenessOperationItem.template) 
-  {
+      opt == AwarenessOperationItem.template) {
     final commonFlg = opt == AwarenessOperationItem.template;
 
     final model = KizukiTemplateModel(

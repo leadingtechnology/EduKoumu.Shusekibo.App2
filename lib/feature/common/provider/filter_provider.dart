@@ -135,9 +135,11 @@ class FilterNotifier extends StateNotifier<FilterModel> {
   }
 
   void updateAwarenessFilter({
-    required DateTime beginDate,
-    required DateTime endDate,
+    DateTime? beginDate,
+    DateTime? endDate,
   }) {
+    beginDate = beginDate ?? DateTime.now().subtract(const Duration(days: 7));
+    endDate = endDate ?? DateTime.now();
     state = state.copyWith(beginDate: beginDate, endDate: endDate);
   }
 

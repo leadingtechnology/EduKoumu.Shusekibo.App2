@@ -63,10 +63,11 @@ class AwarenessRegistDialog extends ConsumerWidget {
     }
 
     // Copy Mode
-    if (opt == AwarenessOperationItem.copy) {
-      kizukiController.text = '${kizuki.naiyou}';
+    if (opt == AwarenessOperationItem.copy || 
+        opt == AwarenessOperationItem.addNoUser ) {
+      kizukiController.text = kizuki.naiyou ?? '';
 
-      _bunruiCd = kizuki.bunruiCode ?? '';
+      _bunruiCd = kizuki.bunruiCode ?? bunruiMap.keys.first;
     }
 
     return Form(
@@ -145,8 +146,10 @@ class AwarenessRegistDialog extends ConsumerWidget {
                                 ),
                               ),
                             ),
-                          if (opt == AwarenessOperationItem.copy)
-                            Expanded(
+                          if (opt == AwarenessOperationItem.copy || 
+                              opt == AwarenessOperationItem.addNoUser
+                          )
+                            const Expanded(
                               child: SizedBox(
                                 width: 600,
                                 child: AwarenessTemplateSearchStudent(),
