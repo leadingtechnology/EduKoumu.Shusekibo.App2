@@ -36,8 +36,12 @@ class AuthNotifier extends _$AuthNotifier {
 
   late final AuthRepository _loginRepository = ref.read(authRepositoryProvider);
 
-  Future<void> login(String email, String password) async {
-    state = await _loginRepository.login(email, password);
+  Future<AuthState> login(String email, String password) async {
+    final response = await _loginRepository.login(email, password);
+    if (response is AuthStateLoggedIn) {
+      state = response;
+    }
+    return response;
   }
 
   Future<void> logout() async {
@@ -76,6 +80,6 @@ class AuthNotifier extends _$AuthNotifier {
     ;
 
     // ログアウト
-    state = AuthState.loggedOut();
+    state = const AuthState.loggedOut();
   }
 }

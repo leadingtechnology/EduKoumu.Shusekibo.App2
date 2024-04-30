@@ -5,6 +5,8 @@ import 'package:kyoumutechou/feature/attendance/model/attendance_timed_meibo_mod
 import 'package:kyoumutechou/feature/boxes.dart';
 import 'package:kyoumutechou/feature/common/model/filter_model.dart';
 import 'package:kyoumutechou/feature/common/provider/common_provider.dart';
+import 'package:kyoumutechou/feature/common/provider/kamokus_provider.dart';
+import 'package:kyoumutechou/feature/common/provider/teachers_provider.dart';
 import 'package:kyoumutechou/feature/common/state/api_state.dart';
 import 'package:kyoumutechou/shared/http/api_provider.dart';
 import 'package:kyoumutechou/shared/http/api_response.dart';
@@ -26,6 +28,8 @@ class TimedMeiboRepository implements TimedRepositoryProtocol {
   final Ref ref;
   late final ApiProvider _api = ref.read(apiProvider);
   final box0 = Boxes.getAttendanceTimedMeibo();
+  final kamokuBox = Boxes.getKamokus();
+  final teacherBox = Boxes.getTeachers();
 
   @override
   Future<ApiState> fetch(
@@ -68,6 +72,45 @@ class TimedMeiboRepository implements TimedRepositoryProtocol {
           ref.read(buttonEnableProvider.notifier).state = true;
         } else {
           ref.read(buttonEnableProvider.notifier).state = false;
+        }
+
+        
+        // 教科の設定
+        await ref.read(kamokusProvider.notifier).setKamokuValue(
+              filter.dantaiId ?? 0,
+              filter.gakunenCode ?? '',
+            );
+        await ref.read(teachersProvider.notifier).setTeacherValue(
+              filter.dantaiId ?? 0,
+            );
+
+        for(final meibo in timedMeibo){
+          try{
+            final jokyo = meibo.jokyoList!
+                .where((e) => e.jigenIdx == filter.jigenIdx)
+                .first;
+            if (jokyo != null){
+              await ref.read(kamokusProvider.notifier).setKamokuValue(
+                    filter.dantaiId ?? 0,
+                    filter.gakunenCode ?? '',
+                    dantaiBunrui: jokyo.kyokaDantaiBunrui,
+                    dantaiKbn: jokyo.kyokaDantaiKbn,
+                    kyokaBunrui: jokyo.kyokaBunrui,
+                    kamokuCode: jokyo.kamokuCd,
+                  );
+              await ref.read(teachersProvider.notifier).setTeacherValue(
+                    filter.dantaiId ?? 0,
+                    KyoinId1: jokyo.kyoinId1,
+                    KyoinId2: jokyo.kyoinId2,
+                    KyoinId3: jokyo.kyoinId3,
+                  );
+              
+              break;
+            }
+          }catch(e){
+            //
+          }
+
         }
 
         // 3) save to hive with key
@@ -115,10 +158,55 @@ class TimedMeiboRepository implements TimedRepositoryProtocol {
       return const ApiState.loaded();
     }
 
+    // 科目情報の取得
+    final kamoku = ref.read(kamokuProvider);
+    final dantaiBunrui = kamoku.dantaiBunrui ?? '';
+    final dantaiKbn = kamoku.dantaiKbn ?? '';
+    final kyokaBunrui = kamoku.kyokaBunrui ?? '';
+    final kamokuCode = kamoku.kamokuCode ?? '';
+  
+    // 教職員情報の設定
+    var kyoinId1 = '';
+    var kyoinId2 = '';
+    var kyoinId3 = '';
+
+    final teacherList = ref.read(teacherListProvider);
+    if (teacherList.isNotEmpty) {
+      kyoinId1 = teacherList[0].loginId ?? '';
+    }
+    if (teacherList.isNotEmpty && teacherList.length >= 2) {
+      kyoinId2 = teacherList[1].loginId ?? '';
+    }    
+    if (teacherList.isNotEmpty && teacherList.length >= 3) {
+      kyoinId3 = teacherList[2].loginId ?? '';
+    }   
+
+
     // 030) jokyoList について　filter.jigenIdx に該当するデータのみを残す
     final newMeibos = <AttendanceTimedMeiboModel>[];
     for (final meibo in meibos) {
-      final jokyo = meibo.jokyoList!.firstWhere((e) => e.jigenIdx == filter.jigenIdx);
+      var jokyo = meibo.jokyoList!.firstWhere((e) => e.jigenIdx == filter.jigenIdx);
+      
+      // 科目の設定
+      jokyo = jokyo.copyWith(
+        jigenIdx: jokyo.jigenIdx,
+        jokyoDate: jokyo.jokyoDate,
+        ryaku: jokyo.ryaku,
+        shukketsuBunrui: jokyo.shukketsuBunrui,
+        shukketsuKbn: jokyo.shukketsuKbn,
+        jiyu1: jokyo.jiyu1,
+        jiyu2: jokyo.jiyu2,
+
+        kyokaDantaiBunrui: dantaiBunrui,
+        kyokaDantaiKbn: dantaiKbn,
+        kyokaBunrui: kyokaBunrui,
+        kamokuCd: kamokuCode,
+        kyoinId1: kyoinId1,
+        kyoinId2: kyoinId2,
+        kyoinId3: kyoinId3,
+      );
+
+      
       newMeibos.add(meibo.copyWith(jokyoList: [jokyo]));
     }
 

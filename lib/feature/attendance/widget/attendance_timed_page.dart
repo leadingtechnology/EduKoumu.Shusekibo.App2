@@ -13,6 +13,7 @@ import 'package:kyoumutechou/feature/common/provider/tokobis_provider.dart';
 import 'package:kyoumutechou/feature/common/state/api_state.dart';
 import 'package:kyoumutechou/feature/common/widget/common_page.dart';
 import 'package:kyoumutechou/feature/common/widget/save_button_widget.dart';
+import 'package:kyoumutechou/feature/common/widget/teacher_kamoku_bar_widget.dart';
 import 'package:kyoumutechou/feature/common/widget/toast_helper.dart';
 import 'package:kyoumutechou/feature/seat/provider/seat_chart_provider.dart';
 import 'package:kyoumutechou/feature/seat/widget/blank_seat_widget.dart';
@@ -35,6 +36,7 @@ class AttendanceTimedPage extends ConsumerWidget {
 
     return CommonPage(
       scaffoldKey: _timedKey,
+      teacherWidget: const TeacherKamokuBarWidget(),
       contentWidget: pageType == PageType.seat
           ? const SeatsWidget() // 座位图组件
           : const ListView(), // 列表组件

@@ -19,8 +19,11 @@ import 'package:kyoumutechou/feature/awareness/model/awareness_kizuki_model.dart
 import 'package:kyoumutechou/feature/awareness/model/awareness_meibo_model.dart';
 import 'package:kyoumutechou/feature/common/model/dantai_model.dart';
 import 'package:kyoumutechou/feature/common/model/gakunen_model.dart';
+import 'package:kyoumutechou/feature/common/model/kamoku_model.dart';
 import 'package:kyoumutechou/feature/common/model/shozoku_model.dart';
 import 'package:kyoumutechou/feature/common/model/tannin_model.dart';
+import 'package:kyoumutechou/feature/common/model/tanto_kyoin_model.dart';
+import 'package:kyoumutechou/feature/common/model/teacher_model.dart';
 import 'package:kyoumutechou/feature/common/model/tenpu_model.dart';
 import 'package:kyoumutechou/feature/common/model/timed_model.dart';
 import 'package:kyoumutechou/feature/common/model/tokobi_model.dart';
@@ -47,30 +50,34 @@ Future<void> start() async {
   await Hive.initFlutter();
 
   // Hive adapter
-  Hive..registerAdapter(DateTimeAdapter())
-  ..registerAdapter(DantaiModelAdapter())
-  ..registerAdapter(GakunenModelAdapter())
-  ..registerAdapter(ShozokuModelAdapter())
-  ..registerAdapter(TimedModelAdapter())
-  ..registerAdapter(TokobiModelAdapter())
-  ..registerAdapter(TanninModelAdapter())
-  ..registerAdapter(HealthStampModelAdapter())
-  ..registerAdapter(HealthStatusModelAdapter())
-  ..registerAdapter(HealthReasonModelAdapter())
-  ..registerAdapter(AwarenessCodeModelAdapter())
-  ..registerAdapter(HealthMeiboModelAdapter())
-  ..registerAdapter(AttendanceStampModelAdapter())
-  ..registerAdapter(AttendanceReasonModelAdapter())
-  ..registerAdapter(AttendanceMeiboModelAdapter())
-  ..registerAdapter(AttendanceStatusModelAdapter())
-  ..registerAdapter(AttendanceTimedMeiboModelAdapter())
-  ..registerAdapter(AttendanceTimedStatusModelAdapter())
-  ..registerAdapter(AwarenessMeiboModelAdapter())
-  ..registerAdapter(TenpuModelAdapter())
-  ..registerAdapter(AwarenessKizukiModelAdapter())
-  ..registerAdapter(SeatSettingModelAdapter())
-  ..registerAdapter(SeatChartModelAdapter());
-  
+  Hive
+    ..registerAdapter(DateTimeAdapter())
+    ..registerAdapter(DantaiModelAdapter())
+    ..registerAdapter(GakunenModelAdapter())
+    ..registerAdapter(ShozokuModelAdapter())
+    ..registerAdapter(TimedModelAdapter())
+    ..registerAdapter(KamokuModelAdapter())
+    ..registerAdapter(TantoKyoinModelAdapter())
+    ..registerAdapter(TeacherModelAdapter())
+    ..registerAdapter(TokobiModelAdapter())
+    ..registerAdapter(TanninModelAdapter())
+    ..registerAdapter(HealthStampModelAdapter())
+    ..registerAdapter(HealthStatusModelAdapter())
+    ..registerAdapter(HealthReasonModelAdapter())
+    ..registerAdapter(AwarenessCodeModelAdapter())
+    ..registerAdapter(HealthMeiboModelAdapter())
+    ..registerAdapter(AttendanceStampModelAdapter())
+    ..registerAdapter(AttendanceReasonModelAdapter())
+    ..registerAdapter(AttendanceMeiboModelAdapter())
+    ..registerAdapter(AttendanceStatusModelAdapter())
+    ..registerAdapter(AttendanceTimedMeiboModelAdapter())
+    ..registerAdapter(AttendanceTimedStatusModelAdapter())
+    ..registerAdapter(AwarenessMeiboModelAdapter())
+    ..registerAdapter(TenpuModelAdapter())
+    ..registerAdapter(AwarenessKizukiModelAdapter())
+    ..registerAdapter(SeatSettingModelAdapter())
+    ..registerAdapter(SeatChartModelAdapter());
+
   // トークン
   await Hive.openBox<String>('shusekibo');
   await Hive.box<String>('shusekibo').put('token', '');
@@ -98,6 +105,19 @@ Future<void> start() async {
   final tanninBox = await Hive.openBox<TanninModel>('Tannin');
   await tanninBox.clear();
 
+  // 科目
+  final kamokuBox = await Hive.openBox<KamokuModel>('Kamoku');
+  await kamokuBox.clear();
+
+  // 担当教員
+  final tantoKyoinBox = await Hive.openBox<TantoKyoinModel>('TantoKyoin');
+  await tantoKyoinBox.clear();
+
+  // 教職員
+  final teacherBox = await Hive.openBox<TeacherModel>('Teacher');
+  await teacherBox.clear();
+  
+
   // 健康観察スタンプ
   await Hive.openBox<HealthStampModel>('RegistHealthStamp');
   await Hive.openBox<HealthStampModel>('UnregistHealthStamp');
@@ -116,7 +136,6 @@ Future<void> start() async {
   await hmBox1.clear();
   final hmBox2 = await Hive.openBox<HealthMeiboModel>('HealthMeibo2');
   await hmBox2.clear();
-  
 
   // 出欠スタンプ
   await Hive.openBox<AttendanceStampModel>('RegistAttendanceStamp');
@@ -134,19 +153,21 @@ Future<void> start() async {
   final amBox2 = await Hive.openBox<AttendanceMeiboModel>('AttendanceMeibo2');
   await amBox2.clear();
 
-  
   // 出欠名簿(時限)
-  
-  final atmBox = await Hive.openBox<AttendanceTimedMeiboModel>('AttendanceTimedMeibo');
+
+  final atmBox =
+      await Hive.openBox<AttendanceTimedMeiboModel>('AttendanceTimedMeibo');
   await atmBox.clear();
-  final atmBox1 = await Hive.openBox<AttendanceTimedMeiboModel>('AttendanceTimedMeibo1');
+  final atmBox1 =
+      await Hive.openBox<AttendanceTimedMeiboModel>('AttendanceTimedMeibo1');
   await atmBox1.clear();
-  final atmBox2 = await Hive.openBox<AttendanceTimedMeiboModel>('AttendanceTimedMeibo2');
+  final atmBox2 =
+      await Hive.openBox<AttendanceTimedMeiboModel>('AttendanceTimedMeibo2');
   await atmBox2.clear();
 
   // 気づき
   final awBox = await Hive.openBox<AwarenessMeiboModel>('AwarenessMeibo');
-  await awBox.clear(); 
+  await awBox.clear();
 
   final akBox = await Hive.openBox<AwarenessKizukiModel>('AwarenessKizuki');
   await akBox.clear();
@@ -159,7 +180,7 @@ Future<void> start() async {
   await urlBox.clear();
 
   // 設定
-  final ssBox = await Hive.openBox<SeatSettingModel>('SeatSetting');  
+  final ssBox = await Hive.openBox<SeatSettingModel>('SeatSetting');
   await ssBox.clear();
 
   // 座席表

@@ -43,11 +43,9 @@ class TimedsNotifier extends StateNotifier<ApiState> {
   late final _rep = ref.read(timedsRepositoryProvider);
 
   Future<void> _fetch() async {
-    // 所属Idの取得
-    final shozokuId = ref.read(shozokuProvider).id;
     
     // 最新情報の取得
-    final response = await ref.read(timedsRepositoryProvider).fetch(
+    await _rep.fetch(
           shozoku.id ?? 0,
           strDate,
         );
@@ -63,7 +61,7 @@ class TimedsNotifier extends StateNotifier<ApiState> {
     final shozoku = ref.read(shozokuProvider);
 
     // 最新情報の取得
-    final response = await ref.read(timedsRepositoryProvider).fetch(
+    final response = await _rep.fetch(
           shozoku.id ?? 0,
           strDate,
         );

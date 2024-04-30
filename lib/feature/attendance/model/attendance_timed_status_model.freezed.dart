@@ -42,8 +42,41 @@ mixin _$AttendanceTimedStatusModel {
   @JsonKey(name: 'Jiyu2', disallowNullValue: false)
   @HiveField(6)
   String? get jiyu2 => throw _privateConstructorUsedError;
-  @JsonKey(name: 'IsEditable', disallowNullValue: false)
+  @JsonKey(name: 'KyokaDantaiBunrui', disallowNullValue: false)
   @HiveField(7)
+  String? get kyokaDantaiBunrui => throw _privateConstructorUsedError;
+  @JsonKey(name: 'KyokaDantaiKbn', disallowNullValue: false)
+  @HiveField(8)
+  String? get kyokaDantaiKbn => throw _privateConstructorUsedError;
+  @JsonKey(name: 'KyokaBunrui', disallowNullValue: false)
+  @HiveField(9)
+  String? get kyokaBunrui => throw _privateConstructorUsedError;
+  @JsonKey(name: 'KamokuCd', disallowNullValue: false)
+  @HiveField(10)
+  String? get kamokuCd => throw _privateConstructorUsedError;
+  @JsonKey(name: 'KamokuNameRyakusho', disallowNullValue: false)
+  @HiveField(11)
+  String? get kamokuNameRyakusho => throw _privateConstructorUsedError;
+  @JsonKey(name: 'KyoinId1', disallowNullValue: false)
+  @HiveField(12)
+  String? get kyoinId1 => throw _privateConstructorUsedError;
+  @JsonKey(name: 'KyoinName1', disallowNullValue: false)
+  @HiveField(13)
+  String? get kyoinName1 => throw _privateConstructorUsedError;
+  @JsonKey(name: 'KyoinId2', disallowNullValue: false)
+  @HiveField(14)
+  String? get kyoinId2 => throw _privateConstructorUsedError;
+  @JsonKey(name: 'KyoinName2', disallowNullValue: false)
+  @HiveField(15)
+  String? get kyoinName2 => throw _privateConstructorUsedError;
+  @JsonKey(name: 'KyoinId3', disallowNullValue: false)
+  @HiveField(16)
+  String? get kyoinId3 => throw _privateConstructorUsedError;
+  @JsonKey(name: 'KyoinName3', disallowNullValue: false)
+  @HiveField(17)
+  String? get kyoinName3 => throw _privateConstructorUsedError;
+  @JsonKey(name: 'IsEditable', disallowNullValue: false)
+  @HiveField(18)
   bool? get isEditable => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -81,8 +114,41 @@ abstract class $AttendanceTimedStatusModelCopyWith<$Res> {
       @JsonKey(name: 'Jiyu2', disallowNullValue: false)
       @HiveField(6)
       String? jiyu2,
-      @JsonKey(name: 'IsEditable', disallowNullValue: false)
+      @JsonKey(name: 'KyokaDantaiBunrui', disallowNullValue: false)
       @HiveField(7)
+      String? kyokaDantaiBunrui,
+      @JsonKey(name: 'KyokaDantaiKbn', disallowNullValue: false)
+      @HiveField(8)
+      String? kyokaDantaiKbn,
+      @JsonKey(name: 'KyokaBunrui', disallowNullValue: false)
+      @HiveField(9)
+      String? kyokaBunrui,
+      @JsonKey(name: 'KamokuCd', disallowNullValue: false)
+      @HiveField(10)
+      String? kamokuCd,
+      @JsonKey(name: 'KamokuNameRyakusho', disallowNullValue: false)
+      @HiveField(11)
+      String? kamokuNameRyakusho,
+      @JsonKey(name: 'KyoinId1', disallowNullValue: false)
+      @HiveField(12)
+      String? kyoinId1,
+      @JsonKey(name: 'KyoinName1', disallowNullValue: false)
+      @HiveField(13)
+      String? kyoinName1,
+      @JsonKey(name: 'KyoinId2', disallowNullValue: false)
+      @HiveField(14)
+      String? kyoinId2,
+      @JsonKey(name: 'KyoinName2', disallowNullValue: false)
+      @HiveField(15)
+      String? kyoinName2,
+      @JsonKey(name: 'KyoinId3', disallowNullValue: false)
+      @HiveField(16)
+      String? kyoinId3,
+      @JsonKey(name: 'KyoinName3', disallowNullValue: false)
+      @HiveField(17)
+      String? kyoinName3,
+      @JsonKey(name: 'IsEditable', disallowNullValue: false)
+      @HiveField(18)
       bool? isEditable});
 }
 
@@ -107,6 +173,17 @@ class _$AttendanceTimedStatusModelCopyWithImpl<$Res,
     Object? shukketsuKbn = freezed,
     Object? jiyu1 = freezed,
     Object? jiyu2 = freezed,
+    Object? kyokaDantaiBunrui = freezed,
+    Object? kyokaDantaiKbn = freezed,
+    Object? kyokaBunrui = freezed,
+    Object? kamokuCd = freezed,
+    Object? kamokuNameRyakusho = freezed,
+    Object? kyoinId1 = freezed,
+    Object? kyoinName1 = freezed,
+    Object? kyoinId2 = freezed,
+    Object? kyoinName2 = freezed,
+    Object? kyoinId3 = freezed,
+    Object? kyoinName3 = freezed,
     Object? isEditable = freezed,
   }) {
     return _then(_value.copyWith(
@@ -137,6 +214,50 @@ class _$AttendanceTimedStatusModelCopyWithImpl<$Res,
       jiyu2: freezed == jiyu2
           ? _value.jiyu2
           : jiyu2 // ignore: cast_nullable_to_non_nullable
+              as String?,
+      kyokaDantaiBunrui: freezed == kyokaDantaiBunrui
+          ? _value.kyokaDantaiBunrui
+          : kyokaDantaiBunrui // ignore: cast_nullable_to_non_nullable
+              as String?,
+      kyokaDantaiKbn: freezed == kyokaDantaiKbn
+          ? _value.kyokaDantaiKbn
+          : kyokaDantaiKbn // ignore: cast_nullable_to_non_nullable
+              as String?,
+      kyokaBunrui: freezed == kyokaBunrui
+          ? _value.kyokaBunrui
+          : kyokaBunrui // ignore: cast_nullable_to_non_nullable
+              as String?,
+      kamokuCd: freezed == kamokuCd
+          ? _value.kamokuCd
+          : kamokuCd // ignore: cast_nullable_to_non_nullable
+              as String?,
+      kamokuNameRyakusho: freezed == kamokuNameRyakusho
+          ? _value.kamokuNameRyakusho
+          : kamokuNameRyakusho // ignore: cast_nullable_to_non_nullable
+              as String?,
+      kyoinId1: freezed == kyoinId1
+          ? _value.kyoinId1
+          : kyoinId1 // ignore: cast_nullable_to_non_nullable
+              as String?,
+      kyoinName1: freezed == kyoinName1
+          ? _value.kyoinName1
+          : kyoinName1 // ignore: cast_nullable_to_non_nullable
+              as String?,
+      kyoinId2: freezed == kyoinId2
+          ? _value.kyoinId2
+          : kyoinId2 // ignore: cast_nullable_to_non_nullable
+              as String?,
+      kyoinName2: freezed == kyoinName2
+          ? _value.kyoinName2
+          : kyoinName2 // ignore: cast_nullable_to_non_nullable
+              as String?,
+      kyoinId3: freezed == kyoinId3
+          ? _value.kyoinId3
+          : kyoinId3 // ignore: cast_nullable_to_non_nullable
+              as String?,
+      kyoinName3: freezed == kyoinName3
+          ? _value.kyoinName3
+          : kyoinName3 // ignore: cast_nullable_to_non_nullable
               as String?,
       isEditable: freezed == isEditable
           ? _value.isEditable
@@ -177,8 +298,41 @@ abstract class _$$AttendanceTimedStatusModelImplCopyWith<$Res>
       @JsonKey(name: 'Jiyu2', disallowNullValue: false)
       @HiveField(6)
       String? jiyu2,
-      @JsonKey(name: 'IsEditable', disallowNullValue: false)
+      @JsonKey(name: 'KyokaDantaiBunrui', disallowNullValue: false)
       @HiveField(7)
+      String? kyokaDantaiBunrui,
+      @JsonKey(name: 'KyokaDantaiKbn', disallowNullValue: false)
+      @HiveField(8)
+      String? kyokaDantaiKbn,
+      @JsonKey(name: 'KyokaBunrui', disallowNullValue: false)
+      @HiveField(9)
+      String? kyokaBunrui,
+      @JsonKey(name: 'KamokuCd', disallowNullValue: false)
+      @HiveField(10)
+      String? kamokuCd,
+      @JsonKey(name: 'KamokuNameRyakusho', disallowNullValue: false)
+      @HiveField(11)
+      String? kamokuNameRyakusho,
+      @JsonKey(name: 'KyoinId1', disallowNullValue: false)
+      @HiveField(12)
+      String? kyoinId1,
+      @JsonKey(name: 'KyoinName1', disallowNullValue: false)
+      @HiveField(13)
+      String? kyoinName1,
+      @JsonKey(name: 'KyoinId2', disallowNullValue: false)
+      @HiveField(14)
+      String? kyoinId2,
+      @JsonKey(name: 'KyoinName2', disallowNullValue: false)
+      @HiveField(15)
+      String? kyoinName2,
+      @JsonKey(name: 'KyoinId3', disallowNullValue: false)
+      @HiveField(16)
+      String? kyoinId3,
+      @JsonKey(name: 'KyoinName3', disallowNullValue: false)
+      @HiveField(17)
+      String? kyoinName3,
+      @JsonKey(name: 'IsEditable', disallowNullValue: false)
+      @HiveField(18)
       bool? isEditable});
 }
 
@@ -202,6 +356,17 @@ class __$$AttendanceTimedStatusModelImplCopyWithImpl<$Res>
     Object? shukketsuKbn = freezed,
     Object? jiyu1 = freezed,
     Object? jiyu2 = freezed,
+    Object? kyokaDantaiBunrui = freezed,
+    Object? kyokaDantaiKbn = freezed,
+    Object? kyokaBunrui = freezed,
+    Object? kamokuCd = freezed,
+    Object? kamokuNameRyakusho = freezed,
+    Object? kyoinId1 = freezed,
+    Object? kyoinName1 = freezed,
+    Object? kyoinId2 = freezed,
+    Object? kyoinName2 = freezed,
+    Object? kyoinId3 = freezed,
+    Object? kyoinName3 = freezed,
     Object? isEditable = freezed,
   }) {
     return _then(_$AttendanceTimedStatusModelImpl(
@@ -232,6 +397,50 @@ class __$$AttendanceTimedStatusModelImplCopyWithImpl<$Res>
       jiyu2: freezed == jiyu2
           ? _value.jiyu2
           : jiyu2 // ignore: cast_nullable_to_non_nullable
+              as String?,
+      kyokaDantaiBunrui: freezed == kyokaDantaiBunrui
+          ? _value.kyokaDantaiBunrui
+          : kyokaDantaiBunrui // ignore: cast_nullable_to_non_nullable
+              as String?,
+      kyokaDantaiKbn: freezed == kyokaDantaiKbn
+          ? _value.kyokaDantaiKbn
+          : kyokaDantaiKbn // ignore: cast_nullable_to_non_nullable
+              as String?,
+      kyokaBunrui: freezed == kyokaBunrui
+          ? _value.kyokaBunrui
+          : kyokaBunrui // ignore: cast_nullable_to_non_nullable
+              as String?,
+      kamokuCd: freezed == kamokuCd
+          ? _value.kamokuCd
+          : kamokuCd // ignore: cast_nullable_to_non_nullable
+              as String?,
+      kamokuNameRyakusho: freezed == kamokuNameRyakusho
+          ? _value.kamokuNameRyakusho
+          : kamokuNameRyakusho // ignore: cast_nullable_to_non_nullable
+              as String?,
+      kyoinId1: freezed == kyoinId1
+          ? _value.kyoinId1
+          : kyoinId1 // ignore: cast_nullable_to_non_nullable
+              as String?,
+      kyoinName1: freezed == kyoinName1
+          ? _value.kyoinName1
+          : kyoinName1 // ignore: cast_nullable_to_non_nullable
+              as String?,
+      kyoinId2: freezed == kyoinId2
+          ? _value.kyoinId2
+          : kyoinId2 // ignore: cast_nullable_to_non_nullable
+              as String?,
+      kyoinName2: freezed == kyoinName2
+          ? _value.kyoinName2
+          : kyoinName2 // ignore: cast_nullable_to_non_nullable
+              as String?,
+      kyoinId3: freezed == kyoinId3
+          ? _value.kyoinId3
+          : kyoinId3 // ignore: cast_nullable_to_non_nullable
+              as String?,
+      kyoinName3: freezed == kyoinName3
+          ? _value.kyoinName3
+          : kyoinName3 // ignore: cast_nullable_to_non_nullable
               as String?,
       isEditable: freezed == isEditable
           ? _value.isEditable
@@ -267,8 +476,41 @@ class _$AttendanceTimedStatusModelImpl implements _AttendanceTimedStatusModel {
       @JsonKey(name: 'Jiyu2', disallowNullValue: false)
       @HiveField(6)
       this.jiyu2,
-      @JsonKey(name: 'IsEditable', disallowNullValue: false)
+      @JsonKey(name: 'KyokaDantaiBunrui', disallowNullValue: false)
       @HiveField(7)
+      this.kyokaDantaiBunrui,
+      @JsonKey(name: 'KyokaDantaiKbn', disallowNullValue: false)
+      @HiveField(8)
+      this.kyokaDantaiKbn,
+      @JsonKey(name: 'KyokaBunrui', disallowNullValue: false)
+      @HiveField(9)
+      this.kyokaBunrui,
+      @JsonKey(name: 'KamokuCd', disallowNullValue: false)
+      @HiveField(10)
+      this.kamokuCd,
+      @JsonKey(name: 'KamokuNameRyakusho', disallowNullValue: false)
+      @HiveField(11)
+      this.kamokuNameRyakusho,
+      @JsonKey(name: 'KyoinId1', disallowNullValue: false)
+      @HiveField(12)
+      this.kyoinId1,
+      @JsonKey(name: 'KyoinName1', disallowNullValue: false)
+      @HiveField(13)
+      this.kyoinName1,
+      @JsonKey(name: 'KyoinId2', disallowNullValue: false)
+      @HiveField(14)
+      this.kyoinId2,
+      @JsonKey(name: 'KyoinName2', disallowNullValue: false)
+      @HiveField(15)
+      this.kyoinName2,
+      @JsonKey(name: 'KyoinId3', disallowNullValue: false)
+      @HiveField(16)
+      this.kyoinId3,
+      @JsonKey(name: 'KyoinName3', disallowNullValue: false)
+      @HiveField(17)
+      this.kyoinName3,
+      @JsonKey(name: 'IsEditable', disallowNullValue: false)
+      @HiveField(18)
       this.isEditable});
 
   factory _$AttendanceTimedStatusModelImpl.fromJson(
@@ -304,8 +546,52 @@ class _$AttendanceTimedStatusModelImpl implements _AttendanceTimedStatusModel {
   @HiveField(6)
   final String? jiyu2;
   @override
-  @JsonKey(name: 'IsEditable', disallowNullValue: false)
+  @JsonKey(name: 'KyokaDantaiBunrui', disallowNullValue: false)
   @HiveField(7)
+  final String? kyokaDantaiBunrui;
+  @override
+  @JsonKey(name: 'KyokaDantaiKbn', disallowNullValue: false)
+  @HiveField(8)
+  final String? kyokaDantaiKbn;
+  @override
+  @JsonKey(name: 'KyokaBunrui', disallowNullValue: false)
+  @HiveField(9)
+  final String? kyokaBunrui;
+  @override
+  @JsonKey(name: 'KamokuCd', disallowNullValue: false)
+  @HiveField(10)
+  final String? kamokuCd;
+  @override
+  @JsonKey(name: 'KamokuNameRyakusho', disallowNullValue: false)
+  @HiveField(11)
+  final String? kamokuNameRyakusho;
+  @override
+  @JsonKey(name: 'KyoinId1', disallowNullValue: false)
+  @HiveField(12)
+  final String? kyoinId1;
+  @override
+  @JsonKey(name: 'KyoinName1', disallowNullValue: false)
+  @HiveField(13)
+  final String? kyoinName1;
+  @override
+  @JsonKey(name: 'KyoinId2', disallowNullValue: false)
+  @HiveField(14)
+  final String? kyoinId2;
+  @override
+  @JsonKey(name: 'KyoinName2', disallowNullValue: false)
+  @HiveField(15)
+  final String? kyoinName2;
+  @override
+  @JsonKey(name: 'KyoinId3', disallowNullValue: false)
+  @HiveField(16)
+  final String? kyoinId3;
+  @override
+  @JsonKey(name: 'KyoinName3', disallowNullValue: false)
+  @HiveField(17)
+  final String? kyoinName3;
+  @override
+  @JsonKey(name: 'IsEditable', disallowNullValue: false)
+  @HiveField(18)
   final bool? isEditable;
 
   @override
@@ -324,14 +610,56 @@ class _$AttendanceTimedStatusModelImpl implements _AttendanceTimedStatusModel {
                 other.shukketsuKbn == shukketsuKbn) &&
             (identical(other.jiyu1, jiyu1) || other.jiyu1 == jiyu1) &&
             (identical(other.jiyu2, jiyu2) || other.jiyu2 == jiyu2) &&
+            (identical(other.kyokaDantaiBunrui, kyokaDantaiBunrui) ||
+                other.kyokaDantaiBunrui == kyokaDantaiBunrui) &&
+            (identical(other.kyokaDantaiKbn, kyokaDantaiKbn) ||
+                other.kyokaDantaiKbn == kyokaDantaiKbn) &&
+            (identical(other.kyokaBunrui, kyokaBunrui) ||
+                other.kyokaBunrui == kyokaBunrui) &&
+            (identical(other.kamokuCd, kamokuCd) ||
+                other.kamokuCd == kamokuCd) &&
+            (identical(other.kamokuNameRyakusho, kamokuNameRyakusho) ||
+                other.kamokuNameRyakusho == kamokuNameRyakusho) &&
+            (identical(other.kyoinId1, kyoinId1) ||
+                other.kyoinId1 == kyoinId1) &&
+            (identical(other.kyoinName1, kyoinName1) ||
+                other.kyoinName1 == kyoinName1) &&
+            (identical(other.kyoinId2, kyoinId2) ||
+                other.kyoinId2 == kyoinId2) &&
+            (identical(other.kyoinName2, kyoinName2) ||
+                other.kyoinName2 == kyoinName2) &&
+            (identical(other.kyoinId3, kyoinId3) ||
+                other.kyoinId3 == kyoinId3) &&
+            (identical(other.kyoinName3, kyoinName3) ||
+                other.kyoinName3 == kyoinName3) &&
             (identical(other.isEditable, isEditable) ||
                 other.isEditable == isEditable));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, jokyoDate, jigenIdx, ryaku,
-      shukketsuBunrui, shukketsuKbn, jiyu1, jiyu2, isEditable);
+  int get hashCode => Object.hashAll([
+        runtimeType,
+        jokyoDate,
+        jigenIdx,
+        ryaku,
+        shukketsuBunrui,
+        shukketsuKbn,
+        jiyu1,
+        jiyu2,
+        kyokaDantaiBunrui,
+        kyokaDantaiKbn,
+        kyokaBunrui,
+        kamokuCd,
+        kamokuNameRyakusho,
+        kyoinId1,
+        kyoinName1,
+        kyoinId2,
+        kyoinName2,
+        kyoinId3,
+        kyoinName3,
+        isEditable
+      ]);
 
   @JsonKey(ignore: true)
   @override
@@ -372,8 +700,41 @@ abstract class _AttendanceTimedStatusModel
       @JsonKey(name: 'Jiyu2', disallowNullValue: false)
       @HiveField(6)
       final String? jiyu2,
-      @JsonKey(name: 'IsEditable', disallowNullValue: false)
+      @JsonKey(name: 'KyokaDantaiBunrui', disallowNullValue: false)
       @HiveField(7)
+      final String? kyokaDantaiBunrui,
+      @JsonKey(name: 'KyokaDantaiKbn', disallowNullValue: false)
+      @HiveField(8)
+      final String? kyokaDantaiKbn,
+      @JsonKey(name: 'KyokaBunrui', disallowNullValue: false)
+      @HiveField(9)
+      final String? kyokaBunrui,
+      @JsonKey(name: 'KamokuCd', disallowNullValue: false)
+      @HiveField(10)
+      final String? kamokuCd,
+      @JsonKey(name: 'KamokuNameRyakusho', disallowNullValue: false)
+      @HiveField(11)
+      final String? kamokuNameRyakusho,
+      @JsonKey(name: 'KyoinId1', disallowNullValue: false)
+      @HiveField(12)
+      final String? kyoinId1,
+      @JsonKey(name: 'KyoinName1', disallowNullValue: false)
+      @HiveField(13)
+      final String? kyoinName1,
+      @JsonKey(name: 'KyoinId2', disallowNullValue: false)
+      @HiveField(14)
+      final String? kyoinId2,
+      @JsonKey(name: 'KyoinName2', disallowNullValue: false)
+      @HiveField(15)
+      final String? kyoinName2,
+      @JsonKey(name: 'KyoinId3', disallowNullValue: false)
+      @HiveField(16)
+      final String? kyoinId3,
+      @JsonKey(name: 'KyoinName3', disallowNullValue: false)
+      @HiveField(17)
+      final String? kyoinName3,
+      @JsonKey(name: 'IsEditable', disallowNullValue: false)
+      @HiveField(18)
       final bool? isEditable}) = _$AttendanceTimedStatusModelImpl;
 
   factory _AttendanceTimedStatusModel.fromJson(Map<String, dynamic> json) =
@@ -408,8 +769,52 @@ abstract class _AttendanceTimedStatusModel
   @HiveField(6)
   String? get jiyu2;
   @override
-  @JsonKey(name: 'IsEditable', disallowNullValue: false)
+  @JsonKey(name: 'KyokaDantaiBunrui', disallowNullValue: false)
   @HiveField(7)
+  String? get kyokaDantaiBunrui;
+  @override
+  @JsonKey(name: 'KyokaDantaiKbn', disallowNullValue: false)
+  @HiveField(8)
+  String? get kyokaDantaiKbn;
+  @override
+  @JsonKey(name: 'KyokaBunrui', disallowNullValue: false)
+  @HiveField(9)
+  String? get kyokaBunrui;
+  @override
+  @JsonKey(name: 'KamokuCd', disallowNullValue: false)
+  @HiveField(10)
+  String? get kamokuCd;
+  @override
+  @JsonKey(name: 'KamokuNameRyakusho', disallowNullValue: false)
+  @HiveField(11)
+  String? get kamokuNameRyakusho;
+  @override
+  @JsonKey(name: 'KyoinId1', disallowNullValue: false)
+  @HiveField(12)
+  String? get kyoinId1;
+  @override
+  @JsonKey(name: 'KyoinName1', disallowNullValue: false)
+  @HiveField(13)
+  String? get kyoinName1;
+  @override
+  @JsonKey(name: 'KyoinId2', disallowNullValue: false)
+  @HiveField(14)
+  String? get kyoinId2;
+  @override
+  @JsonKey(name: 'KyoinName2', disallowNullValue: false)
+  @HiveField(15)
+  String? get kyoinName2;
+  @override
+  @JsonKey(name: 'KyoinId3', disallowNullValue: false)
+  @HiveField(16)
+  String? get kyoinId3;
+  @override
+  @JsonKey(name: 'KyoinName3', disallowNullValue: false)
+  @HiveField(17)
+  String? get kyoinName3;
+  @override
+  @JsonKey(name: 'IsEditable', disallowNullValue: false)
+  @HiveField(18)
   bool? get isEditable;
   @override
   @JsonKey(ignore: true)

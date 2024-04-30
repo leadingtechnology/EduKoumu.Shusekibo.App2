@@ -9,6 +9,13 @@ final shozokuProvider = StateProvider<ShozokuModel>(
   (ref) => const ShozokuModel(),
 );
 
+final shozokuListProvider = StateProvider<List<ShozokuModel>>(
+  (ref) => [],
+);
+final shozokuAllProvider = StateProvider<bool>(
+  (ref) => false,
+);
+
 final shozokusProvider =
     StateNotifierProvider<ShozokuNotifier, ApiState>((ref) {
   //final gakunen = ref.watch(gakunenProvider);
@@ -44,10 +51,10 @@ class ShozokuNotifier extends StateNotifier<ApiState> {
     state = const ApiState.loaded();
   }
 
-  ShozokuModel setShozokuValue(
+  Future<ShozokuModel> setShozokuValue(
     GakunenModel gakunen, {
     int? shozokuId,
-  }) {
+  }) async{
     final dantaiId = ref.read(dantaiProvider).id ?? 0;
     final gakunenCode = gakunen.gakunenCode ?? '';
 

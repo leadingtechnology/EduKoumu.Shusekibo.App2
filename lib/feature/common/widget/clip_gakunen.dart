@@ -52,9 +52,11 @@ class ClipGakunen extends ConsumerWidget {
             ref.read(gakunenProvider.notifier).state = gakunen!;
 
             // 所属情報の初期値を設定する
-            final shozoku = ref.read(shozokusProvider.notifier).setShozokuValue(
-              gakunen,
-            );
+            final shozoku =
+                await ref.read(shozokusProvider.notifier).setShozokuValue(
+                      gakunen,
+                    );
+
             ref.read(shozokuProvider.notifier).state = shozoku;
 
             // 時限情報の初期値を設定する

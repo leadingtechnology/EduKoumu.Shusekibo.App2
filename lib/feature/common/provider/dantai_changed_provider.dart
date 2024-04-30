@@ -1,22 +1,28 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kyoumutechou/feature/awareness/provider/awareness_code_provider.dart';
-import 'package:kyoumutechou/feature/awareness/repsitory/awareness_code_repository.dart';
 import 'package:kyoumutechou/feature/boxes.dart';
 import 'package:kyoumutechou/feature/common/model/dantai_model.dart';
 import 'package:kyoumutechou/feature/common/model/gakunen_model.dart';
+import 'package:kyoumutechou/feature/common/model/kamoku_model.dart';
 import 'package:kyoumutechou/feature/common/model/shozoku_model.dart';
 import 'package:kyoumutechou/feature/common/model/tannin_model.dart';
+import 'package:kyoumutechou/feature/common/model/teacher_model.dart';
 import 'package:kyoumutechou/feature/common/provider/dantais_provider.dart';
 import 'package:kyoumutechou/feature/common/provider/filter_provider.dart';
 import 'package:kyoumutechou/feature/common/provider/gakunens_provider.dart';
+import 'package:kyoumutechou/feature/common/provider/kamokus_provider.dart';
 import 'package:kyoumutechou/feature/common/provider/seat_chart_pattern_provider.dart';
 import 'package:kyoumutechou/feature/common/provider/shozokus_provider.dart';
+import 'package:kyoumutechou/feature/common/provider/teachers_provider.dart';
 import 'package:kyoumutechou/feature/common/provider/timeds_provider.dart';
 import 'package:kyoumutechou/feature/common/provider/tokobis_provider.dart';
 import 'package:kyoumutechou/feature/common/repository/gakunens_repository.dart';
+import 'package:kyoumutechou/feature/common/repository/kamokus_repository.dart';
 import 'package:kyoumutechou/feature/common/repository/last_tokobis_repository.dart';
 import 'package:kyoumutechou/feature/common/repository/shozokus_repository.dart';
 import 'package:kyoumutechou/feature/common/repository/tannin_repository.dart';
+import 'package:kyoumutechou/feature/common/repository/tanto_kyoin_repository.dart';
+import 'package:kyoumutechou/feature/common/repository/teachers_repository.dart';
 import 'package:kyoumutechou/feature/common/repository/timeds_repository.dart';
 import 'package:kyoumutechou/feature/common/repository/tokobis_repository.dart';
 import 'package:kyoumutechou/feature/common/state/api_state.dart';
@@ -54,6 +60,11 @@ class DantaiChangedNotifier extends StateNotifier<ApiState> {
   late final _seatSetting = ref.read(seatSettingRepositoryProvider);  
   late final _seatChart = ref.read(seatChartRepositoryProvider);  
 
+  late final _teacher = ref.read(teachersRepositoryProvider);
+  late final _kamoku = ref.read(kamokusRepositoryProvider);
+  late final _tantoKyoin = ref.read(tantoKyoinsRepositoryProvider);
+
+
   Future<void> fetch(DantaiModel dantai) async {
     final dantaiId = dantai.id ?? 0;
     
@@ -75,6 +86,10 @@ class DantaiChangedNotifier extends StateNotifier<ApiState> {
 
         // 所属情報を取得す情報
         _shozoku.fetch(dantaiId),
+
+        // 教職員情報を取得する。
+        _teacher.fetch('${dantai.id ?? 0}'),
+
       ]);
 
       var isError = false;
@@ -131,7 +146,7 @@ class DantaiChangedNotifier extends StateNotifier<ApiState> {
             gakunenCode: tannin.gakunenCode ?? '',
         );
       try {
-        gakunen = ref.read(gakunensProvider.notifier).setGakunenValue(
+        gakunen = await ref.read(gakunensProvider.notifier).setGakunenValue(
               ref,
               dantai,
               gakunenCode: gakunen.gakunenCode,
@@ -144,7 +159,7 @@ class DantaiChangedNotifier extends StateNotifier<ApiState> {
       // 所属初期値の設定
       var shozoku = const ShozokuModel();
       try {
-        shozoku = ref.read(shozokusProvider.notifier).setShozokuValue(
+        shozoku = await ref.read(shozokusProvider.notifier).setShozokuValue(
               gakunen,
               shozokuId: tannin.shozokuId,
             );
@@ -152,6 +167,15 @@ class DantaiChangedNotifier extends StateNotifier<ApiState> {
         //
       }
       ref.read(shozokuProvider.notifier).state = shozoku;
+      
+      // 担任所属IDの場合、所属情報を設定する。
+      if (tannin.shozokuId != null) {
+        ref.read(shozokuAllProvider.notifier).state = false;
+        ref.read(shozokuListProvider.notifier).state = [shozoku];
+      }else{
+        ref.read(shozokuAllProvider.notifier).state = true;
+        ref.read(shozokuListProvider.notifier).state = [];
+      }
 
       // 分類コード初期値の設定
       final awarenessCode = 
@@ -201,6 +225,18 @@ class DantaiChangedNotifier extends StateNotifier<ApiState> {
           dantaiId,
           today,
         ),
+
+        // 科目情報の取得
+        _kamoku.fetch(
+          dantaiId,
+          gakunen.gakunenCode ?? '',
+        ),
+
+        // 担当教員情報の取得
+        _tantoKyoin.fetch(
+          shozoku.id ?? 0,
+          today,
+        ),
         
         // // 登校日2情報の取得
         // getTokobi(shozoku),
@@ -246,6 +282,12 @@ class DantaiChangedNotifier extends StateNotifier<ApiState> {
         today,
       );
 
+      // 教科初期値設定
+      await ref.read(kamokusProvider.notifier).setKamokuValue(
+        dantaiId,
+        gakunen.gakunenCode ?? '',
+      );
+
       ///
       ///検索条件の初期化
       ///
@@ -260,6 +302,7 @@ class DantaiChangedNotifier extends StateNotifier<ApiState> {
       // ignore: avoid_print
       print('その他エラー情報：$e');
     }
+
   }
 
   // Future<ApiState> getTokobi(ShozokuModel shozoku) async {

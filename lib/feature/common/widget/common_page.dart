@@ -20,6 +20,7 @@ class CommonPage extends ConsumerWidget {
   const CommonPage({
     required this.scaffoldKey,
     required this.contentWidget,
+    this.teacherWidget,
     required this.onShift,
     this.setBlank,
     required this.saveWidget,
@@ -29,7 +30,8 @@ class CommonPage extends ConsumerWidget {
   });
 
   final GlobalKey<ScaffoldState> scaffoldKey;
-  final Widget contentWidget; // コンテンツ表示用のウィジェット
+  final Widget contentWidget; //
+  final Widget? teacherWidget; // コンテンツ表示用のウィジェット
   final VoidCallback onShift; // ボタン1の処理
   final VoidCallback? setBlank; // ボタン2の処理
   final Widget saveWidget; // 保存ボタン
@@ -88,6 +90,8 @@ class CommonPage extends ConsumerWidget {
               MySpacing.height(8),
               const AttendanceStampReasonWidget(),
             ],
+
+            if (teacherWidget != null) teacherWidget!,
 
             // コンテンツ表示
             if (lecternPosition == LecternPosition.top && buttomName == '一覧'

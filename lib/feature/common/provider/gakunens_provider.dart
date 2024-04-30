@@ -34,16 +34,16 @@ class GakunenNotifier extends StateNotifier<ApiState> {
 
   Future<void> _fetch() async {
     final dantai = ref.read(dantaiProvider);
-    setGakunenValue(ref, dantai);
+    await setGakunenValue(ref, dantai);
 
     state = const ApiState.loaded();
   }
 
-  GakunenModel setGakunenValue(
+  Future<GakunenModel> setGakunenValue(
     Ref ref,
     DantaiModel dantai, {
     String? gakunenCode,
-  }) {
+  }) async{
     final box = Boxes.getGakunens();
     GakunenModel? gakunen = const GakunenModel();
 
@@ -92,4 +92,3 @@ class GakunenNotifier extends StateNotifier<ApiState> {
   }
 
 }
-

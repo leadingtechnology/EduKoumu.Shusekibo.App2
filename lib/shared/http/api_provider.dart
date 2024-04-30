@@ -135,10 +135,13 @@ class ApiProvider {
         //   return const APIResponse.error(AppException.connectivity());
         // } else
         if (response.statusCode! == 401) {
-          return APIResponse.error(AppException.unauthorized());
+          return const APIResponse.error(AppException.unauthorized());
         } else if (response.statusCode! == 502) {
           return const APIResponse.error(AppException.error());
         } else {
+          if (response.statusCode! == 400 && response.data != null) {
+            return const APIResponse.error(AppException.unauthorized());
+          }
           if (response.data['message'] != null) {
             return APIResponse.error(AppException.errorWithMessage(
                 response.data['message'] as String ?? ''));

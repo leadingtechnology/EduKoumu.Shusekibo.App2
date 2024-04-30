@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:kyoumutechou/feature/common/model/shozoku_model.dart';
 import 'package:kyoumutechou/feature/common/provider/dantais_provider.dart';
 import 'package:kyoumutechou/feature/home/provider/home_provider.dart';
 
@@ -7,6 +8,7 @@ import 'package:kyoumutechou/feature/linkage/state/contact_linkage_state.dart';
 
 final contactDateProvider = StateProvider<DateTime>((ref) => DateTime.now());
 final contactNavigatorMenu = StateProvider<Menu>((ref) => Menu.health); 
+final contactShozokusProvider = StateProvider<List<ShozokuModel>>((ref) => []);
 
 final contactLinkageListProvider =
     StateNotifierProvider.autoDispose<ContactLinkageListProvider, ContactLinkageState>(

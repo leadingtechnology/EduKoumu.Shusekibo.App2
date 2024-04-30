@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:kyoumutechou/feature/common/provider/shozokus_provider.dart';
+import 'package:kyoumutechou/feature/common/widget/clip_shozoku_all.dart';
 import 'package:kyoumutechou/feature/linkage/model/contact_linkage_model.dart';
 import 'package:kyoumutechou/feature/linkage/provider/contact_linkage_provider.dart';
 import 'package:kyoumutechou/feature/linkage/widget/contact_list_item.dart';
@@ -23,10 +25,20 @@ class ContactLinkageDialog extends ConsumerWidget {
         return Text(e.toString());
       },
       loaded: (list) {
-        final contactItems = list.toList()
-        
+        final contactItems = list.toList();
+
+
+        final isAll = ref.watch(shozokuAllProvider);
+        final shozokuList = ref.watch(shozokuListProvider);
+        if (!isAll && contactItems.isNotEmpty ){
+          for(final shozoku in shozokuList){
+            contactItems.removeWhere((item) => item.shozokuId != shozoku.id);
+          }
+        }
+
         // ソート順
-        ..sort((a, b) {
+        contactItems
+          .sort((a, b) {
           // registDateTime 降順
           final dateCompare = b.registDateTime!.compareTo(a.registDateTime!);
           if (dateCompare != 0) return dateCompare;
@@ -47,8 +59,6 @@ class ContactLinkageDialog extends ConsumerWidget {
           // memberId 昇順
           return a.memberId!.compareTo(b.memberId!);
         });
-
-
         return _build(context, ref, contactItems);
       },
     );
@@ -79,6 +89,7 @@ class ContactLinkageDialog extends ConsumerWidget {
                   ref.read(contactDateProvider.notifier).state =
                       selectedDate.subtract(const Duration(days: 1));
                 },
+                
               ),
               Text(
                 '${DateUtil.getJpMonthDayWeek(selectedDate)}の保護者からの連絡',
@@ -98,6 +109,11 @@ class ContactLinkageDialog extends ConsumerWidget {
               ),
               MySpacing.width(4),
             ],
+          ),
+          const Divider(),
+          const Padding(
+            padding: EdgeInsets.fromLTRB(16,8,16,8),
+            child: ClipShozokuAll(),
           ),
           const Divider(),
           Expanded(

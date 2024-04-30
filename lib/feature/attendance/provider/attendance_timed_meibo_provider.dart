@@ -84,7 +84,6 @@ class AttendanceTimedMeiboListProvider extends StateNotifier<ApiState> {
         meibos = meibos.where((e) => e.gakunen == meibo.gakunen).toList();
       } 
 
-
       for (final m in meibos) {
         await updateBox(m, stamp, filter, reason1, reason2);
       }

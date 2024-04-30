@@ -11,8 +11,11 @@ import 'package:kyoumutechou/feature/awareness/model/awareness_kizuki_model.dart
 import 'package:kyoumutechou/feature/awareness/model/awareness_meibo_model.dart';
 import 'package:kyoumutechou/feature/common/model/dantai_model.dart';
 import 'package:kyoumutechou/feature/common/model/gakunen_model.dart';
+import 'package:kyoumutechou/feature/common/model/kamoku_model.dart';
 import 'package:kyoumutechou/feature/common/model/shozoku_model.dart';
 import 'package:kyoumutechou/feature/common/model/tannin_model.dart';
+import 'package:kyoumutechou/feature/common/model/tanto_kyoin_model.dart';
+import 'package:kyoumutechou/feature/common/model/teacher_model.dart';
 import 'package:kyoumutechou/feature/common/model/tenpu_model.dart';
 import 'package:kyoumutechou/feature/common/model/timed_model.dart';
 import 'package:kyoumutechou/feature/common/model/tokobi_model.dart';
@@ -32,6 +35,10 @@ class Boxes {
   static Box<ShozokuModel> getShozokus() => Hive.box<ShozokuModel>('Shozoku');
   static Box<TokobiModel> getTokobis() => Hive.box<TokobiModel>('Tokobi');
   static Box<TanninModel> getTannin() => Hive.box<TanninModel>('Tannin');
+
+  static Box<KamokuModel> getKamokus() => Hive.box<KamokuModel>('Kamoku'); 
+  static Box<TantoKyoinModel> getTantoKyoins() => Hive.box<TantoKyoinModel>('TantoKyoin'); 
+  static Box<TeacherModel> getTeachers() => Hive.box<TeacherModel>('Teacher'); 
 
   // Health
   static Box<HealthStampModel> getRegistHealthStamp() =>
