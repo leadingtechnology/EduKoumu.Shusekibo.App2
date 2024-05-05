@@ -80,42 +80,49 @@ mixin _$AwarenessKizukiModel {
   @JsonKey(name: 'StudentName', disallowNullValue: false)
   @HiveField(19)
   String? get studentName => throw _privateConstructorUsedError;
-  @JsonKey(name: 'ExistPhoto', disallowNullValue: false)
+  @JsonKey(name: 'GenderCode', disallowNullValue: false)
   @HiveField(20)
-  bool? get existPhoto => throw _privateConstructorUsedError;
-  @JsonKey(name: 'TourokusyaId', disallowNullValue: false)
+  String? get genderCode => throw _privateConstructorUsedError;
+  @JsonKey(name: 'ExistPhoto', disallowNullValue: false)
   @HiveField(21)
+  bool? get existPhoto => throw _privateConstructorUsedError;
+  @JsonKey(name: 'PhotoUrl', disallowNullValue: false)
+  @HiveField(22)
+  String? get photoUrl => throw _privateConstructorUsedError;
+  @JsonKey(name: 'TourokusyaId', disallowNullValue: false)
+  @HiveField(23)
   int? get tourokusyaId => throw _privateConstructorUsedError;
   @JsonKey(name: 'TourokusyaName', disallowNullValue: false)
-  @HiveField(22)
+  @HiveField(24)
   String? get tourokusyaName => throw _privateConstructorUsedError;
   @JsonKey(name: 'JuyoFlg', disallowNullValue: false)
-  @HiveField(23)
+  @HiveField(25)
   bool? get juyoFlg => throw _privateConstructorUsedError;
   @JsonKey(name: 'TorokuDate', disallowNullValue: false)
-  @HiveField(24)
+  @HiveField(26)
   String? get torokuDate => throw _privateConstructorUsedError;
   @JsonKey(name: 'HasAttachment', disallowNullValue: false)
-  @HiveField(25)
-  bool? get hasAttachment => throw _privateConstructorUsedError;
-  @JsonKey(name: 'CommentCount', disallowNullValue: false)
-  @HiveField(26)
-  int? get commentCount => throw _privateConstructorUsedError;
-  @JsonKey(name: 'CreateDate', disallowNullValue: false)
   @HiveField(27)
+  bool? get hasAttachment => throw _privateConstructorUsedError;
+  @JsonKey(name: 'TenpuFileList', disallowNullValue: false)
+  @HiveField(28)
+  List<TenpuModel>? get tenpuFileList => throw _privateConstructorUsedError;
+  @JsonKey(name: 'CommentCount', disallowNullValue: false)
+  @HiveField(29)
+  int? get commentCount => throw _privateConstructorUsedError;
+  @JsonKey(name: 'CommentList', disallowNullValue: false)
+  @HiveField(30)
+  List<KizukiCommentModel>? get commentList =>
+      throw _privateConstructorUsedError;
+  @JsonKey(name: 'CreateDate', disallowNullValue: false)
+  @HiveField(31)
   DateTime? get createDate => throw _privateConstructorUsedError;
   @JsonKey(name: 'UpdateDate', disallowNullValue: false)
-  @HiveField(28)
+  @HiveField(32)
   DateTime? get updateDate => throw _privateConstructorUsedError;
   @JsonKey(name: 'TimeStamp', disallowNullValue: false)
-  @HiveField(29)
+  @HiveField(33)
   String? get timeStamp => throw _privateConstructorUsedError;
-  @JsonKey(name: 'PhotoUrl', disallowNullValue: false)
-  @HiveField(30)
-  String? get photoUrl => throw _privateConstructorUsedError;
-  @JsonKey(name: 'TenpuFileList', disallowNullValue: false)
-  @HiveField(31)
-  List<TenpuModel>? get tenpuFileList => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -188,42 +195,48 @@ abstract class $AwarenessKizukiModelCopyWith<$Res> {
       @JsonKey(name: 'StudentName', disallowNullValue: false)
       @HiveField(19)
       String? studentName,
-      @JsonKey(name: 'ExistPhoto', disallowNullValue: false)
+      @JsonKey(name: 'GenderCode', disallowNullValue: false)
       @HiveField(20)
-      bool? existPhoto,
-      @JsonKey(name: 'TourokusyaId', disallowNullValue: false)
+      String? genderCode,
+      @JsonKey(name: 'ExistPhoto', disallowNullValue: false)
       @HiveField(21)
+      bool? existPhoto,
+      @JsonKey(name: 'PhotoUrl', disallowNullValue: false)
+      @HiveField(22)
+      String? photoUrl,
+      @JsonKey(name: 'TourokusyaId', disallowNullValue: false)
+      @HiveField(23)
       int? tourokusyaId,
       @JsonKey(name: 'TourokusyaName', disallowNullValue: false)
-      @HiveField(22)
+      @HiveField(24)
       String? tourokusyaName,
       @JsonKey(name: 'JuyoFlg', disallowNullValue: false)
-      @HiveField(23)
+      @HiveField(25)
       bool? juyoFlg,
       @JsonKey(name: 'TorokuDate', disallowNullValue: false)
-      @HiveField(24)
+      @HiveField(26)
       String? torokuDate,
       @JsonKey(name: 'HasAttachment', disallowNullValue: false)
-      @HiveField(25)
-      bool? hasAttachment,
-      @JsonKey(name: 'CommentCount', disallowNullValue: false)
-      @HiveField(26)
-      int? commentCount,
-      @JsonKey(name: 'CreateDate', disallowNullValue: false)
       @HiveField(27)
+      bool? hasAttachment,
+      @JsonKey(name: 'TenpuFileList', disallowNullValue: false)
+      @HiveField(28)
+      List<TenpuModel>? tenpuFileList,
+      @JsonKey(name: 'CommentCount', disallowNullValue: false)
+      @HiveField(29)
+      int? commentCount,
+      @JsonKey(name: 'CommentList', disallowNullValue: false)
+      @HiveField(30)
+      List<KizukiCommentModel>? commentList,
+      @JsonKey(name: 'CreateDate', disallowNullValue: false)
+      @HiveField(31)
       DateTime? createDate,
       @JsonKey(name: 'UpdateDate', disallowNullValue: false)
-      @HiveField(28)
+      @HiveField(32)
       DateTime? updateDate,
       @JsonKey(name: 'TimeStamp', disallowNullValue: false)
-      @HiveField(29)
-      String? timeStamp,
-      @JsonKey(name: 'PhotoUrl', disallowNullValue: false)
-      @HiveField(30)
-      String? photoUrl,
-      @JsonKey(name: 'TenpuFileList', disallowNullValue: false)
-      @HiveField(31)
-      List<TenpuModel>? tenpuFileList});
+      @HiveField(33)
+      String? timeStamp});
 }
 
 /// @nodoc
@@ -260,18 +273,20 @@ class _$AwarenessKizukiModelCopyWithImpl<$Res,
     Object? studentId = freezed,
     Object? seitoSeq = freezed,
     Object? studentName = freezed,
+    Object? genderCode = freezed,
     Object? existPhoto = freezed,
+    Object? photoUrl = freezed,
     Object? tourokusyaId = freezed,
     Object? tourokusyaName = freezed,
     Object? juyoFlg = freezed,
     Object? torokuDate = freezed,
     Object? hasAttachment = freezed,
+    Object? tenpuFileList = freezed,
     Object? commentCount = freezed,
+    Object? commentList = freezed,
     Object? createDate = freezed,
     Object? updateDate = freezed,
     Object? timeStamp = freezed,
-    Object? photoUrl = freezed,
-    Object? tenpuFileList = freezed,
   }) {
     return _then(_value.copyWith(
       id: freezed == id
@@ -354,10 +369,18 @@ class _$AwarenessKizukiModelCopyWithImpl<$Res,
           ? _value.studentName
           : studentName // ignore: cast_nullable_to_non_nullable
               as String?,
+      genderCode: freezed == genderCode
+          ? _value.genderCode
+          : genderCode // ignore: cast_nullable_to_non_nullable
+              as String?,
       existPhoto: freezed == existPhoto
           ? _value.existPhoto
           : existPhoto // ignore: cast_nullable_to_non_nullable
               as bool?,
+      photoUrl: freezed == photoUrl
+          ? _value.photoUrl
+          : photoUrl // ignore: cast_nullable_to_non_nullable
+              as String?,
       tourokusyaId: freezed == tourokusyaId
           ? _value.tourokusyaId
           : tourokusyaId // ignore: cast_nullable_to_non_nullable
@@ -378,10 +401,18 @@ class _$AwarenessKizukiModelCopyWithImpl<$Res,
           ? _value.hasAttachment
           : hasAttachment // ignore: cast_nullable_to_non_nullable
               as bool?,
+      tenpuFileList: freezed == tenpuFileList
+          ? _value.tenpuFileList
+          : tenpuFileList // ignore: cast_nullable_to_non_nullable
+              as List<TenpuModel>?,
       commentCount: freezed == commentCount
           ? _value.commentCount
           : commentCount // ignore: cast_nullable_to_non_nullable
               as int?,
+      commentList: freezed == commentList
+          ? _value.commentList
+          : commentList // ignore: cast_nullable_to_non_nullable
+              as List<KizukiCommentModel>?,
       createDate: freezed == createDate
           ? _value.createDate
           : createDate // ignore: cast_nullable_to_non_nullable
@@ -394,14 +425,6 @@ class _$AwarenessKizukiModelCopyWithImpl<$Res,
           ? _value.timeStamp
           : timeStamp // ignore: cast_nullable_to_non_nullable
               as String?,
-      photoUrl: freezed == photoUrl
-          ? _value.photoUrl
-          : photoUrl // ignore: cast_nullable_to_non_nullable
-              as String?,
-      tenpuFileList: freezed == tenpuFileList
-          ? _value.tenpuFileList
-          : tenpuFileList // ignore: cast_nullable_to_non_nullable
-              as List<TenpuModel>?,
     ) as $Val);
   }
 }
@@ -473,42 +496,48 @@ abstract class _$$AwarenessKizukiModelImplCopyWith<$Res>
       @JsonKey(name: 'StudentName', disallowNullValue: false)
       @HiveField(19)
       String? studentName,
-      @JsonKey(name: 'ExistPhoto', disallowNullValue: false)
+      @JsonKey(name: 'GenderCode', disallowNullValue: false)
       @HiveField(20)
-      bool? existPhoto,
-      @JsonKey(name: 'TourokusyaId', disallowNullValue: false)
+      String? genderCode,
+      @JsonKey(name: 'ExistPhoto', disallowNullValue: false)
       @HiveField(21)
+      bool? existPhoto,
+      @JsonKey(name: 'PhotoUrl', disallowNullValue: false)
+      @HiveField(22)
+      String? photoUrl,
+      @JsonKey(name: 'TourokusyaId', disallowNullValue: false)
+      @HiveField(23)
       int? tourokusyaId,
       @JsonKey(name: 'TourokusyaName', disallowNullValue: false)
-      @HiveField(22)
+      @HiveField(24)
       String? tourokusyaName,
       @JsonKey(name: 'JuyoFlg', disallowNullValue: false)
-      @HiveField(23)
+      @HiveField(25)
       bool? juyoFlg,
       @JsonKey(name: 'TorokuDate', disallowNullValue: false)
-      @HiveField(24)
+      @HiveField(26)
       String? torokuDate,
       @JsonKey(name: 'HasAttachment', disallowNullValue: false)
-      @HiveField(25)
-      bool? hasAttachment,
-      @JsonKey(name: 'CommentCount', disallowNullValue: false)
-      @HiveField(26)
-      int? commentCount,
-      @JsonKey(name: 'CreateDate', disallowNullValue: false)
       @HiveField(27)
+      bool? hasAttachment,
+      @JsonKey(name: 'TenpuFileList', disallowNullValue: false)
+      @HiveField(28)
+      List<TenpuModel>? tenpuFileList,
+      @JsonKey(name: 'CommentCount', disallowNullValue: false)
+      @HiveField(29)
+      int? commentCount,
+      @JsonKey(name: 'CommentList', disallowNullValue: false)
+      @HiveField(30)
+      List<KizukiCommentModel>? commentList,
+      @JsonKey(name: 'CreateDate', disallowNullValue: false)
+      @HiveField(31)
       DateTime? createDate,
       @JsonKey(name: 'UpdateDate', disallowNullValue: false)
-      @HiveField(28)
+      @HiveField(32)
       DateTime? updateDate,
       @JsonKey(name: 'TimeStamp', disallowNullValue: false)
-      @HiveField(29)
-      String? timeStamp,
-      @JsonKey(name: 'PhotoUrl', disallowNullValue: false)
-      @HiveField(30)
-      String? photoUrl,
-      @JsonKey(name: 'TenpuFileList', disallowNullValue: false)
-      @HiveField(31)
-      List<TenpuModel>? tenpuFileList});
+      @HiveField(33)
+      String? timeStamp});
 }
 
 /// @nodoc
@@ -542,18 +571,20 @@ class __$$AwarenessKizukiModelImplCopyWithImpl<$Res>
     Object? studentId = freezed,
     Object? seitoSeq = freezed,
     Object? studentName = freezed,
+    Object? genderCode = freezed,
     Object? existPhoto = freezed,
+    Object? photoUrl = freezed,
     Object? tourokusyaId = freezed,
     Object? tourokusyaName = freezed,
     Object? juyoFlg = freezed,
     Object? torokuDate = freezed,
     Object? hasAttachment = freezed,
+    Object? tenpuFileList = freezed,
     Object? commentCount = freezed,
+    Object? commentList = freezed,
     Object? createDate = freezed,
     Object? updateDate = freezed,
     Object? timeStamp = freezed,
-    Object? photoUrl = freezed,
-    Object? tenpuFileList = freezed,
   }) {
     return _then(_$AwarenessKizukiModelImpl(
       id: freezed == id
@@ -636,10 +667,18 @@ class __$$AwarenessKizukiModelImplCopyWithImpl<$Res>
           ? _value.studentName
           : studentName // ignore: cast_nullable_to_non_nullable
               as String?,
+      genderCode: freezed == genderCode
+          ? _value.genderCode
+          : genderCode // ignore: cast_nullable_to_non_nullable
+              as String?,
       existPhoto: freezed == existPhoto
           ? _value.existPhoto
           : existPhoto // ignore: cast_nullable_to_non_nullable
               as bool?,
+      photoUrl: freezed == photoUrl
+          ? _value.photoUrl
+          : photoUrl // ignore: cast_nullable_to_non_nullable
+              as String?,
       tourokusyaId: freezed == tourokusyaId
           ? _value.tourokusyaId
           : tourokusyaId // ignore: cast_nullable_to_non_nullable
@@ -660,10 +699,18 @@ class __$$AwarenessKizukiModelImplCopyWithImpl<$Res>
           ? _value.hasAttachment
           : hasAttachment // ignore: cast_nullable_to_non_nullable
               as bool?,
+      tenpuFileList: freezed == tenpuFileList
+          ? _value._tenpuFileList
+          : tenpuFileList // ignore: cast_nullable_to_non_nullable
+              as List<TenpuModel>?,
       commentCount: freezed == commentCount
           ? _value.commentCount
           : commentCount // ignore: cast_nullable_to_non_nullable
               as int?,
+      commentList: freezed == commentList
+          ? _value._commentList
+          : commentList // ignore: cast_nullable_to_non_nullable
+              as List<KizukiCommentModel>?,
       createDate: freezed == createDate
           ? _value.createDate
           : createDate // ignore: cast_nullable_to_non_nullable
@@ -676,14 +723,6 @@ class __$$AwarenessKizukiModelImplCopyWithImpl<$Res>
           ? _value.timeStamp
           : timeStamp // ignore: cast_nullable_to_non_nullable
               as String?,
-      photoUrl: freezed == photoUrl
-          ? _value.photoUrl
-          : photoUrl // ignore: cast_nullable_to_non_nullable
-              as String?,
-      tenpuFileList: freezed == tenpuFileList
-          ? _value._tenpuFileList
-          : tenpuFileList // ignore: cast_nullable_to_non_nullable
-              as List<TenpuModel>?,
     ));
   }
 }
@@ -751,43 +790,50 @@ class _$AwarenessKizukiModelImpl implements _AwarenessKizukiModel {
       @JsonKey(name: 'StudentName', disallowNullValue: false)
       @HiveField(19)
       this.studentName,
-      @JsonKey(name: 'ExistPhoto', disallowNullValue: false)
+      @JsonKey(name: 'GenderCode', disallowNullValue: false)
       @HiveField(20)
-      this.existPhoto,
-      @JsonKey(name: 'TourokusyaId', disallowNullValue: false)
+      this.genderCode,
+      @JsonKey(name: 'ExistPhoto', disallowNullValue: false)
       @HiveField(21)
+      this.existPhoto,
+      @JsonKey(name: 'PhotoUrl', disallowNullValue: false)
+      @HiveField(22)
+      this.photoUrl,
+      @JsonKey(name: 'TourokusyaId', disallowNullValue: false)
+      @HiveField(23)
       this.tourokusyaId,
       @JsonKey(name: 'TourokusyaName', disallowNullValue: false)
-      @HiveField(22)
+      @HiveField(24)
       this.tourokusyaName,
       @JsonKey(name: 'JuyoFlg', disallowNullValue: false)
-      @HiveField(23)
+      @HiveField(25)
       this.juyoFlg,
       @JsonKey(name: 'TorokuDate', disallowNullValue: false)
-      @HiveField(24)
+      @HiveField(26)
       this.torokuDate,
       @JsonKey(name: 'HasAttachment', disallowNullValue: false)
-      @HiveField(25)
-      this.hasAttachment,
-      @JsonKey(name: 'CommentCount', disallowNullValue: false)
-      @HiveField(26)
-      this.commentCount,
-      @JsonKey(name: 'CreateDate', disallowNullValue: false)
       @HiveField(27)
+      this.hasAttachment,
+      @JsonKey(name: 'TenpuFileList', disallowNullValue: false)
+      @HiveField(28)
+      final List<TenpuModel>? tenpuFileList,
+      @JsonKey(name: 'CommentCount', disallowNullValue: false)
+      @HiveField(29)
+      this.commentCount,
+      @JsonKey(name: 'CommentList', disallowNullValue: false)
+      @HiveField(30)
+      final List<KizukiCommentModel>? commentList,
+      @JsonKey(name: 'CreateDate', disallowNullValue: false)
+      @HiveField(31)
       this.createDate,
       @JsonKey(name: 'UpdateDate', disallowNullValue: false)
-      @HiveField(28)
+      @HiveField(32)
       this.updateDate,
       @JsonKey(name: 'TimeStamp', disallowNullValue: false)
-      @HiveField(29)
-      this.timeStamp,
-      @JsonKey(name: 'PhotoUrl', disallowNullValue: false)
-      @HiveField(30)
-      this.photoUrl,
-      @JsonKey(name: 'TenpuFileList', disallowNullValue: false)
-      @HiveField(31)
-      final List<TenpuModel>? tenpuFileList})
-      : _tenpuFileList = tenpuFileList;
+      @HiveField(33)
+      this.timeStamp})
+      : _tenpuFileList = tenpuFileList,
+        _commentList = commentList;
 
   factory _$AwarenessKizukiModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$AwarenessKizukiModelImplFromJson(json);
@@ -873,53 +919,41 @@ class _$AwarenessKizukiModelImpl implements _AwarenessKizukiModel {
   @HiveField(19)
   final String? studentName;
   @override
-  @JsonKey(name: 'ExistPhoto', disallowNullValue: false)
+  @JsonKey(name: 'GenderCode', disallowNullValue: false)
   @HiveField(20)
+  final String? genderCode;
+  @override
+  @JsonKey(name: 'ExistPhoto', disallowNullValue: false)
+  @HiveField(21)
   final bool? existPhoto;
   @override
+  @JsonKey(name: 'PhotoUrl', disallowNullValue: false)
+  @HiveField(22)
+  final String? photoUrl;
+  @override
   @JsonKey(name: 'TourokusyaId', disallowNullValue: false)
-  @HiveField(21)
+  @HiveField(23)
   final int? tourokusyaId;
   @override
   @JsonKey(name: 'TourokusyaName', disallowNullValue: false)
-  @HiveField(22)
+  @HiveField(24)
   final String? tourokusyaName;
   @override
   @JsonKey(name: 'JuyoFlg', disallowNullValue: false)
-  @HiveField(23)
+  @HiveField(25)
   final bool? juyoFlg;
   @override
   @JsonKey(name: 'TorokuDate', disallowNullValue: false)
-  @HiveField(24)
+  @HiveField(26)
   final String? torokuDate;
   @override
   @JsonKey(name: 'HasAttachment', disallowNullValue: false)
-  @HiveField(25)
-  final bool? hasAttachment;
-  @override
-  @JsonKey(name: 'CommentCount', disallowNullValue: false)
-  @HiveField(26)
-  final int? commentCount;
-  @override
-  @JsonKey(name: 'CreateDate', disallowNullValue: false)
   @HiveField(27)
-  final DateTime? createDate;
-  @override
-  @JsonKey(name: 'UpdateDate', disallowNullValue: false)
-  @HiveField(28)
-  final DateTime? updateDate;
-  @override
-  @JsonKey(name: 'TimeStamp', disallowNullValue: false)
-  @HiveField(29)
-  final String? timeStamp;
-  @override
-  @JsonKey(name: 'PhotoUrl', disallowNullValue: false)
-  @HiveField(30)
-  final String? photoUrl;
+  final bool? hasAttachment;
   final List<TenpuModel>? _tenpuFileList;
   @override
   @JsonKey(name: 'TenpuFileList', disallowNullValue: false)
-  @HiveField(31)
+  @HiveField(28)
   List<TenpuModel>? get tenpuFileList {
     final value = _tenpuFileList;
     if (value == null) return null;
@@ -927,6 +961,35 @@ class _$AwarenessKizukiModelImpl implements _AwarenessKizukiModel {
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(value);
   }
+
+  @override
+  @JsonKey(name: 'CommentCount', disallowNullValue: false)
+  @HiveField(29)
+  final int? commentCount;
+  final List<KizukiCommentModel>? _commentList;
+  @override
+  @JsonKey(name: 'CommentList', disallowNullValue: false)
+  @HiveField(30)
+  List<KizukiCommentModel>? get commentList {
+    final value = _commentList;
+    if (value == null) return null;
+    if (_commentList is EqualUnmodifiableListView) return _commentList;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
+  @override
+  @JsonKey(name: 'CreateDate', disallowNullValue: false)
+  @HiveField(31)
+  final DateTime? createDate;
+  @override
+  @JsonKey(name: 'UpdateDate', disallowNullValue: false)
+  @HiveField(32)
+  final DateTime? updateDate;
+  @override
+  @JsonKey(name: 'TimeStamp', disallowNullValue: false)
+  @HiveField(33)
+  final String? timeStamp;
 
   @override
   bool operator ==(Object other) {
@@ -968,8 +1031,12 @@ class _$AwarenessKizukiModelImpl implements _AwarenessKizukiModel {
                 other.seitoSeq == seitoSeq) &&
             (identical(other.studentName, studentName) ||
                 other.studentName == studentName) &&
+            (identical(other.genderCode, genderCode) ||
+                other.genderCode == genderCode) &&
             (identical(other.existPhoto, existPhoto) ||
                 other.existPhoto == existPhoto) &&
+            (identical(other.photoUrl, photoUrl) ||
+                other.photoUrl == photoUrl) &&
             (identical(other.tourokusyaId, tourokusyaId) ||
                 other.tourokusyaId == tourokusyaId) &&
             (identical(other.tourokusyaName, tourokusyaName) ||
@@ -979,18 +1046,18 @@ class _$AwarenessKizukiModelImpl implements _AwarenessKizukiModel {
                 other.torokuDate == torokuDate) &&
             (identical(other.hasAttachment, hasAttachment) ||
                 other.hasAttachment == hasAttachment) &&
+            const DeepCollectionEquality()
+                .equals(other._tenpuFileList, _tenpuFileList) &&
             (identical(other.commentCount, commentCount) ||
                 other.commentCount == commentCount) &&
+            const DeepCollectionEquality()
+                .equals(other._commentList, _commentList) &&
             (identical(other.createDate, createDate) ||
                 other.createDate == createDate) &&
             (identical(other.updateDate, updateDate) ||
                 other.updateDate == updateDate) &&
             (identical(other.timeStamp, timeStamp) ||
-                other.timeStamp == timeStamp) &&
-            (identical(other.photoUrl, photoUrl) ||
-                other.photoUrl == photoUrl) &&
-            const DeepCollectionEquality()
-                .equals(other._tenpuFileList, _tenpuFileList));
+                other.timeStamp == timeStamp));
   }
 
   @JsonKey(ignore: true)
@@ -1017,18 +1084,20 @@ class _$AwarenessKizukiModelImpl implements _AwarenessKizukiModel {
         studentId,
         seitoSeq,
         studentName,
+        genderCode,
         existPhoto,
+        photoUrl,
         tourokusyaId,
         tourokusyaName,
         juyoFlg,
         torokuDate,
         hasAttachment,
+        const DeepCollectionEquality().hash(_tenpuFileList),
         commentCount,
+        const DeepCollectionEquality().hash(_commentList),
         createDate,
         updateDate,
-        timeStamp,
-        photoUrl,
-        const DeepCollectionEquality().hash(_tenpuFileList)
+        timeStamp
       ]);
 
   @JsonKey(ignore: true)
@@ -1109,42 +1178,48 @@ abstract class _AwarenessKizukiModel implements AwarenessKizukiModel {
       @JsonKey(name: 'StudentName', disallowNullValue: false)
       @HiveField(19)
       final String? studentName,
-      @JsonKey(name: 'ExistPhoto', disallowNullValue: false)
+      @JsonKey(name: 'GenderCode', disallowNullValue: false)
       @HiveField(20)
-      final bool? existPhoto,
-      @JsonKey(name: 'TourokusyaId', disallowNullValue: false)
+      final String? genderCode,
+      @JsonKey(name: 'ExistPhoto', disallowNullValue: false)
       @HiveField(21)
+      final bool? existPhoto,
+      @JsonKey(name: 'PhotoUrl', disallowNullValue: false)
+      @HiveField(22)
+      final String? photoUrl,
+      @JsonKey(name: 'TourokusyaId', disallowNullValue: false)
+      @HiveField(23)
       final int? tourokusyaId,
       @JsonKey(name: 'TourokusyaName', disallowNullValue: false)
-      @HiveField(22)
+      @HiveField(24)
       final String? tourokusyaName,
       @JsonKey(name: 'JuyoFlg', disallowNullValue: false)
-      @HiveField(23)
+      @HiveField(25)
       final bool? juyoFlg,
       @JsonKey(name: 'TorokuDate', disallowNullValue: false)
-      @HiveField(24)
+      @HiveField(26)
       final String? torokuDate,
       @JsonKey(name: 'HasAttachment', disallowNullValue: false)
-      @HiveField(25)
-      final bool? hasAttachment,
-      @JsonKey(name: 'CommentCount', disallowNullValue: false)
-      @HiveField(26)
-      final int? commentCount,
-      @JsonKey(name: 'CreateDate', disallowNullValue: false)
       @HiveField(27)
+      final bool? hasAttachment,
+      @JsonKey(name: 'TenpuFileList', disallowNullValue: false)
+      @HiveField(28)
+      final List<TenpuModel>? tenpuFileList,
+      @JsonKey(name: 'CommentCount', disallowNullValue: false)
+      @HiveField(29)
+      final int? commentCount,
+      @JsonKey(name: 'CommentList', disallowNullValue: false)
+      @HiveField(30)
+      final List<KizukiCommentModel>? commentList,
+      @JsonKey(name: 'CreateDate', disallowNullValue: false)
+      @HiveField(31)
       final DateTime? createDate,
       @JsonKey(name: 'UpdateDate', disallowNullValue: false)
-      @HiveField(28)
+      @HiveField(32)
       final DateTime? updateDate,
       @JsonKey(name: 'TimeStamp', disallowNullValue: false)
-      @HiveField(29)
-      final String? timeStamp,
-      @JsonKey(name: 'PhotoUrl', disallowNullValue: false)
-      @HiveField(30)
-      final String? photoUrl,
-      @JsonKey(name: 'TenpuFileList', disallowNullValue: false)
-      @HiveField(31)
-      final List<TenpuModel>? tenpuFileList}) = _$AwarenessKizukiModelImpl;
+      @HiveField(33)
+      final String? timeStamp}) = _$AwarenessKizukiModelImpl;
 
   factory _AwarenessKizukiModel.fromJson(Map<String, dynamic> json) =
       _$AwarenessKizukiModelImpl.fromJson;
@@ -1230,53 +1305,61 @@ abstract class _AwarenessKizukiModel implements AwarenessKizukiModel {
   @HiveField(19)
   String? get studentName;
   @override
-  @JsonKey(name: 'ExistPhoto', disallowNullValue: false)
+  @JsonKey(name: 'GenderCode', disallowNullValue: false)
   @HiveField(20)
+  String? get genderCode;
+  @override
+  @JsonKey(name: 'ExistPhoto', disallowNullValue: false)
+  @HiveField(21)
   bool? get existPhoto;
   @override
+  @JsonKey(name: 'PhotoUrl', disallowNullValue: false)
+  @HiveField(22)
+  String? get photoUrl;
+  @override
   @JsonKey(name: 'TourokusyaId', disallowNullValue: false)
-  @HiveField(21)
+  @HiveField(23)
   int? get tourokusyaId;
   @override
   @JsonKey(name: 'TourokusyaName', disallowNullValue: false)
-  @HiveField(22)
+  @HiveField(24)
   String? get tourokusyaName;
   @override
   @JsonKey(name: 'JuyoFlg', disallowNullValue: false)
-  @HiveField(23)
+  @HiveField(25)
   bool? get juyoFlg;
   @override
   @JsonKey(name: 'TorokuDate', disallowNullValue: false)
-  @HiveField(24)
+  @HiveField(26)
   String? get torokuDate;
   @override
   @JsonKey(name: 'HasAttachment', disallowNullValue: false)
-  @HiveField(25)
+  @HiveField(27)
   bool? get hasAttachment;
   @override
+  @JsonKey(name: 'TenpuFileList', disallowNullValue: false)
+  @HiveField(28)
+  List<TenpuModel>? get tenpuFileList;
+  @override
   @JsonKey(name: 'CommentCount', disallowNullValue: false)
-  @HiveField(26)
+  @HiveField(29)
   int? get commentCount;
   @override
+  @JsonKey(name: 'CommentList', disallowNullValue: false)
+  @HiveField(30)
+  List<KizukiCommentModel>? get commentList;
+  @override
   @JsonKey(name: 'CreateDate', disallowNullValue: false)
-  @HiveField(27)
+  @HiveField(31)
   DateTime? get createDate;
   @override
   @JsonKey(name: 'UpdateDate', disallowNullValue: false)
-  @HiveField(28)
+  @HiveField(32)
   DateTime? get updateDate;
   @override
   @JsonKey(name: 'TimeStamp', disallowNullValue: false)
-  @HiveField(29)
+  @HiveField(33)
   String? get timeStamp;
-  @override
-  @JsonKey(name: 'PhotoUrl', disallowNullValue: false)
-  @HiveField(30)
-  String? get photoUrl;
-  @override
-  @JsonKey(name: 'TenpuFileList', disallowNullValue: false)
-  @HiveField(31)
-  List<TenpuModel>? get tenpuFileList;
   @override
   @JsonKey(ignore: true)
   _$$AwarenessKizukiModelImplCopyWith<_$AwarenessKizukiModelImpl>

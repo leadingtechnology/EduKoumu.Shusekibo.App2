@@ -64,6 +64,21 @@ class DateUtil {
     return '$year.$month.$day';
   }
 
+  // R04.05.01 08:00
+  static String getJapaneseDateTime(DateTime date) {
+    String year;
+    String month;
+    String day;
+    year = _convertYearRoman(date.year);
+    month = NumberFormat('00').format(date.month);
+    day = NumberFormat('00').format(date.day);
+
+    String ht;
+    ht = DateFormat('HH:mm').format(date);
+
+    return '$year.$month.$day $ht';
+  }  
+
   // 05.01 08:00
   static String getStringDateWithTime(DateTime? date) {
     final targetDate = date ?? DateTime.now();

@@ -14,6 +14,7 @@ class ContactShozokuDialog extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final dantai = ref.watch(dantaiProvider);
     final shozoku = ref.watch(shozokuProvider);
+    final shozokuCnt = ref.watch(shozokuListProvider).length;
 
     final box = Boxes.getShozokus();
 
@@ -30,7 +31,10 @@ class ContactShozokuDialog extends ConsumerWidget {
       return const SizedBox();
     }
 
-    shozokuList.sort((a, b) {
+    // GakunenCodeが'０'の場合、表示対象外にする。
+    shozokuList..removeWhere((element) => element?.isGakuseki == false)
+
+    ..sort((a, b) {
       final nameCompare = '${a?.classCode}'.compareTo('${b?.classCode}');
 
       if (nameCompare != 0) return nameCompare;
@@ -61,7 +65,7 @@ class ContactShozokuDialog extends ConsumerWidget {
           if (shozokuList.length > 1)
             ...shozokuList.map((ShozokuModel? element) {
               final elementList = ref.watch(shozokuListProvider);
-              final isSelected = elementList.contains(element!);
+              final isSelected = elementList.contains(element);
               
               return ChoiceChip(
                 label: Text(
@@ -110,7 +114,7 @@ class ContactShozokuDialog extends ConsumerWidget {
           child: const Text('すべて選択'),
         ),
         TextButton(
-          onPressed: () {
+          onPressed: shozokuCnt ==0 ? null : () {
             final selectedElements = ref.watch(shozokuListProvider);
             if (selectedElements.length == shozokuList.length){
               ref.read(shozokuAllProvider.notifier).state = true;

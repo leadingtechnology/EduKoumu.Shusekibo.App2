@@ -49,6 +49,7 @@ class AuthRepository implements AuthRepositoryProtocol {
       await Hive.box<String>('shusekibo').put('dantaiId', staff.DantaiId);
       await Hive.box<String>('shusekibo').put('loginId', staff.LoginId);
       await Hive.box<String>('shusekibo').put('kihonId', staff.KihonId);
+      await Hive.box<String>('shusekibo').put('userId', staff.UserId);
 
       return const AuthState.loggedIn();
     }, error: (error) {

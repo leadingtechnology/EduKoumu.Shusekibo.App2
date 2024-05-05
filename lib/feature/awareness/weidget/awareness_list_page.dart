@@ -8,7 +8,9 @@ import 'package:kyoumutechou/feature/awareness/model/awareness_kizuki_model.dart
 import 'package:kyoumutechou/feature/awareness/provider/awareness_kizuki_provider.dart';
 import 'package:kyoumutechou/feature/awareness/provider/awareness_meibo_provider.dart';
 import 'package:kyoumutechou/feature/awareness/provider/awareness_photo_provider.dart';
+import 'package:kyoumutechou/feature/awareness/provider/kizuki_comment_provider.dart';
 import 'package:kyoumutechou/feature/awareness/weidget/dialog/awareness_regist_dialog.dart';
+import 'package:kyoumutechou/feature/awareness/weidget/dialog/kizuki_comment_dialog.dart';
 import 'package:kyoumutechou/feature/boxes.dart';
 import 'package:kyoumutechou/feature/common/widget/dialog_util.dart';
 import 'package:kyoumutechou/feature/common/widget/search_bar_widget.dart';
@@ -86,6 +88,9 @@ class _AwarenessListViewState extends ConsumerState<AwarenessListView> {
   String accessToken = Hive.box<String>('shusekibo').get('token').toString();
 
   late int targetIndex;
+  List<bool> isOpen = [];
+
+  final userId = Boxes.getBox().get('userId').toString();
 
   @override
   void initState() {
@@ -135,55 +140,30 @@ class _AwarenessListViewState extends ConsumerState<AwarenessListView> {
               return a.studentId!.compareTo(b.studentId!);
             });
 
+            // isOpenを初期化する
+            if (isOpen.length != kizuki.length) {
+              isOpen = List.generate(kizuki.length, (index) => false);
+            }
+
             //
             final studentId = ref.watch(studentIdProvider);
 
             return ListView.separated(
               padding: const EdgeInsets.only(top: 20),
-              itemBuilder: (context, index) => Container(
+              itemBuilder: (context, index) => ColoredBox(
                 color: studentId == kizuki[index].studentId
                     ? theme.colorScheme.secondaryContainer
                     : theme.colorScheme.background,
-                child: ListTile(
-                  leading: ClipOval(
-                    child: Image.network(
-                      '$_baseUrl${kizuki[index].photoUrl}',
-                      headers: {'Authorization': 'Bearer $accessToken'},
-                    ),
-                  ),
-                  title: Text('${kizuki[index].studentName}'),
-                  isThreeLine: true,
-                  subtitle: Column(
-                    children: [
-                      Row(
-                        children: [
-                          Expanded(
-                            child: Text('${kizuki[index].naiyou}'),
-                          ),
-                        ],
+                child: Column(
+                  children: [
+                    KizukiWidget(kizuki, index),
+                    if (isOpen[index] == true &&
+                        kizuki[index].commentCount != 0)
+                      Padding(
+                        padding: const EdgeInsets.only(left: 50),
+                        child: KizukiCommentWidget(kizuki, index),
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Text(
-                            '${kizuki[index].tourokusyaId == 0 ? 'システム管理者' : kizuki[index].tourokusyaName}',
-                          ),
-                          MySpacing.width(10),
-                          const SizedBox(
-                            width: 10,
-                            child: Text('|'),
-                          ),
-                          Text(
-                            DateUtil.getJapaneseDate(
-                              DateTime.parse(kizuki[index].torokuDate ?? ''),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  trailing: PopUpMenu(kizuki: kizuki[index]),
+                  ],
                 ),
               ),
               itemCount: kizuki.length,
@@ -196,6 +176,250 @@ class _AwarenessListViewState extends ConsumerState<AwarenessListView> {
               },
             );
           },
+        );
+      },
+    );
+  }
+
+  ListTile KizukiWidget(List<AwarenessKizukiModel> kizuki, int index) {
+    return ListTile(
+      leading: ClipOval(
+        child: Image.network(
+          '$_baseUrl${kizuki[index].photoUrl}',
+          headers: {'Authorization': 'Bearer $accessToken'},
+        ),
+      ),
+      title: Text('${kizuki[index].studentName}'),
+      isThreeLine: true,
+      subtitle: Column(
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: Text('${kizuki[index].naiyou}'),
+              ),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              TextButton(
+                onPressed: kizuki[index].commentCount == 0 ? null :  () {
+                  setState(() {
+                    isOpen[index] = !isOpen[index];
+                  });
+                },
+                style: ButtonStyle(
+                  fixedSize: MaterialStateProperty.all<Size>(
+                    const Size(160, 15),
+                  ),
+                ),
+                child: Text('　コメント確認(${kizuki[index].commentCount ?? 0})　'),
+              ),
+              MySpacing.width(10),
+              Container(
+                height: 32,
+                alignment: Alignment.center,
+                width: 10,
+                child: const Text('|'),
+              ),
+              TextButton(
+                onPressed: () async {
+                  await DialogUtil.show(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return KizukiCommentDialog(
+                        kizukiId: kizuki[index].id ?? 0,
+                        oyaCommentId: 0,
+                      );
+                    },
+                  );
+                },
+                style: TextButton.styleFrom(
+                  padding: EdgeInsets.zero,
+                ), // 移除或减少内部填充
+                child: const Text('　コメント追加　'),
+              ),
+              MySpacing.width(10),
+              Container(
+                height: 32,
+                alignment: Alignment.centerLeft,
+                width: 12,
+                child: const Text('|'),
+              ),
+              Container(
+                height: 32,
+                alignment: Alignment.center,
+                child: Text(
+                  kizuki[index].tourokusyaId == 0
+                      ? 'システム管理者'
+                      : kizuki[index].tourokusyaName ?? ''.trim(),
+                ),
+              ),
+              MySpacing.width(10),
+              Container(
+                height: 32,
+                alignment: Alignment.centerLeft,
+                width: 12,
+                child: const Text('|'),
+              ),
+              Container(
+                height: 32,
+                alignment: Alignment.center,
+                child: Text(
+                  DateUtil.getJapaneseDate(
+                    DateTime.parse(
+                      kizuki[index].torokuDate ?? '',
+                    ),
+                  ).trim(),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+      trailing: PopUpMenu(kizuki: kizuki[index]),
+    );
+  }
+
+  ListView KizukiCommentWidget(List<AwarenessKizukiModel> kizuki, int index) {
+    final commentList = kizuki[index].commentList ?? [];
+
+    if (commentList.isEmpty) {
+      return ListView();
+    }
+
+    // commentListもとにListViewを作成
+    return ListView.separated(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      itemBuilder: (context, index) {
+        final comment = commentList[index];
+        final isEditable = userId == comment.commentTorokuUserId.toString();
+
+        return ListTile(
+          title: Row(
+            children: [
+              const Icon(
+                Icons.account_circle_outlined,
+                color: Colors.blue,
+                size: 24,
+              ),
+              MySpacing.width(8),
+              Text('${comment.commentTorokuUserName}'),
+              MySpacing.width(24),
+              Text(
+                DateUtil.getJapaneseDateTime(
+                  comment.commentTorokuDateTime!,
+                ),
+              ),
+            ],
+          ),
+          subtitle: Column(
+            children: [
+              Row(
+                children: [
+                  Text('${comment.commentbun}'),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  TextButton(
+                    onPressed: () async {
+                      await DialogUtil.show(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return KizukiCommentDialog(
+                            kizukiId: kizuki[index].id ?? 0,
+                            oyaCommentId: comment.id ?? 0,
+                          );
+                        },
+                      );
+                    },
+                    style: TextButton.styleFrom(
+                      padding: EdgeInsets.zero,
+                    ),
+                    child: const Text('返信'),
+                  ),
+                  MySpacing.width(10),
+                  Container(
+                    height: 32,
+                    alignment: Alignment.center,
+                    width: 10,
+                    child: const Text('|'),
+                  ),
+                  TextButton(
+                    onPressed: !isEditable
+                        ? null
+                        : () async {
+                            await DialogUtil.show(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return KizukiCommentDialog(
+                                  kizukiId: kizuki[index].id ?? 0,
+                                  oyaCommentId: comment.id ?? 0,
+                                  comment: comment,
+                                  opt: AwarenessOperationItem.edit,
+                                );
+                              },
+                            );
+                          },
+                    style: TextButton.styleFrom(
+                      padding: EdgeInsets.zero,
+                    ),
+                    child: const Text('編集'),
+                  ),
+                  MySpacing.width(10),
+                  Container(
+                    height: 32,
+                    alignment: Alignment.centerLeft,
+                    width: 12,
+                    child: const Text('|'),
+                  ),
+                  TextButton(
+                    onPressed: !isEditable
+                        ? null
+                        : () async {
+                            //ダイアログを表示してユーザーの選択を待つ
+                            final result = await deleteDealog(
+                                  context: context,
+                                  title: 'コメントを削除しますか？',
+                                  text1: '選択したコメントを削除すると、もとに戻せることが',
+                                  text2: 'できません。',
+                                );
+
+                            // キャンセルされた場合は何もしない
+                            if (result == null || !result) {
+                              return;
+                            }
+
+                            await ref
+                                .read(kizukiCommentListProvider.notifier)
+                                .delete(
+                                  comment.id ?? 0,
+                                  comment.timeStamp ?? '',
+                                );
+                          },
+                    style: TextButton.styleFrom(
+                      padding: EdgeInsets.zero,
+                    ),
+                    child: const Text('削除'),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        );
+      },
+      itemCount: commentList.length,
+      separatorBuilder: (context, index) {
+        return const Divider(
+          height: 0.5,
+          indent: 75,
+          endIndent: 20,
         );
       },
     );
@@ -228,8 +452,11 @@ class PopUpMenu extends ConsumerWidget {
           child: Row(
             children: [
               const SizedBox(
-                  width: 24,
-                  child: Center(child: FaIcon(FontAwesomeIcons.pen, size: 18))),
+                width: 24,
+                child: Center(
+                  child: FaIcon(FontAwesomeIcons.pen, size: 18),
+                ),
+              ),
               MySpacing.width(8),
               Text('気づきの編集', style: style),
             ],
@@ -241,9 +468,9 @@ class PopUpMenu extends ConsumerWidget {
           child: Row(
             children: [
               const SizedBox(
-                  width: 24,
-                  child:
-                      Center(child: FaIcon(FontAwesomeIcons.copy, size: 18))),
+                width: 24,
+                child: Center(child: FaIcon(FontAwesomeIcons.copy, size: 18)),
+              ),
               MySpacing.width(8),
               Text('気づきのコピー', style: style),
             ],
@@ -253,7 +480,8 @@ class PopUpMenu extends ConsumerWidget {
         PopupMenuItem<AwarenessOperationItem>(
           value: AwarenessOperationItem.delete,
           enabled:
-              box.get('kihonId').toString() == kizuki.tourokusyaId.toString(),
+              box.get('kihonId').toString() == kizuki.tourokusyaId.toString() &&
+                  kizuki.commentCount == 0,
           child: Row(
             children: [
               const SizedBox(
@@ -331,46 +559,13 @@ Future<void> _handlePressActionButton(
 
   if (opt == AwarenessOperationItem.delete) {
     //ダイアログを表示してユーザーの選択を待つ
-    final result = await showDialog<bool>(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('気づきを削除しますか？'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            MySpacing.height(8),
-            MyText.bodyLarge('選択した気づきを削除すると、もとに戻せることが'),
-            MyText.bodyLarge('できません。'),
-            MySpacing.height(8),
-          ],
-        ),
-        actions: <Widget>[
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(false),
-            style: TextButton.styleFrom(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(4),
-                side: const BorderSide(color: Colors.grey), // 加灰色边框
-              ),
-            ), // falseを返す
-            child: const Text(' キャンセル '),
-          ),
-          MySpacing.width(198),
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(true),
-            style: TextButton.styleFrom(
-              foregroundColor: Colors.red,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(4),
-                side: const BorderSide(color: Colors.red), // 加灰色边框
-              ),
-            ), // trueを返す
-            child:  const Text('　削除　'),
-          ),
-        ],
-      ),
-    );
+    final result =
+        await deleteDealog(
+              context: context,
+              title: '気づきを削除しますか？',
+              text1: '選択した気づきを削除すると、もとに戻せることが',
+              text2: 'できません。',
+            );
 
     if (result == null || !result) return; // キャンセルされた場合は何もしない
 
@@ -406,4 +601,52 @@ Future<void> _handlePressActionButton(
   }
 
   return;
+}
+
+Future<bool?> deleteDealog({
+  required BuildContext context,
+  String? title,
+  String? text1,
+  String? text2,
+}) {
+  return showDialog<bool>(
+    context: context,
+    builder: (context) => AlertDialog(
+      title: const Text('気づきを削除しますか？'),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          MySpacing.height(8),
+          MyText.bodyLarge('選択した気づきを削除すると、もとに戻せることが'),
+          MyText.bodyLarge('できません。'),
+          MySpacing.height(8),
+        ],
+      ),
+      actions: <Widget>[
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(false),
+          style: TextButton.styleFrom(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(4),
+              side: const BorderSide(color: Colors.grey), // 加灰色边框
+            ),
+          ), // falseを返す
+          child: const Text(' キャンセル '),
+        ),
+        MySpacing.width(198),
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(true),
+          style: TextButton.styleFrom(
+            foregroundColor: Colors.red,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(4),
+              side: const BorderSide(color: Colors.red), // 加灰色边框
+            ),
+          ), // trueを返す
+          child: const Text('　削除　'),
+        ),
+      ],
+    ),
+  );
 }

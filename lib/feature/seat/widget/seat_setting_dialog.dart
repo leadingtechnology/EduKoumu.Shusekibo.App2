@@ -85,6 +85,7 @@ class SeatSettingState extends ConsumerState<SeatSettingDialog> {
     final newDateRange = await showDateRangePicker(
       context: context,
       initialDateRange: initialDateRange,
+      initialEntryMode : DatePickerEntryMode.calendar,
       firstDate: dates.item1,
       lastDate: dates.item2,
       locale: const Locale('ja', 'JP'),

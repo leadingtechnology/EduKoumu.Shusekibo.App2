@@ -38,25 +38,27 @@ class AwarenessKizukiModelAdapter
       studentId: fields[17] as int?,
       seitoSeq: fields[18] as String?,
       studentName: fields[19] as String?,
-      existPhoto: fields[20] as bool?,
-      tourokusyaId: fields[21] as int?,
-      tourokusyaName: fields[22] as String?,
-      juyoFlg: fields[23] as bool?,
-      torokuDate: fields[24] as String?,
-      hasAttachment: fields[25] as bool?,
-      commentCount: fields[26] as int?,
-      createDate: fields[27] as DateTime?,
-      updateDate: fields[28] as DateTime?,
-      timeStamp: fields[29] as String?,
-      photoUrl: fields[30] as String?,
-      tenpuFileList: (fields[31] as List?)?.cast<TenpuModel>(),
+      genderCode: fields[20] as String?,
+      existPhoto: fields[21] as bool?,
+      photoUrl: fields[22] as String?,
+      tourokusyaId: fields[23] as int?,
+      tourokusyaName: fields[24] as String?,
+      juyoFlg: fields[25] as bool?,
+      torokuDate: fields[26] as String?,
+      hasAttachment: fields[27] as bool?,
+      tenpuFileList: (fields[28] as List?)?.cast<TenpuModel>(),
+      commentCount: fields[29] as int?,
+      commentList: (fields[30] as List?)?.cast<KizukiCommentModel>(),
+      createDate: fields[31] as DateTime?,
+      updateDate: fields[32] as DateTime?,
+      timeStamp: fields[33] as String?,
     );
   }
 
   @override
   void write(BinaryWriter writer, _$AwarenessKizukiModelImpl obj) {
     writer
-      ..writeByte(32)
+      ..writeByte(34)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -98,29 +100,33 @@ class AwarenessKizukiModelAdapter
       ..writeByte(19)
       ..write(obj.studentName)
       ..writeByte(20)
-      ..write(obj.existPhoto)
+      ..write(obj.genderCode)
       ..writeByte(21)
-      ..write(obj.tourokusyaId)
+      ..write(obj.existPhoto)
       ..writeByte(22)
-      ..write(obj.tourokusyaName)
-      ..writeByte(23)
-      ..write(obj.juyoFlg)
-      ..writeByte(24)
-      ..write(obj.torokuDate)
-      ..writeByte(25)
-      ..write(obj.hasAttachment)
-      ..writeByte(26)
-      ..write(obj.commentCount)
-      ..writeByte(27)
-      ..write(obj.createDate)
-      ..writeByte(28)
-      ..write(obj.updateDate)
-      ..writeByte(29)
-      ..write(obj.timeStamp)
-      ..writeByte(30)
       ..write(obj.photoUrl)
+      ..writeByte(23)
+      ..write(obj.tourokusyaId)
+      ..writeByte(24)
+      ..write(obj.tourokusyaName)
+      ..writeByte(25)
+      ..write(obj.juyoFlg)
+      ..writeByte(26)
+      ..write(obj.torokuDate)
+      ..writeByte(27)
+      ..write(obj.hasAttachment)
+      ..writeByte(29)
+      ..write(obj.commentCount)
       ..writeByte(31)
-      ..write(obj.tenpuFileList);
+      ..write(obj.createDate)
+      ..writeByte(32)
+      ..write(obj.updateDate)
+      ..writeByte(33)
+      ..write(obj.timeStamp)
+      ..writeByte(28)
+      ..write(obj.tenpuFileList)
+      ..writeByte(30)
+      ..write(obj.commentList);
   }
 
   @override
@@ -161,13 +167,21 @@ _$AwarenessKizukiModelImpl _$$AwarenessKizukiModelImplFromJson(
       studentId: json['StudentId'] as int?,
       seitoSeq: json['SeitoSeq'] as String?,
       studentName: json['StudentName'] as String?,
+      genderCode: json['GenderCode'] as String?,
       existPhoto: json['ExistPhoto'] as bool?,
+      photoUrl: json['PhotoUrl'] as String?,
       tourokusyaId: json['TourokusyaId'] as int?,
       tourokusyaName: json['TourokusyaName'] as String?,
       juyoFlg: json['JuyoFlg'] as bool?,
       torokuDate: json['TorokuDate'] as String?,
       hasAttachment: json['HasAttachment'] as bool?,
+      tenpuFileList: (json['TenpuFileList'] as List<dynamic>?)
+          ?.map((e) => TenpuModel.fromJson(e as Map<String, dynamic>))
+          .toList(),
       commentCount: json['CommentCount'] as int?,
+      commentList: (json['CommentList'] as List<dynamic>?)
+          ?.map((e) => KizukiCommentModel.fromJson(e as Map<String, dynamic>))
+          .toList(),
       createDate: json['CreateDate'] == null
           ? null
           : DateTime.parse(json['CreateDate'] as String),
@@ -175,10 +189,6 @@ _$AwarenessKizukiModelImpl _$$AwarenessKizukiModelImplFromJson(
           ? null
           : DateTime.parse(json['UpdateDate'] as String),
       timeStamp: json['TimeStamp'] as String?,
-      photoUrl: json['PhotoUrl'] as String?,
-      tenpuFileList: (json['TenpuFileList'] as List<dynamic>?)
-          ?.map((e) => TenpuModel.fromJson(e as Map<String, dynamic>))
-          .toList(),
     );
 
 Map<String, dynamic> _$$AwarenessKizukiModelImplToJson(
@@ -204,16 +214,18 @@ Map<String, dynamic> _$$AwarenessKizukiModelImplToJson(
       'StudentId': instance.studentId,
       'SeitoSeq': instance.seitoSeq,
       'StudentName': instance.studentName,
+      'GenderCode': instance.genderCode,
       'ExistPhoto': instance.existPhoto,
+      'PhotoUrl': instance.photoUrl,
       'TourokusyaId': instance.tourokusyaId,
       'TourokusyaName': instance.tourokusyaName,
       'JuyoFlg': instance.juyoFlg,
       'TorokuDate': instance.torokuDate,
       'HasAttachment': instance.hasAttachment,
+      'TenpuFileList': instance.tenpuFileList,
       'CommentCount': instance.commentCount,
+      'CommentList': instance.commentList,
       'CreateDate': instance.createDate?.toIso8601String(),
       'UpdateDate': instance.updateDate?.toIso8601String(),
       'TimeStamp': instance.timeStamp,
-      'PhotoUrl': instance.photoUrl,
-      'TenpuFileList': instance.tenpuFileList,
     };

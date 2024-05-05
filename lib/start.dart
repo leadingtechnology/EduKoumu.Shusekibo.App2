@@ -17,6 +17,7 @@ import 'package:kyoumutechou/feature/attendance/model/attendance_timed_status_mo
 import 'package:kyoumutechou/feature/awareness/model/awareness_code_model.dart';
 import 'package:kyoumutechou/feature/awareness/model/awareness_kizuki_model.dart';
 import 'package:kyoumutechou/feature/awareness/model/awareness_meibo_model.dart';
+import 'package:kyoumutechou/feature/awareness/model/kizuki_comment_model.dart';
 import 'package:kyoumutechou/feature/common/model/dantai_model.dart';
 import 'package:kyoumutechou/feature/common/model/gakunen_model.dart';
 import 'package:kyoumutechou/feature/common/model/kamoku_model.dart';
@@ -74,6 +75,7 @@ Future<void> start() async {
     ..registerAdapter(AttendanceTimedStatusModelAdapter())
     ..registerAdapter(AwarenessMeiboModelAdapter())
     ..registerAdapter(TenpuModelAdapter())
+    ..registerAdapter(KizukiCommentModelAdapter())
     ..registerAdapter(AwarenessKizukiModelAdapter())
     ..registerAdapter(SeatSettingModelAdapter())
     ..registerAdapter(SeatChartModelAdapter());

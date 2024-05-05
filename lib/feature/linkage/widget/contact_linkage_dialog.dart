@@ -27,7 +27,7 @@ class ContactLinkageDialog extends ConsumerWidget {
       loaded: (list) {
         final contactItems = list.toList();
 
-
+        // 抽出条件で絞り込む
         final isAll = ref.watch(shozokuAllProvider);
         final shozokuList = ref.watch(shozokuListProvider);
         if (!isAll && contactItems.isNotEmpty ){
