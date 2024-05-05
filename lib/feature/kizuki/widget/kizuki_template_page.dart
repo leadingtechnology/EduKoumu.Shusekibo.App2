@@ -87,7 +87,7 @@ class KizukiTemplatePage extends ConsumerWidget {
                       },
                     );
 
-                    if (result != null && result == '1') {
+                    if (result != null) {
                       ref.refresh(kizukiTemplateProvider);
                     }
                   },

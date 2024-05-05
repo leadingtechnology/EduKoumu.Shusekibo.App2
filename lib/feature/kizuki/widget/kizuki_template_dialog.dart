@@ -236,7 +236,7 @@ class KizukiTemplateDialog extends ConsumerWidget {
                           style: TextStyle(color: Colors.black),
                         ),
                         onPressed: () {
-                          Navigator.of(context).pop('0');
+                          Navigator.of(context).pop(null);
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.white,
@@ -259,7 +259,7 @@ class KizukiTemplateDialog extends ConsumerWidget {
                                       .delete(model.id!);
 
                                   ToastHelper.showToast(context, '　削除しました　');
-                                  Navigator.of(context).pop();
+                                  Navigator.of(context).pop('delete');
                                 },
                           label: '削除',
                         ),
@@ -327,7 +327,7 @@ class KizukiTemplateDialog extends ConsumerWidget {
 
                                 ToastHelper.showToast(context, '　保存しました　');
 
-                                Navigator.of(context).pop();
+                                Navigator.of(context).pop('save');
                               },
                       ),
                     ],

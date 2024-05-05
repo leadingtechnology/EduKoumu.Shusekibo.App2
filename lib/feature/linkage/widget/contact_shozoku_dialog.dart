@@ -13,7 +13,6 @@ class ContactShozokuDialog extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final dantai = ref.watch(dantaiProvider);
-    final shozoku = ref.watch(shozokuProvider);
     final shozokuCnt = ref.watch(shozokuListProvider).length;
 
     final box = Boxes.getShozokus();

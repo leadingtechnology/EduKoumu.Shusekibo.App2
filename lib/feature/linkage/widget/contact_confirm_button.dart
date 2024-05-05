@@ -26,7 +26,7 @@ class ContactConfirmButtonState extends ConsumerState<ContactConfirmButton> {
       isLoading = true;
     });
 
-    final response = await ref.read(contactLinkageListProvider.notifier).patch(
+    await ref.read(contactLinkageListProvider.notifier).patch(
       widget.id,
     );
 

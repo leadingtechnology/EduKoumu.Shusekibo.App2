@@ -249,7 +249,11 @@ class _KizukiGridWidgetState extends ConsumerState<KizukiGridWidget> {
             'CommonFlg': PlutoCell(value: model.commonFlg),
             'Title': PlutoCell(value: model.title),
             'KizukiTemplate': PlutoCell(value: model.kizukiTemplate),
-            'KinyuKyoinName': PlutoCell(value: model.kinyuKyoinName),
+            'KinyuKyoinName': PlutoCell(
+              value: model.kinyuKyoinId == 0
+                  ? 'システム管理者'
+                  : model.kinyuKyoinName ?? '',
+            ),
             'ModifiedDateTime': PlutoCell(value: model.modifiedDateTime),
             'id': PlutoCell(value: model.id),
           },
@@ -344,7 +348,7 @@ class _KizukiGridWidgetState extends ConsumerState<KizukiGridWidget> {
                 },
               );
 
-              if (result != null && result == '1') {
+              if (result != null) {
                 ref.refresh(kizukiTemplateProvider);
               }
             },
