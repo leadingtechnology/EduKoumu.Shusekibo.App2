@@ -111,8 +111,9 @@ class ContactLinkageDialog extends ConsumerWidget {
             ],
           ),
           const Divider(),
-          const Padding(
+          Container(
             padding: EdgeInsets.fromLTRB(16,8,16,8),
+            alignment: Alignment.centerLeft,
             child: ClipShozokuAll(),
           ),
           const Divider(),

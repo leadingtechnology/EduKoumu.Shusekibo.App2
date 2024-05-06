@@ -14,14 +14,14 @@ import 'package:kyoumutechou/helpers/widgets/my_spacing.dart';
 class KizukiCommentDialog extends ConsumerStatefulWidget {
   const KizukiCommentDialog({
     required this.kizukiId,
-    required this.oyaCommentId,
+    required this.originCommentId,
     this.comment = const KizukiCommentModel(),
     super.key,
     this.opt = AwarenessOperationItem.add,
   });
 
   final int kizukiId;
-  final int oyaCommentId;
+  final int originCommentId;
   final KizukiCommentModel comment;
   final AwarenessOperationItem opt;
 
@@ -204,8 +204,8 @@ class _KizukiCommentDialogState extends ConsumerState<KizukiCommentDialog> {
                               await ref
                                   .read(kizukiCommentListProvider.notifier)
                                   .post(
-                                    widget.kizukiId,
-                                    widget.oyaCommentId,
+                                    widget.kizukiId ,
+                                    widget.originCommentId,
                                     commentController.text,
                                     juyo,
                                   );

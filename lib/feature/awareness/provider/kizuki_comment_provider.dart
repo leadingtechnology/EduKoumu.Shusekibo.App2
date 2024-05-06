@@ -1,11 +1,8 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kyoumutechou/feature/awareness/model/kizuki_comment_model.dart';
 import 'package:kyoumutechou/feature/awareness/repsitory/awareness_kizuki_repository.dart';
 import 'package:kyoumutechou/feature/awareness/repsitory/kizuki_comment_repository.dart';
 import 'package:kyoumutechou/feature/common/state/api_state.dart';
-import 'package:kyoumutechou/helpers/widgets/my_spacing.dart';
-import 'package:kyoumutechou/helpers/widgets/my_text.dart';
 
 final kizukiCommentListProvider =
     StateNotifierProvider<KizukiCommentListProvider, ApiState>((ref) {
@@ -49,18 +46,18 @@ class KizukiCommentListProvider extends StateNotifier<ApiState> {
 
   Future<void> post(
     int kizukiId, 
-    int oyaCommentId, 
+    int originCommentId, 
     String text,
     bool juyo,
   ) async {
 
     var json = "";
 
-    if (oyaCommentId != 0) {
+    if (originCommentId != 0) {
       json = '''
 {
     "KizukiId": $kizukiId,
-    "OyaCommentId": $oyaCommentId,
+    "OriginCommentId": $originCommentId,
     "Commentbun": "$text",
     "HasAttachment": false,
     "AttachmentList": null,

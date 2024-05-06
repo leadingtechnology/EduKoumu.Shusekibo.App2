@@ -26,30 +26,45 @@ mixin _$KizukiCommentModel {
   @JsonKey(name: 'KizukiId', disallowNullValue: false)
   @HiveField(1)
   int? get kizukiId => throw _privateConstructorUsedError;
-  @JsonKey(name: 'CommentTorokuUserId', disallowNullValue: false)
+  @JsonKey(name: 'OriginCommentId', disallowNullValue: false)
   @HiveField(2)
+  int? get originCommentId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'CommentTorokuUserId', disallowNullValue: false)
+  @HiveField(3)
   int? get commentTorokuUserId => throw _privateConstructorUsedError;
   @JsonKey(name: 'CommentTorokuUserName', disallowNullValue: false)
-  @HiveField(3)
+  @HiveField(4)
   String? get commentTorokuUserName => throw _privateConstructorUsedError;
   @JsonKey(name: 'CommentTorokuDateTime', disallowNullValue: false)
-  @HiveField(4)
+  @HiveField(5)
   DateTime? get commentTorokuDateTime => throw _privateConstructorUsedError;
   @JsonKey(name: 'Commentbun', disallowNullValue: false)
-  @HiveField(5)
+  @HiveField(6)
   String? get commentbun => throw _privateConstructorUsedError;
   @JsonKey(name: 'HasAttachment', disallowNullValue: false)
-  @HiveField(6)
+  @HiveField(7)
   bool? get hasAttachment => throw _privateConstructorUsedError;
   @JsonKey(name: 'AttachmentList', disallowNullValue: false)
-  @HiveField(7)
+  @HiveField(8)
   List<TenpuModel>? get attachmentList => throw _privateConstructorUsedError;
   @JsonKey(name: 'JuyoFlg', disallowNullValue: false)
-  @HiveField(8)
+  @HiveField(9)
   bool? get juyoFlg => throw _privateConstructorUsedError;
   @JsonKey(name: 'TimeStamp', disallowNullValue: false)
-  @HiveField(9)
+  @HiveField(10)
   String? get timeStamp => throw _privateConstructorUsedError;
+  @JsonKey(name: 'LevelId', disallowNullValue: false)
+  @HiveField(11)
+  int? get levelId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'HasChildren', disallowNullValue: false)
+  @HiveField(12)
+  bool? get hasChildren => throw _privateConstructorUsedError;
+  @JsonKey(name: 'OyaCommentTorokuUserId', disallowNullValue: false)
+  @HiveField(13)
+  int? get oyaCommentTorokuUserId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'OyaCommentTorokuUserName', disallowNullValue: false)
+  @HiveField(14)
+  String? get oyaCommentTorokuUserName => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -68,30 +83,45 @@ abstract class $KizukiCommentModelCopyWith<$Res> {
       @JsonKey(name: 'KizukiId', disallowNullValue: false)
       @HiveField(1)
       int? kizukiId,
-      @JsonKey(name: 'CommentTorokuUserId', disallowNullValue: false)
+      @JsonKey(name: 'OriginCommentId', disallowNullValue: false)
       @HiveField(2)
+      int? originCommentId,
+      @JsonKey(name: 'CommentTorokuUserId', disallowNullValue: false)
+      @HiveField(3)
       int? commentTorokuUserId,
       @JsonKey(name: 'CommentTorokuUserName', disallowNullValue: false)
-      @HiveField(3)
+      @HiveField(4)
       String? commentTorokuUserName,
       @JsonKey(name: 'CommentTorokuDateTime', disallowNullValue: false)
-      @HiveField(4)
+      @HiveField(5)
       DateTime? commentTorokuDateTime,
       @JsonKey(name: 'Commentbun', disallowNullValue: false)
-      @HiveField(5)
+      @HiveField(6)
       String? commentbun,
       @JsonKey(name: 'HasAttachment', disallowNullValue: false)
-      @HiveField(6)
+      @HiveField(7)
       bool? hasAttachment,
       @JsonKey(name: 'AttachmentList', disallowNullValue: false)
-      @HiveField(7)
+      @HiveField(8)
       List<TenpuModel>? attachmentList,
       @JsonKey(name: 'JuyoFlg', disallowNullValue: false)
-      @HiveField(8)
+      @HiveField(9)
       bool? juyoFlg,
       @JsonKey(name: 'TimeStamp', disallowNullValue: false)
-      @HiveField(9)
-      String? timeStamp});
+      @HiveField(10)
+      String? timeStamp,
+      @JsonKey(name: 'LevelId', disallowNullValue: false)
+      @HiveField(11)
+      int? levelId,
+      @JsonKey(name: 'HasChildren', disallowNullValue: false)
+      @HiveField(12)
+      bool? hasChildren,
+      @JsonKey(name: 'OyaCommentTorokuUserId', disallowNullValue: false)
+      @HiveField(13)
+      int? oyaCommentTorokuUserId,
+      @JsonKey(name: 'OyaCommentTorokuUserName', disallowNullValue: false)
+      @HiveField(14)
+      String? oyaCommentTorokuUserName});
 }
 
 /// @nodoc
@@ -109,6 +139,7 @@ class _$KizukiCommentModelCopyWithImpl<$Res, $Val extends KizukiCommentModel>
   $Res call({
     Object? id = freezed,
     Object? kizukiId = freezed,
+    Object? originCommentId = freezed,
     Object? commentTorokuUserId = freezed,
     Object? commentTorokuUserName = freezed,
     Object? commentTorokuDateTime = freezed,
@@ -117,6 +148,10 @@ class _$KizukiCommentModelCopyWithImpl<$Res, $Val extends KizukiCommentModel>
     Object? attachmentList = freezed,
     Object? juyoFlg = freezed,
     Object? timeStamp = freezed,
+    Object? levelId = freezed,
+    Object? hasChildren = freezed,
+    Object? oyaCommentTorokuUserId = freezed,
+    Object? oyaCommentTorokuUserName = freezed,
   }) {
     return _then(_value.copyWith(
       id: freezed == id
@@ -126,6 +161,10 @@ class _$KizukiCommentModelCopyWithImpl<$Res, $Val extends KizukiCommentModel>
       kizukiId: freezed == kizukiId
           ? _value.kizukiId
           : kizukiId // ignore: cast_nullable_to_non_nullable
+              as int?,
+      originCommentId: freezed == originCommentId
+          ? _value.originCommentId
+          : originCommentId // ignore: cast_nullable_to_non_nullable
               as int?,
       commentTorokuUserId: freezed == commentTorokuUserId
           ? _value.commentTorokuUserId
@@ -159,6 +198,22 @@ class _$KizukiCommentModelCopyWithImpl<$Res, $Val extends KizukiCommentModel>
           ? _value.timeStamp
           : timeStamp // ignore: cast_nullable_to_non_nullable
               as String?,
+      levelId: freezed == levelId
+          ? _value.levelId
+          : levelId // ignore: cast_nullable_to_non_nullable
+              as int?,
+      hasChildren: freezed == hasChildren
+          ? _value.hasChildren
+          : hasChildren // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      oyaCommentTorokuUserId: freezed == oyaCommentTorokuUserId
+          ? _value.oyaCommentTorokuUserId
+          : oyaCommentTorokuUserId // ignore: cast_nullable_to_non_nullable
+              as int?,
+      oyaCommentTorokuUserName: freezed == oyaCommentTorokuUserName
+          ? _value.oyaCommentTorokuUserName
+          : oyaCommentTorokuUserName // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -176,30 +231,45 @@ abstract class _$$KizukiCommentModelImplCopyWith<$Res>
       @JsonKey(name: 'KizukiId', disallowNullValue: false)
       @HiveField(1)
       int? kizukiId,
-      @JsonKey(name: 'CommentTorokuUserId', disallowNullValue: false)
+      @JsonKey(name: 'OriginCommentId', disallowNullValue: false)
       @HiveField(2)
+      int? originCommentId,
+      @JsonKey(name: 'CommentTorokuUserId', disallowNullValue: false)
+      @HiveField(3)
       int? commentTorokuUserId,
       @JsonKey(name: 'CommentTorokuUserName', disallowNullValue: false)
-      @HiveField(3)
+      @HiveField(4)
       String? commentTorokuUserName,
       @JsonKey(name: 'CommentTorokuDateTime', disallowNullValue: false)
-      @HiveField(4)
+      @HiveField(5)
       DateTime? commentTorokuDateTime,
       @JsonKey(name: 'Commentbun', disallowNullValue: false)
-      @HiveField(5)
+      @HiveField(6)
       String? commentbun,
       @JsonKey(name: 'HasAttachment', disallowNullValue: false)
-      @HiveField(6)
+      @HiveField(7)
       bool? hasAttachment,
       @JsonKey(name: 'AttachmentList', disallowNullValue: false)
-      @HiveField(7)
+      @HiveField(8)
       List<TenpuModel>? attachmentList,
       @JsonKey(name: 'JuyoFlg', disallowNullValue: false)
-      @HiveField(8)
+      @HiveField(9)
       bool? juyoFlg,
       @JsonKey(name: 'TimeStamp', disallowNullValue: false)
-      @HiveField(9)
-      String? timeStamp});
+      @HiveField(10)
+      String? timeStamp,
+      @JsonKey(name: 'LevelId', disallowNullValue: false)
+      @HiveField(11)
+      int? levelId,
+      @JsonKey(name: 'HasChildren', disallowNullValue: false)
+      @HiveField(12)
+      bool? hasChildren,
+      @JsonKey(name: 'OyaCommentTorokuUserId', disallowNullValue: false)
+      @HiveField(13)
+      int? oyaCommentTorokuUserId,
+      @JsonKey(name: 'OyaCommentTorokuUserName', disallowNullValue: false)
+      @HiveField(14)
+      String? oyaCommentTorokuUserName});
 }
 
 /// @nodoc
@@ -215,6 +285,7 @@ class __$$KizukiCommentModelImplCopyWithImpl<$Res>
   $Res call({
     Object? id = freezed,
     Object? kizukiId = freezed,
+    Object? originCommentId = freezed,
     Object? commentTorokuUserId = freezed,
     Object? commentTorokuUserName = freezed,
     Object? commentTorokuDateTime = freezed,
@@ -223,6 +294,10 @@ class __$$KizukiCommentModelImplCopyWithImpl<$Res>
     Object? attachmentList = freezed,
     Object? juyoFlg = freezed,
     Object? timeStamp = freezed,
+    Object? levelId = freezed,
+    Object? hasChildren = freezed,
+    Object? oyaCommentTorokuUserId = freezed,
+    Object? oyaCommentTorokuUserName = freezed,
   }) {
     return _then(_$KizukiCommentModelImpl(
       id: freezed == id
@@ -232,6 +307,10 @@ class __$$KizukiCommentModelImplCopyWithImpl<$Res>
       kizukiId: freezed == kizukiId
           ? _value.kizukiId
           : kizukiId // ignore: cast_nullable_to_non_nullable
+              as int?,
+      originCommentId: freezed == originCommentId
+          ? _value.originCommentId
+          : originCommentId // ignore: cast_nullable_to_non_nullable
               as int?,
       commentTorokuUserId: freezed == commentTorokuUserId
           ? _value.commentTorokuUserId
@@ -265,6 +344,22 @@ class __$$KizukiCommentModelImplCopyWithImpl<$Res>
           ? _value.timeStamp
           : timeStamp // ignore: cast_nullable_to_non_nullable
               as String?,
+      levelId: freezed == levelId
+          ? _value.levelId
+          : levelId // ignore: cast_nullable_to_non_nullable
+              as int?,
+      hasChildren: freezed == hasChildren
+          ? _value.hasChildren
+          : hasChildren // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      oyaCommentTorokuUserId: freezed == oyaCommentTorokuUserId
+          ? _value.oyaCommentTorokuUserId
+          : oyaCommentTorokuUserId // ignore: cast_nullable_to_non_nullable
+              as int?,
+      oyaCommentTorokuUserName: freezed == oyaCommentTorokuUserName
+          ? _value.oyaCommentTorokuUserName
+          : oyaCommentTorokuUserName // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -278,30 +373,45 @@ class _$KizukiCommentModelImpl implements _KizukiCommentModel {
       @JsonKey(name: 'KizukiId', disallowNullValue: false)
       @HiveField(1)
       this.kizukiId,
-      @JsonKey(name: 'CommentTorokuUserId', disallowNullValue: false)
+      @JsonKey(name: 'OriginCommentId', disallowNullValue: false)
       @HiveField(2)
+      this.originCommentId,
+      @JsonKey(name: 'CommentTorokuUserId', disallowNullValue: false)
+      @HiveField(3)
       this.commentTorokuUserId,
       @JsonKey(name: 'CommentTorokuUserName', disallowNullValue: false)
-      @HiveField(3)
+      @HiveField(4)
       this.commentTorokuUserName,
       @JsonKey(name: 'CommentTorokuDateTime', disallowNullValue: false)
-      @HiveField(4)
+      @HiveField(5)
       this.commentTorokuDateTime,
       @JsonKey(name: 'Commentbun', disallowNullValue: false)
-      @HiveField(5)
+      @HiveField(6)
       this.commentbun,
       @JsonKey(name: 'HasAttachment', disallowNullValue: false)
-      @HiveField(6)
+      @HiveField(7)
       this.hasAttachment,
       @JsonKey(name: 'AttachmentList', disallowNullValue: false)
-      @HiveField(7)
+      @HiveField(8)
       final List<TenpuModel>? attachmentList,
       @JsonKey(name: 'JuyoFlg', disallowNullValue: false)
-      @HiveField(8)
+      @HiveField(9)
       this.juyoFlg,
       @JsonKey(name: 'TimeStamp', disallowNullValue: false)
-      @HiveField(9)
-      this.timeStamp})
+      @HiveField(10)
+      this.timeStamp,
+      @JsonKey(name: 'LevelId', disallowNullValue: false)
+      @HiveField(11)
+      this.levelId,
+      @JsonKey(name: 'HasChildren', disallowNullValue: false)
+      @HiveField(12)
+      this.hasChildren,
+      @JsonKey(name: 'OyaCommentTorokuUserId', disallowNullValue: false)
+      @HiveField(13)
+      this.oyaCommentTorokuUserId,
+      @JsonKey(name: 'OyaCommentTorokuUserName', disallowNullValue: false)
+      @HiveField(14)
+      this.oyaCommentTorokuUserName})
       : _attachmentList = attachmentList;
 
   factory _$KizukiCommentModelImpl.fromJson(Map<String, dynamic> json) =>
@@ -316,29 +426,33 @@ class _$KizukiCommentModelImpl implements _KizukiCommentModel {
   @HiveField(1)
   final int? kizukiId;
   @override
-  @JsonKey(name: 'CommentTorokuUserId', disallowNullValue: false)
+  @JsonKey(name: 'OriginCommentId', disallowNullValue: false)
   @HiveField(2)
+  final int? originCommentId;
+  @override
+  @JsonKey(name: 'CommentTorokuUserId', disallowNullValue: false)
+  @HiveField(3)
   final int? commentTorokuUserId;
   @override
   @JsonKey(name: 'CommentTorokuUserName', disallowNullValue: false)
-  @HiveField(3)
+  @HiveField(4)
   final String? commentTorokuUserName;
   @override
   @JsonKey(name: 'CommentTorokuDateTime', disallowNullValue: false)
-  @HiveField(4)
+  @HiveField(5)
   final DateTime? commentTorokuDateTime;
   @override
   @JsonKey(name: 'Commentbun', disallowNullValue: false)
-  @HiveField(5)
+  @HiveField(6)
   final String? commentbun;
   @override
   @JsonKey(name: 'HasAttachment', disallowNullValue: false)
-  @HiveField(6)
+  @HiveField(7)
   final bool? hasAttachment;
   final List<TenpuModel>? _attachmentList;
   @override
   @JsonKey(name: 'AttachmentList', disallowNullValue: false)
-  @HiveField(7)
+  @HiveField(8)
   List<TenpuModel>? get attachmentList {
     final value = _attachmentList;
     if (value == null) return null;
@@ -349,12 +463,28 @@ class _$KizukiCommentModelImpl implements _KizukiCommentModel {
 
   @override
   @JsonKey(name: 'JuyoFlg', disallowNullValue: false)
-  @HiveField(8)
+  @HiveField(9)
   final bool? juyoFlg;
   @override
   @JsonKey(name: 'TimeStamp', disallowNullValue: false)
-  @HiveField(9)
+  @HiveField(10)
   final String? timeStamp;
+  @override
+  @JsonKey(name: 'LevelId', disallowNullValue: false)
+  @HiveField(11)
+  final int? levelId;
+  @override
+  @JsonKey(name: 'HasChildren', disallowNullValue: false)
+  @HiveField(12)
+  final bool? hasChildren;
+  @override
+  @JsonKey(name: 'OyaCommentTorokuUserId', disallowNullValue: false)
+  @HiveField(13)
+  final int? oyaCommentTorokuUserId;
+  @override
+  @JsonKey(name: 'OyaCommentTorokuUserName', disallowNullValue: false)
+  @HiveField(14)
+  final String? oyaCommentTorokuUserName;
 
   @override
   bool operator ==(Object other) {
@@ -364,6 +494,8 @@ class _$KizukiCommentModelImpl implements _KizukiCommentModel {
             (identical(other.id, id) || other.id == id) &&
             (identical(other.kizukiId, kizukiId) ||
                 other.kizukiId == kizukiId) &&
+            (identical(other.originCommentId, originCommentId) ||
+                other.originCommentId == originCommentId) &&
             (identical(other.commentTorokuUserId, commentTorokuUserId) ||
                 other.commentTorokuUserId == commentTorokuUserId) &&
             (identical(other.commentTorokuUserName, commentTorokuUserName) ||
@@ -378,7 +510,15 @@ class _$KizukiCommentModelImpl implements _KizukiCommentModel {
                 .equals(other._attachmentList, _attachmentList) &&
             (identical(other.juyoFlg, juyoFlg) || other.juyoFlg == juyoFlg) &&
             (identical(other.timeStamp, timeStamp) ||
-                other.timeStamp == timeStamp));
+                other.timeStamp == timeStamp) &&
+            (identical(other.levelId, levelId) || other.levelId == levelId) &&
+            (identical(other.hasChildren, hasChildren) ||
+                other.hasChildren == hasChildren) &&
+            (identical(other.oyaCommentTorokuUserId, oyaCommentTorokuUserId) ||
+                other.oyaCommentTorokuUserId == oyaCommentTorokuUserId) &&
+            (identical(
+                    other.oyaCommentTorokuUserName, oyaCommentTorokuUserName) ||
+                other.oyaCommentTorokuUserName == oyaCommentTorokuUserName));
   }
 
   @JsonKey(ignore: true)
@@ -387,6 +527,7 @@ class _$KizukiCommentModelImpl implements _KizukiCommentModel {
       runtimeType,
       id,
       kizukiId,
+      originCommentId,
       commentTorokuUserId,
       commentTorokuUserName,
       commentTorokuDateTime,
@@ -394,7 +535,11 @@ class _$KizukiCommentModelImpl implements _KizukiCommentModel {
       hasAttachment,
       const DeepCollectionEquality().hash(_attachmentList),
       juyoFlg,
-      timeStamp);
+      timeStamp,
+      levelId,
+      hasChildren,
+      oyaCommentTorokuUserId,
+      oyaCommentTorokuUserName);
 
   @JsonKey(ignore: true)
   @override
@@ -419,30 +564,45 @@ abstract class _KizukiCommentModel implements KizukiCommentModel {
       @JsonKey(name: 'KizukiId', disallowNullValue: false)
       @HiveField(1)
       final int? kizukiId,
-      @JsonKey(name: 'CommentTorokuUserId', disallowNullValue: false)
+      @JsonKey(name: 'OriginCommentId', disallowNullValue: false)
       @HiveField(2)
+      final int? originCommentId,
+      @JsonKey(name: 'CommentTorokuUserId', disallowNullValue: false)
+      @HiveField(3)
       final int? commentTorokuUserId,
       @JsonKey(name: 'CommentTorokuUserName', disallowNullValue: false)
-      @HiveField(3)
+      @HiveField(4)
       final String? commentTorokuUserName,
       @JsonKey(name: 'CommentTorokuDateTime', disallowNullValue: false)
-      @HiveField(4)
+      @HiveField(5)
       final DateTime? commentTorokuDateTime,
       @JsonKey(name: 'Commentbun', disallowNullValue: false)
-      @HiveField(5)
+      @HiveField(6)
       final String? commentbun,
       @JsonKey(name: 'HasAttachment', disallowNullValue: false)
-      @HiveField(6)
+      @HiveField(7)
       final bool? hasAttachment,
       @JsonKey(name: 'AttachmentList', disallowNullValue: false)
-      @HiveField(7)
+      @HiveField(8)
       final List<TenpuModel>? attachmentList,
       @JsonKey(name: 'JuyoFlg', disallowNullValue: false)
-      @HiveField(8)
+      @HiveField(9)
       final bool? juyoFlg,
       @JsonKey(name: 'TimeStamp', disallowNullValue: false)
-      @HiveField(9)
-      final String? timeStamp}) = _$KizukiCommentModelImpl;
+      @HiveField(10)
+      final String? timeStamp,
+      @JsonKey(name: 'LevelId', disallowNullValue: false)
+      @HiveField(11)
+      final int? levelId,
+      @JsonKey(name: 'HasChildren', disallowNullValue: false)
+      @HiveField(12)
+      final bool? hasChildren,
+      @JsonKey(name: 'OyaCommentTorokuUserId', disallowNullValue: false)
+      @HiveField(13)
+      final int? oyaCommentTorokuUserId,
+      @JsonKey(name: 'OyaCommentTorokuUserName', disallowNullValue: false)
+      @HiveField(14)
+      final String? oyaCommentTorokuUserName}) = _$KizukiCommentModelImpl;
 
   factory _KizukiCommentModel.fromJson(Map<String, dynamic> json) =
       _$KizukiCommentModelImpl.fromJson;
@@ -456,37 +616,57 @@ abstract class _KizukiCommentModel implements KizukiCommentModel {
   @HiveField(1)
   int? get kizukiId;
   @override
-  @JsonKey(name: 'CommentTorokuUserId', disallowNullValue: false)
+  @JsonKey(name: 'OriginCommentId', disallowNullValue: false)
   @HiveField(2)
+  int? get originCommentId;
+  @override
+  @JsonKey(name: 'CommentTorokuUserId', disallowNullValue: false)
+  @HiveField(3)
   int? get commentTorokuUserId;
   @override
   @JsonKey(name: 'CommentTorokuUserName', disallowNullValue: false)
-  @HiveField(3)
+  @HiveField(4)
   String? get commentTorokuUserName;
   @override
   @JsonKey(name: 'CommentTorokuDateTime', disallowNullValue: false)
-  @HiveField(4)
+  @HiveField(5)
   DateTime? get commentTorokuDateTime;
   @override
   @JsonKey(name: 'Commentbun', disallowNullValue: false)
-  @HiveField(5)
+  @HiveField(6)
   String? get commentbun;
   @override
   @JsonKey(name: 'HasAttachment', disallowNullValue: false)
-  @HiveField(6)
+  @HiveField(7)
   bool? get hasAttachment;
   @override
   @JsonKey(name: 'AttachmentList', disallowNullValue: false)
-  @HiveField(7)
+  @HiveField(8)
   List<TenpuModel>? get attachmentList;
   @override
   @JsonKey(name: 'JuyoFlg', disallowNullValue: false)
-  @HiveField(8)
+  @HiveField(9)
   bool? get juyoFlg;
   @override
   @JsonKey(name: 'TimeStamp', disallowNullValue: false)
-  @HiveField(9)
+  @HiveField(10)
   String? get timeStamp;
+  @override
+  @JsonKey(name: 'LevelId', disallowNullValue: false)
+  @HiveField(11)
+  int? get levelId;
+  @override
+  @JsonKey(name: 'HasChildren', disallowNullValue: false)
+  @HiveField(12)
+  bool? get hasChildren;
+  @override
+  @JsonKey(name: 'OyaCommentTorokuUserId', disallowNullValue: false)
+  @HiveField(13)
+  int? get oyaCommentTorokuUserId;
+  @override
+  @JsonKey(name: 'OyaCommentTorokuUserName', disallowNullValue: false)
+  @HiveField(14)
+  String? get oyaCommentTorokuUserName;
   @override
   @JsonKey(ignore: true)
   _$$KizukiCommentModelImplCopyWith<_$KizukiCommentModelImpl> get copyWith =>

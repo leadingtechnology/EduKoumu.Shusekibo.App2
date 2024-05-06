@@ -3,17 +3,14 @@ import 'package:kyoumutechou/feature/awareness/provider/awareness_code_provider.
 import 'package:kyoumutechou/feature/boxes.dart';
 import 'package:kyoumutechou/feature/common/model/dantai_model.dart';
 import 'package:kyoumutechou/feature/common/model/gakunen_model.dart';
-import 'package:kyoumutechou/feature/common/model/kamoku_model.dart';
 import 'package:kyoumutechou/feature/common/model/shozoku_model.dart';
 import 'package:kyoumutechou/feature/common/model/tannin_model.dart';
-import 'package:kyoumutechou/feature/common/model/teacher_model.dart';
 import 'package:kyoumutechou/feature/common/provider/dantais_provider.dart';
 import 'package:kyoumutechou/feature/common/provider/filter_provider.dart';
 import 'package:kyoumutechou/feature/common/provider/gakunens_provider.dart';
 import 'package:kyoumutechou/feature/common/provider/kamokus_provider.dart';
 import 'package:kyoumutechou/feature/common/provider/seat_chart_pattern_provider.dart';
 import 'package:kyoumutechou/feature/common/provider/shozokus_provider.dart';
-import 'package:kyoumutechou/feature/common/provider/teachers_provider.dart';
 import 'package:kyoumutechou/feature/common/provider/timeds_provider.dart';
 import 'package:kyoumutechou/feature/common/provider/tokobis_provider.dart';
 import 'package:kyoumutechou/feature/common/repository/gakunens_repository.dart';
