@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:kyoumutechou/feature/awareness/provider/awareness_kizuki_provider.dart';
+import 'package:kyoumutechou/feature/common/model/kamoku_model.dart';
 import 'package:kyoumutechou/feature/common/provider/filter_provider.dart';
+import 'package:kyoumutechou/feature/common/provider/gakunens_provider.dart';
+import 'package:kyoumutechou/feature/common/provider/kamokus_provider.dart';
+import 'package:kyoumutechou/feature/common/provider/teachers_provider.dart';
 import 'package:kyoumutechou/feature/common/widget/clip_gakunen.dart';
 import 'package:kyoumutechou/feature/common/widget/clip_shozoku.dart';
 import 'package:kyoumutechou/feature/common/widget/clip_timed.dart';
@@ -107,6 +111,17 @@ class FilterWidget extends ConsumerWidget {
                       color: themeData.colorScheme.primary,
                     ),
                     onPressed: () {
+                      // 学年無しで選択した場合、教科と教職員をクリアする
+                      final gakunenCode =
+                          ref.watch(gakunenProvider).gakunenCode ?? '0';
+
+                      if (gakunenCode == '0') {
+                        ref.read(kamokuProvider.notifier).state =
+                            const KamokuModel();
+                        ref.read(teacherListProvider.notifier).state = [];
+                      }
+
+                      // 検索条件を更新する
                       ref
                           .read(filterProvider.notifier)
                           .update(targetDate: targetDate);

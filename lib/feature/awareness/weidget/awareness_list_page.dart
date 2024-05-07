@@ -480,12 +480,14 @@ class _AwarenessListViewState extends ConsumerState<AwarenessListView> {
                                   return;
                                 }
           
+                                ToastHelper.showToast(context, '　削除しました　');
                                 await ref
                                     .read(kizukiCommentListProvider.notifier)
                                     .delete(
                                       comment.id ?? 0,
                                       comment.timeStamp ?? '',
                                     );
+                                
                               },
                         style: TextButton.styleFrom(
                           padding: EdgeInsets.zero,

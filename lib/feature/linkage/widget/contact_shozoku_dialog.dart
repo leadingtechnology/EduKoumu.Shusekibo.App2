@@ -5,7 +5,6 @@ import 'package:kyoumutechou/feature/common/model/shozoku_model.dart';
 import 'package:kyoumutechou/feature/common/provider/dantais_provider.dart';
 import 'package:kyoumutechou/feature/common/provider/shozokus_provider.dart';
 import 'package:kyoumutechou/helpers/theme/app_theme.dart';
-import 'package:kyoumutechou/helpers/widgets/my_spacing.dart';
 
 class ContactShozokuDialog extends ConsumerWidget {
   const ContactShozokuDialog({super.key});
@@ -47,20 +46,12 @@ class ContactShozokuDialog extends ConsumerWidget {
     
     return AlertDialog(
       insetPadding: const EdgeInsets.symmetric(horizontal: 250),
-      title: const Text('確認ダイアログ'),
+      title: const Text('クラスで絞り込み'),
       surfaceTintColor: theme.colorScheme.surface,
       content: Wrap(
         spacing: 10,
         runSpacing: 6,
         children: [
-          const Text(
-            'クラスで絞り込み',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 14,
-            ),
-          ),
-          MySpacing.width(10),
           if (shozokuList.length > 1)
             ...shozokuList.map((ShozokuModel? element) {
               final elementList = ref.watch(shozokuListProvider);

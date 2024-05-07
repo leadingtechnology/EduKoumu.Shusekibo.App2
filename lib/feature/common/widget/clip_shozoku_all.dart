@@ -9,9 +9,9 @@ class ClipShozokuAll extends ConsumerWidget {
   ClipShozokuAll({super.key});
 
   final textWidget = Container(
-    width: 120,
+    width: 150,
     height: 32,
-    alignment: Alignment.centerRight,
+    alignment: Alignment.centerLeft,
     child: const Text(
       'クラスで絞り込み',
       style: TextStyle(

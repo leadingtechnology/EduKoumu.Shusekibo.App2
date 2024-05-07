@@ -109,8 +109,11 @@ class _KizukiCommentDialogState extends ConsumerState<KizukiCommentDialog> {
                                     keyboardType: TextInputType.multiline,
                                     maxLength: 300,
                                     maxLines: 11,
-                                    decoration: const InputDecoration(
-                                      border: OutlineInputBorder(),
+                                    decoration: InputDecoration(
+                                      border: const OutlineInputBorder(),
+                                      hintText: widget.originCommentId > 0
+                                          ? 'コメントに返信する'
+                                          : '気づきにコメントする', 
                                     ),
                                     validator: (value) {
                                       if (value == null || value.isEmpty) {

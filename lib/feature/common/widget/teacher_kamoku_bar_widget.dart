@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kyoumutechou/feature/common/model/kamoku_model.dart';
+import 'package:kyoumutechou/feature/common/provider/filter_provider.dart';
 import 'package:kyoumutechou/feature/common/provider/kamokus_provider.dart';
 import 'package:kyoumutechou/feature/common/provider/teachers_provider.dart';
 import 'package:kyoumutechou/feature/common/widget/teacher_kyoka_dialog.dart';
@@ -12,8 +13,16 @@ class TeacherKamokuBarWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final kamoku = ref.watch(kamokuProvider);
-    final teacherList = ref.watch(teacherListProvider);
+    var kamoku = ref.watch(kamokuProvider);
+    var teacherList = ref.watch(teacherListProvider);
+
+    final filter = ref.watch(filterProvider);
+    final gakunenCode = filter.gakunenCode;
+
+    if (gakunenCode == '0') {
+      kamoku = const KamokuModel();
+      teacherList = [];
+    }
 
     return Padding(
       padding: const EdgeInsets.fromLTRB(12, 20, 8, 8),
@@ -41,7 +50,7 @@ class TeacherKamokuBarWidget extends ConsumerWidget {
                       ),
                       selected: true,
                       showCheckmark: false,
-                      onSelected: (bool isSelected) {
+                      onSelected: gakunenCode == '0' ? null : (bool isSelected) {
                         handleSelection(context);
                       },
                       onDeleted: kamoku.kamokuNameRyakusho == null ? null : () {
@@ -75,7 +84,9 @@ class TeacherKamokuBarWidget extends ConsumerWidget {
                           ),
                           selected: true,
                           showCheckmark: false,
-                          onSelected: (bool isSelected) {
+                          onSelected: gakunenCode == '0'
+                                ? null
+                                : (bool isSelected) {
                             handleSelection(context);
                           },
                           onDeleted: () {
@@ -94,7 +105,9 @@ class TeacherKamokuBarWidget extends ConsumerWidget {
                         ),
                         selected: true,
                         showCheckmark: false,
-                        onSelected: (bool isSelected) {
+                        onSelected: gakunenCode == '0'
+                            ? null
+                            : (bool isSelected) {
                           handleSelection(context);
                         },
                         selectedColor: theme.colorScheme.primaryContainer,
