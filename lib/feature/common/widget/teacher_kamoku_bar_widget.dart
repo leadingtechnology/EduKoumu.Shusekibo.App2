@@ -114,6 +114,7 @@ class TeacherKamokuBarWidget extends ConsumerWidget {
   Future<void> handleSelection(
     BuildContext context,
   ) async {
+    // ignore: inference_failure_on_function_invocation
     await showDialog(
       context: context,
       builder: (context) {
@@ -125,6 +126,7 @@ class TeacherKamokuBarWidget extends ConsumerWidget {
   Future<void> handleDeletion(
     BuildContext context,
   ) async {
+    // ignore: inference_failure_on_function_invocation
     await showDialog(
       context: context,
       builder: (context) {

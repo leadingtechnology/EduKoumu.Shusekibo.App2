@@ -194,13 +194,8 @@ class AttendanceTimedMeiboListProvider extends StateNotifier<ApiState> {
     final tkbox = Boxes.getTantoKyoins();
     TantoKyoinModel? tantoKyoin;
     try {
-      final keys = tkbox.keys
-          .toList()
-          .where((e) => e.toString().startsWith('$shozokuId-$strDate-'))
-          .toList();
-      final list = keys.map(tkbox.get).toList();
-
-      tantoKyoin = list.where((e) => e?.jigenIdx == jigenIdx).first;  
+      final list = tkbox.values.toList();
+      tantoKyoin = list.where((e) => e.jigenIdx == jigenIdx).first;  
     } catch (e) {
       //
     }

@@ -30,18 +30,7 @@ class TantoKyoinsRepository implements TantoKyoinsRepositoryProtocol {
     final strDate = DateUtil.getStringDate(targetDate);
 
     final box = Boxes.getTantoKyoins();
-
-    // organizationKbnの学年が存在する場合、正常終了とする
-    if (box.isNotEmpty) {
-      final keys = box.keys.toList().where(
-            (element) => element.toString().startsWith('$shozokuId-$strDate-'),
-          );
-
-      // keysの値が存在した場合、正常終了とする
-      if (keys.isNotEmpty) {
-        return const ApiState.loaded();
-      }
-    }
+    await box.clear();
 
     final url = 'api/shozoku/$shozokuId/TantoKyoinList?date=$strDate';
     final response = await _api.get(url);
@@ -63,10 +52,7 @@ class TantoKyoinsRepository implements TantoKyoinsRepositoryProtocol {
         //tantoKyoins.sort((a, b) => '${a.loginId}'.compareTo('${b.loginId}'));
 
         // 2) save to local
-        final tantoKyoinMap = Map.fromIterables(
-          tantoKyoins.map((e) => '$shozokuId-$strDate-${e.kyoinID}').toList(),
-          tantoKyoins.map((e) => e).toList(),
-        );
+        final tantoKyoinMap = tantoKyoins.asMap();
         await box.putAll(tantoKyoinMap);
 
         return const ApiState.loaded();

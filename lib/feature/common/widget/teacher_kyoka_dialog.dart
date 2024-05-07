@@ -7,7 +7,6 @@ import 'package:kyoumutechou/feature/common/provider/kamokus_provider.dart';
 import 'package:kyoumutechou/feature/common/provider/teachers_provider.dart';
 import 'package:kyoumutechou/helpers/theme/app_theme.dart';
 import 'package:kyoumutechou/helpers/widgets/my_spacing.dart';
-import 'package:kyoumutechou/shared/util/date_util.dart';
 
 class TeacherKyokaDialog extends ConsumerWidget {
   const TeacherKyokaDialog({super.key});
@@ -40,22 +39,6 @@ class TeacherKyokaDialog extends ConsumerWidget {
         teacherList.isEmpty) {
       return const SizedBox();
     }
-
-    // 担当教員と教科初期値の取得
-    final tantoKyoinBox = Boxes.getTantoKyoins();
-    final shozokuId = filter.classId;
-    final strDate = DateUtil.getStringDate(filter.targetDate??DateTime.now());  
-
-    // 対象データの取得
-    // final tantoKyoinKeys = tantoKyoinBox.keys
-    //     .toList()
-    //     .where((e) => e.toString().startsWith('$shozokuId-$strDate-'))
-    //     .toList();
-
-    // final tantouKyoinList = tantoKyoinKeys.map(tantoKyoinBox.get).toList();
-    // final tantouKyoin = tantouKyoinList
-    //     .where((e) => e?.jigenIdx != null && e?.jigenIdx == filter.jigenIdx)
-    //     .first;
 
     return AlertDialog(
       insetPadding: const EdgeInsets.symmetric(horizontal: 250),
@@ -134,7 +117,7 @@ class TeacherKyokaDialog extends ConsumerWidget {
 
               return ChoiceChip(
                 label: Text(
-                  '${teacher?.teacherTsushoName}',
+                  '${teacher.teacherTsushoName}',
                 ),
                 labelStyle: TextStyle(
                   color: isSelected
@@ -148,11 +131,13 @@ class TeacherKyokaDialog extends ConsumerWidget {
                     if (list.length >= 3){
                       list.removeAt(0);
                     }
-                    list.add(teacher!);
-                    ref.read(teacherListProvider.notifier).state = list.toList();
+                    list.add(teacher);
+                    ref.read(teacherListProvider.notifier).state =
+                        list.toList();
                   }else{
                     list.remove(teacher);
-                    ref.read(teacherListProvider.notifier).state = list.toList();
+                    ref.read(teacherListProvider.notifier).state =
+                        list.toList();
                   }
                 },
                 side: BorderSide(
@@ -176,7 +161,6 @@ class TeacherKyokaDialog extends ConsumerWidget {
             side: MaterialStateProperty.all<BorderSide>(
               BorderSide(
                 color: theme.colorScheme.primary, 
-                width: 1, 
               ),
             ),
             shape: MaterialStateProperty.all<RoundedRectangleBorder>(
