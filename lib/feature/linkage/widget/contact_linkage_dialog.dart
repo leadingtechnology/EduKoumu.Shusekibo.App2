@@ -25,14 +25,23 @@ class ContactLinkageDialog extends ConsumerWidget {
         return Text(e.toString());
       },
       loaded: (list) {
-        final contactItems = list.toList();
+        final oldContactItems = list.toList();
+        final contactItems = <ContactLinkageModel>[];
 
         // 抽出条件で絞り込む
         final isAll = ref.watch(shozokuAllProvider);
         final shozokuList = ref.watch(shozokuListProvider);
-        if (!isAll && contactItems.isNotEmpty ){
+        if (isAll) {
+          
+          contactItems.addAll(oldContactItems);
+
+        } else if (oldContactItems.isNotEmpty ){
+          
           for(final shozoku in shozokuList){
-            contactItems.removeWhere((item) => item.shozokuId != shozoku.id);
+            final items = oldContactItems
+                .where((element) => element.shozokuId == shozoku.id);
+            
+            contactItems.addAll(items);
           }
         }
 
