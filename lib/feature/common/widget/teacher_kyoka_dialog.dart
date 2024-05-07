@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kyoumutechou/feature/boxes.dart';
+import 'package:kyoumutechou/feature/common/model/kamoku_model.dart';
 import 'package:kyoumutechou/feature/common/provider/filter_provider.dart';
 import 'package:kyoumutechou/feature/common/provider/kamokus_provider.dart';
 import 'package:kyoumutechou/feature/common/provider/teachers_provider.dart';
@@ -17,15 +18,8 @@ class TeacherKyokaDialog extends ConsumerWidget {
 
     // 教職員ボックスの取得
     final teacherBox = Boxes.getTeachers();
-
-    // 対象データの取得
-    final teacherKeys = teacherBox.keys
-        .toList()
-        .where((e) => e.toString().startsWith('${filter.dantaiId}-'))
-        .toList();
-
     // 教職員リストの取得
-    final teacherList = teacherKeys.map(teacherBox.get).toList();
+    final teacherList = teacherBox.values.toList();
 
     
     // 教科ボックスの取得
@@ -43,7 +37,7 @@ class TeacherKyokaDialog extends ConsumerWidget {
     final kamokuList = kamokuKeys.map(kamokuBox.get).toList();
 
     if ((kamokuKeys.isEmpty || kamokuList.isEmpty) &&
-        (teacherKeys.isEmpty || teacherList.isEmpty)) {
+        teacherList.isEmpty) {
       return const SizedBox();
     }
 
@@ -99,7 +93,12 @@ class TeacherKyokaDialog extends ConsumerWidget {
                 ),
                 selected: isSelected,
                 onSelected: (bool selected) async {
-                  ref.read(kamokuProvider.notifier).state = kamoku!;
+                  if (selected){
+                    ref.read(kamokuProvider.notifier).state = kamoku!;
+                  }else{
+                    ref.read(kamokuProvider.notifier).state =
+                        const KamokuModel();
+                  }
                 },
                 side: BorderSide(
                   width: 0,
@@ -130,8 +129,8 @@ class TeacherKyokaDialog extends ConsumerWidget {
             spacing: 10,
             runSpacing: 6,
             children: teacherList.map((teacher) {
-              final teasherList = ref.watch(teacherListProvider);
-              final isSelected = teasherList.contains(teacher);
+              final tchlist = ref.watch(teacherListProvider);
+              final isSelected = tchlist.contains(teacher);
 
               return ChoiceChip(
                 label: Text(

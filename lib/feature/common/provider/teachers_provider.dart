@@ -1,6 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kyoumutechou/feature/boxes.dart';
-import 'package:kyoumutechou/feature/common/model/dantai_model.dart';
 import 'package:kyoumutechou/feature/common/model/teacher_model.dart';
 import 'package:kyoumutechou/feature/common/provider/dantais_provider.dart';
 import 'package:kyoumutechou/feature/common/state/api_state.dart';
@@ -34,16 +33,17 @@ class TeacherNotifier extends StateNotifier<ApiState> {
 
   Future<void> _fetch() async {
     final dantai = ref.read(dantaiProvider);
-    setTeacherValue(dantai.id ?? 0);
+    await setTeacherValue(dantai.id ?? 0);
 
     state = const ApiState.loaded();
   }
 
+  // 初期値を設定する
   Future<void> setTeacherValue(
     int dantaiId, {
-    String? KyoinId1,
-    String? KyoinId2,
-    String? KyoinId3,
+    String? kyoinId1,
+    String? kyoinId2,
+    String? kyoinId3,
   }) async{
     final dantaiId = ref.read(dantaiProvider).id ?? 0;
     
@@ -56,31 +56,18 @@ class TeacherNotifier extends StateNotifier<ApiState> {
     final teachers = <TeacherModel>[];
 
     try {
-      // 初期値の設定
-      final keys = box.keys
-          .toList()
-          .where((e) => e.toString().startsWith('$dantaiId-'))
-          .toList();
-
-      if (keys.isEmpty) {
-        return;
-      } 
-      
       // 取得したKeysにより、gakunenListを取得する
-      final teacherList = keys.map(box.get).toList();
+      final teacherList = box.values.toList();
       
       try {
-        if (KyoinId1 != null || KyoinId2 != null || KyoinId3 != null) {
+        if (kyoinId1 != null || kyoinId2 != null || kyoinId3 != null) {
           for (final t in teacherList) {
-            if (t != null) {
-              if (t.loginId == KyoinId1 ||
-                  t.loginId == KyoinId2 ||
-                  t.loginId == KyoinId3) {
-                teachers.add(t);
-              }
+            if (t.loginId == kyoinId1 ||
+                t.loginId == kyoinId2 ||
+                t.loginId == kyoinId3) {
+              teachers.add(t);
             }
           }
-          
         }
       } catch (e) {
         //

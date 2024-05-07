@@ -6,8 +6,17 @@ import 'package:kyoumutechou/feature/attendance/model/attendance_timed_status_mo
 import 'package:kyoumutechou/feature/attendance/repository/attendance_timed_meibo_repository.dart';
 import 'package:kyoumutechou/feature/boxes.dart';
 import 'package:kyoumutechou/feature/common/model/filter_model.dart';
+import 'package:kyoumutechou/feature/common/model/kamoku_model.dart';
+import 'package:kyoumutechou/feature/common/model/tanto_kyoin_model.dart';
+import 'package:kyoumutechou/feature/common/model/teacher_model.dart';
 import 'package:kyoumutechou/feature/common/provider/filter_provider.dart';
+import 'package:kyoumutechou/feature/common/provider/kamokus_provider.dart';
+import 'package:kyoumutechou/feature/common/provider/teachers_provider.dart';
+import 'package:kyoumutechou/feature/common/repository/kamokus_repository.dart';
+import 'package:kyoumutechou/feature/common/repository/tanto_kyoin_repository.dart';
 import 'package:kyoumutechou/feature/common/state/api_state.dart';
+import 'package:kyoumutechou/shared/http/app_exception.dart';
+import 'package:kyoumutechou/shared/util/date_util.dart';
 
 final attendanceTimedMeiboListProvider = 
     StateNotifierProvider<AttendanceTimedMeiboListProvider, ApiState>((ref) {
@@ -32,6 +41,10 @@ class AttendanceTimedMeiboListProvider extends StateNotifier<ApiState> {
   final Ref ref;
   final FilterModel filter;
   late final _rep = ref.read(timedMeiboRepositoryProvider);
+  late final _kmRep = ref.read(kamokusRepositoryProvider);
+  late final _tkRep = ref.read(tantoKyoinsRepositoryProvider);
+
+
 
   Future<void> _init() async { 
     await _fetch(); 
@@ -48,15 +61,180 @@ class AttendanceTimedMeiboListProvider extends StateNotifier<ApiState> {
       return;
     }
 
-    final response = await _rep.fetch(
-      filter, 
-      filter.targetDate ?? DateTime.now(),
-    );
+    final responses = await Future.wait([
+      _kmRep.fetch(filter.dantaiId ?? 0, filter.gakunenCode ?? ''),
+      _tkRep.fetch(filter.classId!, filter.targetDate ?? DateTime.now()),
+      _rep.fetch(filter, filter.targetDate ?? DateTime.now()),
+    ]);
+
+    // エラー、ローディングの場合、エラーを表示する。
+    var isError = false;
+    var isLoading = false;
+    var errorMessage = '';
+    for (final response in responses) {
+      response.when(
+        error: (e) {
+          isError = true;
+          errorMessage = '$errorMessage {e};';
+        },
+        loading: () {
+          isLoading = true;
+        },
+        loaded: () {},
+      );
+    }
+
+    if (isError || isLoading) {
+      state = const ApiState.error(
+        AppException.errorWithMessage('Error occurred'),
+      );
+      return;
+    }
+
+    await setDefaultValue();
 
     // 正常終了
     if (mounted) {
-      state = response;
+      state = const ApiState.loaded();
     }
+  }
+
+  // 初期値を設定する
+  Future<void> setDefaultValue() async {
+    // 検索条件の取得
+    final filter = ref.read(filterProvider);
+    final dantaiId = filter.dantaiId ?? 0;
+    final gakunenCode = filter.gakunenCode ?? '';
+    final shozokuId = filter.classId ?? 0;
+    final strDate = DateUtil.getStringDate(filter.targetDate ?? DateTime.now());
+    final jigenIdx = filter.jigenIdx ?? 0;
+    
+    // 先生情報の取得
+    final tbox = Boxes.getTeachers();
+    final teacherList = tbox.values.toList();
+
+    // 教科情報の取得
+    final kbox = Boxes.getKamokus();
+    final kamokuList = <KamokuModel>[];
+    try {
+      final keys = kbox.keys
+          .toList()
+          .where((e) => e.toString().startsWith('$dantaiId-$gakunenCode-'))
+          .toList();
+
+      final list = keys.map(kbox.get).toList();
+      
+      for (final k in list) {
+        if (k != null) {
+          kamokuList.add(k);
+        }
+      }
+    } catch (e) {
+      //
+    }
+
+
+    // 初期化する
+    var kamoku = const KamokuModel();
+    final teachers = <TeacherModel>[];
+
+    // １） DBに保存された教科情報を設定する
+    // １－１）時限別生徒情報の取得
+    final meibo = Boxes.getAttendanceTimedMeibo();
+    final meiboList = meibo.values.toList();
+
+    // １－２）時限情報の取得
+    var jokyo = const AttendanceTimedStatusModel();
+    for (final meibo in meiboList) {
+      try {
+        jokyo = meibo.jokyoList!
+            .where((e) => e.jigenIdx == jigenIdx)
+            .toList()
+            .first;
+
+        break;
+      } catch (e) {
+        //
+      }
+    }
+    if (jokyo.jigenIdx == jigenIdx) {
+      // １－３） 許可情報の設定
+      try{
+        kamoku = kamokuList
+            .where(
+              (e) =>
+                  e.dantaiBunrui == jokyo.kyokaDantaiBunrui &&
+                  e.dantaiKbn == jokyo.kyokaDantaiKbn &&
+                  e.kyokaBunrui == jokyo.kyokaBunrui &&
+                  e.kamokuCode == jokyo.kamokuCd,
+            )
+            .first;
+      }catch(e){
+        //
+      }
+
+      ref.read(kamokuProvider.notifier).state = kamoku;
+
+      // 1-4) 担任教員情報の設定
+      for (final t in teacherList) {
+        if (t.loginId == jokyo.kyoinId1
+            || t.loginId == jokyo.kyoinId2
+            || t.loginId == jokyo.kyoinId3) {
+          teachers.add(t);
+        }
+      }
+
+      ref.read(teacherListProvider.notifier).state = teachers;
+
+      return ;
+    }
+    
+    // ２）デフォルト設定
+    // ２－１）担任教員・教科情報の取得
+    final tkbox = Boxes.getTantoKyoins();
+    TantoKyoinModel? tantoKyoin;
+    try {
+      final keys = tkbox.keys
+          .toList()
+          .where((e) => e.toString().startsWith('$shozokuId-$strDate-'))
+          .toList();
+      final list = keys.map(tkbox.get).toList();
+
+      tantoKyoin = list.where((e) => e?.jigenIdx == jigenIdx).first;  
+    } catch (e) {
+      //
+    }
+
+    if (tantoKyoin != null) {
+      // 2-2) 教科情報の設定
+      try {
+        kamoku = kamokuList
+            .where(
+              (e) =>
+                  e.dantaiBunrui == tantoKyoin?.kyokaDantaiBunrui &&
+                  e.dantaiKbn == tantoKyoin?.kyokaDantaiKbn &&
+                  e.kyokaBunrui == tantoKyoin?.kyokaBunrui &&
+                  e.kamokuCode == tantoKyoin?.kamokuCd,
+            )
+            .first;
+      } catch (e) {
+        //
+      }
+      ref.read(kamokuProvider.notifier).state = kamoku;
+      
+      // 2-3) 担任教員情報の設定
+      for (final t in teacherList) {
+        if (t.loginId == tantoKyoin.kyoinID ) {
+          teachers.add(t);
+        }
+      }
+      ref.read(teacherListProvider.notifier).state = teachers;
+    }
+
+
+    // 3）設定なしの設定
+    ref.read(kamokuProvider.notifier).state = kamoku;
+    ref.read(teacherListProvider.notifier).state = teachers;
 
   }
 

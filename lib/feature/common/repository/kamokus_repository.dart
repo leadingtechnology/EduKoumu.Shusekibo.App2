@@ -31,7 +31,8 @@ class KamokusRepository implements KamokusRepositoryProtocol {
     // organizationKbnの学年が存在する場合、正常終了とする
     if (box.isNotEmpty) {
       final keys = box.keys.toList().where(
-            (element) => element.toString().startsWith('$dantaiId-$gakunenCode-'),
+            (element) =>
+                element.toString().startsWith('$dantaiId-$gakunenCode-'),
           );
 
       // keysの値が存在した場合、正常終了とする

@@ -48,6 +48,11 @@ class TokobisRepository implements TokobisRepositoryProtocol {
       }
     }
 
+    // 所属Idが空の場合は返す
+    if (shozokuId == 0) {
+      return const ApiState.loaded();
+    } 
+
     final url = 'api/shozoku/$shozokuId/ShukketsuShussekibo?year=$year&month=$month&kouryuGakkyu=$isKoryu';
     final response = await _api.get(url);
 

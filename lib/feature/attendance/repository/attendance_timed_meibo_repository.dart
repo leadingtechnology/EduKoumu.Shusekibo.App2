@@ -29,7 +29,6 @@ class TimedMeiboRepository implements TimedRepositoryProtocol {
   late final ApiProvider _api = ref.read(apiProvider);
   final box0 = Boxes.getAttendanceTimedMeibo();
   final kamokuBox = Boxes.getKamokus();
-  final teacherBox = Boxes.getTeachers();
 
   @override
   Future<ApiState> fetch(
@@ -72,45 +71,6 @@ class TimedMeiboRepository implements TimedRepositoryProtocol {
           ref.read(buttonEnableProvider.notifier).state = true;
         } else {
           ref.read(buttonEnableProvider.notifier).state = false;
-        }
-
-        
-        // 教科の設定
-        await ref.read(kamokusProvider.notifier).setKamokuValue(
-              filter.dantaiId ?? 0,
-              filter.gakunenCode ?? '',
-            );
-        await ref.read(teachersProvider.notifier).setTeacherValue(
-              filter.dantaiId ?? 0,
-            );
-
-        for(final meibo in timedMeibo){
-          try{
-            final jokyo = meibo.jokyoList!
-                .where((e) => e.jigenIdx == filter.jigenIdx)
-                .first;
-            if (jokyo != null){
-              await ref.read(kamokusProvider.notifier).setKamokuValue(
-                    filter.dantaiId ?? 0,
-                    filter.gakunenCode ?? '',
-                    dantaiBunrui: jokyo.kyokaDantaiBunrui,
-                    dantaiKbn: jokyo.kyokaDantaiKbn,
-                    kyokaBunrui: jokyo.kyokaBunrui,
-                    kamokuCode: jokyo.kamokuCd,
-                  );
-              await ref.read(teachersProvider.notifier).setTeacherValue(
-                    filter.dantaiId ?? 0,
-                    KyoinId1: jokyo.kyoinId1,
-                    KyoinId2: jokyo.kyoinId2,
-                    KyoinId3: jokyo.kyoinId3,
-                  );
-              
-              break;
-            }
-          }catch(e){
-            //
-          }
-
         }
 
         // 3) save to hive with key

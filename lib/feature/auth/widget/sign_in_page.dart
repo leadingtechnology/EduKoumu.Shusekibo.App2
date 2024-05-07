@@ -25,8 +25,8 @@ class SignInPageState extends ConsumerState<SignInPage> {
     theme = AppTheme.theme;
   }
 
-  final _emailController = TextEditingController(text: 'login0026');
-  final _passwordController = TextEditingController(text: 'P@ssw0rd');
+  final _emailController = TextEditingController(text: '');
+  final _passwordController = TextEditingController(text: '');
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   final _focusUserId = FocusNode();

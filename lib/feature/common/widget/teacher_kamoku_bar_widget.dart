@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:kyoumutechou/feature/common/model/kamoku_model.dart';
 import 'package:kyoumutechou/feature/common/provider/kamokus_provider.dart';
 import 'package:kyoumutechou/feature/common/provider/teachers_provider.dart';
 import 'package:kyoumutechou/feature/common/widget/teacher_kyoka_dialog.dart';
@@ -43,8 +44,9 @@ class TeacherKamokuBarWidget extends ConsumerWidget {
                       onSelected: (bool isSelected) {
                         handleSelection(context);
                       },
-                      onDeleted: () {
-                        handleDeletion(context);
+                      onDeleted: kamoku.kamokuNameRyakusho == null ? null : () {
+                        ref.read(kamokuProvider.notifier).state =
+                                  const KamokuModel();
                       },
                       selectedColor: theme.colorScheme.primaryContainer, 
                     ),
@@ -77,7 +79,9 @@ class TeacherKamokuBarWidget extends ConsumerWidget {
                             handleSelection(context);
                           },
                           onDeleted: () {
-                            handleDeletion(context);
+                              teacherList.remove(teacher);
+                              ref.read(teacherListProvider.notifier).state =
+                                  teacherList.toList();
                           },
                           selectedColor: theme.colorScheme.primaryContainer,
                         ),
@@ -92,9 +96,6 @@ class TeacherKamokuBarWidget extends ConsumerWidget {
                         showCheckmark: false,
                         onSelected: (bool isSelected) {
                           handleSelection(context);
-                        },
-                        onDeleted: () {
-                          handleDeletion(context);
                         },
                         selectedColor: theme.colorScheme.primaryContainer,
                       ),
