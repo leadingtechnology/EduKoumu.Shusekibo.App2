@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:kyoumutechou/feature/boxes.dart';
 import 'package:kyoumutechou/feature/common/provider/shozokus_provider.dart';
 import 'package:kyoumutechou/feature/common/widget/clip_shozoku_all.dart';
 import 'package:kyoumutechou/feature/linkage/model/contact_linkage_model.dart';
@@ -27,6 +28,9 @@ class ContactLinkageDialog extends ConsumerWidget {
       loaded: (list) {
         final oldContactItems = list.toList();
         final contactItems = <ContactLinkageModel>[];
+
+        final box = Boxes.getTanninShozoku();
+        final szkList = box.values.toList();
 
         // 抽出条件で絞り込む
         final isAll = ref.watch(shozokuAllProvider);

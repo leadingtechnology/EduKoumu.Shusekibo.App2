@@ -108,4 +108,26 @@ class ShozokuNotifier extends StateNotifier<ApiState> {
 
     return shozoku;
   }
+  
+  Future<List<ShozokuModel>> getShozokus(int dantaiId) async{
+    var shozokus = <ShozokuModel>[];
+
+    final box = Boxes.getShozokus();
+    try{
+      final keys = box.keys
+          .toList()
+          .where((e) => e.toString().startsWith('$dantaiId'))
+          .toList();
+
+      final list = keys.map(box.get).toList();
+      for(final s in list){
+        if(s != null){
+          shozokus.add(s);
+        }
+      }
+    }catch(e){
+      //
+    }
+    return shozokus;
+  }
 }

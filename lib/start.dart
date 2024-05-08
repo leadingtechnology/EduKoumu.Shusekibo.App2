@@ -107,6 +107,12 @@ Future<void> start() async {
   final tanninBox = await Hive.openBox<TanninModel>('Tannin');
   await tanninBox.clear();
 
+  final tanninGakunenBox = await Hive.openBox<GakunenModel>('TanninGakunen');
+  await tanninGakunenBox.clear();
+
+  final tanninShozokuBox = await Hive.openBox<ShozokuModel>('TanninShozoku');
+  await tanninShozokuBox.clear();  
+
   // 科目
   final kamokuBox = await Hive.openBox<KamokuModel>('Kamoku');
   await kamokuBox.clear();

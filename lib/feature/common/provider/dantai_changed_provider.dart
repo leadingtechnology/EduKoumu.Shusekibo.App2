@@ -17,6 +17,7 @@ import 'package:kyoumutechou/feature/common/repository/gakunens_repository.dart'
 import 'package:kyoumutechou/feature/common/repository/kamokus_repository.dart';
 import 'package:kyoumutechou/feature/common/repository/last_tokobis_repository.dart';
 import 'package:kyoumutechou/feature/common/repository/shozokus_repository.dart';
+import 'package:kyoumutechou/feature/common/repository/tannin2_repository.dart';
 import 'package:kyoumutechou/feature/common/repository/tannin_repository.dart';
 import 'package:kyoumutechou/feature/common/repository/tanto_kyoin_repository.dart';
 import 'package:kyoumutechou/feature/common/repository/teachers_repository.dart';
@@ -50,6 +51,7 @@ class DantaiChangedNotifier extends StateNotifier<ApiState> {
   late final _tannin = ref.read(tanninRepositoryProvider);
   late final _gakunen = ref.read(gakunensRepositoryProvider);
   late final _shozoku = ref.read(shozokusRepositoryProvider);
+  late final _tannin2 = ref.read(tannin2RepositoryProvider);
 
   late final _tokobi = ref.read(tokobisRepositoryProvider);
   late final _lastTokobi = ref.read(lastTokobisRepositoryProvider);
@@ -87,6 +89,8 @@ class DantaiChangedNotifier extends StateNotifier<ApiState> {
         // 教職員情報を取得する。
         _teacher.fetch('${dantai.id ?? 0}'),
 
+        // 担任２情報を取得する。
+        _tannin2.fetch(),
       ]);
 
       var isError = false;
@@ -168,11 +172,26 @@ class DantaiChangedNotifier extends StateNotifier<ApiState> {
       // 担任所属IDの場合、所属情報を設定する。
       if (tannin.shozokuId != null) {
         ref.read(shozokuAllProvider.notifier).state = false;
-        ref.read(shozokuListProvider.notifier).state = [shozoku];
       }else{
         ref.read(shozokuAllProvider.notifier).state = true;
-        ref.read(shozokuListProvider.notifier).state = [];
       }
+
+      // 担任クラスリストの取得
+      final shozokus =
+          await ref.read(shozokusProvider.notifier).getShozokus(dantaiId);
+
+      final boxShozoku = Boxes.getTanninShozoku();
+      final tanninShozokus = boxShozoku.values.toList();
+
+      final tanninShozokuList = <ShozokuModel>[];
+      for (final shozoku in shozokus) {
+        if (tanninShozokus
+            .where((e) => e.id == shozoku.id && e.isGakuseki == true)
+            .isNotEmpty) {
+          tanninShozokuList.add(shozoku);
+        }
+      }
+      ref.read(shozokuListProvider.notifier).state = tanninShozokuList;
 
       // 分類コード初期値の設定
       final awarenessCode = 

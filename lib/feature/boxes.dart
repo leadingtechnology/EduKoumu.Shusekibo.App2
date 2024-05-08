@@ -36,6 +36,9 @@ class Boxes {
   static Box<TokobiModel> getTokobis() => Hive.box<TokobiModel>('Tokobi');
   static Box<TanninModel> getTannin() => Hive.box<TanninModel>('Tannin');
 
+  static Box<GakunenModel> getTanninGakunen() => Hive.box<GakunenModel>('TanninGakunen');
+  static Box<ShozokuModel> getTanninShozoku() => Hive.box<ShozokuModel>('TanninShozoku');
+
   static Box<KamokuModel> getKamokus() => Hive.box<KamokuModel>('Kamoku'); 
   static Box<TantoKyoinModel> getTantoKyoins() => Hive.box<TantoKyoinModel>('TantoKyoin'); 
   static Box<TeacherModel> getTeachers() => Hive.box<TeacherModel>('Teacher'); 
