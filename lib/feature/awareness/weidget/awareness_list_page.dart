@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -404,7 +405,7 @@ class _AwarenessListViewState extends ConsumerState<AwarenessListView> {
                 children: [
                   Row(
                     children: [
-                      Text('${comment.commentbun}'),
+                      Expanded(child: Text('${comment.commentbun}')),
                     ],
                   ),
                   Row(
