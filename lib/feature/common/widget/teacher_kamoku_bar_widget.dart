@@ -57,6 +57,7 @@ class TeacherKamokuBarWidget extends ConsumerWidget {
                         ref.read(kamokuProvider.notifier).state =
                                   const KamokuModel();
                       },
+                      deleteButtonTooltipMessage: '',
                       selectedColor: theme.colorScheme.primaryContainer, 
                     ),
                   ],
@@ -94,6 +95,7 @@ class TeacherKamokuBarWidget extends ConsumerWidget {
                               ref.read(teacherListProvider.notifier).state =
                                   teacherList.toList();
                           },
+                          deleteButtonTooltipMessage: '',
                           selectedColor: theme.colorScheme.primaryContainer,
                         ),
                       );
@@ -110,6 +112,7 @@ class TeacherKamokuBarWidget extends ConsumerWidget {
                             : (bool isSelected) {
                           handleSelection(context);
                         },
+                        deleteButtonTooltipMessage: '',
                         selectedColor: theme.colorScheme.primaryContainer,
                       ),
                   ],
