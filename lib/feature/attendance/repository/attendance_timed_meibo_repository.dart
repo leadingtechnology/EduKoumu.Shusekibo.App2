@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kyoumutechou/feature/attendance/model/attendance_timed_meibo_model.dart';
+import 'package:kyoumutechou/feature/attendance/model/attendance_timed_status_model.dart';
 import 'package:kyoumutechou/feature/boxes.dart';
 import 'package:kyoumutechou/feature/common/model/filter_model.dart';
 import 'package:kyoumutechou/feature/common/provider/common_provider.dart';
@@ -100,23 +101,23 @@ class TimedMeiboRepository implements TimedRepositoryProtocol {
     }
 
     // 020) 対象外データの削除
-    meibos.removeWhere((e) {
-      var flg = true;
-      try {
-        final jokyo =
-            e.jokyoList!.firstWhere((e) => e.jigenIdx == filter.jigenIdx);
-        if (jokyo.jigenIdx == filter.jigenIdx) {
-          flg = false;
-        }
-      } catch (ex) {
-        flg = true;
-      }
-      return flg;
-    });
+    // meibos.removeWhere((e) {
+    //   var flg = true;
+    //   try {
+    //     final jokyo =
+    //         e.jokyoList!.firstWhere((e) => e.jigenIdx == filter.jigenIdx);
+    //     if (jokyo.jigenIdx == filter.jigenIdx) {
+    //       flg = false;
+    //     }
+    //   } catch (ex) {
+    //     flg = true;
+    //   }
+    //   return flg;
+    // });
 
-    if (meibos.isEmpty) {
-      return const ApiState.loaded();
-    }
+    // if (meibos.isEmpty) {
+    //   return const ApiState.loaded();
+    // }
 
     // 科目情報の取得
     final kamoku = ref.read(kamokuProvider);
@@ -145,7 +146,22 @@ class TimedMeiboRepository implements TimedRepositoryProtocol {
     // 030) jokyoList について　filter.jigenIdx に該当するデータのみを残す
     final newMeibos = <AttendanceTimedMeiboModel>[];
     for (final meibo in meibos) {
-      var jokyo = meibo.jokyoList!.firstWhere((e) => e.jigenIdx == filter.jigenIdx);
+      final jkList = meibo.jokyoList ?? [];
+      
+      var jokyo = AttendanceTimedStatusModel(
+        jigenIdx: filter.jigenIdx,
+        shukketsuBunrui: '',
+        shukketsuKbn: '',
+        ryaku: '',
+        jiyu1: '',
+        jiyu2: '',
+        isEditable: true,
+      );
+      try {
+        jokyo = jkList.firstWhere((e) => e.jigenIdx == filter.jigenIdx);
+      } catch (e) {
+        //
+      }
       
       // 科目の設定
       jokyo = jokyo.copyWith(
