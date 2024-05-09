@@ -2,7 +2,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kyoumutechou/feature/boxes.dart';
 import 'package:kyoumutechou/feature/common/model/gakunen_model.dart';
 import 'package:kyoumutechou/feature/common/model/shozoku_model.dart';
-import 'package:kyoumutechou/feature/common/model/tannin_model.dart';
 import 'package:kyoumutechou/feature/common/state/api_state.dart';
 import 'package:kyoumutechou/shared/http/api_provider.dart';
 import 'package:kyoumutechou/shared/http/api_response.dart';
@@ -33,7 +32,7 @@ class Tannin2Repository implements Tannin2RepositoryProtocol {
 
     
     // 20) データを取得する
-    final response = await _api.get('api/GakunenClassLists/KY02-f01-I02');
+    final response = await _api.get('api/GakunenClassLists/KY-f01');
 
     response.when(
         success: (success) {},
