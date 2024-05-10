@@ -182,10 +182,7 @@ class AwarenessMeiboListProvider extends StateNotifier<ApiState> {
       shozokuId = studentList.first.shozokuId ?? 0;
       students = studentList.map((e) => e.studentId).toList().toString();
     } else {
-      final boxKizuki = Boxes.getAwarenessKizukiModelBox();
-      final studentList = boxKizuki.values.toList();
-
-      shozokuId = studentList.first.shozokuId ?? 0;
+      shozokuId = ref.read(filterProvider).classId ?? 0;
       students = ref.read(awarenessStudentAddProvider).toString();
     }
 
