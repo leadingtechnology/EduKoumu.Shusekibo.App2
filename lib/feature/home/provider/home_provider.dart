@@ -21,6 +21,7 @@ enum ScreenAction {
 }
 
 final menuProvider = StateProvider<Menu>((ref) {return Menu.dashboard;});
+final menuIndex = StateProvider<int>((ref) {return 0;});
 
 enum DashboardTab {health, attendance,absentee,}
 final dashboardTabProvider = StateProvider<DashboardTab>((ref) {

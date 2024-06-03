@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kyoumutechou/feature/common/provider/common_provider.dart';
 import 'package:kyoumutechou/feature/home/provider/home_provider.dart';
@@ -8,36 +9,57 @@ import 'package:kyoumutechou/helpers/theme/app_theme.dart';
 class SettingPage extends ConsumerWidget{
   const SettingPage({super.key});
 
+
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    var mIndex = ref.watch(menuIndex);
+
+    final buttonList = <Widget>[];
+    if (dotenv.env['Menu_Setting_Seats'] != null) {
+      final menuSettingSeats = dotenv.env['Menu_Setting_Seats'] ?? '0';
+      if (menuSettingSeats == '1') {
+        mIndex ++;
+
+        buttonList.add(
+          _menuButton(
+            context,
+            Menu.seatChart,
+            '座席表設定',
+            Icons.app_registration_outlined,
+            ref,
+            mIndex,
+          ),
+        );
+      }
+    }
+
+    if (dotenv.env['Menu_Setting_Template'] != null) {
+      final menuSettingTemplate = dotenv.env['Menu_Setting_Template'] ?? '0';
+      if (menuSettingTemplate == '1') {
+        mIndex++;
+
+        buttonList.add(
+          _menuButton(
+            context,
+            Menu.awarenessTemplate,
+            '気づきテンプレート',
+            Icons.lightbulb_outline,
+            ref,
+            mIndex,
+          ),
+        );
+      }
+    }
+
+
     return Container(
       padding: const EdgeInsets.all(16),
       color: theme.colorScheme.surface,
       child: Column(
         children: [
           Row(
-            children: [
-              _menuButton(
-                context,
-                Menu.seatChart,
-                '座席表設定',
-                Icons.app_registration_outlined,
-                ref,
-              ),
-              _menuButton(
-                context,
-                Menu.awarenessTemplate,
-                '気づきテンプレート',
-                Icons.lightbulb_outline,
-                ref,
-              ),
-              // _menuButton(
-              //   context,
-              //   'キャッシュクリア',
-              //   Icons.delete_outline,
-              //   '/clearCache',
-              // ),
-            ],
+            children: buttonList,
           ),
         ],
       ),
@@ -51,6 +73,7 @@ class SettingPage extends ConsumerWidget{
     String title, 
     IconData icon, 
     WidgetRef ref,
+    int index,
   ) {
     return Padding(
       padding: const EdgeInsets.all(16),
@@ -60,6 +83,7 @@ class SettingPage extends ConsumerWidget{
             ref.read(seatChartPageTypeProvider.notifier).state = PageType.list;
           }
           ref.read(menuProvider.notifier).state = menuId;
+          ref.read(menuIndex.notifier).state = index;
         },
         style: ElevatedButton.styleFrom(
           side: BorderSide(

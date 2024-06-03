@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -36,72 +37,7 @@ class HomePageState extends ConsumerState<HomePage> {
 
   late ThemeData theme;
 
-  @override
-  void initState() {
-    super.initState();
-    theme = AppTheme.lightTheme;
-  }
-
-  void _onItemTapped(int index) {
-    ref.read(menuProvider.notifier).state = navItems[index].menuId;
-  }
-
-  // ナビゲーションバーのアイテム
-  final List<NavItem> navItems = [
-    // 0
-    NavItem(
-      Menu.dashboard,
-      'ホーム',
-      const DashboardPage(),
-      const Icon(Icons.home),
-      const Icon(Icons.home_outlined),
-    ),
-    // 1
-    NavItem(
-      Menu.health,
-      '健康観察',
-      HealthPage(),
-      const FaIcon(
-        FontAwesomeIcons.stethoscope,
-      ),
-      const FaIcon(
-        FontAwesomeIcons.stethoscope,
-      ),
-    ),
-    // 2
-    NavItem(
-      Menu.attendance,
-      '出欠(日)',
-      AttendancePage(),
-      const Icon(Icons.content_paste),
-      const Icon(Icons.content_paste_outlined),
-    ),
-    // 3
-    NavItem(
-      Menu.attendanceTimed,
-      '出欠(時限)',
-      AttendanceTimedPage(),
-      const Icon(Icons.content_paste),
-      const Icon(Icons.content_paste_outlined),
-    ),
-    // 4
-    NavItem(
-      Menu.awareness,
-      '気づき',
-      const AwarenessPage(),
-      const Icon(Icons.lightbulb),
-      const Icon(Icons.lightbulb_outlined),
-    ),
-    // 5
-    NavItem(
-      Menu.setting,
-      '設定',
-      const SettingPage(),
-      const Icon(Icons.settings),
-      const Icon(Icons.settings_outlined),
-    ),
-  ];
-
+  final List<NavItem> navItems = [];
   final List<NavItem> settingItems = [
     NavItem(
       Menu.modoru,
@@ -110,21 +46,182 @@ class HomePageState extends ConsumerState<HomePage> {
       const Icon(Icons.arrow_back),
       const Icon(Icons.arrow_back_outlined),
     ),
-    NavItem(
-      Menu.seatChart,
-      '座席表設定',
-      SeatChartPage(),
-      const Icon(Icons.grid_4x4),
-      const Icon(Icons.grid_4x4_outlined),
-    ),
-    NavItem(
-      Menu.awarenessTemplate,
-      '気づきテンプレート',
-      const KizukiTemplatePage(),
-      const Icon(Icons.lightbulb),
-      const Icon(Icons.lightbulb_outlined),
-    ),
   ];
+
+  late final String menuHome;
+  late final String menuHealth;
+  late final String menuAttendance;
+  late final String menuAttendanceTime;
+  late final String menuAwareness;
+  late final String menuSetting;
+  late final String menuSettingSeats;
+  late final String menuSettingTemplate;
+
+  int settingIndex = 99;
+
+  @override
+  void initState() {
+    super.initState();
+    theme = AppTheme.lightTheme;
+
+    initialMenu();
+  }
+
+  void initialMenu() {
+    //ホーム
+    if (dotenv.env['Menu_Home'] != null) {
+      menuHome = dotenv.env['Menu_Home'] ?? '0';
+
+      if (menuHome == '1') {
+        // 0
+        navItems.add(
+          NavItem(
+            Menu.dashboard,
+            'ホーム',
+            const DashboardPage(),
+            const Icon(Icons.home),
+            const Icon(Icons.home_outlined),
+          ),
+        );
+      }
+    }
+
+    //健康観察
+    if (dotenv.env['Menu_Health'] != null) {
+      menuHealth = dotenv.env['Menu_Health'] ?? '0';
+
+      if (menuHealth == '1') {
+        navItems.add(
+          NavItem(
+            Menu.health,
+            '健康観察',
+            HealthPage(),
+            const FaIcon(
+              FontAwesomeIcons.stethoscope,
+            ),
+            const FaIcon(
+              FontAwesomeIcons.stethoscope,
+            ),
+          ),
+        );
+      }
+    }
+
+    //出欠(日)
+    if (dotenv.env['Menu_Attendance'] != null) {
+      menuAttendance = dotenv.env['Menu_Attendance'] ?? '0';
+
+      if (menuAttendance == '1') {
+        navItems.add(
+          NavItem(
+            Menu.attendance,
+            '出欠(日)',
+            AttendancePage(),
+            const Icon(Icons.content_paste),
+            const Icon(Icons.content_paste_outlined),
+          ),
+        );
+      }
+    }
+
+    //出欠(時限)
+    if (dotenv.env['Menu_Attendance_Time'] != null) {
+      menuAttendanceTime = dotenv.env['Menu_Attendance_Time'] ?? '0';
+
+      if (menuAttendanceTime == '1') {
+        navItems.add(
+          NavItem(
+            Menu.attendanceTimed,
+            '出欠(時限)',
+            AttendanceTimedPage(),
+            const Icon(Icons.content_paste),
+            const Icon(Icons.content_paste_outlined),
+          ),
+        );
+      }
+    }
+
+    //気づき
+    if (dotenv.env['Menu_Awareness'] != null) {
+      menuAwareness = dotenv.env['Menu_Awareness'] ?? '0';
+
+      if (menuAwareness == '1') {
+        navItems.add(
+          NavItem(
+            Menu.awareness,
+            '気づき',
+            const AwarenessPage(),
+            const Icon(Icons.lightbulb),
+            const Icon(Icons.lightbulb_outlined),
+          ),
+        );
+      }
+    }
+
+    //設定
+    if (dotenv.env['Menu_Setting'] != null) {
+      menuSetting = dotenv.env['Menu_Setting'] ?? '0';
+
+      if (menuSetting == '1') {
+        navItems.add(
+          NavItem(
+            Menu.setting,
+            '設定',
+            const SettingPage(),
+            const Icon(Icons.settings),
+            const Icon(Icons.settings_outlined),
+          ),
+        );
+
+        settingIndex = navItems.length - 1;
+      }
+    }
+
+    // メニュー数が＜２の場合、重複メニューを追加する。
+    if (navItems.length == 1) {
+      navItems.add(navItems[0]);
+    }
+
+    //座席表設定
+    if (dotenv.env['Menu_Setting_Seats'] != null) {
+      menuSettingSeats = dotenv.env['Menu_Setting_Seats'] ?? '0';
+
+      if (menuSettingSeats == '1') {
+        settingItems.add(
+          NavItem(
+            Menu.seatChart,
+            '座席表設定',
+            SeatChartPage(),
+            const Icon(Icons.grid_4x4),
+            const Icon(Icons.grid_4x4_outlined),
+          ),
+        );
+      }
+    }
+    //気づきテンプレート
+    if (dotenv.env['Menu_Setting_Template'] != null) {
+      menuSettingTemplate = dotenv.env['Menu_Setting_Template'] ?? '0';
+
+      if (menuSettingTemplate == '1') {
+        settingItems.add(
+          NavItem(
+            Menu.awarenessTemplate,
+            '気づきテンプレート',
+            const KizukiTemplatePage(),
+            const Icon(Icons.lightbulb),
+            const Icon(Icons.lightbulb_outlined),
+          ),
+        );
+      }
+    }
+  }  
+
+  void _onItemTapped(int index) {
+    ref.read(menuIndex.notifier).state = index;
+    
+    ref.read(menuProvider.notifier).state = navItems[index].menuId;
+  }
+
 
   void handleLogout() {
     try {
@@ -157,7 +254,7 @@ class HomePageState extends ConsumerState<HomePage> {
   }
 
   Widget switchToPage(BuildContext context) {
-    final selectedIndex = ref.watch(menuProvider).index;
+    final selectedIndex = ref.watch(menuIndex);
     final isCA = ref.watch(isContactAllowedProvider);
 
     return Scaffold(
@@ -187,7 +284,9 @@ class HomePageState extends ConsumerState<HomePage> {
                   // 左２）ナビゲーションバー
                   Expanded(
                     child: NavigationRail(
-                      selectedIndex: selectedIndex > 5 ? 5 : selectedIndex,
+                      selectedIndex: selectedIndex > settingIndex
+                          ? settingIndex
+                          : selectedIndex,
                       onDestinationSelected: _onItemTapped,
                       labelType: NavigationRailLabelType.all,
                       destinations: [
@@ -325,8 +424,8 @@ class HomePageState extends ConsumerState<HomePage> {
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.all(8),
-                      child: selectedIndex > 5
-                          ? settingItems[selectedIndex - 5].page
+                      child: selectedIndex > settingIndex
+                          ? settingItems[selectedIndex - settingIndex].page
                           : navItems[selectedIndex].page,
                     ),
                   ),
