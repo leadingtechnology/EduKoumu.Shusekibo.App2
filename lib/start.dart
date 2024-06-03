@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:developer';
-//import 'dart:html' as html;
+// ignore: avoid_web_libraries_in_flutter
+import 'dart:html' as html;
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -83,7 +84,19 @@ Future<void> start() async {
   // トークン
   await Hive.openBox<String>('shusekibo');
   await Hive.box<String>('shusekibo').put('token', '');
+  await Hive.box<String>('shusekibo').put('secret', '');
 
+  final uri = Uri.parse(html.window.location.href);
+  final secret = uri.queryParameters['secret'];
+  if (secret != null) {
+    await Hive.box<String>('shusekibo').put('secret', secret);
+  }
+
+  final pathSegment = uri.pathSegments;
+  if (pathSegment.isNotEmpty && pathSegment.length > 1){
+    await Hive.box<String>('shusekibo').put('saml', pathSegment[1]);
+  }
+  
   // 団体
   await Hive.openBox<DantaiModel>('Dantai');
 

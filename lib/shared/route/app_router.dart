@@ -5,7 +5,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kyoumutechou/app/widget/app_start_page.dart';
-import 'package:kyoumutechou/feature/auth/widget/sign_in_page.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'app_router.g.dart';
@@ -38,29 +37,29 @@ class AppRoute extends GoRouteData {
   }
 }
 
-@TypedGoRoute<SignInRoute>(path: SignInRoute.path)
-class SignInRoute extends GoRouteData {
-  const SignInRoute();
+// @TypedGoRoute<SignInRoute>(path: SignInRoute.path)
+// class SignInRoute extends GoRouteData {
+//   const SignInRoute();
 
-  static const path = '/signIn';
+//   static const path = '/signIn';
 
-  @override
-  Widget build(BuildContext context, GoRouterState state) {
-    return const SignInPage();
-  }
-}
+//   @override
+//   Widget build(BuildContext context, GoRouterState state) {
+//     return const SignInPage();
+//   }
+// }
 
-class GoNavigatorObserver extends NavigatorObserver {
-  @override
-  void didPush(Route<dynamic> route, Route<dynamic>? previousRoute) {
-    debugPrint('did push route $route : $previousRoute');
-  }
+// class GoNavigatorObserver extends NavigatorObserver {
+//   @override
+//   void didPush(Route<dynamic> route, Route<dynamic>? previousRoute) {
+//     debugPrint('did push route $route : $previousRoute');
+//   }
 
-  @override
-  void didPop(Route<dynamic> route, Route<dynamic>? previousRoute) {
-    debugPrint('did pop route $route : $previousRoute');
-  }
-}
+//   @override
+//   void didPop(Route<dynamic> route, Route<dynamic>? previousRoute) {
+//     debugPrint('did pop route $route : $previousRoute');
+//   }
+// }
 
 // // 010) ダッシュボードルート
 // @TypedGoRoute<DashboardRoute>(path: DashboardRoute.path)

@@ -8,6 +8,7 @@ import 'package:kyoumutechou/shared/http/api_provider.dart';
 
 abstract class AuthRepositoryProtocol {
   Future<AuthState> login(String email, String password);
+  Future<AuthState> samlLogin(String token);
 }
 
 final authRepositoryProvider = Provider(AuthRepository.new);
@@ -56,4 +57,31 @@ class AuthRepository implements AuthRepositoryProtocol {
       return AuthState.error(error);
     },);
   }
+
+  @override
+  Future<AuthState> samlLogin(String token) async {
+    // 
+    final body = <String, dynamic>{
+      'secret': token,
+    };
+
+    final response = await _api.post('saml', body);
+
+    return response.when(
+      success: (value) async {
+        final staff = Staff.fromJson(value as Map<String, dynamic>);
+        await Hive.box<String>('shusekibo').put('token', staff.access_token);
+        await Hive.box<String>('shusekibo').put('user', staff.UserName);
+        await Hive.box<String>('shusekibo').put('dantaiId', staff.DantaiId);
+        await Hive.box<String>('shusekibo').put('loginId', staff.LoginId);
+        await Hive.box<String>('shusekibo').put('kihonId', staff.KihonId);
+        await Hive.box<String>('shusekibo').put('userId', staff.UserId);
+
+        return const AuthState.loggedIn();
+      },
+      error: (error) {
+        return AuthState.error(error);
+      },
+    );
+  }  
 }

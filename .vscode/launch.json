@@ -10,8 +10,11 @@
       "type": "dart",
       "program": "lib/main_development.dart",
       "args": [
-        "--flavor",
-        "development",
+        "-d",
+        "chrome",
+        "--web-port=8080",
+        "--web-tls-cert-path=localhost.pem",
+        "--web-tls-cert-key-path=localhost-key.pem",
         "--target",
         "lib/main_development.dart"
       ]
@@ -21,14 +24,30 @@
       "request": "launch",
       "type": "dart",
       "program": "lib/main_staging.dart",
-      "args": ["--flavor", "staging", "--target", "lib/main_staging.dart"]
+      "args": [
+        "-d",
+        "chrome",
+        "--web-port=8080",
+        "--web-tls-cert-path=localhost.pem",
+        "--web-tls-cert-key-path=localhost-key.pem",
+        "--target",
+        "lib/main_staging.dart"
+      ]
     },
     {
       "name": "Launch production",
       "request": "launch",
       "type": "dart",
       "program": "lib/main_production.dart",
-      "args": ["--flavor", "production", "--target", "lib/main_production.dart"]
+      "args": [
+        "-d",
+        "chrome",
+        "--web-port=8080",
+        "--web-tls-cert-path=localhost.pem",
+        "--web-tls-cert-key-path=localhost-key.pem",
+        "--target",
+        "lib/main_production.dart"
+      ]
     }
   ]
 }

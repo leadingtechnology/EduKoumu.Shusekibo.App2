@@ -48,6 +48,8 @@ class AuthNotifier extends _$AuthNotifier {
     
     // クリアトークン
     await Hive.box<String>('shusekibo').put('token', '');
+    await Hive.box<String>('shusekibo').put('secret', '');
+    await Hive.box<String>('shusekibo').put('saml', '');
 
     // common
     await Hive.box<DantaiModel>('Dantai').clear();

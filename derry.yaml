@@ -26,6 +26,11 @@ build_apk_prod:
   - flutter pub get
   - flutter build apk --flavor production -t lib/main_production.dart
 
+build_web_dev:
+  - flutter clean
+  - flutter pub get
+  - flutter build web --flavor development -t lib/main_development.dart
+
 start_ios:
   - xcrun simctl list
   - open /Applications/Xcode.app/Contents/Developer/Applications/Simulator.app/
