@@ -11,8 +11,8 @@ import 'package:kyoumutechou/helpers/widgets/my_spacing.dart';
 import 'package:kyoumutechou/shared/http/app_exception.dart';
 import 'package:kyoumutechou/shared/util/date_util.dart';
 
-class ContactLinkageDialog extends ConsumerWidget {
-  const ContactLinkageDialog({super.key});
+class ContactLinkageWidget extends ConsumerWidget {
+  const ContactLinkageWidget({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -84,8 +84,20 @@ class ContactLinkageDialog extends ConsumerWidget {
   ) {
     final selectedDate = ref.watch(contactDateProvider);
 
-    return Dialog(
-      surfaceTintColor: theme.colorScheme.surface,
+    return Container(
+      decoration: BoxDecoration(
+        boxShadow: const [
+          BoxShadow(
+            color: Colors.grey,
+            spreadRadius: 10,
+            blurRadius: 20,
+            offset: Offset(1, 1),
+          ),
+        ],
+        borderRadius: BorderRadius.circular(10),
+        color: Colors.white,
+      ),
+      
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [

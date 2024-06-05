@@ -16,7 +16,7 @@ import 'package:kyoumutechou/feature/dashboard/widget/dashboard_page.dart';
 import 'package:kyoumutechou/feature/health/widget/health_page.dart';
 import 'package:kyoumutechou/feature/home/provider/home_provider.dart';
 import 'package:kyoumutechou/feature/kizuki/widget/kizuki_template_page.dart';
-import 'package:kyoumutechou/feature/linkage/widget/contact_linkage_dialog.dart';
+import 'package:kyoumutechou/feature/linkage/widget/contact_linkage_widget.dart';
 import 'package:kyoumutechou/feature/seat/seat_chart_page.dart';
 import 'package:kyoumutechou/feature/setting/setting_page.dart';
 import 'package:kyoumutechou/helpers/theme/app_theme.dart';
@@ -37,6 +37,7 @@ class HomePageState extends ConsumerState<HomePage> {
 
   late ThemeData theme;
 
+  // メニュー関連
   final List<NavItem> navItems = [];
   final List<NavItem> settingItems = [
     NavItem(
@@ -48,16 +49,22 @@ class HomePageState extends ConsumerState<HomePage> {
     ),
   ];
 
-  late final String menuHome;
-  late final String menuHealth;
-  late final String menuAttendance;
-  late final String menuAttendanceTime;
-  late final String menuAwareness;
-  late final String menuSetting;
-  late final String menuSettingSeats;
-  late final String menuSettingTemplate;
+  late String menuHome;
+  late String menuHealth;
+  late String menuAttendance;
+  late String menuAttendanceTime;
+  late String menuAwareness;
+  late String menuSetting;
+  late String menuSettingSeats;
+  late String menuSettingTemplate;
 
   int settingIndex = 99;
+
+  // ドラグアンドドロップ関連
+  final dialogWidth = 550.0;
+  final dialogHeight = 600.0;
+  final _globalKey = GlobalKey();
+  Offset dialogOffset = Offset.zero;
 
   @override
   void initState() {
@@ -69,112 +76,112 @@ class HomePageState extends ConsumerState<HomePage> {
 
   void initialMenu() {
     //ホーム
+    menuHome = '1';
     if (dotenv.env['Menu_Home'] != null) {
-      menuHome = dotenv.env['Menu_Home'] ?? '0';
-
-      if (menuHome == '1') {
-        // 0
-        navItems.add(
-          NavItem(
-            Menu.dashboard,
-            'ホーム',
-            const DashboardPage(),
-            const Icon(Icons.home),
-            const Icon(Icons.home_outlined),
-          ),
-        );
-      }
+      menuHome = dotenv.env['Menu_Home'] ?? '1';
+    }
+    if (menuHome == '1') {
+      // 0
+      navItems.add(
+        NavItem(
+          Menu.dashboard,
+          'ホーム',
+          const DashboardPage(),
+          const Icon(Icons.home),
+          const Icon(Icons.home_outlined),
+        ),
+      );
     }
 
     //健康観察
+    menuHealth = '1';
     if (dotenv.env['Menu_Health'] != null) {
-      menuHealth = dotenv.env['Menu_Health'] ?? '0';
-
-      if (menuHealth == '1') {
-        navItems.add(
-          NavItem(
-            Menu.health,
-            '健康観察',
-            HealthPage(),
-            const FaIcon(
-              FontAwesomeIcons.stethoscope,
-            ),
-            const FaIcon(
-              FontAwesomeIcons.stethoscope,
-            ),
+      menuHealth = dotenv.env['Menu_Health'] ?? '1';
+    }
+    if (menuHealth == '1') {
+      navItems.add(
+        NavItem(
+          Menu.health,
+          '健康観察',
+          HealthPage(),
+          const FaIcon(
+            FontAwesomeIcons.stethoscope,
           ),
-        );
-      }
+          const FaIcon(
+            FontAwesomeIcons.stethoscope,
+          ),
+        ),
+      );
     }
 
     //出欠(日)
+    menuAttendance = '1';
     if (dotenv.env['Menu_Attendance'] != null) {
-      menuAttendance = dotenv.env['Menu_Attendance'] ?? '0';
-
-      if (menuAttendance == '1') {
-        navItems.add(
-          NavItem(
-            Menu.attendance,
-            '出欠(日)',
-            AttendancePage(),
-            const Icon(Icons.content_paste),
-            const Icon(Icons.content_paste_outlined),
-          ),
-        );
-      }
+      menuAttendance = dotenv.env['Menu_Attendance'] ?? '1';
+    }
+    if (menuAttendance == '1') {
+      navItems.add(
+        NavItem(
+          Menu.attendance,
+          '出欠(日)',
+          AttendancePage(),
+          const Icon(Icons.content_paste),
+          const Icon(Icons.content_paste_outlined),
+        ),
+      );
     }
 
     //出欠(時限)
+    menuAttendanceTime = '1';
     if (dotenv.env['Menu_Attendance_Time'] != null) {
-      menuAttendanceTime = dotenv.env['Menu_Attendance_Time'] ?? '0';
-
-      if (menuAttendanceTime == '1') {
-        navItems.add(
-          NavItem(
-            Menu.attendanceTimed,
-            '出欠(時限)',
-            AttendanceTimedPage(),
-            const Icon(Icons.content_paste),
-            const Icon(Icons.content_paste_outlined),
-          ),
-        );
-      }
+      menuAttendanceTime = dotenv.env['Menu_Attendance_Time'] ?? '1';
+    }
+    if (menuAttendanceTime == '1') {
+      navItems.add(
+        NavItem(
+          Menu.attendanceTimed,
+          '出欠(時限)',
+          AttendanceTimedPage(),
+          const Icon(Icons.content_paste),
+          const Icon(Icons.content_paste_outlined),
+        ),
+      );
     }
 
     //気づき
+    menuAwareness = '1';
     if (dotenv.env['Menu_Awareness'] != null) {
-      menuAwareness = dotenv.env['Menu_Awareness'] ?? '0';
-
-      if (menuAwareness == '1') {
-        navItems.add(
-          NavItem(
-            Menu.awareness,
-            '気づき',
-            const AwarenessPage(),
-            const Icon(Icons.lightbulb),
-            const Icon(Icons.lightbulb_outlined),
-          ),
-        );
-      }
+      menuAwareness = dotenv.env['Menu_Awareness'] ?? '1';
+    }
+    if (menuAwareness == '1') {
+      navItems.add(
+        NavItem(
+          Menu.awareness,
+          '気づき',
+          const AwarenessPage(),
+          const Icon(Icons.lightbulb),
+          const Icon(Icons.lightbulb_outlined),
+        ),
+      );
     }
 
     //設定
+    menuSetting = '1';
     if (dotenv.env['Menu_Setting'] != null) {
-      menuSetting = dotenv.env['Menu_Setting'] ?? '0';
+      menuSetting = dotenv.env['Menu_Setting'] ?? '1';
+    }
+    if (menuSetting == '1') {
+      navItems.add(
+        NavItem(
+          Menu.setting,
+          '設定',
+          const SettingPage(),
+          const Icon(Icons.settings),
+          const Icon(Icons.settings_outlined),
+        ),
+      );
 
-      if (menuSetting == '1') {
-        navItems.add(
-          NavItem(
-            Menu.setting,
-            '設定',
-            const SettingPage(),
-            const Icon(Icons.settings),
-            const Icon(Icons.settings_outlined),
-          ),
-        );
-
-        settingIndex = navItems.length - 1;
-      }
+      settingIndex = navItems.length - 1;
     }
 
     // メニュー数が＜２の場合、重複メニューを追加する。
@@ -183,41 +190,43 @@ class HomePageState extends ConsumerState<HomePage> {
     }
 
     //座席表設定
+    menuSettingSeats = '1';
     if (dotenv.env['Menu_Setting_Seats'] != null) {
-      menuSettingSeats = dotenv.env['Menu_Setting_Seats'] ?? '0';
-
-      if (menuSettingSeats == '1') {
-        settingItems.add(
-          NavItem(
-            Menu.seatChart,
-            '座席表設定',
-            SeatChartPage(),
-            const Icon(Icons.grid_4x4),
-            const Icon(Icons.grid_4x4_outlined),
-          ),
-        );
-      }
+      menuSettingSeats = dotenv.env['Menu_Setting_Seats'] ?? '1';
     }
+    if (menuSettingSeats == '1') {
+      settingItems.add(
+        NavItem(
+          Menu.seatChart,
+          '座席表設定',
+          SeatChartPage(),
+          const Icon(Icons.grid_4x4),
+          const Icon(Icons.grid_4x4_outlined),
+        ),
+      );
+    }
+
     //気づきテンプレート
+    menuSettingTemplate = '1';
     if (dotenv.env['Menu_Setting_Template'] != null) {
-      menuSettingTemplate = dotenv.env['Menu_Setting_Template'] ?? '0';
-
-      if (menuSettingTemplate == '1') {
-        settingItems.add(
-          NavItem(
-            Menu.awarenessTemplate,
-            '気づきテンプレート',
-            const KizukiTemplatePage(),
-            const Icon(Icons.lightbulb),
-            const Icon(Icons.lightbulb_outlined),
-          ),
-        );
-      }
+      menuSettingTemplate = dotenv.env['Menu_Setting_Template'] ?? '1';
     }
+    if (menuSettingTemplate == '1') {
+      settingItems.add(
+        NavItem(
+          Menu.awarenessTemplate,
+          '気づきテンプレート',
+          const KizukiTemplatePage(),
+          const Icon(Icons.lightbulb),
+          const Icon(Icons.lightbulb_outlined),
+        ),
+      );
+    }
+
   }  
 
   void _onItemTapped(int index) {
-    ref.read(menuIndex.notifier).state = index;
+    ref.read(menuIndexProvider.notifier).state = index;
     
     ref.read(menuProvider.notifier).state = navItems[index].menuId;
   }
@@ -254,11 +263,22 @@ class HomePageState extends ConsumerState<HomePage> {
   }
 
   Widget switchToPage(BuildContext context) {
-    final selectedIndex = ref.watch(menuIndex);
+    final selectedIndex = ref.watch(menuIndexProvider);
     final isCA = ref.watch(isContactAllowedProvider);
+    final isDialogVisible = ref.watch(isDialogVisibleProvider);
+    final screenWidth = MediaQuery.of(context).size.width;
+    if (!isDialogVisible){
+      var w = screenWidth - dialogWidth - 10;
+      if (w <0 ) w = 0;
+
+      dialogOffset = Offset(w, 68);
+    }
 
     return Scaffold(
-      body: Row(
+      body: Stack(
+        key: _globalKey,
+        children: [
+      Row(
         children: [
           if (!_isShowMenu) // メニューを非表示の場合は空のコンテナを表示
             Container()
@@ -369,27 +389,51 @@ class HomePageState extends ConsumerState<HomePage> {
                           ),
                         ),
                         if (isCA)
+                        // Padding(
+                        //   padding: const EdgeInsets.fromLTRB(0, 10, 20, 0),
+                        //   child: GestureDetector(
+                        //     onTap: () {
+                        //       ref
+                        //           .read(isDialogVisibleProvider.notifier)
+                        //           .state = !isDialogVisible;
+                        //     },
+                        //     child: Container(
+                        //       padding: const EdgeInsets.all(10),
+                        //       decoration: BoxDecoration(
+                        //         color: isDialogVisible
+                        //             ? Colors.blue[100]
+                        //             : Colors.white,
+                        //         shape: BoxShape.circle,
+                        //         boxShadow: [
+                        //           BoxShadow(
+                        //             color: Colors.grey.withOpacity(0.5),
+                        //             spreadRadius: 5,
+                        //             blurRadius: 7,
+                        //             offset: const Offset(0, 3), 
+                        //           ),
+                        //         ],
+                        //       ),
+                        //       child: Center(
+                        //         child: Icon(
+                        //           Icons.campaign_outlined,
+                        //           color: isDialogVisible
+                        //               ? Colors.blue
+                        //               : Colors.black,
+                        //           size: 30,
+                        //         ),
+                        //       ),
+                        //     ),
+                        //   ),
+                        // ),
                         Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+                          padding: const EdgeInsets.fromLTRB(0, 10, 18, 0),
                           child: IconButton(
                             icon: const Icon(Icons.campaign_outlined),
                             iconSize: 30,
                             onPressed: () async{
-                              await showDialog<void>(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return Align(
-                                    alignment: Alignment.topRight,
-                                    child: Container(
-                                      width: 650,
-                                      margin: EdgeInsets.only(
-                                        top: MediaQuery.of(context).padding.top,
-                                      ),
-                                      child: const ContactLinkageDialog(),
-                                    ),
-                                  );
-                                },
-                              );
+                                  ref
+                                      .read(isDialogVisibleProvider.notifier)
+                                      .state = !isDialogVisible;
                             },
                           ),
                         ),
@@ -435,6 +479,77 @@ class HomePageState extends ConsumerState<HomePage> {
           ),
         ],
       ),
+      
+      // 通知画面
+      if (isDialogVisible)
+        Positioned(
+          left: dialogOffset.dx,
+          top: dialogOffset.dy,
+          child: GestureDetector(
+            onTap: () {},
+            child: Draggable(
+              feedback: _buildBox(),
+              childWhenDragging: Container(),
+              child: LayoutBuilder(
+                    builder: (context, constraints) {
+                      return _buildDialog();
+                    },
+                  ),
+              onDragEnd: (details) {
+                    final renderBox = _globalKey.currentContext!
+                        .findRenderObject()! as RenderBox;
+                    var boxOffset = renderBox.globalToLocal(details.offset);
+            
+                    if(boxOffset.dx < 0){
+                      boxOffset = Offset(0, boxOffset.dy);
+                    }
+                    if(boxOffset.dy < 0){
+                      boxOffset = Offset(boxOffset.dx, 0);
+                    }
+                    if(boxOffset.dx > renderBox.size.width - dialogWidth){
+                      boxOffset = Offset(renderBox.size.width - dialogWidth, boxOffset.dy);
+                    }
+                    if(boxOffset.dy > renderBox.size.height - dialogHeight){
+                      boxOffset = Offset(boxOffset.dx, renderBox.size.height - dialogHeight);
+                    }
+                    
+                setState(() {
+                  dialogOffset = boxOffset;
+                });
+              },
+            ),
+          ),
+        ),
+
+    ],),
+    );
+  }
+
+  Widget _buildBox() {
+    // 枠線ありのコンテナ
+    return Container(
+      width: dialogWidth,
+      height: dialogHeight,
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: Colors.grey, // Border color
+          width: 4, // Border width
+        ),
+      ),
+      child: const Center(
+        child: Text(''),
+      ),
+    );
+  }
+
+  Widget _buildDialog() {
+    return Container(
+      width: dialogWidth,
+      height: dialogHeight,      
+      margin: EdgeInsets.only(
+        top: MediaQuery.of(context).padding.top,
+      ),
+      child: const ContactLinkageWidget(),
     );
   }
 }

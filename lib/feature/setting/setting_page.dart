@@ -13,43 +13,45 @@ class SettingPage extends ConsumerWidget{
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    var mIndex = ref.watch(menuIndex);
+    var mIndex = ref.watch(menuIndexProvider);
 
     final buttonList = <Widget>[];
+    var menuSettingSeats = '1';
     if (dotenv.env['Menu_Setting_Seats'] != null) {
-      final menuSettingSeats = dotenv.env['Menu_Setting_Seats'] ?? '0';
-      if (menuSettingSeats == '1') {
-        mIndex ++;
+      menuSettingSeats = dotenv.env['Menu_Setting_Seats'] ?? '1';
+    }
+    if (menuSettingSeats == '1') {
+      mIndex++;
 
-        buttonList.add(
-          _menuButton(
-            context,
-            Menu.seatChart,
-            '座席表設定',
-            Icons.app_registration_outlined,
-            ref,
-            mIndex,
-          ),
-        );
-      }
+      buttonList.add(
+        _menuButton(
+          context,
+          Menu.seatChart,
+          '座席表設定',
+          Icons.app_registration_outlined,
+          ref,
+          mIndex,
+        ),
+      );
     }
 
+    var menuSettingTemplate = '1';
     if (dotenv.env['Menu_Setting_Template'] != null) {
-      final menuSettingTemplate = dotenv.env['Menu_Setting_Template'] ?? '0';
-      if (menuSettingTemplate == '1') {
-        mIndex++;
+      menuSettingTemplate = dotenv.env['Menu_Setting_Template'] ?? '1';
+    }
+    if (menuSettingTemplate == '1') {
+      mIndex++;
 
-        buttonList.add(
-          _menuButton(
-            context,
-            Menu.awarenessTemplate,
-            '気づきテンプレート',
-            Icons.lightbulb_outline,
-            ref,
-            mIndex,
-          ),
-        );
-      }
+      buttonList.add(
+        _menuButton(
+          context,
+          Menu.awarenessTemplate,
+          '気づきテンプレート',
+          Icons.lightbulb_outline,
+          ref,
+          mIndex,
+        ),
+      );
     }
 
 
@@ -83,7 +85,7 @@ class SettingPage extends ConsumerWidget{
             ref.read(seatChartPageTypeProvider.notifier).state = PageType.list;
           }
           ref.read(menuProvider.notifier).state = menuId;
-          ref.read(menuIndex.notifier).state = index;
+          ref.read(menuIndexProvider.notifier).state = index;
         },
         style: ElevatedButton.styleFrom(
           side: BorderSide(

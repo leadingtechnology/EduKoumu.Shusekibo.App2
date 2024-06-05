@@ -76,7 +76,7 @@ class AuthNotifier extends _$AuthNotifier {
     ..invalidate(timedProvider)
     ..invalidate(filterProvider)
     ..invalidate(menuProvider)
-    ..invalidate(menuIndex)
+    ..invalidate(menuIndexProvider)
     ..invalidate(tanninProvider)
     ..invalidate(isTokobiProvider)
   	..invalidate(isLockedProvider)
