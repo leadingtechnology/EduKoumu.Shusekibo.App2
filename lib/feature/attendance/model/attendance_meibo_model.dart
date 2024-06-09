@@ -30,12 +30,13 @@ abstract class AttendanceMeiboModel with _$AttendanceMeiboModel {
     @JsonKey(name: 'PhotoUrl', disallowNullValue: false) @HiveField(8) String? photoUrl,
     @JsonKey(name: 'TenshutsuYoteiFlg', disallowNullValue: false) @HiveField(9) bool? tenshutsuYoteiFlg,
     @JsonKey(name: 'TenshutsuSumiFlg',  disallowNullValue: false) @HiveField(10) bool? tenshutsuSumiFlg,
-    @JsonKey(name: 'JokyoList', disallowNullValue: false) @HiveField(11) List<AttendanceStatusModel>? jokyoList,
+    @JsonKey(name: 'StudentTsushoName',  disallowNullValue: false) @HiveField(11) String? studentTsushoName,
+    @JsonKey(name: 'JokyoList', disallowNullValue: false) @HiveField(12) List<AttendanceStatusModel>? jokyoList,
   }) = _AttendanceMeiboModel;
 
   @override
   String toString() {
-    return 'AttendanceMeiboModel($studentKihonId, $studentSeq, $gakunen, $className, $studentNumber, $photoImageFlg, $name, $genderCode, $photoUrl, $tenshutsuYoteiFlg, $tenshutsuSumiFlg, $jokyoList)';
+    return 'AttendanceMeiboModel($studentKihonId, $studentSeq, $gakunen, $className, $studentNumber, $photoImageFlg, $name, $genderCode, $photoUrl, $tenshutsuYoteiFlg, $tenshutsuSumiFlg, $studentTsushoName, $jokyoList)';
   }
   factory AttendanceMeiboModel.fromJson(Map<String, dynamic> json) => _$AttendanceMeiboModelFromJson(json);
 }
@@ -44,7 +45,7 @@ extension NewJson on AttendanceMeiboModel {
   Map<String, dynamic> toNewJson() => {
         'SeitoSeq': studentSeq,
         'StudentKihonId': studentKihonId,
-        'ShozokuNameTsusho': name,
+        'StudentTsushoName': name,
         'ShukketsuModelList': jokyoList == null
             ? '[]'
             : jokyoList?.map((v) => v.toNewJson()).toList(),

@@ -53,8 +53,11 @@ mixin _$AttendanceMeiboModel {
   @JsonKey(name: 'TenshutsuSumiFlg', disallowNullValue: false)
   @HiveField(10)
   bool? get tenshutsuSumiFlg => throw _privateConstructorUsedError;
-  @JsonKey(name: 'JokyoList', disallowNullValue: false)
+  @JsonKey(name: 'StudentTsushoName', disallowNullValue: false)
   @HiveField(11)
+  String? get studentTsushoName => throw _privateConstructorUsedError;
+  @JsonKey(name: 'JokyoList', disallowNullValue: false)
+  @HiveField(12)
   List<AttendanceStatusModel>? get jokyoList =>
       throw _privateConstructorUsedError;
 
@@ -104,8 +107,11 @@ abstract class $AttendanceMeiboModelCopyWith<$Res> {
       @JsonKey(name: 'TenshutsuSumiFlg', disallowNullValue: false)
       @HiveField(10)
       bool? tenshutsuSumiFlg,
-      @JsonKey(name: 'JokyoList', disallowNullValue: false)
+      @JsonKey(name: 'StudentTsushoName', disallowNullValue: false)
       @HiveField(11)
+      String? studentTsushoName,
+      @JsonKey(name: 'JokyoList', disallowNullValue: false)
+      @HiveField(12)
       List<AttendanceStatusModel>? jokyoList});
 }
 
@@ -134,6 +140,7 @@ class _$AttendanceMeiboModelCopyWithImpl<$Res,
     Object? photoUrl = freezed,
     Object? tenshutsuYoteiFlg = freezed,
     Object? tenshutsuSumiFlg = freezed,
+    Object? studentTsushoName = freezed,
     Object? jokyoList = freezed,
   }) {
     return _then(_value.copyWith(
@@ -181,6 +188,10 @@ class _$AttendanceMeiboModelCopyWithImpl<$Res,
           ? _value.tenshutsuSumiFlg
           : tenshutsuSumiFlg // ignore: cast_nullable_to_non_nullable
               as bool?,
+      studentTsushoName: freezed == studentTsushoName
+          ? _value.studentTsushoName
+          : studentTsushoName // ignore: cast_nullable_to_non_nullable
+              as String?,
       jokyoList: freezed == jokyoList
           ? _value.jokyoList
           : jokyoList // ignore: cast_nullable_to_non_nullable
@@ -231,8 +242,11 @@ abstract class _$$AttendanceMeiboModelImplCopyWith<$Res>
       @JsonKey(name: 'TenshutsuSumiFlg', disallowNullValue: false)
       @HiveField(10)
       bool? tenshutsuSumiFlg,
-      @JsonKey(name: 'JokyoList', disallowNullValue: false)
+      @JsonKey(name: 'StudentTsushoName', disallowNullValue: false)
       @HiveField(11)
+      String? studentTsushoName,
+      @JsonKey(name: 'JokyoList', disallowNullValue: false)
+      @HiveField(12)
       List<AttendanceStatusModel>? jokyoList});
 }
 
@@ -258,6 +272,7 @@ class __$$AttendanceMeiboModelImplCopyWithImpl<$Res>
     Object? photoUrl = freezed,
     Object? tenshutsuYoteiFlg = freezed,
     Object? tenshutsuSumiFlg = freezed,
+    Object? studentTsushoName = freezed,
     Object? jokyoList = freezed,
   }) {
     return _then(_$AttendanceMeiboModelImpl(
@@ -305,6 +320,10 @@ class __$$AttendanceMeiboModelImplCopyWithImpl<$Res>
           ? _value.tenshutsuSumiFlg
           : tenshutsuSumiFlg // ignore: cast_nullable_to_non_nullable
               as bool?,
+      studentTsushoName: freezed == studentTsushoName
+          ? _value.studentTsushoName
+          : studentTsushoName // ignore: cast_nullable_to_non_nullable
+              as String?,
       jokyoList: freezed == jokyoList
           ? _value._jokyoList
           : jokyoList // ignore: cast_nullable_to_non_nullable
@@ -349,8 +368,11 @@ class _$AttendanceMeiboModelImpl implements _AttendanceMeiboModel {
       @JsonKey(name: 'TenshutsuSumiFlg', disallowNullValue: false)
       @HiveField(10)
       this.tenshutsuSumiFlg,
-      @JsonKey(name: 'JokyoList', disallowNullValue: false)
+      @JsonKey(name: 'StudentTsushoName', disallowNullValue: false)
       @HiveField(11)
+      this.studentTsushoName,
+      @JsonKey(name: 'JokyoList', disallowNullValue: false)
+      @HiveField(12)
       final List<AttendanceStatusModel>? jokyoList})
       : _jokyoList = jokyoList;
 
@@ -401,10 +423,14 @@ class _$AttendanceMeiboModelImpl implements _AttendanceMeiboModel {
   @JsonKey(name: 'TenshutsuSumiFlg', disallowNullValue: false)
   @HiveField(10)
   final bool? tenshutsuSumiFlg;
+  @override
+  @JsonKey(name: 'StudentTsushoName', disallowNullValue: false)
+  @HiveField(11)
+  final String? studentTsushoName;
   final List<AttendanceStatusModel>? _jokyoList;
   @override
   @JsonKey(name: 'JokyoList', disallowNullValue: false)
-  @HiveField(11)
+  @HiveField(12)
   List<AttendanceStatusModel>? get jokyoList {
     final value = _jokyoList;
     if (value == null) return null;
@@ -438,6 +464,8 @@ class _$AttendanceMeiboModelImpl implements _AttendanceMeiboModel {
                 other.tenshutsuYoteiFlg == tenshutsuYoteiFlg) &&
             (identical(other.tenshutsuSumiFlg, tenshutsuSumiFlg) ||
                 other.tenshutsuSumiFlg == tenshutsuSumiFlg) &&
+            (identical(other.studentTsushoName, studentTsushoName) ||
+                other.studentTsushoName == studentTsushoName) &&
             const DeepCollectionEquality()
                 .equals(other._jokyoList, _jokyoList));
   }
@@ -457,6 +485,7 @@ class _$AttendanceMeiboModelImpl implements _AttendanceMeiboModel {
       photoUrl,
       tenshutsuYoteiFlg,
       tenshutsuSumiFlg,
+      studentTsushoName,
       const DeepCollectionEquality().hash(_jokyoList));
 
   @JsonKey(ignore: true)
@@ -510,8 +539,11 @@ abstract class _AttendanceMeiboModel implements AttendanceMeiboModel {
           @JsonKey(name: 'TenshutsuSumiFlg', disallowNullValue: false)
           @HiveField(10)
           final bool? tenshutsuSumiFlg,
-          @JsonKey(name: 'JokyoList', disallowNullValue: false)
+          @JsonKey(name: 'StudentTsushoName', disallowNullValue: false)
           @HiveField(11)
+          final String? studentTsushoName,
+          @JsonKey(name: 'JokyoList', disallowNullValue: false)
+          @HiveField(12)
           final List<AttendanceStatusModel>? jokyoList}) =
       _$AttendanceMeiboModelImpl;
 
@@ -563,8 +595,12 @@ abstract class _AttendanceMeiboModel implements AttendanceMeiboModel {
   @HiveField(10)
   bool? get tenshutsuSumiFlg;
   @override
-  @JsonKey(name: 'JokyoList', disallowNullValue: false)
+  @JsonKey(name: 'StudentTsushoName', disallowNullValue: false)
   @HiveField(11)
+  String? get studentTsushoName;
+  @override
+  @JsonKey(name: 'JokyoList', disallowNullValue: false)
+  @HiveField(12)
   List<AttendanceStatusModel>? get jokyoList;
   @override
   @JsonKey(ignore: true)

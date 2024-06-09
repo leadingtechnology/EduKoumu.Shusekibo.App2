@@ -227,6 +227,7 @@ class AttendanceMeiboListProvider extends StateNotifier<ApiState> {
       photoUrl: meibo.photoUrl,
       tenshutsuYoteiFlg: meibo.tenshutsuYoteiFlg,
       tenshutsuSumiFlg: meibo.tenshutsuSumiFlg,
+      studentTsushoName: meibo.name,
       jokyoList: [status],
     );
 
