@@ -1,3 +1,4 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:kyoumutechou/app/state/app_start_state.dart';
 import 'package:kyoumutechou/feature/auth/provider/auth_provider.dart';
@@ -19,9 +20,25 @@ class AppStartNotifier extends _$AppStartNotifier {
     ref.onDispose(() {});
 
     final saml = Boxes.getBox().get('saml').toString();
-    if (saml.isNotEmpty && saml == 'azure') {
-      await ref.read(samlServiceProvider).azureLogin();
-      await Boxes.getBox().put('saml', '');
+    if (saml.isNotEmpty && saml == 'saml') {
+
+      var azureTenantID = '';
+      if (dotenv.env['Saml_Tenant_ID'] != null) {
+        azureTenantID = dotenv.env['Saml_Tenant_ID']!;
+      }
+      if(azureTenantID.isNotEmpty){
+        await ref.read(samlServiceProvider).azureLogin();
+        await Boxes.getBox().put('saml', '');
+      }
+
+      var idpid = '';
+      if (dotenv.env['idpid'] != null) {
+        idpid = dotenv.env['idpid']!;
+      }
+      if (idpid.isNotEmpty) {
+        await ref.read(samlServiceProvider).googleLogin();
+        await Boxes.getBox().put('saml', '');
+      }
     }     
 
     final authState = ref.watch(authNotifierProvider);

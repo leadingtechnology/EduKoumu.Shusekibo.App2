@@ -142,6 +142,12 @@ class ApiProvider {
           if (response.statusCode! == 400 && response.data != null) {
             return const APIResponse.error(AppException.unauthorized());
           }
+          if (response.statusCode == 404){
+            if (response.data['message'] == 'samlNotRegist') {
+              return const APIResponse.error(AppException.errorWithMessage('samlNotRegist'));
+            }
+            return const APIResponse.error(AppException.errorWithMessage('samlNotRegist'));
+          }
           if (response.data['message'] != null) {
             return APIResponse.error(AppException.errorWithMessage(
                 response.data['message'] as String ?? ''));

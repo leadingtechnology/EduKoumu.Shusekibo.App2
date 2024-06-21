@@ -121,28 +121,14 @@ class SamlService {
   }
 
   Future<void> googleLogin() async {
-    var tenantId = '';
-    if (dotenv.env['TENANT_ID'] != null) {
-      tenantId = dotenv.env['TENANT_ID']!;
-    }
+    final tenantId = dotenv.env['TENANT_ID'] ?? '';
+        
+    final idpid = dotenv.env['idpid'] ?? '';
+    final acsUrl = dotenv.env['ACS_URL'] ?? '';
+    final entityId = dotenv.env['Entity_ID'] ?? '';
 
-    var azureTenantID = '';
-    if (dotenv.env['Saml_Tenant_ID'] != null) {
-      azureTenantID = dotenv.env['Saml_Tenant_ID']!;
-    }
-
-    var callBackUrl = '';
-    if (dotenv.env['Callback_URL'] != null) {
-      callBackUrl = dotenv.env['Callback_URL']!;
-    }
-
-    var frontendUrl = '';
-    if (dotenv.env['Frontend_URL'] != null) {
-      frontendUrl = dotenv.env['Frontend_URL']!;
-    }
-
-    final url = 'https://login.microsoftonline.com/$azureTenantID/saml2';
-    final samlRequest = generateSamlRequest(url, callBackUrl, frontendUrl);
+    final url = 'https://accounts.google.com/o/saml2/idp?idpid=$idpid';
+    final samlRequest = generateSamlRequest(url, acsUrl, entityId);
 
     final form = html.FormElement()
       ..method = 'POST'
@@ -155,10 +141,11 @@ class SamlService {
 
     final relayStateField = html.HiddenInputElement()
       ..name = 'RelayState'
-      ..value = 'tenantId=$tenantId&frontendUrl=$frontendUrl';
+      ..value = 'tenantId=$tenantId&frontendUrl=$entityId';
     form.append(relayStateField);
 
     html.document.body!.append(form);
-    form.submit();
+    form..submit()
+    ..remove();
   }
 }

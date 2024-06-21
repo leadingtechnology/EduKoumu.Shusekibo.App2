@@ -90,12 +90,17 @@ Future<void> start() async {
   final secret = uri.queryParameters['secret'];
   if (secret != null) {
     await Hive.box<String>('shusekibo').put('secret', secret);
+
+    final newUri = uri.replace(queryParameters: {});
+    html.window.history.pushState(null, '', newUri.toString());
   }
 
-  final pathSegment = uri.pathSegments;
-  if (pathSegment.isNotEmpty && pathSegment.length > 1){
-    await Hive.box<String>('shusekibo').put('saml', pathSegment[1]);
+  // SAML ログイン
+  final isSaml = uri.queryParameters.containsKey('SamlLogin');
+  if (isSaml) {
+    await Hive.box<String>('shusekibo').put('saml', 'saml');
   }
+
   
   // 団体
   await Hive.openBox<DantaiModel>('Dantai');
