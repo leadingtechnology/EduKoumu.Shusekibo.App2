@@ -82,9 +82,8 @@ Future<void> start() async {
     ..registerAdapter(SeatChartModelAdapter());
 
   // トークン
-  await Hive.openBox<String>('shusekibo');
-  await Hive.box<String>('shusekibo').put('token', '');
-  await Hive.box<String>('shusekibo').put('secret', '');
+  final box = await Hive.openBox<String>('shusekibo');
+  await box.clear();
 
   final uri = Uri.parse(html.window.location.href);
   final secret = uri.queryParameters['secret'];
@@ -93,6 +92,8 @@ Future<void> start() async {
 
     final newUri = uri.replace(queryParameters: {});
     html.window.history.pushState(null, '', newUri.toString());
+  }else{
+    await Hive.box<String>('shusekibo').put('secret', '');
   }
 
   // SAML ログイン

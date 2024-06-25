@@ -15,6 +15,7 @@ _$StaffImpl _$$StaffImplFromJson(Map<String, dynamic> json) => _$StaffImpl(
       UserName: json['UserName'] as String,
       KihonId: json['KihonId'] as String,
       UserId: json['UserId'] as String,
+      DantaiList: json['DantaiList'] as String,
     );
 
 Map<String, dynamic> _$$StaffImplToJson(_$StaffImpl instance) =>
@@ -27,4 +28,5 @@ Map<String, dynamic> _$$StaffImplToJson(_$StaffImpl instance) =>
       'UserName': instance.UserName,
       'KihonId': instance.KihonId,
       'UserId': instance.UserId,
+      'DantaiList': instance.DantaiList,
     };

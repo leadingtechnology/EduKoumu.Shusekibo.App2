@@ -29,6 +29,7 @@ mixin _$Staff {
   String get UserName => throw _privateConstructorUsedError;
   String get KihonId => throw _privateConstructorUsedError;
   String get UserId => throw _privateConstructorUsedError;
+  String get DantaiList => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -48,7 +49,8 @@ abstract class $StaffCopyWith<$Res> {
       String DantaiId,
       String UserName,
       String KihonId,
-      String UserId});
+      String UserId,
+      String DantaiList});
 }
 
 /// @nodoc
@@ -72,6 +74,7 @@ class _$StaffCopyWithImpl<$Res, $Val extends Staff>
     Object? UserName = null,
     Object? KihonId = null,
     Object? UserId = null,
+    Object? DantaiList = null,
   }) {
     return _then(_value.copyWith(
       access_token: null == access_token
@@ -106,6 +109,10 @@ class _$StaffCopyWithImpl<$Res, $Val extends Staff>
           ? _value.UserId
           : UserId // ignore: cast_nullable_to_non_nullable
               as String,
+      DantaiList: null == DantaiList
+          ? _value.DantaiList
+          : DantaiList // ignore: cast_nullable_to_non_nullable
+              as String,
     ) as $Val);
   }
 }
@@ -125,7 +132,8 @@ abstract class _$$StaffImplCopyWith<$Res> implements $StaffCopyWith<$Res> {
       String DantaiId,
       String UserName,
       String KihonId,
-      String UserId});
+      String UserId,
+      String DantaiList});
 }
 
 /// @nodoc
@@ -147,6 +155,7 @@ class __$$StaffImplCopyWithImpl<$Res>
     Object? UserName = null,
     Object? KihonId = null,
     Object? UserId = null,
+    Object? DantaiList = null,
   }) {
     return _then(_$StaffImpl(
       access_token: null == access_token
@@ -181,6 +190,10 @@ class __$$StaffImplCopyWithImpl<$Res>
           ? _value.UserId
           : UserId // ignore: cast_nullable_to_non_nullable
               as String,
+      DantaiList: null == DantaiList
+          ? _value.DantaiList
+          : DantaiList // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -196,7 +209,8 @@ class _$StaffImpl extends _Staff {
       required this.DantaiId,
       required this.UserName,
       required this.KihonId,
-      required this.UserId})
+      required this.UserId,
+      required this.DantaiList})
       : super._();
 
   factory _$StaffImpl.fromJson(Map<String, dynamic> json) =>
@@ -219,10 +233,12 @@ class _$StaffImpl extends _Staff {
   final String KihonId;
   @override
   final String UserId;
+  @override
+  final String DantaiList;
 
   @override
   String toString() {
-    return 'Staff(access_token: $access_token, token_type: $token_type, TenantId: $TenantId, LoginId: $LoginId, DantaiId: $DantaiId, UserName: $UserName, KihonId: $KihonId, UserId: $UserId)';
+    return 'Staff(access_token: $access_token, token_type: $token_type, TenantId: $TenantId, LoginId: $LoginId, DantaiId: $DantaiId, UserName: $UserName, KihonId: $KihonId, UserId: $UserId, DantaiList: $DantaiList)';
   }
 
   @override
@@ -242,13 +258,15 @@ class _$StaffImpl extends _Staff {
             (identical(other.UserName, UserName) ||
                 other.UserName == UserName) &&
             (identical(other.KihonId, KihonId) || other.KihonId == KihonId) &&
-            (identical(other.UserId, UserId) || other.UserId == UserId));
+            (identical(other.UserId, UserId) || other.UserId == UserId) &&
+            (identical(other.DantaiList, DantaiList) ||
+                other.DantaiList == DantaiList));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, access_token, token_type,
-      TenantId, LoginId, DantaiId, UserName, KihonId, UserId);
+      TenantId, LoginId, DantaiId, UserName, KihonId, UserId, DantaiList);
 
   @JsonKey(ignore: true)
   @override
@@ -273,7 +291,8 @@ abstract class _Staff extends Staff {
       required final String DantaiId,
       required final String UserName,
       required final String KihonId,
-      required final String UserId}) = _$StaffImpl;
+      required final String UserId,
+      required final String DantaiList}) = _$StaffImpl;
   const _Staff._() : super._();
 
   factory _Staff.fromJson(Map<String, dynamic> json) = _$StaffImpl.fromJson;
@@ -294,6 +313,8 @@ abstract class _Staff extends Staff {
   String get KihonId;
   @override
   String get UserId;
+  @override
+  String get DantaiList;
   @override
   @JsonKey(ignore: true)
   _$$StaffImplCopyWith<_$StaffImpl> get copyWith =>

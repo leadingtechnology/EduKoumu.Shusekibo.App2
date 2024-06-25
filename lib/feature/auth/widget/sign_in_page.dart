@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:kyoumutechou/feature/auth/provider/auth_provider.dart';
+import 'package:kyoumutechou/feature/auth/widget/dantai_selection_dialog.dart';
 import 'package:kyoumutechou/helpers/theme/app_theme.dart';
 import 'package:kyoumutechou/helpers/widgets/my_spacing.dart';
 import 'package:kyoumutechou/helpers/widgets/my_text.dart';
 import 'package:kyoumutechou/shared/http/app_exception.dart';
+import 'package:kyoumutechou/shared/util/string_util.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 
 class SignInPage extends ConsumerStatefulWidget {
@@ -23,10 +26,36 @@ class SignInPageState extends ConsumerState<SignInPage> {
     super.initState();
 
     theme = AppTheme.theme;
-  }
 
-  final _emailController = TextEditingController(text: '');
-  final _passwordController = TextEditingController(text: '');
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _showLoginTypeDialog(context);
+    });
+  }
+  void _showLoginTypeDialog(BuildContext context,) {
+    
+    final dantaiId =
+        int.parse(Hive.box<String>('shusekibo').get('dantaiId') ?? '0');
+    final userDantaisString =
+        Hive.box<String>('shusekibo').get('dantaiList') ?? '';
+
+    final userDantais =
+        StringUtil.parseStringToKeyValueList(userDantaisString) ?? [];
+
+    if (userDantais.isNotEmpty && userDantais.length > 1) {
+      showDialog<void>(
+        context: context,
+        builder: (BuildContext context) {
+          return DantaiSelectionDialog(
+            dantaiId: dantaiId,
+            dantais: userDantais,
+          );
+        },
+      );
+    }
+  }  
+
+  final _emailController = TextEditingController(text: 'login0026');
+  final _passwordController = TextEditingController(text: 'P@ssw0rd');
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   final _focusUserId = FocusNode();
@@ -249,6 +278,9 @@ class SignInPageState extends ConsumerState<SignInPage> {
       loading: () {},
       loggedIn: () {},
       loggedOut: () {},
+      multipleDantai: () {
+        _showLoginTypeDialog(context);
+      },
     );
     setState(() {
       isProcess = false;

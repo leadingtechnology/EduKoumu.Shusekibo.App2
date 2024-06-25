@@ -44,12 +44,20 @@ class AuthNotifier extends _$AuthNotifier {
     return response;
   }
 
+  Future<AuthState> changeDantai(int dantaiId) async {
+    //final response = await _loginRepository.login(email, password);
+    // if (response is AuthStateLoggedIn) {
+    //   state = response;
+    // }
+
+    state = const AuthState.loggedIn();
+    return const AuthState.loggedIn();
+  }  
+
   Future<void> logout() async {
     
     // クリアトークン
-    await Hive.box<String>('shusekibo').put('token', '');
-    await Hive.box<String>('shusekibo').put('secret', '');
-    await Hive.box<String>('shusekibo').put('saml', '');
+    await Hive.box<String>('shusekibo').clear();
 
     // common
     await Hive.box<DantaiModel>('Dantai').clear();

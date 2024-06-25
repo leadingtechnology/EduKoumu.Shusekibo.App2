@@ -5,6 +5,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:kyoumutechou/feature/auth/model/staff.dart';
 import 'package:kyoumutechou/feature/auth/state/auth_state.dart';
 import 'package:kyoumutechou/shared/http/api_provider.dart';
+import 'package:kyoumutechou/shared/util/string_util.dart';
 
 abstract class AuthRepositoryProtocol {
   Future<AuthState> login(String email, String password);
@@ -51,6 +52,13 @@ class AuthRepository implements AuthRepositoryProtocol {
       await Hive.box<String>('shusekibo').put('loginId', staff.LoginId);
       await Hive.box<String>('shusekibo').put('kihonId', staff.KihonId);
       await Hive.box<String>('shusekibo').put('userId', staff.UserId);
+      await Hive.box<String>('shusekibo').put('dantaiList', staff.DantaiList);
+
+        final userDantais =
+            StringUtil.parseStringToKeyValueList(staff.DantaiList);
+        if (userDantais.isNotEmpty && userDantais.length > 1) {
+          return const AuthState.multipleDantai();
+        }
 
       return const AuthState.loggedIn();
     }, error: (error) {

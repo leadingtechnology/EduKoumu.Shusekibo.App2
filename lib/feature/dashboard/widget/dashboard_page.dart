@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:kyoumutechou/feature/common/provider/tokobis_provider.dart';
 import 'package:kyoumutechou/feature/dashboard/widget/absence_summary_widget.dart';
 import 'package:kyoumutechou/feature/dashboard/widget/attendance_summary_widget.dart';
 import 'package:kyoumutechou/feature/dashboard/widget/health_summary_widget.dart';
