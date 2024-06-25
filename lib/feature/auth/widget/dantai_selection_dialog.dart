@@ -19,7 +19,16 @@ class DantaiSelectionDialog extends ConsumerStatefulWidget {
 }
 
 class _DantaiSelectionDialogState extends ConsumerState<DantaiSelectionDialog> {
+  
   int? dantaiId;
+
+  @override
+  void initState() {
+    super.initState();
+
+    dantaiId = widget.dantaiId;
+  }
+
 
   @override
   Widget build(BuildContext context) {

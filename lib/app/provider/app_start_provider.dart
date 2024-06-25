@@ -44,7 +44,7 @@ class AppStartNotifier extends _$AppStartNotifier {
     final authState = ref.watch(authNotifierProvider);
 
     final secret = Boxes.getBox().get('secret').toString();
-    if (secret.isNotEmpty) {
+    if (secret.isNotEmpty && secret != 'null') {
       await rep.samlLogin(secret);
     }
 
