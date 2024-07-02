@@ -7,6 +7,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:kyoumutechou/feature/auth/provider/auth_provider.dart';
 import 'package:kyoumutechou/shared/http/api_response.dart';
 import 'package:kyoumutechou/shared/http/app_exception.dart';
 import 'package:kyoumutechou/shared/http/interceptor/dio_connectivity_request_retrier.dart';
@@ -50,7 +51,10 @@ class ApiProvider {
         onError: (DioException e, handler) {
           if (e.type == DioExceptionType.connectionError ||
               e.response?.statusCode == 401) {
-            // Do something with response error
+
+            _ref.read(authNotifierProvider.notifier).logout(
+              isError:true,
+            );
 
             return handler.next(e); //continue
           }
@@ -135,18 +139,24 @@ class ApiProvider {
         //   return const APIResponse.error(AppException.connectivity());
         // } else
         if (response.statusCode! == 401) {
+          await _ref.read(authNotifierProvider.notifier).logout(
+                isError: true,
+              );
           return const APIResponse.error(AppException.unauthorized());
         } else if (response.statusCode! == 502) {
           return const APIResponse.error(AppException.error());
         } else {
           if (response.statusCode! == 400 && response.data != null) {
+            await _ref.read(authNotifierProvider.notifier).logout(
+                  isError: true,
+                );
             return const APIResponse.error(AppException.unauthorized());
           }
           if (response.statusCode == 404){
-            if (response.data['message'] == 'samlNotRegist') {
-              return const APIResponse.error(AppException.errorWithMessage('samlNotRegist'));
-            }
-            return const APIResponse.error(AppException.errorWithMessage('samlNotRegist'));
+            // if (response.data['message'] == 'samlNotRegist') {
+            //   return const APIResponse.error(AppException.errorWithMessage('404'));
+            // }
+            return const APIResponse.error(AppException.errorWithMessage('404'));
           }
           if (response.data['message'] != null) {
             return APIResponse.error(AppException.errorWithMessage(
@@ -243,6 +253,9 @@ class ApiProvider {
         //   return const APIResponse.error(AppException.connectivity());
         // } else
         if (response.statusCode! == 401) {
+          await _ref.read(authNotifierProvider.notifier).logout(
+                isError: true,
+              );
           return APIResponse.error(AppException.unauthorized());
         } else if (response.statusCode! == 502) {
           return const APIResponse.error(AppException.error());
@@ -330,6 +343,9 @@ class ApiProvider {
         if (response.statusCode! == 404) {
           return const APIResponse.error(AppException.connectivity());
         } else if (response.statusCode! == 401) {
+          await _ref.read(authNotifierProvider.notifier).logout(
+                isError: true,
+              );
           return const APIResponse.error(AppException.unauthorized());
         } else if (response.statusCode! == 502) {
           return const APIResponse.error(AppException.error());
@@ -408,6 +424,9 @@ class ApiProvider {
         if (response.statusCode! == 404) {
           return const APIResponse.error(AppException.connectivity());
         } else if (response.statusCode! == 401) {
+          await _ref.read(authNotifierProvider.notifier).logout(
+                isError: true,
+              );
           return const APIResponse.error(AppException.unauthorized());
         } else if (response.statusCode! == 502) {
           return const APIResponse.error(AppException.error());
@@ -486,6 +505,9 @@ class ApiProvider {
         if (response.statusCode! == 404) {
           return const APIResponse.error(AppException.connectivity());
         } else if (response.statusCode! == 401) {
+          await _ref.read(authNotifierProvider.notifier).logout(
+                isError: true,
+              );
           return const APIResponse.error(AppException.unauthorized());
         } else if (response.statusCode! == 502) {
           return const APIResponse.error(AppException.error());

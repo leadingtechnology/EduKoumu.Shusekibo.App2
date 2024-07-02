@@ -13,7 +13,16 @@ class SettingPage extends ConsumerWidget{
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    var mIndex = ref.watch(menuIndexProvider);
+    final menuList = ref.watch(menuListProvider);
+    final menuItem = ref.watch(menuProvider);
+    
+    var mIndex = 0;
+    for (var i = 0; i < menuList.length; i++) {
+      if (menuList[i].menuId == menuItem) {
+        mIndex = i;
+        break;
+      }
+    }
 
     final buttonList = <Widget>[];
     var menuSettingSeats = '1';
@@ -85,7 +94,6 @@ class SettingPage extends ConsumerWidget{
             ref.read(seatChartPageTypeProvider.notifier).state = PageType.list;
           }
           ref.read(menuProvider.notifier).state = menuId;
-          ref.read(menuIndexProvider.notifier).state = index;
         },
         style: ElevatedButton.styleFrom(
           side: BorderSide(

@@ -1,3 +1,7 @@
+import 'dart:html' as html;
+import 'package:http/http.dart' as http;
+
+
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -7,6 +11,7 @@ import 'package:kyoumutechou/feature/attendance/widget/attendance_page.dart';
 import 'package:kyoumutechou/feature/attendance/widget/attendance_timed_page.dart';
 import 'package:kyoumutechou/feature/auth/provider/auth_provider.dart';
 import 'package:kyoumutechou/feature/awareness/weidget/awareness_page.dart';
+import 'package:kyoumutechou/feature/boxes.dart';
 import 'package:kyoumutechou/feature/common/provider/common_provider.dart';
 import 'package:kyoumutechou/feature/common/provider/dantais_provider.dart';
 import 'package:kyoumutechou/feature/common/widget/control_dantai_change.dart';
@@ -23,6 +28,7 @@ import 'package:kyoumutechou/helpers/theme/app_theme.dart';
 import 'package:kyoumutechou/helpers/widgets/my_text.dart';
 import 'package:kyoumutechou/shared/http/app_exception.dart';
 import 'package:kyoumutechou/shared/util/date_util.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
@@ -72,6 +78,12 @@ class HomePageState extends ConsumerState<HomePage> {
     theme = AppTheme.lightTheme;
 
     initialMenu();
+
+    // メニュー初期値の設定
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.read(menuProvider.notifier).state = navItems[0].menuId;
+      ref.read(menuListProvider.notifier).state = navItems;
+    });
   }
 
   void initialMenu() {
@@ -180,14 +192,13 @@ class HomePageState extends ConsumerState<HomePage> {
           const Icon(Icons.settings_outlined),
         ),
       );
-
-      settingIndex = navItems.length - 1;
     }
 
     // メニュー数が＜２の場合、重複メニューを追加する。
     if (navItems.length == 1) {
       navItems.add(navItems[0]);
     }
+    settingIndex = navItems.length - 1;
 
     //座席表設定
     menuSettingSeats = '1';
@@ -226,15 +237,55 @@ class HomePageState extends ConsumerState<HomePage> {
   }  
 
   void _onItemTapped(int index) {
-    ref.read(menuIndexProvider.notifier).state = index;
-    
     ref.read(menuProvider.notifier).state = navItems[index].menuId;
   }
 
 
-  void handleLogout() {
+  Future<void> handleLogout() async {
+
+    final saml = Boxes.getBox().get('saml').toString();
+    final secret = Boxes.getBox().get('secret').toString();
+    if (saml.isNotEmpty && saml == 'saml' ||
+        secret.isNotEmpty && secret != 'null') {
+
+      var logoutUrl = '';
+      var tenantId = '';
+      if (dotenv.env['Saml_Tenant_ID'] != null) {
+        tenantId = dotenv.env['Saml_Tenant_ID'] ?? '';
+      }
+      if (tenantId.isNotEmpty) {
+        logoutUrl = dotenv.env['Logout_URL'] ?? '';
+        logoutUrl += dotenv.env['Frontend_URL'] ?? '';
+        logoutUrl += '?SamlLogout';
+      }
+
+      var idpid = '';
+      if (dotenv.env['idpid'] != null) {
+        idpid = dotenv.env['idpid'] ?? '';
+      }
+
+      if (idpid.isNotEmpty) {
+        logoutUrl = dotenv.env['Logout_URL'] ?? '';
+        logoutUrl += dotenv.env['Entity_ID'] ?? '';
+        logoutUrl += '?SamlLogout';
+      } 
+      
+      html.window.localStorage.remove('token');
+      if (logoutUrl.isNotEmpty) {
+        final url = Uri.parse(logoutUrl);
+        if (await canLaunchUrl(url)) {
+          await launchUrl(
+            url,
+            webOnlyWindowName: '_self',
+          );
+        } else {
+          throw 'Could not launch $url';
+        }
+      }
+    }
+
     try {
-      ref.read(authNotifierProvider.notifier).logout();
+      await ref.read(authNotifierProvider.notifier).logout();
     } catch (error) {
       //print(error);
     }
@@ -263,7 +314,8 @@ class HomePageState extends ConsumerState<HomePage> {
   }
 
   Widget switchToPage(BuildContext context) {
-    final selectedIndex = ref.watch(menuIndexProvider);
+    final menuItem = ref.watch(menuProvider);
+    
     final isCA = ref.watch(isContactAllowedProvider);
     final isDialogVisible = ref.watch(isDialogVisibleProvider);
     final screenWidth = MediaQuery.of(context).size.width;
@@ -272,6 +324,32 @@ class HomePageState extends ConsumerState<HomePage> {
       if (w <0 ) w = 0;
 
       dialogOffset = Offset(w, 68);
+    }
+
+    // メニューの選択インデックスを取得
+    var selectedIndex = 0;
+    var idx = -1;
+    for (var i = 0; i < navItems.length; i++) {
+      if (navItems[i].menuId == menuItem) {
+        idx = i;
+        break;
+      }
+    }
+    if (idx != -1) {
+      selectedIndex = idx;
+    }else{
+      // 設定画面サブメニュー
+      for (var i = 0; i < settingItems.length; i++) {
+        if (settingItems[i].menuId == menuItem) {
+          idx = i;  
+          break;
+        }
+      }
+
+      if (idx != -1) {
+        selectedIndex = navItems.length - 1 + idx;
+      }
+      
     }
 
     return Scaffold(

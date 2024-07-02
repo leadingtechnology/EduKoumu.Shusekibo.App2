@@ -31,10 +31,11 @@ class SignInPageState extends ConsumerState<SignInPage> {
       _showLoginTypeDialog(context);
     });
   }
-  void _showLoginTypeDialog(BuildContext context,) {
+  Future<void> _showLoginTypeDialog(BuildContext context,) async{
     
     final dantaiId =
         int.parse(Hive.box<String>('shusekibo').get('dantaiId') ?? '0');
+
     final userDantaisString =
         Hive.box<String>('shusekibo').get('dantaiList') ?? '';
 
@@ -42,7 +43,7 @@ class SignInPageState extends ConsumerState<SignInPage> {
         StringUtil.parseStringToKeyValueList(userDantaisString) ?? [];
 
     if (userDantais.isNotEmpty && userDantais.length > 1) {
-      showDialog<void>(
+      await showDialog<void>(
         context: context,
         builder: (BuildContext context) {
           return DantaiSelectionDialog(
@@ -54,8 +55,8 @@ class SignInPageState extends ConsumerState<SignInPage> {
     }
   }  
 
-  final _emailController = TextEditingController(text: 'login0026');
-  final _passwordController = TextEditingController(text: 'P@ssw0rd');
+  final _emailController = TextEditingController(text: '');
+  final _passwordController = TextEditingController(text: '');
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   final _focusUserId = FocusNode();
@@ -281,6 +282,7 @@ class SignInPageState extends ConsumerState<SignInPage> {
       multipleDantai: () {
         _showLoginTypeDialog(context);
       },
+      errorPage: () {},
     );
     setState(() {
       isProcess = false;

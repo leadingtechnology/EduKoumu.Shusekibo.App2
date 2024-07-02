@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:kyoumutechou/feature/auth/provider/auth_provider.dart';
 import 'package:kyoumutechou/feature/boxes.dart';
 import 'package:kyoumutechou/feature/common/model/dantai_model.dart';
 import 'package:kyoumutechou/feature/common/provider/common_provider.dart';
@@ -38,8 +40,11 @@ class DantaiDropdownWidget extends ConsumerWidget {
         height: 2,
         color: Colors.white,
       ),
-      onChanged: (DantaiModel? newValue) {
-        ref.read(dantaiProvider.notifier).state = newValue!;
+      onChanged: (DantaiModel? newValue) async{
+        await Hive.box<String>('shusekibo').put('dantaiId', '${newValue!.id}');
+        // await ref.read(authNotifierProvider.notifier).changeDantai();
+        
+        ref.read(dantaiProvider.notifier).state = newValue;
       },
       items: dantaiList.map((value) {
         return DropdownMenuItem<DantaiModel>(

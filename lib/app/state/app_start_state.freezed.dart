@@ -23,6 +23,12 @@ mixin _$AppStartState {
     required TResult Function() internetUnAvailable,
     required TResult Function() authenticated,
     required TResult Function() authenticatedAnonymous,
+    required TResult Function() loading,
+    required TResult Function() saml,
+    required TResult Function() multipleDantai,
+    required TResult Function() logout,
+    required TResult Function() expired,
+    required TResult Function() appErrorPage,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -32,6 +38,12 @@ mixin _$AppStartState {
     TResult? Function()? internetUnAvailable,
     TResult? Function()? authenticated,
     TResult? Function()? authenticatedAnonymous,
+    TResult? Function()? loading,
+    TResult? Function()? saml,
+    TResult? Function()? multipleDantai,
+    TResult? Function()? logout,
+    TResult? Function()? expired,
+    TResult? Function()? appErrorPage,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -41,6 +53,12 @@ mixin _$AppStartState {
     TResult Function()? internetUnAvailable,
     TResult Function()? authenticated,
     TResult Function()? authenticatedAnonymous,
+    TResult Function()? loading,
+    TResult Function()? saml,
+    TResult Function()? multipleDantai,
+    TResult Function()? logout,
+    TResult Function()? expired,
+    TResult Function()? appErrorPage,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -52,6 +70,12 @@ mixin _$AppStartState {
     required TResult Function(AppAuthenticated value) authenticated,
     required TResult Function(AppAuthenticatedAnonymous value)
         authenticatedAnonymous,
+    required TResult Function(Loading value) loading,
+    required TResult Function(Saml value) saml,
+    required TResult Function(MultipleDantai value) multipleDantai,
+    required TResult Function(Logout value) logout,
+    required TResult Function(Expired value) expired,
+    required TResult Function(AppErrorPage value) appErrorPage,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -61,6 +85,12 @@ mixin _$AppStartState {
     TResult? Function(_InternetUnAvailable value)? internetUnAvailable,
     TResult? Function(AppAuthenticated value)? authenticated,
     TResult? Function(AppAuthenticatedAnonymous value)? authenticatedAnonymous,
+    TResult? Function(Loading value)? loading,
+    TResult? Function(Saml value)? saml,
+    TResult? Function(MultipleDantai value)? multipleDantai,
+    TResult? Function(Logout value)? logout,
+    TResult? Function(Expired value)? expired,
+    TResult? Function(AppErrorPage value)? appErrorPage,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -70,6 +100,12 @@ mixin _$AppStartState {
     TResult Function(_InternetUnAvailable value)? internetUnAvailable,
     TResult Function(AppAuthenticated value)? authenticated,
     TResult Function(AppAuthenticatedAnonymous value)? authenticatedAnonymous,
+    TResult Function(Loading value)? loading,
+    TResult Function(Saml value)? saml,
+    TResult Function(MultipleDantai value)? multipleDantai,
+    TResult Function(Logout value)? logout,
+    TResult Function(Expired value)? expired,
+    TResult Function(AppErrorPage value)? appErrorPage,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -136,6 +172,12 @@ class _$InitialImpl implements _Initial {
     required TResult Function() internetUnAvailable,
     required TResult Function() authenticated,
     required TResult Function() authenticatedAnonymous,
+    required TResult Function() loading,
+    required TResult Function() saml,
+    required TResult Function() multipleDantai,
+    required TResult Function() logout,
+    required TResult Function() expired,
+    required TResult Function() appErrorPage,
   }) {
     return initial();
   }
@@ -148,6 +190,12 @@ class _$InitialImpl implements _Initial {
     TResult? Function()? internetUnAvailable,
     TResult? Function()? authenticated,
     TResult? Function()? authenticatedAnonymous,
+    TResult? Function()? loading,
+    TResult? Function()? saml,
+    TResult? Function()? multipleDantai,
+    TResult? Function()? logout,
+    TResult? Function()? expired,
+    TResult? Function()? appErrorPage,
   }) {
     return initial?.call();
   }
@@ -160,6 +208,12 @@ class _$InitialImpl implements _Initial {
     TResult Function()? internetUnAvailable,
     TResult Function()? authenticated,
     TResult Function()? authenticatedAnonymous,
+    TResult Function()? loading,
+    TResult Function()? saml,
+    TResult Function()? multipleDantai,
+    TResult Function()? logout,
+    TResult Function()? expired,
+    TResult Function()? appErrorPage,
     required TResult orElse(),
   }) {
     if (initial != null) {
@@ -177,6 +231,12 @@ class _$InitialImpl implements _Initial {
     required TResult Function(AppAuthenticated value) authenticated,
     required TResult Function(AppAuthenticatedAnonymous value)
         authenticatedAnonymous,
+    required TResult Function(Loading value) loading,
+    required TResult Function(Saml value) saml,
+    required TResult Function(MultipleDantai value) multipleDantai,
+    required TResult Function(Logout value) logout,
+    required TResult Function(Expired value) expired,
+    required TResult Function(AppErrorPage value) appErrorPage,
   }) {
     return initial(this);
   }
@@ -189,6 +249,12 @@ class _$InitialImpl implements _Initial {
     TResult? Function(_InternetUnAvailable value)? internetUnAvailable,
     TResult? Function(AppAuthenticated value)? authenticated,
     TResult? Function(AppAuthenticatedAnonymous value)? authenticatedAnonymous,
+    TResult? Function(Loading value)? loading,
+    TResult? Function(Saml value)? saml,
+    TResult? Function(MultipleDantai value)? multipleDantai,
+    TResult? Function(Logout value)? logout,
+    TResult? Function(Expired value)? expired,
+    TResult? Function(AppErrorPage value)? appErrorPage,
   }) {
     return initial?.call(this);
   }
@@ -201,6 +267,12 @@ class _$InitialImpl implements _Initial {
     TResult Function(_InternetUnAvailable value)? internetUnAvailable,
     TResult Function(AppAuthenticated value)? authenticated,
     TResult Function(AppAuthenticatedAnonymous value)? authenticatedAnonymous,
+    TResult Function(Loading value)? loading,
+    TResult Function(Saml value)? saml,
+    TResult Function(MultipleDantai value)? multipleDantai,
+    TResult Function(Logout value)? logout,
+    TResult Function(Expired value)? expired,
+    TResult Function(AppErrorPage value)? appErrorPage,
     required TResult orElse(),
   }) {
     if (initial != null) {
@@ -257,6 +329,12 @@ class _$UnauthenticatedImpl implements Unauthenticated {
     required TResult Function() internetUnAvailable,
     required TResult Function() authenticated,
     required TResult Function() authenticatedAnonymous,
+    required TResult Function() loading,
+    required TResult Function() saml,
+    required TResult Function() multipleDantai,
+    required TResult Function() logout,
+    required TResult Function() expired,
+    required TResult Function() appErrorPage,
   }) {
     return unauthenticated();
   }
@@ -269,6 +347,12 @@ class _$UnauthenticatedImpl implements Unauthenticated {
     TResult? Function()? internetUnAvailable,
     TResult? Function()? authenticated,
     TResult? Function()? authenticatedAnonymous,
+    TResult? Function()? loading,
+    TResult? Function()? saml,
+    TResult? Function()? multipleDantai,
+    TResult? Function()? logout,
+    TResult? Function()? expired,
+    TResult? Function()? appErrorPage,
   }) {
     return unauthenticated?.call();
   }
@@ -281,6 +365,12 @@ class _$UnauthenticatedImpl implements Unauthenticated {
     TResult Function()? internetUnAvailable,
     TResult Function()? authenticated,
     TResult Function()? authenticatedAnonymous,
+    TResult Function()? loading,
+    TResult Function()? saml,
+    TResult Function()? multipleDantai,
+    TResult Function()? logout,
+    TResult Function()? expired,
+    TResult Function()? appErrorPage,
     required TResult orElse(),
   }) {
     if (unauthenticated != null) {
@@ -298,6 +388,12 @@ class _$UnauthenticatedImpl implements Unauthenticated {
     required TResult Function(AppAuthenticated value) authenticated,
     required TResult Function(AppAuthenticatedAnonymous value)
         authenticatedAnonymous,
+    required TResult Function(Loading value) loading,
+    required TResult Function(Saml value) saml,
+    required TResult Function(MultipleDantai value) multipleDantai,
+    required TResult Function(Logout value) logout,
+    required TResult Function(Expired value) expired,
+    required TResult Function(AppErrorPage value) appErrorPage,
   }) {
     return unauthenticated(this);
   }
@@ -310,6 +406,12 @@ class _$UnauthenticatedImpl implements Unauthenticated {
     TResult? Function(_InternetUnAvailable value)? internetUnAvailable,
     TResult? Function(AppAuthenticated value)? authenticated,
     TResult? Function(AppAuthenticatedAnonymous value)? authenticatedAnonymous,
+    TResult? Function(Loading value)? loading,
+    TResult? Function(Saml value)? saml,
+    TResult? Function(MultipleDantai value)? multipleDantai,
+    TResult? Function(Logout value)? logout,
+    TResult? Function(Expired value)? expired,
+    TResult? Function(AppErrorPage value)? appErrorPage,
   }) {
     return unauthenticated?.call(this);
   }
@@ -322,6 +424,12 @@ class _$UnauthenticatedImpl implements Unauthenticated {
     TResult Function(_InternetUnAvailable value)? internetUnAvailable,
     TResult Function(AppAuthenticated value)? authenticated,
     TResult Function(AppAuthenticatedAnonymous value)? authenticatedAnonymous,
+    TResult Function(Loading value)? loading,
+    TResult Function(Saml value)? saml,
+    TResult Function(MultipleDantai value)? multipleDantai,
+    TResult Function(Logout value)? logout,
+    TResult Function(Expired value)? expired,
+    TResult Function(AppErrorPage value)? appErrorPage,
     required TResult orElse(),
   }) {
     if (unauthenticated != null) {
@@ -379,6 +487,12 @@ class _$InternetUnAvailableImpl implements _InternetUnAvailable {
     required TResult Function() internetUnAvailable,
     required TResult Function() authenticated,
     required TResult Function() authenticatedAnonymous,
+    required TResult Function() loading,
+    required TResult Function() saml,
+    required TResult Function() multipleDantai,
+    required TResult Function() logout,
+    required TResult Function() expired,
+    required TResult Function() appErrorPage,
   }) {
     return internetUnAvailable();
   }
@@ -391,6 +505,12 @@ class _$InternetUnAvailableImpl implements _InternetUnAvailable {
     TResult? Function()? internetUnAvailable,
     TResult? Function()? authenticated,
     TResult? Function()? authenticatedAnonymous,
+    TResult? Function()? loading,
+    TResult? Function()? saml,
+    TResult? Function()? multipleDantai,
+    TResult? Function()? logout,
+    TResult? Function()? expired,
+    TResult? Function()? appErrorPage,
   }) {
     return internetUnAvailable?.call();
   }
@@ -403,6 +523,12 @@ class _$InternetUnAvailableImpl implements _InternetUnAvailable {
     TResult Function()? internetUnAvailable,
     TResult Function()? authenticated,
     TResult Function()? authenticatedAnonymous,
+    TResult Function()? loading,
+    TResult Function()? saml,
+    TResult Function()? multipleDantai,
+    TResult Function()? logout,
+    TResult Function()? expired,
+    TResult Function()? appErrorPage,
     required TResult orElse(),
   }) {
     if (internetUnAvailable != null) {
@@ -420,6 +546,12 @@ class _$InternetUnAvailableImpl implements _InternetUnAvailable {
     required TResult Function(AppAuthenticated value) authenticated,
     required TResult Function(AppAuthenticatedAnonymous value)
         authenticatedAnonymous,
+    required TResult Function(Loading value) loading,
+    required TResult Function(Saml value) saml,
+    required TResult Function(MultipleDantai value) multipleDantai,
+    required TResult Function(Logout value) logout,
+    required TResult Function(Expired value) expired,
+    required TResult Function(AppErrorPage value) appErrorPage,
   }) {
     return internetUnAvailable(this);
   }
@@ -432,6 +564,12 @@ class _$InternetUnAvailableImpl implements _InternetUnAvailable {
     TResult? Function(_InternetUnAvailable value)? internetUnAvailable,
     TResult? Function(AppAuthenticated value)? authenticated,
     TResult? Function(AppAuthenticatedAnonymous value)? authenticatedAnonymous,
+    TResult? Function(Loading value)? loading,
+    TResult? Function(Saml value)? saml,
+    TResult? Function(MultipleDantai value)? multipleDantai,
+    TResult? Function(Logout value)? logout,
+    TResult? Function(Expired value)? expired,
+    TResult? Function(AppErrorPage value)? appErrorPage,
   }) {
     return internetUnAvailable?.call(this);
   }
@@ -444,6 +582,12 @@ class _$InternetUnAvailableImpl implements _InternetUnAvailable {
     TResult Function(_InternetUnAvailable value)? internetUnAvailable,
     TResult Function(AppAuthenticated value)? authenticated,
     TResult Function(AppAuthenticatedAnonymous value)? authenticatedAnonymous,
+    TResult Function(Loading value)? loading,
+    TResult Function(Saml value)? saml,
+    TResult Function(MultipleDantai value)? multipleDantai,
+    TResult Function(Logout value)? logout,
+    TResult Function(Expired value)? expired,
+    TResult Function(AppErrorPage value)? appErrorPage,
     required TResult orElse(),
   }) {
     if (internetUnAvailable != null) {
@@ -500,6 +644,12 @@ class _$AppAuthenticatedImpl implements AppAuthenticated {
     required TResult Function() internetUnAvailable,
     required TResult Function() authenticated,
     required TResult Function() authenticatedAnonymous,
+    required TResult Function() loading,
+    required TResult Function() saml,
+    required TResult Function() multipleDantai,
+    required TResult Function() logout,
+    required TResult Function() expired,
+    required TResult Function() appErrorPage,
   }) {
     return authenticated();
   }
@@ -512,6 +662,12 @@ class _$AppAuthenticatedImpl implements AppAuthenticated {
     TResult? Function()? internetUnAvailable,
     TResult? Function()? authenticated,
     TResult? Function()? authenticatedAnonymous,
+    TResult? Function()? loading,
+    TResult? Function()? saml,
+    TResult? Function()? multipleDantai,
+    TResult? Function()? logout,
+    TResult? Function()? expired,
+    TResult? Function()? appErrorPage,
   }) {
     return authenticated?.call();
   }
@@ -524,6 +680,12 @@ class _$AppAuthenticatedImpl implements AppAuthenticated {
     TResult Function()? internetUnAvailable,
     TResult Function()? authenticated,
     TResult Function()? authenticatedAnonymous,
+    TResult Function()? loading,
+    TResult Function()? saml,
+    TResult Function()? multipleDantai,
+    TResult Function()? logout,
+    TResult Function()? expired,
+    TResult Function()? appErrorPage,
     required TResult orElse(),
   }) {
     if (authenticated != null) {
@@ -541,6 +703,12 @@ class _$AppAuthenticatedImpl implements AppAuthenticated {
     required TResult Function(AppAuthenticated value) authenticated,
     required TResult Function(AppAuthenticatedAnonymous value)
         authenticatedAnonymous,
+    required TResult Function(Loading value) loading,
+    required TResult Function(Saml value) saml,
+    required TResult Function(MultipleDantai value) multipleDantai,
+    required TResult Function(Logout value) logout,
+    required TResult Function(Expired value) expired,
+    required TResult Function(AppErrorPage value) appErrorPage,
   }) {
     return authenticated(this);
   }
@@ -553,6 +721,12 @@ class _$AppAuthenticatedImpl implements AppAuthenticated {
     TResult? Function(_InternetUnAvailable value)? internetUnAvailable,
     TResult? Function(AppAuthenticated value)? authenticated,
     TResult? Function(AppAuthenticatedAnonymous value)? authenticatedAnonymous,
+    TResult? Function(Loading value)? loading,
+    TResult? Function(Saml value)? saml,
+    TResult? Function(MultipleDantai value)? multipleDantai,
+    TResult? Function(Logout value)? logout,
+    TResult? Function(Expired value)? expired,
+    TResult? Function(AppErrorPage value)? appErrorPage,
   }) {
     return authenticated?.call(this);
   }
@@ -565,6 +739,12 @@ class _$AppAuthenticatedImpl implements AppAuthenticated {
     TResult Function(_InternetUnAvailable value)? internetUnAvailable,
     TResult Function(AppAuthenticated value)? authenticated,
     TResult Function(AppAuthenticatedAnonymous value)? authenticatedAnonymous,
+    TResult Function(Loading value)? loading,
+    TResult Function(Saml value)? saml,
+    TResult Function(MultipleDantai value)? multipleDantai,
+    TResult Function(Logout value)? logout,
+    TResult Function(Expired value)? expired,
+    TResult Function(AppErrorPage value)? appErrorPage,
     required TResult orElse(),
   }) {
     if (authenticated != null) {
@@ -624,6 +804,12 @@ class _$AppAuthenticatedAnonymousImpl implements AppAuthenticatedAnonymous {
     required TResult Function() internetUnAvailable,
     required TResult Function() authenticated,
     required TResult Function() authenticatedAnonymous,
+    required TResult Function() loading,
+    required TResult Function() saml,
+    required TResult Function() multipleDantai,
+    required TResult Function() logout,
+    required TResult Function() expired,
+    required TResult Function() appErrorPage,
   }) {
     return authenticatedAnonymous();
   }
@@ -636,6 +822,12 @@ class _$AppAuthenticatedAnonymousImpl implements AppAuthenticatedAnonymous {
     TResult? Function()? internetUnAvailable,
     TResult? Function()? authenticated,
     TResult? Function()? authenticatedAnonymous,
+    TResult? Function()? loading,
+    TResult? Function()? saml,
+    TResult? Function()? multipleDantai,
+    TResult? Function()? logout,
+    TResult? Function()? expired,
+    TResult? Function()? appErrorPage,
   }) {
     return authenticatedAnonymous?.call();
   }
@@ -648,6 +840,12 @@ class _$AppAuthenticatedAnonymousImpl implements AppAuthenticatedAnonymous {
     TResult Function()? internetUnAvailable,
     TResult Function()? authenticated,
     TResult Function()? authenticatedAnonymous,
+    TResult Function()? loading,
+    TResult Function()? saml,
+    TResult Function()? multipleDantai,
+    TResult Function()? logout,
+    TResult Function()? expired,
+    TResult Function()? appErrorPage,
     required TResult orElse(),
   }) {
     if (authenticatedAnonymous != null) {
@@ -665,6 +863,12 @@ class _$AppAuthenticatedAnonymousImpl implements AppAuthenticatedAnonymous {
     required TResult Function(AppAuthenticated value) authenticated,
     required TResult Function(AppAuthenticatedAnonymous value)
         authenticatedAnonymous,
+    required TResult Function(Loading value) loading,
+    required TResult Function(Saml value) saml,
+    required TResult Function(MultipleDantai value) multipleDantai,
+    required TResult Function(Logout value) logout,
+    required TResult Function(Expired value) expired,
+    required TResult Function(AppErrorPage value) appErrorPage,
   }) {
     return authenticatedAnonymous(this);
   }
@@ -677,6 +881,12 @@ class _$AppAuthenticatedAnonymousImpl implements AppAuthenticatedAnonymous {
     TResult? Function(_InternetUnAvailable value)? internetUnAvailable,
     TResult? Function(AppAuthenticated value)? authenticated,
     TResult? Function(AppAuthenticatedAnonymous value)? authenticatedAnonymous,
+    TResult? Function(Loading value)? loading,
+    TResult? Function(Saml value)? saml,
+    TResult? Function(MultipleDantai value)? multipleDantai,
+    TResult? Function(Logout value)? logout,
+    TResult? Function(Expired value)? expired,
+    TResult? Function(AppErrorPage value)? appErrorPage,
   }) {
     return authenticatedAnonymous?.call(this);
   }
@@ -689,6 +899,12 @@ class _$AppAuthenticatedAnonymousImpl implements AppAuthenticatedAnonymous {
     TResult Function(_InternetUnAvailable value)? internetUnAvailable,
     TResult Function(AppAuthenticated value)? authenticated,
     TResult Function(AppAuthenticatedAnonymous value)? authenticatedAnonymous,
+    TResult Function(Loading value)? loading,
+    TResult Function(Saml value)? saml,
+    TResult Function(MultipleDantai value)? multipleDantai,
+    TResult Function(Logout value)? logout,
+    TResult Function(Expired value)? expired,
+    TResult Function(AppErrorPage value)? appErrorPage,
     required TResult orElse(),
   }) {
     if (authenticatedAnonymous != null) {
@@ -700,4 +916,945 @@ class _$AppAuthenticatedAnonymousImpl implements AppAuthenticatedAnonymous {
 
 abstract class AppAuthenticatedAnonymous implements AppStartState {
   const factory AppAuthenticatedAnonymous() = _$AppAuthenticatedAnonymousImpl;
+}
+
+/// @nodoc
+abstract class _$$LoadingImplCopyWith<$Res> {
+  factory _$$LoadingImplCopyWith(
+          _$LoadingImpl value, $Res Function(_$LoadingImpl) then) =
+      __$$LoadingImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$LoadingImplCopyWithImpl<$Res>
+    extends _$AppStartStateCopyWithImpl<$Res, _$LoadingImpl>
+    implements _$$LoadingImplCopyWith<$Res> {
+  __$$LoadingImplCopyWithImpl(
+      _$LoadingImpl _value, $Res Function(_$LoadingImpl) _then)
+      : super(_value, _then);
+}
+
+/// @nodoc
+
+class _$LoadingImpl implements Loading {
+  const _$LoadingImpl();
+
+  @override
+  String toString() {
+    return 'AppStartState.loading()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _$LoadingImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() initial,
+    required TResult Function() unauthenticated,
+    required TResult Function() internetUnAvailable,
+    required TResult Function() authenticated,
+    required TResult Function() authenticatedAnonymous,
+    required TResult Function() loading,
+    required TResult Function() saml,
+    required TResult Function() multipleDantai,
+    required TResult Function() logout,
+    required TResult Function() expired,
+    required TResult Function() appErrorPage,
+  }) {
+    return loading();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? initial,
+    TResult? Function()? unauthenticated,
+    TResult? Function()? internetUnAvailable,
+    TResult? Function()? authenticated,
+    TResult? Function()? authenticatedAnonymous,
+    TResult? Function()? loading,
+    TResult? Function()? saml,
+    TResult? Function()? multipleDantai,
+    TResult? Function()? logout,
+    TResult? Function()? expired,
+    TResult? Function()? appErrorPage,
+  }) {
+    return loading?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? initial,
+    TResult Function()? unauthenticated,
+    TResult Function()? internetUnAvailable,
+    TResult Function()? authenticated,
+    TResult Function()? authenticatedAnonymous,
+    TResult Function()? loading,
+    TResult Function()? saml,
+    TResult Function()? multipleDantai,
+    TResult Function()? logout,
+    TResult Function()? expired,
+    TResult Function()? appErrorPage,
+    required TResult orElse(),
+  }) {
+    if (loading != null) {
+      return loading();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Initial value) initial,
+    required TResult Function(Unauthenticated value) unauthenticated,
+    required TResult Function(_InternetUnAvailable value) internetUnAvailable,
+    required TResult Function(AppAuthenticated value) authenticated,
+    required TResult Function(AppAuthenticatedAnonymous value)
+        authenticatedAnonymous,
+    required TResult Function(Loading value) loading,
+    required TResult Function(Saml value) saml,
+    required TResult Function(MultipleDantai value) multipleDantai,
+    required TResult Function(Logout value) logout,
+    required TResult Function(Expired value) expired,
+    required TResult Function(AppErrorPage value) appErrorPage,
+  }) {
+    return loading(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_Initial value)? initial,
+    TResult? Function(Unauthenticated value)? unauthenticated,
+    TResult? Function(_InternetUnAvailable value)? internetUnAvailable,
+    TResult? Function(AppAuthenticated value)? authenticated,
+    TResult? Function(AppAuthenticatedAnonymous value)? authenticatedAnonymous,
+    TResult? Function(Loading value)? loading,
+    TResult? Function(Saml value)? saml,
+    TResult? Function(MultipleDantai value)? multipleDantai,
+    TResult? Function(Logout value)? logout,
+    TResult? Function(Expired value)? expired,
+    TResult? Function(AppErrorPage value)? appErrorPage,
+  }) {
+    return loading?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Initial value)? initial,
+    TResult Function(Unauthenticated value)? unauthenticated,
+    TResult Function(_InternetUnAvailable value)? internetUnAvailable,
+    TResult Function(AppAuthenticated value)? authenticated,
+    TResult Function(AppAuthenticatedAnonymous value)? authenticatedAnonymous,
+    TResult Function(Loading value)? loading,
+    TResult Function(Saml value)? saml,
+    TResult Function(MultipleDantai value)? multipleDantai,
+    TResult Function(Logout value)? logout,
+    TResult Function(Expired value)? expired,
+    TResult Function(AppErrorPage value)? appErrorPage,
+    required TResult orElse(),
+  }) {
+    if (loading != null) {
+      return loading(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class Loading implements AppStartState {
+  const factory Loading() = _$LoadingImpl;
+}
+
+/// @nodoc
+abstract class _$$SamlImplCopyWith<$Res> {
+  factory _$$SamlImplCopyWith(
+          _$SamlImpl value, $Res Function(_$SamlImpl) then) =
+      __$$SamlImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$SamlImplCopyWithImpl<$Res>
+    extends _$AppStartStateCopyWithImpl<$Res, _$SamlImpl>
+    implements _$$SamlImplCopyWith<$Res> {
+  __$$SamlImplCopyWithImpl(_$SamlImpl _value, $Res Function(_$SamlImpl) _then)
+      : super(_value, _then);
+}
+
+/// @nodoc
+
+class _$SamlImpl implements Saml {
+  const _$SamlImpl();
+
+  @override
+  String toString() {
+    return 'AppStartState.saml()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _$SamlImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() initial,
+    required TResult Function() unauthenticated,
+    required TResult Function() internetUnAvailable,
+    required TResult Function() authenticated,
+    required TResult Function() authenticatedAnonymous,
+    required TResult Function() loading,
+    required TResult Function() saml,
+    required TResult Function() multipleDantai,
+    required TResult Function() logout,
+    required TResult Function() expired,
+    required TResult Function() appErrorPage,
+  }) {
+    return saml();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? initial,
+    TResult? Function()? unauthenticated,
+    TResult? Function()? internetUnAvailable,
+    TResult? Function()? authenticated,
+    TResult? Function()? authenticatedAnonymous,
+    TResult? Function()? loading,
+    TResult? Function()? saml,
+    TResult? Function()? multipleDantai,
+    TResult? Function()? logout,
+    TResult? Function()? expired,
+    TResult? Function()? appErrorPage,
+  }) {
+    return saml?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? initial,
+    TResult Function()? unauthenticated,
+    TResult Function()? internetUnAvailable,
+    TResult Function()? authenticated,
+    TResult Function()? authenticatedAnonymous,
+    TResult Function()? loading,
+    TResult Function()? saml,
+    TResult Function()? multipleDantai,
+    TResult Function()? logout,
+    TResult Function()? expired,
+    TResult Function()? appErrorPage,
+    required TResult orElse(),
+  }) {
+    if (saml != null) {
+      return saml();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Initial value) initial,
+    required TResult Function(Unauthenticated value) unauthenticated,
+    required TResult Function(_InternetUnAvailable value) internetUnAvailable,
+    required TResult Function(AppAuthenticated value) authenticated,
+    required TResult Function(AppAuthenticatedAnonymous value)
+        authenticatedAnonymous,
+    required TResult Function(Loading value) loading,
+    required TResult Function(Saml value) saml,
+    required TResult Function(MultipleDantai value) multipleDantai,
+    required TResult Function(Logout value) logout,
+    required TResult Function(Expired value) expired,
+    required TResult Function(AppErrorPage value) appErrorPage,
+  }) {
+    return saml(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_Initial value)? initial,
+    TResult? Function(Unauthenticated value)? unauthenticated,
+    TResult? Function(_InternetUnAvailable value)? internetUnAvailable,
+    TResult? Function(AppAuthenticated value)? authenticated,
+    TResult? Function(AppAuthenticatedAnonymous value)? authenticatedAnonymous,
+    TResult? Function(Loading value)? loading,
+    TResult? Function(Saml value)? saml,
+    TResult? Function(MultipleDantai value)? multipleDantai,
+    TResult? Function(Logout value)? logout,
+    TResult? Function(Expired value)? expired,
+    TResult? Function(AppErrorPage value)? appErrorPage,
+  }) {
+    return saml?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Initial value)? initial,
+    TResult Function(Unauthenticated value)? unauthenticated,
+    TResult Function(_InternetUnAvailable value)? internetUnAvailable,
+    TResult Function(AppAuthenticated value)? authenticated,
+    TResult Function(AppAuthenticatedAnonymous value)? authenticatedAnonymous,
+    TResult Function(Loading value)? loading,
+    TResult Function(Saml value)? saml,
+    TResult Function(MultipleDantai value)? multipleDantai,
+    TResult Function(Logout value)? logout,
+    TResult Function(Expired value)? expired,
+    TResult Function(AppErrorPage value)? appErrorPage,
+    required TResult orElse(),
+  }) {
+    if (saml != null) {
+      return saml(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class Saml implements AppStartState {
+  const factory Saml() = _$SamlImpl;
+}
+
+/// @nodoc
+abstract class _$$MultipleDantaiImplCopyWith<$Res> {
+  factory _$$MultipleDantaiImplCopyWith(_$MultipleDantaiImpl value,
+          $Res Function(_$MultipleDantaiImpl) then) =
+      __$$MultipleDantaiImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$MultipleDantaiImplCopyWithImpl<$Res>
+    extends _$AppStartStateCopyWithImpl<$Res, _$MultipleDantaiImpl>
+    implements _$$MultipleDantaiImplCopyWith<$Res> {
+  __$$MultipleDantaiImplCopyWithImpl(
+      _$MultipleDantaiImpl _value, $Res Function(_$MultipleDantaiImpl) _then)
+      : super(_value, _then);
+}
+
+/// @nodoc
+
+class _$MultipleDantaiImpl implements MultipleDantai {
+  const _$MultipleDantaiImpl();
+
+  @override
+  String toString() {
+    return 'AppStartState.multipleDantai()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _$MultipleDantaiImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() initial,
+    required TResult Function() unauthenticated,
+    required TResult Function() internetUnAvailable,
+    required TResult Function() authenticated,
+    required TResult Function() authenticatedAnonymous,
+    required TResult Function() loading,
+    required TResult Function() saml,
+    required TResult Function() multipleDantai,
+    required TResult Function() logout,
+    required TResult Function() expired,
+    required TResult Function() appErrorPage,
+  }) {
+    return multipleDantai();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? initial,
+    TResult? Function()? unauthenticated,
+    TResult? Function()? internetUnAvailable,
+    TResult? Function()? authenticated,
+    TResult? Function()? authenticatedAnonymous,
+    TResult? Function()? loading,
+    TResult? Function()? saml,
+    TResult? Function()? multipleDantai,
+    TResult? Function()? logout,
+    TResult? Function()? expired,
+    TResult? Function()? appErrorPage,
+  }) {
+    return multipleDantai?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? initial,
+    TResult Function()? unauthenticated,
+    TResult Function()? internetUnAvailable,
+    TResult Function()? authenticated,
+    TResult Function()? authenticatedAnonymous,
+    TResult Function()? loading,
+    TResult Function()? saml,
+    TResult Function()? multipleDantai,
+    TResult Function()? logout,
+    TResult Function()? expired,
+    TResult Function()? appErrorPage,
+    required TResult orElse(),
+  }) {
+    if (multipleDantai != null) {
+      return multipleDantai();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Initial value) initial,
+    required TResult Function(Unauthenticated value) unauthenticated,
+    required TResult Function(_InternetUnAvailable value) internetUnAvailable,
+    required TResult Function(AppAuthenticated value) authenticated,
+    required TResult Function(AppAuthenticatedAnonymous value)
+        authenticatedAnonymous,
+    required TResult Function(Loading value) loading,
+    required TResult Function(Saml value) saml,
+    required TResult Function(MultipleDantai value) multipleDantai,
+    required TResult Function(Logout value) logout,
+    required TResult Function(Expired value) expired,
+    required TResult Function(AppErrorPage value) appErrorPage,
+  }) {
+    return multipleDantai(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_Initial value)? initial,
+    TResult? Function(Unauthenticated value)? unauthenticated,
+    TResult? Function(_InternetUnAvailable value)? internetUnAvailable,
+    TResult? Function(AppAuthenticated value)? authenticated,
+    TResult? Function(AppAuthenticatedAnonymous value)? authenticatedAnonymous,
+    TResult? Function(Loading value)? loading,
+    TResult? Function(Saml value)? saml,
+    TResult? Function(MultipleDantai value)? multipleDantai,
+    TResult? Function(Logout value)? logout,
+    TResult? Function(Expired value)? expired,
+    TResult? Function(AppErrorPage value)? appErrorPage,
+  }) {
+    return multipleDantai?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Initial value)? initial,
+    TResult Function(Unauthenticated value)? unauthenticated,
+    TResult Function(_InternetUnAvailable value)? internetUnAvailable,
+    TResult Function(AppAuthenticated value)? authenticated,
+    TResult Function(AppAuthenticatedAnonymous value)? authenticatedAnonymous,
+    TResult Function(Loading value)? loading,
+    TResult Function(Saml value)? saml,
+    TResult Function(MultipleDantai value)? multipleDantai,
+    TResult Function(Logout value)? logout,
+    TResult Function(Expired value)? expired,
+    TResult Function(AppErrorPage value)? appErrorPage,
+    required TResult orElse(),
+  }) {
+    if (multipleDantai != null) {
+      return multipleDantai(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class MultipleDantai implements AppStartState {
+  const factory MultipleDantai() = _$MultipleDantaiImpl;
+}
+
+/// @nodoc
+abstract class _$$LogoutImplCopyWith<$Res> {
+  factory _$$LogoutImplCopyWith(
+          _$LogoutImpl value, $Res Function(_$LogoutImpl) then) =
+      __$$LogoutImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$LogoutImplCopyWithImpl<$Res>
+    extends _$AppStartStateCopyWithImpl<$Res, _$LogoutImpl>
+    implements _$$LogoutImplCopyWith<$Res> {
+  __$$LogoutImplCopyWithImpl(
+      _$LogoutImpl _value, $Res Function(_$LogoutImpl) _then)
+      : super(_value, _then);
+}
+
+/// @nodoc
+
+class _$LogoutImpl implements Logout {
+  const _$LogoutImpl();
+
+  @override
+  String toString() {
+    return 'AppStartState.logout()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _$LogoutImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() initial,
+    required TResult Function() unauthenticated,
+    required TResult Function() internetUnAvailable,
+    required TResult Function() authenticated,
+    required TResult Function() authenticatedAnonymous,
+    required TResult Function() loading,
+    required TResult Function() saml,
+    required TResult Function() multipleDantai,
+    required TResult Function() logout,
+    required TResult Function() expired,
+    required TResult Function() appErrorPage,
+  }) {
+    return logout();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? initial,
+    TResult? Function()? unauthenticated,
+    TResult? Function()? internetUnAvailable,
+    TResult? Function()? authenticated,
+    TResult? Function()? authenticatedAnonymous,
+    TResult? Function()? loading,
+    TResult? Function()? saml,
+    TResult? Function()? multipleDantai,
+    TResult? Function()? logout,
+    TResult? Function()? expired,
+    TResult? Function()? appErrorPage,
+  }) {
+    return logout?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? initial,
+    TResult Function()? unauthenticated,
+    TResult Function()? internetUnAvailable,
+    TResult Function()? authenticated,
+    TResult Function()? authenticatedAnonymous,
+    TResult Function()? loading,
+    TResult Function()? saml,
+    TResult Function()? multipleDantai,
+    TResult Function()? logout,
+    TResult Function()? expired,
+    TResult Function()? appErrorPage,
+    required TResult orElse(),
+  }) {
+    if (logout != null) {
+      return logout();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Initial value) initial,
+    required TResult Function(Unauthenticated value) unauthenticated,
+    required TResult Function(_InternetUnAvailable value) internetUnAvailable,
+    required TResult Function(AppAuthenticated value) authenticated,
+    required TResult Function(AppAuthenticatedAnonymous value)
+        authenticatedAnonymous,
+    required TResult Function(Loading value) loading,
+    required TResult Function(Saml value) saml,
+    required TResult Function(MultipleDantai value) multipleDantai,
+    required TResult Function(Logout value) logout,
+    required TResult Function(Expired value) expired,
+    required TResult Function(AppErrorPage value) appErrorPage,
+  }) {
+    return logout(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_Initial value)? initial,
+    TResult? Function(Unauthenticated value)? unauthenticated,
+    TResult? Function(_InternetUnAvailable value)? internetUnAvailable,
+    TResult? Function(AppAuthenticated value)? authenticated,
+    TResult? Function(AppAuthenticatedAnonymous value)? authenticatedAnonymous,
+    TResult? Function(Loading value)? loading,
+    TResult? Function(Saml value)? saml,
+    TResult? Function(MultipleDantai value)? multipleDantai,
+    TResult? Function(Logout value)? logout,
+    TResult? Function(Expired value)? expired,
+    TResult? Function(AppErrorPage value)? appErrorPage,
+  }) {
+    return logout?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Initial value)? initial,
+    TResult Function(Unauthenticated value)? unauthenticated,
+    TResult Function(_InternetUnAvailable value)? internetUnAvailable,
+    TResult Function(AppAuthenticated value)? authenticated,
+    TResult Function(AppAuthenticatedAnonymous value)? authenticatedAnonymous,
+    TResult Function(Loading value)? loading,
+    TResult Function(Saml value)? saml,
+    TResult Function(MultipleDantai value)? multipleDantai,
+    TResult Function(Logout value)? logout,
+    TResult Function(Expired value)? expired,
+    TResult Function(AppErrorPage value)? appErrorPage,
+    required TResult orElse(),
+  }) {
+    if (logout != null) {
+      return logout(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class Logout implements AppStartState {
+  const factory Logout() = _$LogoutImpl;
+}
+
+/// @nodoc
+abstract class _$$ExpiredImplCopyWith<$Res> {
+  factory _$$ExpiredImplCopyWith(
+          _$ExpiredImpl value, $Res Function(_$ExpiredImpl) then) =
+      __$$ExpiredImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$ExpiredImplCopyWithImpl<$Res>
+    extends _$AppStartStateCopyWithImpl<$Res, _$ExpiredImpl>
+    implements _$$ExpiredImplCopyWith<$Res> {
+  __$$ExpiredImplCopyWithImpl(
+      _$ExpiredImpl _value, $Res Function(_$ExpiredImpl) _then)
+      : super(_value, _then);
+}
+
+/// @nodoc
+
+class _$ExpiredImpl implements Expired {
+  const _$ExpiredImpl();
+
+  @override
+  String toString() {
+    return 'AppStartState.expired()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _$ExpiredImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() initial,
+    required TResult Function() unauthenticated,
+    required TResult Function() internetUnAvailable,
+    required TResult Function() authenticated,
+    required TResult Function() authenticatedAnonymous,
+    required TResult Function() loading,
+    required TResult Function() saml,
+    required TResult Function() multipleDantai,
+    required TResult Function() logout,
+    required TResult Function() expired,
+    required TResult Function() appErrorPage,
+  }) {
+    return expired();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? initial,
+    TResult? Function()? unauthenticated,
+    TResult? Function()? internetUnAvailable,
+    TResult? Function()? authenticated,
+    TResult? Function()? authenticatedAnonymous,
+    TResult? Function()? loading,
+    TResult? Function()? saml,
+    TResult? Function()? multipleDantai,
+    TResult? Function()? logout,
+    TResult? Function()? expired,
+    TResult? Function()? appErrorPage,
+  }) {
+    return expired?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? initial,
+    TResult Function()? unauthenticated,
+    TResult Function()? internetUnAvailable,
+    TResult Function()? authenticated,
+    TResult Function()? authenticatedAnonymous,
+    TResult Function()? loading,
+    TResult Function()? saml,
+    TResult Function()? multipleDantai,
+    TResult Function()? logout,
+    TResult Function()? expired,
+    TResult Function()? appErrorPage,
+    required TResult orElse(),
+  }) {
+    if (expired != null) {
+      return expired();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Initial value) initial,
+    required TResult Function(Unauthenticated value) unauthenticated,
+    required TResult Function(_InternetUnAvailable value) internetUnAvailable,
+    required TResult Function(AppAuthenticated value) authenticated,
+    required TResult Function(AppAuthenticatedAnonymous value)
+        authenticatedAnonymous,
+    required TResult Function(Loading value) loading,
+    required TResult Function(Saml value) saml,
+    required TResult Function(MultipleDantai value) multipleDantai,
+    required TResult Function(Logout value) logout,
+    required TResult Function(Expired value) expired,
+    required TResult Function(AppErrorPage value) appErrorPage,
+  }) {
+    return expired(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_Initial value)? initial,
+    TResult? Function(Unauthenticated value)? unauthenticated,
+    TResult? Function(_InternetUnAvailable value)? internetUnAvailable,
+    TResult? Function(AppAuthenticated value)? authenticated,
+    TResult? Function(AppAuthenticatedAnonymous value)? authenticatedAnonymous,
+    TResult? Function(Loading value)? loading,
+    TResult? Function(Saml value)? saml,
+    TResult? Function(MultipleDantai value)? multipleDantai,
+    TResult? Function(Logout value)? logout,
+    TResult? Function(Expired value)? expired,
+    TResult? Function(AppErrorPage value)? appErrorPage,
+  }) {
+    return expired?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Initial value)? initial,
+    TResult Function(Unauthenticated value)? unauthenticated,
+    TResult Function(_InternetUnAvailable value)? internetUnAvailable,
+    TResult Function(AppAuthenticated value)? authenticated,
+    TResult Function(AppAuthenticatedAnonymous value)? authenticatedAnonymous,
+    TResult Function(Loading value)? loading,
+    TResult Function(Saml value)? saml,
+    TResult Function(MultipleDantai value)? multipleDantai,
+    TResult Function(Logout value)? logout,
+    TResult Function(Expired value)? expired,
+    TResult Function(AppErrorPage value)? appErrorPage,
+    required TResult orElse(),
+  }) {
+    if (expired != null) {
+      return expired(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class Expired implements AppStartState {
+  const factory Expired() = _$ExpiredImpl;
+}
+
+/// @nodoc
+abstract class _$$AppErrorPageImplCopyWith<$Res> {
+  factory _$$AppErrorPageImplCopyWith(
+          _$AppErrorPageImpl value, $Res Function(_$AppErrorPageImpl) then) =
+      __$$AppErrorPageImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$AppErrorPageImplCopyWithImpl<$Res>
+    extends _$AppStartStateCopyWithImpl<$Res, _$AppErrorPageImpl>
+    implements _$$AppErrorPageImplCopyWith<$Res> {
+  __$$AppErrorPageImplCopyWithImpl(
+      _$AppErrorPageImpl _value, $Res Function(_$AppErrorPageImpl) _then)
+      : super(_value, _then);
+}
+
+/// @nodoc
+
+class _$AppErrorPageImpl implements AppErrorPage {
+  const _$AppErrorPageImpl();
+
+  @override
+  String toString() {
+    return 'AppStartState.appErrorPage()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _$AppErrorPageImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() initial,
+    required TResult Function() unauthenticated,
+    required TResult Function() internetUnAvailable,
+    required TResult Function() authenticated,
+    required TResult Function() authenticatedAnonymous,
+    required TResult Function() loading,
+    required TResult Function() saml,
+    required TResult Function() multipleDantai,
+    required TResult Function() logout,
+    required TResult Function() expired,
+    required TResult Function() appErrorPage,
+  }) {
+    return appErrorPage();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? initial,
+    TResult? Function()? unauthenticated,
+    TResult? Function()? internetUnAvailable,
+    TResult? Function()? authenticated,
+    TResult? Function()? authenticatedAnonymous,
+    TResult? Function()? loading,
+    TResult? Function()? saml,
+    TResult? Function()? multipleDantai,
+    TResult? Function()? logout,
+    TResult? Function()? expired,
+    TResult? Function()? appErrorPage,
+  }) {
+    return appErrorPage?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? initial,
+    TResult Function()? unauthenticated,
+    TResult Function()? internetUnAvailable,
+    TResult Function()? authenticated,
+    TResult Function()? authenticatedAnonymous,
+    TResult Function()? loading,
+    TResult Function()? saml,
+    TResult Function()? multipleDantai,
+    TResult Function()? logout,
+    TResult Function()? expired,
+    TResult Function()? appErrorPage,
+    required TResult orElse(),
+  }) {
+    if (appErrorPage != null) {
+      return appErrorPage();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Initial value) initial,
+    required TResult Function(Unauthenticated value) unauthenticated,
+    required TResult Function(_InternetUnAvailable value) internetUnAvailable,
+    required TResult Function(AppAuthenticated value) authenticated,
+    required TResult Function(AppAuthenticatedAnonymous value)
+        authenticatedAnonymous,
+    required TResult Function(Loading value) loading,
+    required TResult Function(Saml value) saml,
+    required TResult Function(MultipleDantai value) multipleDantai,
+    required TResult Function(Logout value) logout,
+    required TResult Function(Expired value) expired,
+    required TResult Function(AppErrorPage value) appErrorPage,
+  }) {
+    return appErrorPage(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_Initial value)? initial,
+    TResult? Function(Unauthenticated value)? unauthenticated,
+    TResult? Function(_InternetUnAvailable value)? internetUnAvailable,
+    TResult? Function(AppAuthenticated value)? authenticated,
+    TResult? Function(AppAuthenticatedAnonymous value)? authenticatedAnonymous,
+    TResult? Function(Loading value)? loading,
+    TResult? Function(Saml value)? saml,
+    TResult? Function(MultipleDantai value)? multipleDantai,
+    TResult? Function(Logout value)? logout,
+    TResult? Function(Expired value)? expired,
+    TResult? Function(AppErrorPage value)? appErrorPage,
+  }) {
+    return appErrorPage?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Initial value)? initial,
+    TResult Function(Unauthenticated value)? unauthenticated,
+    TResult Function(_InternetUnAvailable value)? internetUnAvailable,
+    TResult Function(AppAuthenticated value)? authenticated,
+    TResult Function(AppAuthenticatedAnonymous value)? authenticatedAnonymous,
+    TResult Function(Loading value)? loading,
+    TResult Function(Saml value)? saml,
+    TResult Function(MultipleDantai value)? multipleDantai,
+    TResult Function(Logout value)? logout,
+    TResult Function(Expired value)? expired,
+    TResult Function(AppErrorPage value)? appErrorPage,
+    required TResult orElse(),
+  }) {
+    if (appErrorPage != null) {
+      return appErrorPage(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class AppErrorPage implements AppStartState {
+  const factory AppErrorPage() = _$AppErrorPageImpl;
 }

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 // ignore: avoid_web_libraries_in_flutter
 import 'dart:html' as html;
+import 'dart:isolate';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -102,6 +103,11 @@ Future<void> start() async {
     await Hive.box<String>('shusekibo').put('saml', 'saml');
   }
 
+  // SAML ログアウト
+  final isLogout = uri.queryParameters.containsKey('SamlLogout');
+  if (isLogout) {
+    await Hive.box<String>('shusekibo').put('saml', 'logout');
+  }
   
   // 団体
   await Hive.openBox<DantaiModel>('Dantai');

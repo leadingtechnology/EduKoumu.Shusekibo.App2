@@ -16,4 +16,6 @@ class AuthState with _$AuthState {
   const factory AuthState.error(AppException error) = _Error;
 
   const factory AuthState.multipleDantai() = MultipleDantai;
+
+  const factory AuthState.errorPage() = AuthStateErrorPage;
 }

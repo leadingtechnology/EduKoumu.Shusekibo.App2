@@ -2,7 +2,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 
 class DateTimeAdapter extends TypeAdapter<DateTime> {
   @override
-  final typeId = 13;
+  final typeId = 99;
 
   @override
   DateTime read(BinaryReader reader) {

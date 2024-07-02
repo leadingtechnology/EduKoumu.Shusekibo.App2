@@ -24,6 +24,7 @@ mixin _$AuthState {
     required TResult Function() loggedOut,
     required TResult Function(AppException error) error,
     required TResult Function() multipleDantai,
+    required TResult Function() errorPage,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -34,6 +35,7 @@ mixin _$AuthState {
     TResult? Function()? loggedOut,
     TResult? Function(AppException error)? error,
     TResult? Function()? multipleDantai,
+    TResult? Function()? errorPage,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -44,6 +46,7 @@ mixin _$AuthState {
     TResult Function()? loggedOut,
     TResult Function(AppException error)? error,
     TResult Function()? multipleDantai,
+    TResult Function()? errorPage,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -55,6 +58,7 @@ mixin _$AuthState {
     required TResult Function(AuthStateLoggedOut value) loggedOut,
     required TResult Function(_Error value) error,
     required TResult Function(MultipleDantai value) multipleDantai,
+    required TResult Function(AuthStateErrorPage value) errorPage,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -65,6 +69,7 @@ mixin _$AuthState {
     TResult? Function(AuthStateLoggedOut value)? loggedOut,
     TResult? Function(_Error value)? error,
     TResult? Function(MultipleDantai value)? multipleDantai,
+    TResult? Function(AuthStateErrorPage value)? errorPage,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -75,6 +80,7 @@ mixin _$AuthState {
     TResult Function(AuthStateLoggedOut value)? loggedOut,
     TResult Function(_Error value)? error,
     TResult Function(MultipleDantai value)? multipleDantai,
+    TResult Function(AuthStateErrorPage value)? errorPage,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -141,6 +147,7 @@ class _$InitialImpl implements _Initial {
     required TResult Function() loggedOut,
     required TResult Function(AppException error) error,
     required TResult Function() multipleDantai,
+    required TResult Function() errorPage,
   }) {
     return initial();
   }
@@ -154,6 +161,7 @@ class _$InitialImpl implements _Initial {
     TResult? Function()? loggedOut,
     TResult? Function(AppException error)? error,
     TResult? Function()? multipleDantai,
+    TResult? Function()? errorPage,
   }) {
     return initial?.call();
   }
@@ -167,6 +175,7 @@ class _$InitialImpl implements _Initial {
     TResult Function()? loggedOut,
     TResult Function(AppException error)? error,
     TResult Function()? multipleDantai,
+    TResult Function()? errorPage,
     required TResult orElse(),
   }) {
     if (initial != null) {
@@ -184,6 +193,7 @@ class _$InitialImpl implements _Initial {
     required TResult Function(AuthStateLoggedOut value) loggedOut,
     required TResult Function(_Error value) error,
     required TResult Function(MultipleDantai value) multipleDantai,
+    required TResult Function(AuthStateErrorPage value) errorPage,
   }) {
     return initial(this);
   }
@@ -197,6 +207,7 @@ class _$InitialImpl implements _Initial {
     TResult? Function(AuthStateLoggedOut value)? loggedOut,
     TResult? Function(_Error value)? error,
     TResult? Function(MultipleDantai value)? multipleDantai,
+    TResult? Function(AuthStateErrorPage value)? errorPage,
   }) {
     return initial?.call(this);
   }
@@ -210,6 +221,7 @@ class _$InitialImpl implements _Initial {
     TResult Function(AuthStateLoggedOut value)? loggedOut,
     TResult Function(_Error value)? error,
     TResult Function(MultipleDantai value)? multipleDantai,
+    TResult Function(AuthStateErrorPage value)? errorPage,
     required TResult orElse(),
   }) {
     if (initial != null) {
@@ -267,6 +279,7 @@ class _$LoadingImpl implements _Loading {
     required TResult Function() loggedOut,
     required TResult Function(AppException error) error,
     required TResult Function() multipleDantai,
+    required TResult Function() errorPage,
   }) {
     return loading();
   }
@@ -280,6 +293,7 @@ class _$LoadingImpl implements _Loading {
     TResult? Function()? loggedOut,
     TResult? Function(AppException error)? error,
     TResult? Function()? multipleDantai,
+    TResult? Function()? errorPage,
   }) {
     return loading?.call();
   }
@@ -293,6 +307,7 @@ class _$LoadingImpl implements _Loading {
     TResult Function()? loggedOut,
     TResult Function(AppException error)? error,
     TResult Function()? multipleDantai,
+    TResult Function()? errorPage,
     required TResult orElse(),
   }) {
     if (loading != null) {
@@ -310,6 +325,7 @@ class _$LoadingImpl implements _Loading {
     required TResult Function(AuthStateLoggedOut value) loggedOut,
     required TResult Function(_Error value) error,
     required TResult Function(MultipleDantai value) multipleDantai,
+    required TResult Function(AuthStateErrorPage value) errorPage,
   }) {
     return loading(this);
   }
@@ -323,6 +339,7 @@ class _$LoadingImpl implements _Loading {
     TResult? Function(AuthStateLoggedOut value)? loggedOut,
     TResult? Function(_Error value)? error,
     TResult? Function(MultipleDantai value)? multipleDantai,
+    TResult? Function(AuthStateErrorPage value)? errorPage,
   }) {
     return loading?.call(this);
   }
@@ -336,6 +353,7 @@ class _$LoadingImpl implements _Loading {
     TResult Function(AuthStateLoggedOut value)? loggedOut,
     TResult Function(_Error value)? error,
     TResult Function(MultipleDantai value)? multipleDantai,
+    TResult Function(AuthStateErrorPage value)? errorPage,
     required TResult orElse(),
   }) {
     if (loading != null) {
@@ -393,6 +411,7 @@ class _$AuthStateLoggedInImpl implements AuthStateLoggedIn {
     required TResult Function() loggedOut,
     required TResult Function(AppException error) error,
     required TResult Function() multipleDantai,
+    required TResult Function() errorPage,
   }) {
     return loggedIn();
   }
@@ -406,6 +425,7 @@ class _$AuthStateLoggedInImpl implements AuthStateLoggedIn {
     TResult? Function()? loggedOut,
     TResult? Function(AppException error)? error,
     TResult? Function()? multipleDantai,
+    TResult? Function()? errorPage,
   }) {
     return loggedIn?.call();
   }
@@ -419,6 +439,7 @@ class _$AuthStateLoggedInImpl implements AuthStateLoggedIn {
     TResult Function()? loggedOut,
     TResult Function(AppException error)? error,
     TResult Function()? multipleDantai,
+    TResult Function()? errorPage,
     required TResult orElse(),
   }) {
     if (loggedIn != null) {
@@ -436,6 +457,7 @@ class _$AuthStateLoggedInImpl implements AuthStateLoggedIn {
     required TResult Function(AuthStateLoggedOut value) loggedOut,
     required TResult Function(_Error value) error,
     required TResult Function(MultipleDantai value) multipleDantai,
+    required TResult Function(AuthStateErrorPage value) errorPage,
   }) {
     return loggedIn(this);
   }
@@ -449,6 +471,7 @@ class _$AuthStateLoggedInImpl implements AuthStateLoggedIn {
     TResult? Function(AuthStateLoggedOut value)? loggedOut,
     TResult? Function(_Error value)? error,
     TResult? Function(MultipleDantai value)? multipleDantai,
+    TResult? Function(AuthStateErrorPage value)? errorPage,
   }) {
     return loggedIn?.call(this);
   }
@@ -462,6 +485,7 @@ class _$AuthStateLoggedInImpl implements AuthStateLoggedIn {
     TResult Function(AuthStateLoggedOut value)? loggedOut,
     TResult Function(_Error value)? error,
     TResult Function(MultipleDantai value)? multipleDantai,
+    TResult Function(AuthStateErrorPage value)? errorPage,
     required TResult orElse(),
   }) {
     if (loggedIn != null) {
@@ -519,6 +543,7 @@ class _$AuthStateLoggedOutImpl implements AuthStateLoggedOut {
     required TResult Function() loggedOut,
     required TResult Function(AppException error) error,
     required TResult Function() multipleDantai,
+    required TResult Function() errorPage,
   }) {
     return loggedOut();
   }
@@ -532,6 +557,7 @@ class _$AuthStateLoggedOutImpl implements AuthStateLoggedOut {
     TResult? Function()? loggedOut,
     TResult? Function(AppException error)? error,
     TResult? Function()? multipleDantai,
+    TResult? Function()? errorPage,
   }) {
     return loggedOut?.call();
   }
@@ -545,6 +571,7 @@ class _$AuthStateLoggedOutImpl implements AuthStateLoggedOut {
     TResult Function()? loggedOut,
     TResult Function(AppException error)? error,
     TResult Function()? multipleDantai,
+    TResult Function()? errorPage,
     required TResult orElse(),
   }) {
     if (loggedOut != null) {
@@ -562,6 +589,7 @@ class _$AuthStateLoggedOutImpl implements AuthStateLoggedOut {
     required TResult Function(AuthStateLoggedOut value) loggedOut,
     required TResult Function(_Error value) error,
     required TResult Function(MultipleDantai value) multipleDantai,
+    required TResult Function(AuthStateErrorPage value) errorPage,
   }) {
     return loggedOut(this);
   }
@@ -575,6 +603,7 @@ class _$AuthStateLoggedOutImpl implements AuthStateLoggedOut {
     TResult? Function(AuthStateLoggedOut value)? loggedOut,
     TResult? Function(_Error value)? error,
     TResult? Function(MultipleDantai value)? multipleDantai,
+    TResult? Function(AuthStateErrorPage value)? errorPage,
   }) {
     return loggedOut?.call(this);
   }
@@ -588,6 +617,7 @@ class _$AuthStateLoggedOutImpl implements AuthStateLoggedOut {
     TResult Function(AuthStateLoggedOut value)? loggedOut,
     TResult Function(_Error value)? error,
     TResult Function(MultipleDantai value)? multipleDantai,
+    TResult Function(AuthStateErrorPage value)? errorPage,
     required TResult orElse(),
   }) {
     if (loggedOut != null) {
@@ -681,6 +711,7 @@ class _$ErrorImpl implements _Error {
     required TResult Function() loggedOut,
     required TResult Function(AppException error) error,
     required TResult Function() multipleDantai,
+    required TResult Function() errorPage,
   }) {
     return error(this.error);
   }
@@ -694,6 +725,7 @@ class _$ErrorImpl implements _Error {
     TResult? Function()? loggedOut,
     TResult? Function(AppException error)? error,
     TResult? Function()? multipleDantai,
+    TResult? Function()? errorPage,
   }) {
     return error?.call(this.error);
   }
@@ -707,6 +739,7 @@ class _$ErrorImpl implements _Error {
     TResult Function()? loggedOut,
     TResult Function(AppException error)? error,
     TResult Function()? multipleDantai,
+    TResult Function()? errorPage,
     required TResult orElse(),
   }) {
     if (error != null) {
@@ -724,6 +757,7 @@ class _$ErrorImpl implements _Error {
     required TResult Function(AuthStateLoggedOut value) loggedOut,
     required TResult Function(_Error value) error,
     required TResult Function(MultipleDantai value) multipleDantai,
+    required TResult Function(AuthStateErrorPage value) errorPage,
   }) {
     return error(this);
   }
@@ -737,6 +771,7 @@ class _$ErrorImpl implements _Error {
     TResult? Function(AuthStateLoggedOut value)? loggedOut,
     TResult? Function(_Error value)? error,
     TResult? Function(MultipleDantai value)? multipleDantai,
+    TResult? Function(AuthStateErrorPage value)? errorPage,
   }) {
     return error?.call(this);
   }
@@ -750,6 +785,7 @@ class _$ErrorImpl implements _Error {
     TResult Function(AuthStateLoggedOut value)? loggedOut,
     TResult Function(_Error value)? error,
     TResult Function(MultipleDantai value)? multipleDantai,
+    TResult Function(AuthStateErrorPage value)? errorPage,
     required TResult orElse(),
   }) {
     if (error != null) {
@@ -812,6 +848,7 @@ class _$MultipleDantaiImpl implements MultipleDantai {
     required TResult Function() loggedOut,
     required TResult Function(AppException error) error,
     required TResult Function() multipleDantai,
+    required TResult Function() errorPage,
   }) {
     return multipleDantai();
   }
@@ -825,6 +862,7 @@ class _$MultipleDantaiImpl implements MultipleDantai {
     TResult? Function()? loggedOut,
     TResult? Function(AppException error)? error,
     TResult? Function()? multipleDantai,
+    TResult? Function()? errorPage,
   }) {
     return multipleDantai?.call();
   }
@@ -838,6 +876,7 @@ class _$MultipleDantaiImpl implements MultipleDantai {
     TResult Function()? loggedOut,
     TResult Function(AppException error)? error,
     TResult Function()? multipleDantai,
+    TResult Function()? errorPage,
     required TResult orElse(),
   }) {
     if (multipleDantai != null) {
@@ -855,6 +894,7 @@ class _$MultipleDantaiImpl implements MultipleDantai {
     required TResult Function(AuthStateLoggedOut value) loggedOut,
     required TResult Function(_Error value) error,
     required TResult Function(MultipleDantai value) multipleDantai,
+    required TResult Function(AuthStateErrorPage value) errorPage,
   }) {
     return multipleDantai(this);
   }
@@ -868,6 +908,7 @@ class _$MultipleDantaiImpl implements MultipleDantai {
     TResult? Function(AuthStateLoggedOut value)? loggedOut,
     TResult? Function(_Error value)? error,
     TResult? Function(MultipleDantai value)? multipleDantai,
+    TResult? Function(AuthStateErrorPage value)? errorPage,
   }) {
     return multipleDantai?.call(this);
   }
@@ -881,6 +922,7 @@ class _$MultipleDantaiImpl implements MultipleDantai {
     TResult Function(AuthStateLoggedOut value)? loggedOut,
     TResult Function(_Error value)? error,
     TResult Function(MultipleDantai value)? multipleDantai,
+    TResult Function(AuthStateErrorPage value)? errorPage,
     required TResult orElse(),
   }) {
     if (multipleDantai != null) {
@@ -892,4 +934,136 @@ class _$MultipleDantaiImpl implements MultipleDantai {
 
 abstract class MultipleDantai implements AuthState {
   const factory MultipleDantai() = _$MultipleDantaiImpl;
+}
+
+/// @nodoc
+abstract class _$$AuthStateErrorPageImplCopyWith<$Res> {
+  factory _$$AuthStateErrorPageImplCopyWith(_$AuthStateErrorPageImpl value,
+          $Res Function(_$AuthStateErrorPageImpl) then) =
+      __$$AuthStateErrorPageImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$AuthStateErrorPageImplCopyWithImpl<$Res>
+    extends _$AuthStateCopyWithImpl<$Res, _$AuthStateErrorPageImpl>
+    implements _$$AuthStateErrorPageImplCopyWith<$Res> {
+  __$$AuthStateErrorPageImplCopyWithImpl(_$AuthStateErrorPageImpl _value,
+      $Res Function(_$AuthStateErrorPageImpl) _then)
+      : super(_value, _then);
+}
+
+/// @nodoc
+
+class _$AuthStateErrorPageImpl implements AuthStateErrorPage {
+  const _$AuthStateErrorPageImpl();
+
+  @override
+  String toString() {
+    return 'AuthState.errorPage()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _$AuthStateErrorPageImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() initial,
+    required TResult Function() loading,
+    required TResult Function() loggedIn,
+    required TResult Function() loggedOut,
+    required TResult Function(AppException error) error,
+    required TResult Function() multipleDantai,
+    required TResult Function() errorPage,
+  }) {
+    return errorPage();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? initial,
+    TResult? Function()? loading,
+    TResult? Function()? loggedIn,
+    TResult? Function()? loggedOut,
+    TResult? Function(AppException error)? error,
+    TResult? Function()? multipleDantai,
+    TResult? Function()? errorPage,
+  }) {
+    return errorPage?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? initial,
+    TResult Function()? loading,
+    TResult Function()? loggedIn,
+    TResult Function()? loggedOut,
+    TResult Function(AppException error)? error,
+    TResult Function()? multipleDantai,
+    TResult Function()? errorPage,
+    required TResult orElse(),
+  }) {
+    if (errorPage != null) {
+      return errorPage();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Initial value) initial,
+    required TResult Function(_Loading value) loading,
+    required TResult Function(AuthStateLoggedIn value) loggedIn,
+    required TResult Function(AuthStateLoggedOut value) loggedOut,
+    required TResult Function(_Error value) error,
+    required TResult Function(MultipleDantai value) multipleDantai,
+    required TResult Function(AuthStateErrorPage value) errorPage,
+  }) {
+    return errorPage(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_Initial value)? initial,
+    TResult? Function(_Loading value)? loading,
+    TResult? Function(AuthStateLoggedIn value)? loggedIn,
+    TResult? Function(AuthStateLoggedOut value)? loggedOut,
+    TResult? Function(_Error value)? error,
+    TResult? Function(MultipleDantai value)? multipleDantai,
+    TResult? Function(AuthStateErrorPage value)? errorPage,
+  }) {
+    return errorPage?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Initial value)? initial,
+    TResult Function(_Loading value)? loading,
+    TResult Function(AuthStateLoggedIn value)? loggedIn,
+    TResult Function(AuthStateLoggedOut value)? loggedOut,
+    TResult Function(_Error value)? error,
+    TResult Function(MultipleDantai value)? multipleDantai,
+    TResult Function(AuthStateErrorPage value)? errorPage,
+    required TResult orElse(),
+  }) {
+    if (errorPage != null) {
+      return errorPage(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class AuthStateErrorPage implements AuthState {
+  const factory AuthStateErrorPage() = _$AuthStateErrorPageImpl;
 }

@@ -81,7 +81,11 @@ class _DantaiSelectionDialogState extends ConsumerState<DantaiSelectionDialog> {
                       value: dantaiId,
                       isExpanded: true,
                       elevation: 16,
-                      style: const TextStyle(color: Colors.black, fontSize: 18),
+                      style: const TextStyle(
+                        color: Colors.black, 
+                        fontSize: 18,
+                        fontFamily: 'NotoSansJP',
+                      ),
                       dropdownColor: Colors.white,
                       underline: Container(
                         height: 2,
@@ -112,7 +116,7 @@ class _DantaiSelectionDialogState extends ConsumerState<DantaiSelectionDialog> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(8),
                   child: ElevatedButton.icon(
                     icon: const Icon(Icons.close),
                     label: const Text(
@@ -142,13 +146,15 @@ class _DantaiSelectionDialogState extends ConsumerState<DantaiSelectionDialog> {
                           ? null
                           : () async {
                               await Hive.box<String>('shusekibo')
+                                  .put('dantaiList', '');
+
+                              await Hive.box<String>('shusekibo')
                                   .put('dantaiId', '$dantaiId');
+                              // await ref
+                              //     .read(authNotifierProvider.notifier)
+                              //     .changeDantai();
                   
-                              await ref
-                                  .read(authNotifierProvider.notifier)
-                                  .changeDantai(dantaiId!);
-                  
-                              Navigator.of(context).pop(dantaiId);
+                              Navigator.of(context).pop();
                             },
                       icon: const Icon(Icons.login_outlined), // 这里假设图标是固定的
                       label: const Text('ログイン'),

@@ -44,7 +44,7 @@ class HealthSeatWidget extends ConsumerWidget {
       if (jokyo.isEditable == false) {
         isEditable = false;
       }
-
+      
     }else{
       jokyo = const HealthStatusModel();
     }

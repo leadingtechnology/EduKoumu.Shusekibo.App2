@@ -15,4 +15,16 @@ class AppStartState with _$AppStartState {
   const factory AppStartState.authenticatedAnonymous() =
       AppAuthenticatedAnonymous;
   
+  const factory AppStartState.loading() = Loading;
+
+  const factory AppStartState.saml() = Saml;
+
+  const factory AppStartState.multipleDantai() = MultipleDantai;
+  
+  const factory AppStartState.logout() = Logout;
+
+  const factory AppStartState.expired() = Expired;
+
+  const factory AppStartState.appErrorPage() = AppErrorPage;
+  
 }

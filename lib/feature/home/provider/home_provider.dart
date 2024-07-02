@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:kyoumutechou/feature/home/widget/home_page.dart';
 
 enum Menu { 
   dashboard, 
@@ -21,7 +22,10 @@ enum ScreenAction {
 }
 
 final menuProvider = StateProvider<Menu>((ref) {return Menu.dashboard;});
-final menuIndexProvider = StateProvider<int>((ref) {return 0;});
+final menuListProvider = StateProvider<List<NavItem>>((ref) {
+  return [];
+});
+//final menuIndexProvider = StateProvider<int>((ref) {return 0;});
 final isDialogVisibleProvider = StateProvider<bool>((ref) {return false;});
 
 enum DashboardTab {health, attendance,absentee,}
